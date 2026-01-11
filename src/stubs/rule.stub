@@ -1,0 +1,80 @@
+<?php
+
+namespace {{ namespace }};
+
+use Closure;
+
+use Illuminate\Contracts\Validation\DataAwareRule;
+use Illuminate\Contracts\Validation\ValidationRule;
+use App\Exceptions\Common\RuleException;
+
+use Illuminate\Support\Facades\Log;
+
+use App\Exceptions\Common\RuleException;
+
+class {{ class }} implements DataAwareRule, ValidationRule
+{
+    /**
+     * 所有正在被验证的数据。
+     *
+     * @var array<string, mixed>
+     */
+    protected $data = [];
+
+    // ...
+
+    /**
+     * 设置正在被验证的数据。
+     *
+     * @param  array<string, mixed>  $data
+     */
+    public function setData(array $data): static
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+	/**
+     * Run the validation rule.
+     *
+     * @param  \Closure(string, ?string=): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     */
+    public function validate(string $attribute, mixed $value, Closure $fail): void
+    {
+	   $validated = $this->data;
+	   $result = true;
+
+        if($value == 10){
+		if(!isset($validated['']) || !$validated['']){
+			throw new RuleException('RuleReplaceError',$attribute);
+		}
+	    }
+	    if($value == 20){
+		if(!isset($validated['']) || !$validated['']){
+			throw new RuleException('RuleReplaceError',$attribute);
+		}
+	    }
+
+	    if(isset($value) && !empty($value))
+        {
+            $replacePartten = '';
+
+            $replaceResult = preg_match($ReplacePartten, $value);
+
+            if(!$replaceResult)
+            {
+                $result = false;
+
+            }
+
+        }
+
+        if(!$result)
+        {
+            throw new RuleException('RuleReplaceError');
+        }
+    }				
+
+    
+}

@@ -1,0 +1,58 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class {{ class }} extends JsonResource
+{
+    /**
+     * 指示是否应保留资源的集合原始键。
+     *
+     * @var bool
+     */
+    public $preserveKeys = true;
+
+    public static $replaceType;
+
+    public static function setReplaceType($replaceType = 10)
+    {
+        self::$replaceType = $replaceType;
+    }
+
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     */
+    public function toArray($request)
+    {
+        // return parent::toArray($request);
+
+		$response = [
+			'id'=>$this->resource->id,
+		];
+
+		if($this->resource->relationLoaded('unionResource'))
+		{
+			if(!is_null($this->rescource))
+			{
+				$response['union_rescource'] = new ReplaceUnionResource($this->rescource);
+			}
+		}
+
+		if($this->resource->relationLoaded('unionCollection'))
+		{
+			if(!is_null($this->collection))
+			{
+				$response['union_collection'] = ReplaceUnionResource::collection($this->collection);
+			}
+		}
+	
+
+        return $response;
+    }
+
+
+}

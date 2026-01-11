@@ -1,0 +1,13 @@
+<?php
+
+namespace DummyNamespace;
+
+interface  DummyClass 
+{
+	 /**
+     * 
+     * @param $param
+     */
+
+   public function handle($param);
+}

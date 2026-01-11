@@ -1,0 +1,62 @@
+<?php
+/*
+ * @Descripttion:
+ * @version:
+ * @Author: YouHuJun
+ * @Date: 2022-04-01 15:27:02
+ * @LastEditors: YouHuJun
+ * @LastEditTime: 2022-08-22 15:24:24
+ */
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+		$db_connection = config('youhujun.db_connection');
+
+		if (!Schema::connection($db_connection)->hasTable('personal_access_tokens')) 
+		{
+			Schema::connection($db_connection)->create('personal_access_tokens', function (Blueprint $table) {
+				$table->id()->comment('个人token表主键');
+				$table->string('tokenable_type',255)->comment('类型');
+				$table->bigInteger('tokenable_id')->comment('id');
+				$table->string('name')->comment('姓名');
+				$table->string('token', 64)->unique()->comment('token');
+				$table->text('abilities')->nullable()->comment('能力');
+				$table->timestamp('last_used_at')->nullable()->comment('最后使用时间');
+				$table->timestamps();
+			});
+	
+			$prefix = config('database.connections.'.$db_connection.'.prefix');
+	
+			DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}personal_access_tokens` comment '个人token表'");
+		}
+       
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+		$db_connection = config('youhujun.db_connection');
+		
+		if (Schema::connection($db_connection)->hasTable('personal_access_tokens')) 
+		{
+			Schema::connection($db_connection)->dropIfExists('personal_access_tokens');
+		}
+       
+    }
+};

@@ -1,0 +1,63 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class {{ class }} extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+		$db_connection = config('youhujun.db_connection');
+		//注意是否需要修改mysql连接名和表名
+		if (Schema::connection($db_connection)->hasTable('{{ table }}')) 
+		{
+			if (!Schema::hasColumn('{{ table }}', 'revision')) 
+			{
+				Schema::connection($db_connection)->table('{{ table }}', function (Blueprint $table) 
+				{
+					$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁')->after('id');
+					$table->dateTime('created_at')->useCurrent()->comment('创建时间string');
+					$table->unsignedInteger('created_time')->index(0)->default(0)->comment('创建时间int');
+					$table->dateTime('updated_at')->nullable()->comment('更新时间string');
+					$table->unsignedInteger('updated_time')->index(0)->default(0)->comment('跟新时间int');
+					$table->dateTime('deleted_at')->nullable()->comment('删除时间string');
+					$table->unsignedTinyInteger('sort')->index()->default(100)->comment('排序');
+				});
+			}
+			
+		}
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+		$db_connection = config('youhujun.db_connection');
+
+        if (Schema::connection($db_connection)->hasTable('{{ table }}')) 
+		{
+			Schema::connection($db_connection)->table('{{ table }}', function (Blueprint $table) 
+			{
+				$table->dropColumn([
+					'revision', 
+					'created_at',
+					'created_time',
+					'updated_at',
+					'updated_time',
+					'deleted_at',
+					'sort'
+				]);
+			});
+		}
+    }
+}
+
