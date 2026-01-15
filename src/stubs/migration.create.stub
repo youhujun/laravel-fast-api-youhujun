@@ -21,23 +21,32 @@ return new class extends Migration
 			Schema::connection($db_connection)->create('{{ table }}', function (Blueprint $table)
 			{
 				$table->id()->comment('主键');
-				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
-				$table->unsignedBigInteger('admin_id')->default(0)->comment('管理员id');
-				$table->unsignedtinyInteger('type')->default(0)->comment('类型');
+				 // 雪花ID核心字段（大厂风格，非空+唯一+索引，适配分库分表）
+                $table->char('user_uid', 20)->unique()->notNull()->comment('全局唯一ID,雪花ID,业务核心ID');
+				$table->char('admin_uid', 20)->notNull()->default(0)->comment('全局唯一ID,雪花ID,业务核心ID');
+				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
+				$table->unsignedtinyInteger('type')->notNull()->default(0)->comment('类型');
 				$table->string('name',32)->unique()->nullable()->comment('名称 唯一');
-				$table->string('name',32)->default('')->comment('名称');
-				$table->char('char',12)->default('')->comment('名称');
-				$table->unsignedTinyInteger('deep')->index()->default(0)->comment('');
-				$table->decimal('price',32,8,true)->default(0)->comment('商品价格');
+				$table->string('name',32)->notNull()->default('')->comment('名称');
+				$table->char('char',12)->notNull()->default('')->comment('名称');
+				$table->unsignedTinyInteger('deep')->notNull()->default(0)->comment('');
+				$table->decimal('price',32,8,true)->notNull()->default(0)->comment('商品价格');
 
-				$table->string('note',128)->default('')->comment('备注');
-				$table->unsignedTinyInteger('sort')->default(100)->comment('排序');
-				$table->dateTime('created_at')->useCurrent()->comment('创建时间string');
-				$table->unsignedInteger('created_time')->index(0)->default(0)->comment('创建时间int');
-				$table->dateTime('updated_at')->nullable()->comment('更新时间string');
-				$table->unsignedInteger('updated_time')->default(0)->comment('更新时间int');
-				$table->dateTime('deleted_at')->nullable()->comment('删除时间string');
-				$table->unsignedInteger('deleted_time')->default(0)->comment('删除时间int');
+				$table->string('note',128)->notNull()->default('')->comment('备注');
+				$table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
+
+				// 时间字段（自动填充+索引，关键优化）
+                $table->dateTime('created_at')->useCurrent()->comment('创建时间');
+                $table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+                $table->dateTime('updated_at')->useCurrentOnUpdate()->comment('更新时间');
+                $table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+                $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
+
+				// 索引
+                $table->index('admin_uid');
+                $table->index('deep');
+                $table->index('type');
+                $table->index('created_time');
 			});
 
 			//注意是否需要修改mysql连接名

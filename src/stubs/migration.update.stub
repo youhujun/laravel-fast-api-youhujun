@@ -21,13 +21,18 @@ class {{ class }} extends Migration
 			{
 				Schema::connection($db_connection)->table('{{ table }}', function (Blueprint $table) 
 				{
-					$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁')->after('id');
-					$table->dateTime('created_at')->useCurrent()->comment('创建时间string');
-					$table->unsignedInteger('created_time')->index(0)->default(0)->comment('创建时间int');
-					$table->dateTime('updated_at')->nullable()->comment('更新时间string');
-					$table->unsignedInteger('updated_time')->index(0)->default(0)->comment('跟新时间int');
-					$table->dateTime('deleted_at')->nullable()->comment('删除时间string');
-					$table->unsignedTinyInteger('sort')->index()->default(100)->comment('排序');
+					$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁')->after('id');
+					$table->unsignedTinyInteger('sort')->notNull()->index()->default(100)->comment('排序');
+
+					// 时间字段（自动填充+索引，关键优化）
+					$table->dateTime('created_at')->useCurrent()->comment('创建时间');
+					$table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+					$table->dateTime('updated_at')->useCurrentOnUpdate()->comment('更新时间');
+					$table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+					$table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
+
+					// 索引
+					$table->index('created_time');
 				});
 			}
 			

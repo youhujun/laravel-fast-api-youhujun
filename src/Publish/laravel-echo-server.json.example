@@ -28,5 +28,24 @@
 		"allowOrigin": "",
 		"allowMethods": "",
 		"allowHeaders": ""
+	},
+	//开发模式下本地仓库配置,可以根据自己需要调整
+	"repositories": {
+		"laravel-fast-api": {
+			"type": "path",
+			"url": "../Components/Laravel/youhujun/laravel-fast-api"
+		},
+		"youhushop":{
+			"type": "path",
+            "url": "../Components/Laravel/youhujun/youhushop"
+		},
+		"youhu":{
+			"type": "path",
+            "url": "../Components/Laravel/youhujun/youhu"
+		},
+		"php-tool-youhujun":{
+			"type": "path",
+			"url": "../../Components/Tool/youhujun/php-tool-youhujun"
+		}
 	}
 }
