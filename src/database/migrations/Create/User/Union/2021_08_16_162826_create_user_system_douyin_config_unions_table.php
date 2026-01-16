@@ -35,16 +35,19 @@ return new class () extends Migration {
                 $table->dateTime('verified_at')->nullable()->comment('微信号认证时间string');
                 $table->unsignedInteger('verified_time')->notNull()->default(0)->comment('微信号认证时间int');
 
-                $table->dateTime('created_at')->useCurrent()->comment('创建时间');
+                $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
                 $table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
-                $table->dateTime('updated_at')->useCurrentOnUpdate()->comment('更新时间');
+                $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
                 $table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
+                // 索引
                 $table->unique('openid');
                 $table->index('user_uid');
                 $table->index('created_time');
                 $table->index('verified_time');
+                $table->index('system_douyin_config_id');
+                $table->index('updated_time');
             });
 
             $prefix = config('database.connections.'.$db_connection.'.prefix');

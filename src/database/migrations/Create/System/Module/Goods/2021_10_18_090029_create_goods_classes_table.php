@@ -36,21 +36,30 @@ return new class extends Migration
 				$table->decimal('rate',4,2)->notNull()->default(0)->comment('分润比例%');
 				$table->string('goods_class_name',64)->notNull()->default('')->comment('商品类名称');
 				$table->string('goods_class_code',64)->nullable()->comment('商品分类逻辑名称');
-				$table->unsignedBigInteger('goods_class_picture_id')->notNull()->default(0)->comment('分类图片id(相册图片id)');
+				$table->char('goods_class_picture_uid', 20)->notNull()->default('')->comment('分类图片雪花ID(相册图片id)');
 				$table->unsignedTinyInteger('is_certificate')->notNull()->default(0)->comment('是否需要要资质证书 0否1是');
 				$table->unsignedTinyInteger('certificate_number')->notNull()->default(0)->comment('主要资质证书数量');
 				$table->string('note',255)->nullable()->comment('备注说明');
 				$table->unsignedTinyInteger('sort')->notNull()->default(0)->comment('排序');
 
-				// 索引
-				$table->index('goods_class_code');
+				
 
 				// 时间字段（自动填充+索引，关键优化）
-				$table->dateTime('created_at')->useCurrent()->comment('创建时间');
+				$table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
 				$table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
-				$table->dateTime('updated_at')->useCurrentOnUpdate()->comment('更新时间');
+				$table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
 				$table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
 				$table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
+
+				
+// 索引
+$table->index('parent_id');
+$table->index('deep');
+$table->index('switch');
+$table->index('goods_class_code');
+$table->index('goods_class_picture_uid');
+$table->index('created_time');
+
 
 			});
 

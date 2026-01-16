@@ -33,7 +33,7 @@ return new class () extends Migration {
                 $table->text('failed_job_ids')->notNull()->default('')->comment('失败任务标识');
                 $table->mediumText('options')->nullable()->comment('选项');
                 $table->integer('cancelled_at')->nullable()->comment('取消时间');
-                $table->dateTime('created_at')->useCurrent()->comment('创建时间');
+                $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
                 $table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
                 $table->integer('finished_at')->nullable()->comment('完成时间');
             });

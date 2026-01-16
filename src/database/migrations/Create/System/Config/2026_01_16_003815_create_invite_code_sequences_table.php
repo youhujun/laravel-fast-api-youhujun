@@ -32,7 +32,10 @@ return new class extends Migration
 			{
 				$table->id()->comment('自增序列ID(邀请码兜底用)');
 				// 时间字段（自动填充+索引，关键优化）
-                $table->dateTime('created_at')->useCurrent()->comment('创建时间');
+                $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
+
+				// 索引
+				$table->index('created_at');
 			});
 
 			//注意是否需要修改mysql连接名

@@ -30,6 +30,9 @@ return new class extends Migration
 				$table->string('key')->primary()->comment('主键key');
 				$table->mediumText('value')->comment('cache锁值');
 				$table->integer('expiration')->comment('有效期单位分钟');
+
+				// 索引
+				$table->index('expiration');
 			});
 
 			$prefix = config('database.connections.'.$db_connection.'.prefix');
@@ -39,11 +42,15 @@ return new class extends Migration
 
 		if (!Schema::connection($db_connection)->hasTable('cache_locks')) 
 		{
-			Schema::connection($db_connection)->create('cache_locks', function (Blueprint $table) 
+			Schema::connection($db_connection)->create('cache_locks', function (Blueprint $table)
 			{
 				$table->string('key')->primary()->comment('主键key');
 				$table->string('owner')->comment('所有者');
 				$table->integer('expiration')->comment('有效期单位分钟');
+
+				// 索引
+				$table->index('owner');
+				$table->index('expiration');
 			});
 
 			$prefix = config('database.connections.'.$db_connection.'.prefix');

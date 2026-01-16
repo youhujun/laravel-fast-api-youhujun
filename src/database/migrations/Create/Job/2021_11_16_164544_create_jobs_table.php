@@ -33,7 +33,7 @@ return new class () extends Migration {
                 $table->unsignedTinyInteger('attempts')->notNull()->default(0)->comment('允许尝试次数');
                 $table->unsignedInteger('reserved_at')->nullable()->comment('重新尝试时间');
                 $table->unsignedInteger('available_at')->notNull()->comment('完成时间');
-                $table->dateTime('created_at')->useCurrent()->comment('创建时间');
+                $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
                 $table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
 
                 // 索引

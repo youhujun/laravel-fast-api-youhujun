@@ -38,9 +38,9 @@ return new class extends Migration
 				$table->string('event_code',64)->notNull()->default('')->comment('事件编码');
 				$table->text('note')->nullable()->comment('备注数据');
 
-				$table->dateTime('created_at')->useCurrent()->comment('创建时间');
+				$table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
 				$table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
-				$table->dateTime('updated_at')->useCurrentOnUpdate()->comment('更新时间');
+				$table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
 				$table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
 				$table->dateTime('deleted_at')->nullable()->comment('删除时间');
 

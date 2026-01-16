@@ -28,6 +28,7 @@ return new class extends Migration
 		{
 			Schema::connection($db_connection)->create('user_infos', function (Blueprint $table) {
 				$table->id()->comment('主键');
+				$table->char('user_info_uid', 20)->notNull()->comment('用户信息雪花ID');
 				$table->char('user_uid', 20)->notNull()->default('')->comment('用户uid');
 				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
 				$table->string('nick_name',64)->notNull()->default('')->comment('昵称');
@@ -42,15 +43,20 @@ return new class extends Migration
 				$table->unsignedInteger('chinese_birthday_time')->notNull()->default(0)->comment('阴日生日');
 				$table->string('introduction',255)->notNull()->default('')->comment('简介');
 
-				$table->dateTime('created_at')->useCurrent()->comment('创建时间');
+				$table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
 				$table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
-				$table->dateTime('updated_at')->useCurrentOnUpdate()->comment('更新时间');
+				$table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
 				$table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
 				$table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
+				// 索引
+				$table->unique('user_info_uid');
 				$table->unique('id_number');
 				$table->index('user_uid');
 				$table->index('created_time');
+				$table->index('sex');
+				$table->index('solar_birthday_time');
+				$table->index('chinese_birthday_time');
 			});
 	
 			$prefix = config('database.connections.'.$db_connection.'.prefix');

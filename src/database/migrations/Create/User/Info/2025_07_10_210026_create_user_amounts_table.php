@@ -21,6 +21,7 @@ return new class extends Migration
 			Schema::connection($db_connection)->create('user_amounts', function (Blueprint $table)
 			{
 				$table->id()->comment('主键');
+				$table->char('user_amount_uid', 20)->notNull()->comment('用户余额雪花ID');
 				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
 				$table->char('user_uid', 20)->notNull()->default('')->comment('用户uid');
 				$table->string('userId')->notNull()->default('')->comment('用户id');
@@ -33,14 +34,17 @@ return new class extends Migration
 				$table->string('note',128)->notNull()->default('')->comment('备注');
 				$table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
 
-				$table->dateTime('created_at')->useCurrent()->comment('创建时间');
+				$table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
 				$table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
-				$table->dateTime('updated_at')->useCurrentOnUpdate()->comment('更新时间');
+				$table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
 				$table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
 				$table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
+				// 索引
+				$table->unique('user_amount_uid');
 				$table->index('user_uid');
 				$table->index('created_time');
+				$table->index('sort');
 			});
 
 			//注意是否需要修改mysql连接名
