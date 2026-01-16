@@ -4,9 +4,9 @@
  * @Descripttion:
  * @version:
  * @Author: YouHuJun
- * @Date: 2022-04-25 11:04:02
+ * @Date: 2021-08-13 14:58:33
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-16 15:41:04
+ * @LastEditTime: 2026-01-16 15:48:48
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -23,15 +23,11 @@ return new class () extends Migration {
     public function up()
     {
         $db_connection = config('youhujun.db_connection');
-
-        if (!Schema::connection($db_connection)->hasTable('user_source_unions')) {
-            Schema::connection($db_connection)->create('user_source_unions', function (Blueprint $table) {
-                $table->id()->comment('主键--用户父关联表');
+        if (!Schema::connection($db_connection)->hasTable('system_config')) {
+            Schema::connection($db_connection)->create('user_role_unions', function (Blueprint $table) {
+                $table->id()->comment('主键');
                 $table->char('user_uid', 20)->notNull()->default('')->comment('用户uid');
-                $table->unsignedBigInteger('first_id')->notNull()->default(0)->comment('一级id');
-                $table->unsignedBigInteger('second_id')->notNull()->default(0)->comment('二级id');
-                $table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
-                $table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
+                $table->unsignedTinyInteger('role_id')->notNull()->default(0)->comment('角色id');
 
                 $table->dateTime('created_at')->useCurrent()->comment('创建时间');
                 $table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
@@ -40,14 +36,13 @@ return new class () extends Migration {
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
                 $table->index('user_uid');
-                $table->index('first_id');
-                $table->index('second_id');
+                $table->index('role_id');
                 $table->index('created_time');
             });
 
             $prefix = config('database.connections.'.$db_connection.'.prefix');
 
-            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}user_source_unions` comment '用户父关联表'");
+            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}user_role_unions` comment '用户和角色关联表'");
         }
     }
 
@@ -60,8 +55,8 @@ return new class () extends Migration {
     {
         $db_connection = config('youhujun.db_connection');
 
-        if (Schema::connection($db_connection)->hasTable('user_source_unions')) {
-            Schema::connection($db_connection)->dropIfExists('user_source_unions');
+        if (Schema::connection($db_connection)->hasTable('user_role_unions')) {
+            Schema::connection($db_connection)->dropIfExists('user_role_unions');
         }
     }
 };

@@ -4,9 +4,9 @@
  * @Descripttion:
  * @version:
  * @Author: YouHuJun
- * @Date: 2022-04-25 11:04:02
+ * @Date: 2022-08-23 16:59:14
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-16 15:41:04
+ * @LastEditTime: 2026-01-16 15:26:48
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -24,12 +24,13 @@ return new class () extends Migration {
     {
         $db_connection = config('youhujun.db_connection');
 
-        if (!Schema::connection($db_connection)->hasTable('user_source_unions')) {
-            Schema::connection($db_connection)->create('user_source_unions', function (Blueprint $table) {
-                $table->id()->comment('主键--用户父关联表');
+        if (!Schema::connection($db_connection)->hasTable('user_pictures')) {
+            Schema::connection($db_connection)->create('user_pictures', function (Blueprint $table) {
+                $table->id()->comment('主键');
                 $table->char('user_uid', 20)->notNull()->default('')->comment('用户uid');
-                $table->unsignedBigInteger('first_id')->notNull()->default(0)->comment('一级id');
-                $table->unsignedBigInteger('second_id')->notNull()->default(0)->comment('二级id');
+                $table->char('album_picture_uid', 20)->notNull()->default('')->comment('相册图片uid,雪花ID');
+                $table->unsignedTinyInteger('is_default')->notNull()->default(0)->comment('是否默认 0否 1是');
+                $table->unsignedTinyInteger('type')->notNull()->default(0)->comment('图片类型');
                 $table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
                 $table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
 
@@ -40,14 +41,15 @@ return new class () extends Migration {
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
                 $table->index('user_uid');
-                $table->index('first_id');
-                $table->index('second_id');
+                $table->index('album_picture_uid');
                 $table->index('created_time');
+                $table->index('is_default');
+                $table->index('sort');
             });
 
             $prefix = config('database.connections.'.$db_connection.'.prefix');
 
-            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}user_source_unions` comment '用户父关联表'");
+            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}user_pictures` comment '用户图片表'");
         }
     }
 
@@ -60,8 +62,8 @@ return new class () extends Migration {
     {
         $db_connection = config('youhujun.db_connection');
 
-        if (Schema::connection($db_connection)->hasTable('user_source_unions')) {
-            Schema::connection($db_connection)->dropIfExists('user_source_unions');
+        if (Schema::connection($db_connection)->hasTable('user_pictures')) {
+            Schema::connection($db_connection)->dropIfExists('user_pictures');
         }
     }
 };

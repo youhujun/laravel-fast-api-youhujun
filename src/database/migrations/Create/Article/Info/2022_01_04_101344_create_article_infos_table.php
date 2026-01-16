@@ -3,9 +3,9 @@
  * @Descripttion:
  * @version:
  * @Author: YouHuJun
- * @Date: 2022-01-04 11:07:47
+ * @Date: 2022-01-04 10:13:44
  * @LastEditors: YouHuJun
- * @LastEditTime: 2022-01-04 11:50:35
+ * @LastEditTime: 2022-01-04 11:06:28
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -24,14 +24,14 @@ return new class extends Migration
     {
 		$db_connection = config('youhujun.db_connection');
 		//注意是否需要修改mysql连接名和表名
-		if (!Schema::connection($db_connection)->hasTable('article_label_unions'))
+		if (!Schema::connection($db_connection)->hasTable('article_infos'))
 		{
-			Schema::connection($db_connection)->create('article_label_unions', function (Blueprint $table) {
+			Schema::connection($db_connection)->create('article_infos', function (Blueprint $table) {
 
 				$table->id()->comment('主键');
 				$table->char('article_uid', 20)->notNull()->default('')->comment('文章uid,雪花ID');
-				$table->unsignedInteger('label_id')->notNull()->default(0)->comment('标签id');
 				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
+				$table->text('article_info')->nullable()->comment('文章详情');
 
 				// 时间字段（自动填充+索引，关键优化）
 				$table->dateTime('created_at')->useCurrent()->comment('创建时间');
@@ -42,13 +42,14 @@ return new class extends Migration
 
 				// 索引
 				$table->index('article_uid');
-			});
-	
-			$prefix = config('database.connections.'.$db_connection.'.prefix');
-	
-			DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}article_label_unions` comment '文章和标签关联表'");
+
+			 });
 		}
        
+		$prefix = config('database.connections.'.$db_connection.'.prefix');
+
+        DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}article_infos` comment '文章详情表'");
+
 
     }
 
@@ -61,10 +62,10 @@ return new class extends Migration
     {
 		$db_connection = config('youhujun.db_connection');
 		//注意是否需要修改mysql连接名和表名
-		if (Schema::connection($db_connection)->hasTable('article_label_unions'))
+		if (Schema::connection($db_connection)->hasTable('article_infos'))
 		{
-			Schema::connection($db_connection)->dropIfExists('article_label_unions');
+			Schema::connection($db_connection)->dropIfExists('article_infos');
 		}
-       
+        
     }
 };

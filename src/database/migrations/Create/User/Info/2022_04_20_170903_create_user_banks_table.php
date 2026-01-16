@@ -4,9 +4,9 @@
  * @Descripttion:
  * @version:
  * @Author: YouHuJun
- * @Date: 2022-04-25 11:04:02
+ * @Date: 2022-04-20 17:09:03
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-16 15:41:04
+ * @LastEditTime: 2026-01-16 15:29:39
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -24,14 +24,19 @@ return new class () extends Migration {
     {
         $db_connection = config('youhujun.db_connection');
 
-        if (!Schema::connection($db_connection)->hasTable('user_source_unions')) {
-            Schema::connection($db_connection)->create('user_source_unions', function (Blueprint $table) {
-                $table->id()->comment('主键--用户父关联表');
+        if (!Schema::connection($db_connection)->hasTable('user_banks')) {
+            Schema::connection($db_connection)->create('user_banks', function (Blueprint $table) {
+                $table->id()->comment('主键 用户银行信息表');
                 $table->char('user_uid', 20)->notNull()->default('')->comment('用户uid');
-                $table->unsignedBigInteger('first_id')->notNull()->default(0)->comment('一级id');
-                $table->unsignedBigInteger('second_id')->notNull()->default(0)->comment('二级id');
+                $table->unsignedInteger('bank_id')->notNull()->default(0)->comment('银行id');
+                $table->unsignedBigInteger('bank_front_id')->notNull()->default(0)->comment('银行卡正面(相册图片表id)');
+                $table->unsignedBigInteger('bank_back_id')->notNull()->default(0)->comment('银行卡背面(相册图片表id)');
                 $table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
-                $table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
+                $table->unsignedTinyInteger('is_default')->notNull()->default(0)->comment('是否默认 0不 1是');
+                $table->string('bank_number', 32)->notNull()->default('')->comment('银行卡号');
+                $table->string('bank_account', 32)->notNull()->default('')->comment('银行户名');
+                $table->string('bank_address', 128)->notNull()->default('')->comment('开户行地址');
+                $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
                 $table->dateTime('created_at')->useCurrent()->comment('创建时间');
                 $table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
@@ -40,14 +45,13 @@ return new class () extends Migration {
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
                 $table->index('user_uid');
-                $table->index('first_id');
-                $table->index('second_id');
+                $table->index('bank_id');
                 $table->index('created_time');
             });
 
             $prefix = config('database.connections.'.$db_connection.'.prefix');
 
-            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}user_source_unions` comment '用户父关联表'");
+            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}user_banks` comment '用户银行信息表'");
         }
     }
 
@@ -60,8 +64,8 @@ return new class () extends Migration {
     {
         $db_connection = config('youhujun.db_connection');
 
-        if (Schema::connection($db_connection)->hasTable('user_source_unions')) {
-            Schema::connection($db_connection)->dropIfExists('user_source_unions');
+        if (Schema::connection($db_connection)->hasTable('user_banks')) {
+            Schema::connection($db_connection)->dropIfExists('user_banks');
         }
     }
 };

@@ -2,11 +2,12 @@
 
 /*
  * @Descripttion:
- * @version:
- * @Author: YouHuJun
- * @Date: 2022-04-25 11:04:02
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-16 15:41:04
+ * @version: v1
+ * @Author: youhujun 2900976495@qq.com
+ * @Date: 2024-12-25 09:57:23
+ * @LastEditors: youhujun 2900976495@qq.com
+ * @LastEditTime: 2024-12-25 10:01:40
+ * @FilePath: \database\migrations\2024_12_25_095723_create_user_douyin_unionid_table.php
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -24,12 +25,11 @@ return new class () extends Migration {
     {
         $db_connection = config('youhujun.db_connection');
 
-        if (!Schema::connection($db_connection)->hasTable('user_source_unions')) {
-            Schema::connection($db_connection)->create('user_source_unions', function (Blueprint $table) {
-                $table->id()->comment('主键--用户父关联表');
+        if (!Schema::connection($db_connection)->hasTable('user_douyin_unionids')) {
+            Schema::connection($db_connection)->create('user_douyin_unionids', function (Blueprint $table) {
+                $table->id()->comment('主键');
                 $table->char('user_uid', 20)->notNull()->default('')->comment('用户uid');
-                $table->unsignedBigInteger('first_id')->notNull()->default(0)->comment('一级id');
-                $table->unsignedBigInteger('second_id')->notNull()->default(0)->comment('二级id');
+                $table->string('unionid', 64)->nullable()->comment('抖音unionid 唯一');
                 $table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
                 $table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
 
@@ -39,15 +39,15 @@ return new class () extends Migration {
                 $table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
+                $table->unique('unionid');
                 $table->index('user_uid');
-                $table->index('first_id');
-                $table->index('second_id');
                 $table->index('created_time');
+                $table->index('sort');
             });
 
             $prefix = config('database.connections.'.$db_connection.'.prefix');
 
-            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}user_source_unions` comment '用户父关联表'");
+            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}user_douyin_unionids` comment '用户抖音的unionid'");
         }
     }
 
@@ -60,8 +60,8 @@ return new class () extends Migration {
     {
         $db_connection = config('youhujun.db_connection');
 
-        if (Schema::connection($db_connection)->hasTable('user_source_unions')) {
-            Schema::connection($db_connection)->dropIfExists('user_source_unions');
+        if (Schema::connection($db_connection)->hasTable('user_douyin_unionids')) {
+            Schema::connection($db_connection)->dropIfExists('user_douyin_unionids');
         }
     }
 };

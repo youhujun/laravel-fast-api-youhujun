@@ -4,9 +4,9 @@
  * @Descripttion:
  * @version:
  * @Author: YouHuJun
- * @Date: 2022-04-25 11:04:02
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-16 15:41:04
+ * @Date: 2023-03-16 20:14:37
+ * @LastEditors: youhujun 2900976495@qq.com
+ * @LastEditTime: 2024-04-06 16:36:17
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -24,12 +24,12 @@ return new class () extends Migration {
     {
         $db_connection = config('youhujun.db_connection');
 
-        if (!Schema::connection($db_connection)->hasTable('user_source_unions')) {
-            Schema::connection($db_connection)->create('user_source_unions', function (Blueprint $table) {
-                $table->id()->comment('主键--用户父关联表');
+        if (!Schema::connection($db_connection)->hasTable('user_id_cards')) {
+            Schema::connection($db_connection)->create('user_id_cards', function (Blueprint $table) {
+                $table->id()->comment('主键');
                 $table->char('user_uid', 20)->notNull()->default('')->comment('用户uid');
-                $table->unsignedBigInteger('first_id')->notNull()->default(0)->comment('一级id');
-                $table->unsignedBigInteger('second_id')->notNull()->default(0)->comment('二级id');
+                $table->unsignedBigInteger('id_card_front_id')->notNull()->default(0)->comment('身份证正面');
+                $table->unsignedBigInteger('id_card_back_id')->notNull()->default(0)->comment('身份证背面');
                 $table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
                 $table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
 
@@ -40,14 +40,15 @@ return new class () extends Migration {
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
                 $table->index('user_uid');
-                $table->index('first_id');
-                $table->index('second_id');
                 $table->index('created_time');
+                $table->index('id_card_front_id');
+                $table->index('id_card_back_id');
+                $table->index('sort');
             });
 
             $prefix = config('database.connections.'.$db_connection.'.prefix');
 
-            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}user_source_unions` comment '用户父关联表'");
+            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}user_id_cards` comment '用户身份证表'");
         }
     }
 
@@ -60,8 +61,8 @@ return new class () extends Migration {
     {
         $db_connection = config('youhujun.db_connection');
 
-        if (Schema::connection($db_connection)->hasTable('user_source_unions')) {
-            Schema::connection($db_connection)->dropIfExists('user_source_unions');
+        if (Schema::connection($db_connection)->hasTable('user_id_cards')) {
+            Schema::connection($db_connection)->dropIfExists('user_id_cards');
         }
     }
 };

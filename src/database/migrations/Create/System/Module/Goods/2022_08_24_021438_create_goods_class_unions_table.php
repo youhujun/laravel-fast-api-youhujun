@@ -3,9 +3,9 @@
  * @Descripttion:
  * @version:
  * @Author: YouHuJun
- * @Date: 2022-01-04 11:07:47
- * @LastEditors: YouHuJun
- * @LastEditTime: 2022-01-04 11:50:35
+ * @Date: 2022-08-24 10:14:38
+ * @LastEditors: youhujun 2900976495@qq.com
+ * @LastEditTime: 2024-08-24 10:09:49
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -23,14 +23,18 @@ return new class extends Migration
     public function up()
     {
 		$db_connection = config('youhujun.db_connection');
-		//注意是否需要修改mysql连接名和表名
-		if (!Schema::connection($db_connection)->hasTable('article_label_unions'))
+
+		if (!Schema::connection($db_connection)->hasTable('goods_class_unions'))
 		{
-			Schema::connection($db_connection)->create('article_label_unions', function (Blueprint $table) {
+			Schema::connection($db_connection)->create('goods_class_unions', function (Blueprint $table) {
 
 				$table->id()->comment('主键');
-				$table->char('article_uid', 20)->notNull()->default('')->comment('文章uid,雪花ID');
-				$table->unsignedInteger('label_id')->notNull()->default(0)->comment('标签id');
+				$table->unsignedBigInteger('goods_id')->notNull()->default(0)->comment('商品id');
+				$table->unsignedBigInteger('goods_class_id')->notNull()->default(0)->comment('分类id');
+				$table->unsignedBigInteger('goods_class_one_depp_id')->notNull()->default(0)->comment('一级分类id');
+				$table->unsignedBigInteger('goods_class_two_depp_id')->notNull()->default(0)->comment('二级分类id');
+				$table->unsignedBigInteger('goods_class_three_depp_id')->notNull()->default(0)->comment('三级分类id');
+				$table->unsignedBigInteger('goods_class_four_depp_id')->notNull()->default(0)->comment('四级分类id');
 				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
 
 				// 时间字段（自动填充+索引，关键优化）
@@ -40,16 +44,13 @@ return new class extends Migration
 				$table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
 				$table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
-				// 索引
-				$table->index('article_uid');
 			});
-	
+
 			$prefix = config('database.connections.'.$db_connection.'.prefix');
-	
-			DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}article_label_unions` comment '文章和标签关联表'");
+
+			DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}goods_class_unions` comment '商品与分类关联表'");
 		}
        
-
     }
 
     /**
@@ -60,11 +61,11 @@ return new class extends Migration
     public function down()
     {
 		$db_connection = config('youhujun.db_connection');
-		//注意是否需要修改mysql连接名和表名
-		if (Schema::connection($db_connection)->hasTable('article_label_unions'))
+		
+		if (Schema::connection($db_connection)->hasTable('goods_class_unions'))
 		{
-			Schema::connection($db_connection)->dropIfExists('article_label_unions');
+			Schema::connection($db_connection)->dropIfExists('goods_class_unions');
 		}
-       
+        
     }
 };

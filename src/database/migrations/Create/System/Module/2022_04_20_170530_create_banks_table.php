@@ -3,9 +3,9 @@
  * @Descripttion:
  * @version:
  * @Author: YouHuJun
- * @Date: 2022-01-04 11:07:47
+ * @Date: 2022-04-20 17:05:30
  * @LastEditors: YouHuJun
- * @LastEditTime: 2022-01-04 11:50:35
+ * @LastEditTime: 2022-05-30 11:11:44
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -23,15 +23,21 @@ return new class extends Migration
     public function up()
     {
 		$db_connection = config('youhujun.db_connection');
-		//注意是否需要修改mysql连接名和表名
-		if (!Schema::connection($db_connection)->hasTable('article_label_unions'))
-		{
-			Schema::connection($db_connection)->create('article_label_unions', function (Blueprint $table) {
 
-				$table->id()->comment('主键');
-				$table->char('article_uid', 20)->notNull()->default('')->comment('文章uid,雪花ID');
-				$table->unsignedInteger('label_id')->notNull()->default(0)->comment('标签id');
+		if (!Schema::connection($db_connection)->hasTable('banks'))
+		{
+			Schema::connection($db_connection)->create('banks', function (Blueprint $table) {
+
+				$table->id()->comment('银行表主键');
 				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
+				$table->string('bank_name',32)->nullable()->comment('银行名称 唯一');
+				$table->string('bank_code',32)->nullable()->comment('银行名称代码 唯一');
+				$table->unsignedTinyInteger('is_default')->notNull()->default(0)->comment('是否常用 0不 1是');
+				$table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
+
+				// 索引
+				$table->index('bank_name');
+				$table->index('bank_code');
 
 				// 时间字段（自动填充+索引，关键优化）
 				$table->dateTime('created_at')->useCurrent()->comment('创建时间');
@@ -39,16 +45,14 @@ return new class extends Migration
 				$table->dateTime('updated_at')->useCurrentOnUpdate()->comment('更新时间');
 				$table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
 				$table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
-
-				// 索引
-				$table->index('article_uid');
 			});
-	
+
 			$prefix = config('database.connections.'.$db_connection.'.prefix');
-	
-			DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}article_label_unions` comment '文章和标签关联表'");
+
+			DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}banks` comment '系统银行表'");
 		}
        
+
 
     }
 
@@ -60,11 +64,11 @@ return new class extends Migration
     public function down()
     {
 		$db_connection = config('youhujun.db_connection');
-		//注意是否需要修改mysql连接名和表名
-		if (Schema::connection($db_connection)->hasTable('article_label_unions'))
+
+		if (Schema::connection($db_connection)->hasTable('banks'))
 		{
-			Schema::connection($db_connection)->dropIfExists('article_label_unions');
+			Schema::connection($db_connection)->dropIfExists('banks');
 		}
-       
+        
     }
 };

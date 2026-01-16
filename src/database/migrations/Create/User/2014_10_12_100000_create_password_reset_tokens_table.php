@@ -24,18 +24,22 @@ return new class extends Migration
     {
 		$db_connection = config('youhujun.db_connection');
 		
-		if (!Schema::connection($db_connection)->hasTable('password_reset_tokens')) 
+		if (!Schema::connection($db_connection)->hasTable('password_reset_tokens'))
 		{
 			Schema::connection($db_connection)->create('password_reset_tokens', function (Blueprint $table) {
 
 				$table->id()->comment('主键');
-				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
-				$table->string('email',128)->index()->default('')->comment('邮箱');
-				$table->char('phone',12)->index()->default('')->comment('手机号');
-				$table->string('token',255)->default('')->comment('令牌');
-				
-				$table->unsignedInteger('created_time')->index(0)->default(0)->comment('创建时间');
+				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
+				$table->string('email',128)->notNull()->default('')->comment('邮箱');
+				$table->char('phone',12)->notNull()->default('')->comment('手机号');
+				$table->string('token',255)->notNull()->default('')->comment('令牌');
+
 				$table->dateTime('created_at')->useCurrent()->comment('创建时间');
+				$table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+
+				$table->index('email');
+				$table->index('phone');
+				$table->index('created_time');
 			});
 	
 			$prefix = config('database.connections.'.$db_connection.'.prefix');

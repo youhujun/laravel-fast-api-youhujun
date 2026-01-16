@@ -3,9 +3,9 @@
  * @Descripttion:
  * @version:
  * @Author: YouHuJun
- * @Date: 2022-01-04 11:07:47
- * @LastEditors: YouHuJun
- * @LastEditTime: 2022-01-04 11:50:35
+ * @Date: 2022-08-23 16:53:30
+ * @LastEditors: youhujun 2900976495@qq.com
+ * @LastEditTime: 2024-04-06 16:24:31
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -23,33 +23,34 @@ return new class extends Migration
     public function up()
     {
 		$db_connection = config('youhujun.db_connection');
-		//注意是否需要修改mysql连接名和表名
-		if (!Schema::connection($db_connection)->hasTable('article_label_unions'))
+
+		if (!Schema::connection($db_connection)->hasTable('user_phones'))
 		{
-			Schema::connection($db_connection)->create('article_label_unions', function (Blueprint $table) {
-
+			Schema::connection($db_connection)->create('user_phones', function (Blueprint $table) {
 				$table->id()->comment('主键');
-				$table->char('article_uid', 20)->notNull()->default('')->comment('文章uid,雪花ID');
-				$table->unsignedInteger('label_id')->notNull()->default(0)->comment('标签id');
+				$table->char('user_uid', 20)->notNull()->default('')->comment('用户uid');
 				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
+				$table->unsignedTinyInteger('type')->notNull()->default(100)->comment('类型 10紧急联系人');
+				$table->unsignedTinyInteger('is_default')->notNull()->default(0)->comment('是否默认 0不 1是');
+				$table->string('phone',12)->notNull()->default('')->comment('电话');
+				$table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
-				// 时间字段（自动填充+索引，关键优化）
 				$table->dateTime('created_at')->useCurrent()->comment('创建时间');
 				$table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
 				$table->dateTime('updated_at')->useCurrentOnUpdate()->comment('更新时间');
 				$table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
-				$table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
+				$table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
-				// 索引
-				$table->index('article_uid');
+				$table->index('user_uid');
+				$table->index('created_time');
+				$table->index('is_default');
 			});
 	
 			$prefix = config('database.connections.'.$db_connection.'.prefix');
-	
-			DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}article_label_unions` comment '文章和标签关联表'");
+			
+			DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}user_phones` comment '用户联系电话表'");
 		}
-       
-
+        
     }
 
     /**
@@ -60,11 +61,11 @@ return new class extends Migration
     public function down()
     {
 		$db_connection = config('youhujun.db_connection');
-		//注意是否需要修改mysql连接名和表名
-		if (Schema::connection($db_connection)->hasTable('article_label_unions'))
+		
+		if (Schema::connection($db_connection)->hasTable('user_phones')) 
 		{
-			Schema::connection($db_connection)->dropIfExists('article_label_unions');
+			Schema::connection($db_connection)->dropIfExists('user_phones');
 		}
-       
+        
     }
 };

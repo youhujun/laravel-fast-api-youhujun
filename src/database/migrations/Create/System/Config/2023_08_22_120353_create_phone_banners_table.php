@@ -1,11 +1,12 @@
 <?php
 /*
  * @Descripttion:
- * @version:
- * @Author: YouHuJun
- * @Date: 2022-08-23 17:48:14
+ * @version: v1
+ * @Author: youhujun 2900976495@qq.com
+ * @Date: 2023-08-22 12:03:53
  * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2024-05-05 14:54:31
+ * @LastEditTime: 2024-02-25 23:12:51
+ * @FilePath: \base.laravel.comd:\wwwroot\Working\PHP\Components\Laravel\youhujun\laravel-fast-api-base\src\database\migrations\System\2023_08_22_120353_create_phone_banner_table.php
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -23,18 +24,16 @@ return new class extends Migration
     public function up()
     {
 		$db_connection = config('youhujun.db_connection');
-		//注意是否需要修改mysql连接名和表名
-		if (!Schema::connection($db_connection)->hasTable('admin_login_logs'))
+		if (!Schema::connection($db_connection)->hasTable('phone_banners'))
 		{
-			Schema::connection($db_connection)->create('admin_login_logs', function (Blueprint $table) {
-
-				$table->char('admin_login_log_uid', 20)->notNull()->comment('日志uid,雪花ID');
+			Schema::connection($db_connection)->create('phone_banners', function (Blueprint $table)
+			{
+				$table->id()->comment('主键-手机轮播图');
 				$table->char('admin_uid', 20)->notNull()->default('')->comment('管理员uid,雪花ID');
+				$table->char('album_picture_uid', 20)->notNull()->default('')->comment('相册图片uid,雪花ID');
 				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
-
-				$table->unsignedTinyInteger('status')->notNull()->default(0)->comment('状态 0未知 10登录 20退出');
-				$table->string('instruction',64)->notNull()->default('')->comment('说明');
-				$table->string('ip',64)->notNull()->default('')->comment('ip地址');
+				$table->string('redirect_url',128)->nullable()->comment('跳转路径');
+				$table->string('note',128)->nullable()->comment('备注');
 
 				// 时间字段（自动填充+索引，关键优化）
 				$table->dateTime('created_at')->useCurrent()->comment('创建时间');
@@ -43,16 +42,18 @@ return new class extends Migration
 				$table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
 				$table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
+				$table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
+
 				// 索引
-				$table->unique('admin_login_log_uid');
-				$table->index('admin_uid');
+				$table->index('album_picture_uid');
+				$table->index('sort');
 			});
-	 
-			 $prefix = config('database.connections.'.$db_connection.'.prefix');
-	 
-			 DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}admin_login_logs` comment '管理员登录退出日志'");
+
+			$prefix = config('database.connections.'.$db_connection.'.prefix');
+
+			DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}phone_banners` comment '手机轮播图'");
 		}
-       
+        
     }
 
     /**
@@ -63,11 +64,11 @@ return new class extends Migration
     public function down()
     {
 		$db_connection = config('youhujun.db_connection');
-		//注意是否需要修改mysql连接名和表名
-		if (Schema::connection($db_connection)->hasTable('admin_login_logs'))
+
+		if (Schema::connection($db_connection)->hasTable('phone_banners'))
 		{
-			Schema::connection($db_connection)->dropIfExists('admin_login_logs');
+			Schema::connection($db_connection)->dropIfExists('phone_banners');
 		}
-       
+        
     }
 };

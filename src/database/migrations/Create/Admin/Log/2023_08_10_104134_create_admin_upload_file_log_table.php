@@ -25,34 +25,39 @@ return new class extends Migration
     {
 		$db_connection = config('youhujun.db_connection');
 		//注意是否需要修改mysql连接名和表名
-		if (!Schema::connection($db_connection)->hasTable('admin_upload_file_log')) 
+		if (!Schema::connection($db_connection)->hasTable('admin_upload_file_logs'))
 		{
-			Schema::connection($db_connection)->create('admin_upload_file_log', function (Blueprint $table)
+			Schema::connection($db_connection)->create('admin_upload_file_logs', function (Blueprint $table)
 			{
-			   $table->id()->comment('主键--后台文件上传日志表');
-			   $table->unsignedBigInteger('admin_id')->default(0)->comment('管理员id');
-			   $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
-			  
-			   $table->unsignedBigInteger('save_type')->default(0)->comment('存储类型 10本地 20存储桶');
-			   $table->unsignedBigInteger('use_type')->default(0)->comment('使用类型0  10系统配置 20管理员配置');
-	
-			   $table->string('file_name',128)->default('')->comment('文件名');
-			   $table->string('file_path',128)->default('')->comment('文件路径');
-			   $table->string('file_extension',12)->default('')->comment('文件后缀');
-			   $table->string('file',128)->default('')->comment('文件');
-			   $table->string('file_url',255)->default('')->comment('文件url (存储桶类型)');
-			   $table->dateTime('created_at')->useCurrent()->comment('创建时间string');
-			   $table->unsignedInteger('created_time')->index(0)->default(0)->comment('创建时间int');
-			   $table->dateTime('updated_at')->nullable()->comment('更新时间string');
-			   $table->unsignedInteger('updated_time')->default(0)->comment('更新时间int');
-			   $table->dateTime('deleted_at')->nullable()->comment('删除时间string');
-			   $table->unsignedInteger('deleted_time')->default(0)->comment('删除时间int');
-	
+			   $table->char('admin_upload_file_log_uid', 20)->notNull()->comment('日志uid,雪花ID');
+			   $table->char('admin_uid', 20)->notNull()->default('')->comment('管理员uid,雪花ID');
+			   $table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
+
+			   $table->unsignedBigInteger('save_type')->notNull()->default(0)->comment('存储类型 10本地 20存储桶');
+			   $table->unsignedBigInteger('use_type')->notNull()->default(0)->comment('使用类型0  10系统配置 20管理员配置');
+
+			   $table->string('file_name',128)->notNull()->default('')->comment('文件名');
+			   $table->string('file_path',128)->notNull()->default('')->comment('文件路径');
+			   $table->string('file_extension',12)->notNull()->default('')->comment('文件后缀');
+			   $table->string('file',128)->notNull()->default('')->comment('文件');
+			   $table->string('file_url',255)->notNull()->default('')->comment('文件url (存储桶类型)');
+
+			   // 时间字段（自动填充+索引，关键优化）
+			   $table->dateTime('created_at')->useCurrent()->comment('创建时间');
+			   $table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+			   $table->dateTime('updated_at')->useCurrentOnUpdate()->comment('更新时间');
+			   $table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+			   $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
+
+			   // 索引
+			   $table->unique('admin_upload_file_log_uid');
+			   $table->index('admin_uid');
+
 			});
 	
 			$prefix = config('database.connections.'.$db_connection.'.prefix');
 	
-			DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}admin_upload_file_log` comment '后台文件上传日志表'");
+			DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}admin_upload_file_logs` comment '后台文件上传日志表'");
 		}
        
     }
@@ -66,9 +71,9 @@ return new class extends Migration
     {
 		$db_connection = config('youhujun.db_connection');
 		//注意是否需要修改mysql连接名和表名
-		if (Schema::connection($db_connection)->hasTable('admin_upload_file_log')) 
+		if (Schema::connection($db_connection)->hasTable('admin_upload_file_logs'))
 		{
-			Schema::connection($db_connection)->dropIfExists('admin_upload_file_log');
+			Schema::connection($db_connection)->dropIfExists('admin_upload_file_logs');
 		}
        
     }

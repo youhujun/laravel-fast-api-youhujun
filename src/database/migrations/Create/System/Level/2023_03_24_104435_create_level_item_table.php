@@ -24,30 +24,32 @@ return new class extends Migration
     {
 		$db_connection = config('youhujun.db_connection');
 
-		if (!Schema::connection($db_connection)->hasTable('level_item')) 
+		if (!Schema::connection($db_connection)->hasTable('level_items'))
 		{
-			Schema::create('level_item', function (Blueprint $table) 
+			Schema::connection($db_connection)->create('level_items', function (Blueprint $table)
 			{
 				$table->id()->comment('主键');
-				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
-				
-				$table->unsignedTinyInteger('type')->default(0)->comment('配置项类型 10数值 20百分比 30时间');
+				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
+
+				$table->unsignedTinyInteger('type')->notNull()->default(0)->comment('配置项类型 10数值 20百分比 30时间');
 				$table->string('item_name',32)->unique()->nullable()->comment('配置项名称 唯一');
 				$table->string('item_code',32)->unique()->nullable()->comment('配置项代码 唯一');
-				$table->string('description',64)->default('')->comment('描述');
+				$table->string('description',64)->notNull()->default('')->comment('描述');
 
-				$table->dateTime('created_at')->useCurrent()->comment('创建时间string');
-				$table->unsignedInteger('created_time')->index(0)->default(0)->comment('创建时间int');
-				$table->dateTime('updated_at')->nullable()->comment('更新时间string');
-				$table->unsignedInteger('updated_time')->default(0)->comment('更新时间int');
-				$table->dateTime('deleted_at')->nullable()->comment('删除时间string');
-				$table->unsignedInteger('deleted_time')->default(0)->comment('删除时间int');
-				$table->unsignedTinyInteger('sort')->default(100)->comment('排序');
+				// 时间字段（自动填充+索引，关键优化）
+				$table->dateTime('created_at')->useCurrent()->comment('创建时间');
+				$table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+				$table->dateTime('updated_at')->useCurrentOnUpdate()->comment('更新时间');
+				$table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+				$table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
+
+				$table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
+
 			});
 
 			$prefix = config('database.connections.'.$db_connection.'.prefix');
 
-			DB::statement("ALTER TABLE `{$prefix}level_item` comment '级别配置项表'");
+			DB::statement("ALTER TABLE `{$prefix}level_items` comment '级别配置项表'");
 		}
         
     }
@@ -61,9 +63,9 @@ return new class extends Migration
     {
 		$db_connection = config('youhujun.db_connection');
 		
-		if (Schema::connection($db_connection)->hasTable('level_item')) 
+		if (Schema::connection($db_connection)->hasTable('level_items'))
 		{
-			Schema::dropIfExists('level_item');
+			Schema::dropIfExists('level_items');
 		}
        
     }
