@@ -22,7 +22,8 @@ return new class extends Migration
 			{
 				$table->id()->comment('主键');
 				 // 雪花ID核心字段（大厂风格，非空+唯一+索引，适配分库分表）
-                $table->char('user_uid', 20)->notNull()->comment('全局唯一ID,雪花ID,业务核心ID');
+                $table->char('{{ table }}_uid', 20)->notNull()->comment('全局唯一ID,雪花ID,业务核心ID');
+                $table->char('user_uid', 20)->notNull()->comment('用户ID,雪花ID');
 				$table->char('admin_uid', 20)->notNull()->default(0)->comment('全局唯一ID,雪花ID,业务核心ID');
 				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
 				$table->unsignedtinyInteger('type')->notNull()->default(0)->comment('类型');
@@ -43,7 +44,7 @@ return new class extends Migration
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
 				// 索引
-				$table->unique('user_uid');
+				$table->unique('{{ table }}_uid');
 				$table->unique('name');
                 $table->index('admin_uid');
                 $table->index('deep');
