@@ -6,7 +6,7 @@
  * @Author: youhujun youhu8888@163.com
  * @Date: 2025-10-18 22:54:46
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-16 18:46:56
+ * @LastEditTime: 2026-01-17 11:28:29
  * @FilePath: \src\database\migrations\Create\Job\2021_11_16_164544_create_jobs_table.php
  * Copyright (C) 2026 youhujun. All rights reserved.
  */

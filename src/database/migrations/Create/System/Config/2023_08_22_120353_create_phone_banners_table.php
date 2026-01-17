@@ -4,9 +4,9 @@
  * @version: v1
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2023-08-22 12:03:53
- * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2024-02-25 23:12:51
- * @FilePath: \base.laravel.comd:\wwwroot\Working\PHP\Components\Laravel\youhujun\laravel-fast-api-base\src\database\migrations\System\2023_08_22_120353_create_phone_banner_table.php
+ * @LastEditors: youhujun youhu8888@163.com
+ * @LastEditTime: 2026-01-17 11:30:04
+ * @FilePath: \src\database\migrations\Create\System\Config\2023_08_22_120353_create_phone_banners_table.php
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -34,6 +34,7 @@ return new class extends Migration
 				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
 				$table->string('redirect_url',128)->nullable()->comment('跳转路径');
 				$table->string('note',128)->nullable()->comment('备注');
+				$table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
 
 				// 时间字段（自动填充+索引，关键优化）
 				$table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
@@ -42,7 +43,6 @@ return new class extends Migration
 				$table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
 				$table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
-				$table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
 
 				// 索引
 				$table->index('album_picture_uid');

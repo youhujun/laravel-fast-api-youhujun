@@ -29,6 +29,7 @@ return new class extends Migration
 			Schema::connection($db_connection)->create('article_label_unions', function (Blueprint $table) {
 
 				$table->id()->comment('主键');
+				$table->char('article_label_union_uid', 20)->notNull()->comment('文章标签关联雪花ID');
 				$table->char('article_uid', 20)->notNull()->default('')->comment('文章uid,雪花ID');
 				$table->unsignedInteger('label_id')->notNull()->default(0)->comment('标签id');
 				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
@@ -41,6 +42,7 @@ return new class extends Migration
 				$table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
 				// 索引
+				$table->unique('article_label_union_uid');
 				$table->index('article_uid');
 			});
 	

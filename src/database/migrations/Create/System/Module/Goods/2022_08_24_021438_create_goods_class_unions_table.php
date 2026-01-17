@@ -51,6 +51,7 @@ return new class extends Migration
 				$table->index('goods_class_two_depp_id');
 				$table->index('goods_class_three_depp_id');
 				$table->index('goods_class_four_depp_id');
+				$table->index('created_time');
 
 			});
 

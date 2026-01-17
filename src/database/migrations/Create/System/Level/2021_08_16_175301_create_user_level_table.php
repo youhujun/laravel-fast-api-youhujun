@@ -4,8 +4,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2021-08-16 17:53:01
- * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2024-02-25 23:40:31
+ * @LastEditors: youhujun youhu8888@163.com
+ * @LastEditTime: 2026-01-17 11:40:36
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -34,8 +34,9 @@ return new class extends Migration
 				$table->string('level_name',32)->unique()->nullable()->comment('级别名称');
 				$table->string('level_code',32)->unique()->nullable()->comment('级别代码');
 				$table->decimal('amount',32,8,true)->notNull()->default(0)->comment('金额');
-				$table->unsignedBigInteger('background_id')->notNull()->default(0)->comment('背景图标');
+				$table->char('background_picture_uid')->notNull()->default('')->comment('背景图标雪花id');
 				$table->string('note',128)->notNull()->default('')->comment('备注信息');
+				$table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
 
 				// 时间字段（自动填充+索引，关键优化）
 				$table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
@@ -44,10 +45,9 @@ return new class extends Migration
 				$table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
 				$table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
-				$table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
 
 				// 索引
-				$table->index('background_id');
+				$table->index('background_picture_uid');
 				$table->index('created_time');
 
 			});

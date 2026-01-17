@@ -26,6 +26,7 @@ return new class () extends Migration {
         if (!Schema::connection($db_connection)->hasTable('system_config')) {
             Schema::connection($db_connection)->create('user_role_unions', function (Blueprint $table) {
                 $table->id()->comment('主键');
+                $table->char('user_role_union_uid', 20)->notNull()->comment('用户角色关联雪花ID');
                 $table->char('user_uid', 20)->notNull()->default('')->comment('用户uid');
                 $table->unsignedTinyInteger('role_id')->notNull()->default(0)->comment('角色id');
 
@@ -36,6 +37,7 @@ return new class () extends Migration {
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
                 // 索引
+                $table->unique('user_role_union_uid');
                 $table->index('user_uid');
                 $table->index('role_id');
                 $table->index('created_time');

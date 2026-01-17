@@ -27,6 +27,7 @@ return new class () extends Migration {
         if (!Schema::connection($db_connection)->hasTable('user_source_unions')) {
             Schema::connection($db_connection)->create('user_source_unions', function (Blueprint $table) {
                 $table->id()->comment('主键--用户父关联表');
+                $table->char('user_source_union_uid', 20)->notNull()->comment('用户来源关联雪花ID');
                 $table->char('user_uid', 20)->notNull()->default('')->comment('用户uid');
                 $table->unsignedBigInteger('first_id')->notNull()->default(0)->comment('一级id');
                 $table->unsignedBigInteger('second_id')->notNull()->default(0)->comment('二级id');
@@ -40,6 +41,7 @@ return new class () extends Migration {
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
                 // 索引
+                $table->unique('user_source_union_uid');
                 $table->index('user_uid');
                 $table->index('first_id');
                 $table->index('second_id');

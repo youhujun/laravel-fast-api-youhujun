@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-08-17 09:03:51
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-16 18:50:14
+ * @LastEditTime: 2026-01-17 11:29:14
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -40,6 +40,7 @@ return new class () extends Migration {
                 $table->unsignedTinyInteger('album_type')->notNull()->default(20)->comment('相册类型 默认20用户 0系统,10管理员');
                 $table->string('album_name', 64)->notNull()->default('')->comment('相册名称');
                 $table->string('album_description', 255)->notNull()->default('')->comment('相册描述');
+                $table->unsignedTinyInteger('sort')->notNull()->default(0)->comment('排序');
 
                 // 时间字段（自动填充+索引，关键优化）
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
@@ -48,7 +49,6 @@ return new class () extends Migration {
                 $table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
-                $table->unsignedTinyInteger('sort')->notNull()->default(0)->comment('排序');
 
                 // 索引
                 $table->unique('album_uid');

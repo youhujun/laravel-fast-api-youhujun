@@ -1,11 +1,12 @@
 <?php
+
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @version: v1
  * @Author: youhujun youhu8888@163.com
  * @Date: 2026-01-15 12:08:13
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-15 12:29:25
+ * @LastEditTime: 2026-01-17 11:16:02
  * @FilePath: \src\database\migrations\Create\User\2026_01_15_120813_create_user_certifications_table.php
  * Copyright (C) 2026 youhujun. All rights reserved.
  */
@@ -14,16 +15,17 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     public function up()
     {
         $db_connection = config('youhujun.db_connection');
-        if (!Schema::connection($db_connection)->hasTable('user_certifications'))
-        {
-            Schema::connection($db_connection)->create('user_certifications', function (Blueprint $table){
+        if (!Schema::connection($db_connection)->hasTable('user_certifications')) {
+            Schema::connection($db_connection)->create('user_certifications', function (Blueprint $table) {
                 // 物理主键
                 $table->id()->comment('物理主键（自增）');
+
+                $table->char('user_certification_uid', 20)->notNull()->default('')->comment('用户认证UID');
+
                 // 核心关联字段（和用户表一致的雪花ID）
                 $table->char('user_uid', 20)->notNull()->default('')->comment('关联用户表user_uid');
                 // 认证类型（扩展关键：新增类型只需加枚举值，无需改表）
@@ -45,6 +47,7 @@ return new class extends Migration
                 $table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
 
                 // 索引
+                $table->unique('user_certification_uid');
                 $table->unique(['user_uid', 'cert_type']);
                 $table->index('user_uid');
                 $table->index('cert_type');
@@ -61,8 +64,7 @@ return new class extends Migration
     public function down()
     {
         $db_connection = config('youhujun.db_connection');
-        if (Schema::connection($db_connection)->hasTable('user_certifications')) 
-        {
+        if (Schema::connection($db_connection)->hasTable('user_certifications')) {
             Schema::connection($db_connection)->dropIfExists('user_certifications');
         }
     }

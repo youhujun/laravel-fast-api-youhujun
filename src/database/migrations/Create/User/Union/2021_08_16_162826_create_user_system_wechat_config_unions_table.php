@@ -29,6 +29,7 @@ return new class extends Migration
 			Schema::create('user_system_wechat_config_unions', function (Blueprint $table) {
 
 				$table->id()->comment('主键');
+				$table->char('user_system_wechat_config_union_uid', 20)->notNull()->comment('用户微信配置关联雪花ID');
 				$table->char('user_uid', 20)->notNull()->default('')->comment('用户uid');
 				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
 				$table->string('openid',100)->nullable()->comment('唯一openid');
@@ -55,6 +56,7 @@ return new class extends Migration
 				$table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
 				// 索引
+				$table->unique('user_system_wechat_config_union_uid');
 				$table->unique('openid');
 				$table->index('user_uid');
 				$table->index('created_time');

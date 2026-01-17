@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2022-11-16 15:32:33
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-16 18:55:01
+ * @LastEditTime: 2026-01-17 11:29:38
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -37,6 +37,7 @@ return new class () extends Migration {
                 $table->decimal('item_price', 32, 8, true)->notNull()->default(0)->comment('配置项数值,一般为金额或积分');
                 $table->string('item_path', 255)->notNull()->default('')->comment('文件路径');
                 $table->string('item_introduction', 255)->notNull()->default('')->comment('配置项说明');
+                $table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
 
                 // 时间字段（自动填充+索引，关键优化）
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
@@ -45,7 +46,6 @@ return new class () extends Migration {
                 $table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
-                $table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
 
                 // 索引
                 $table->index('sort');
