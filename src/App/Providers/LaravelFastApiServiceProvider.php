@@ -1,14 +1,14 @@
 <?php
+
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @version: v1
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2024-02-13 16:10:12
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-08 03:19:48
- * @FilePath: d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api\src\App\Providers\LaravelFastApiServiceProvider.php
+ * @LastEditTime: 2026-01-19 10:28:54
+ * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api\src\App\Providers\LaravelFastApiServiceProvider.php
  */
-
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
 
@@ -19,92 +19,79 @@ use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
-
 use App\Models\LaravelFastApi\V1\System\SystemConfig;
 
 class LaravelFastApiServiceProvider extends ServiceProvider
 {
     public function register()
     {
-       
-		$this->mergeConfig();
+        $this->mergeConfig();
         //调用合并配置文件
 
-        if(config('youhujun.publish'))
-        {
-            $this->addAliasMiddleware('admin.login',\App\Http\Middleware\LaravelFastApi\V1\AdminTokenMiddleware::class);
+        if (config('youhujun.publish')) {
+            $this->addAliasMiddleware('admin.login', \App\Http\Middleware\LaravelFastApi\V1\AdminTokenMiddleware::class);
 
-            $this->addAliasMiddleware('phone.login',\App\Http\Middleware\LaravelFastApi\V1\PhoneTokenMiddleware::class);
-
+            $this->addAliasMiddleware('phone.login', \App\Http\Middleware\LaravelFastApi\V1\PhoneTokenMiddleware::class);
+        } else {
         }
-        else
-        {
-			
-        }
-
     }
 
     public function boot()
     {
-        
         Schema::defaultStringLength(255);
 
         //监听sql
         DB::listen(function (QueryExecuted $query) {
-			$sql = $query->sql;
-			$bindings = $query->bindings;
-			
-			foreach ($bindings as $binding) {
-				$processedBinding = match (true) {
-					// 字符串用双引号包裹，避免单引号转义
-					is_string($binding) => "\"" . $binding . "\"",
-					is_bool($binding) => $binding ? '1' : '0',
-					is_null($binding) => 'NULL',
-					// 时间日期也用双引号包裹
-					$binding instanceof \DateTimeInterface => "\"" . $binding->format('Y-m-d H:i:s') . "\"",
-					is_array($binding) => implode(',', array_map(function ($item) {
-						// 数组中的字符串同样用双引号
-						return is_string($item) ? "\"" . $item . "\"" : $item;
-					}, $binding)),
-					default => $binding
-				};
-				
-				// 替换 SQL 中的 ? 占位符
-				$sql = preg_replace('/\?/', $processedBinding, $sql, 1);
-			}
-			
-			$data = [
-				'sql' => $sql,
-				'param' => $bindings,
-				'time' => $query->time
-			];
-			
-			Log::channel('sql')->debug(['sql' => $data]);
-		});
+            $sql = $query->sql;
+            $bindings = $query->bindings;
 
-		if(config('youhujun.runing'))
-		{
-			//启动自定义命令
-			$this->registerCommand();
-		}
-        
+            foreach ($bindings as $binding) {
+                $processedBinding = match (true) {
+                    // 字符串用双引号包裹，避免单引号转义
+                    is_string($binding) => "\"" . $binding . "\"",
+                    is_bool($binding) => $binding ? '1' : '0',
+                    is_null($binding) => 'NULL',
+                    // 时间日期也用双引号包裹
+                    $binding instanceof \DateTimeInterface => "\"" . $binding->format('Y-m-d H:i:s') . "\"",
+                    is_array($binding) => implode(',', array_map(function ($item) {
+                        // 数组中的字符串同样用双引号
+                        return is_string($item) ? "\"" . $item . "\"" : $item;
+                    }, $binding)),
+                    default => $binding
+                };
 
-		if(config('youhujun.publish'))
-		{
-			//执行运行数据库迁移文件
-			$this->loadRun();
-		}
-        
+                // 替换 SQL 中的 ? 占位符
+                $sql = preg_replace('/\?/', $processedBinding, $sql, 1);
+            }
+
+            $data = [
+                'sql' => $sql,
+                'param' => $bindings,
+                'time' => $query->time
+            ];
+
+            Log::channel('sql')->debug(['sql' => $data]);
+        });
+
+        if (config('youhujun.runing')) {
+            //启动自定义命令
+            $this->registerCommand();
+        }
+
+
+        if (config('youhujun.publish')) {
+            //执行运行数据库迁移文件
+            $this->loadRun();
+        }
+
 
         //运行时动态修改配置文件
-        if(config('youhujun.runing'))
-        {
+        if (config('youhujun.runing')) {
             $this->makeConfig();
         }
 
-		//添加到中间件分组api中 !!!!注意这里只能在这里生效,注册的时候虽然能添加上,但是不生效
-		$this->addMiddlewareGroup('api',\App\Http\Middleware\LaravelFastApi\V1\TimeVerifyMiddleware::class);
-        
+        //添加到中间件分组api中 !!!!注意这里只能在这里生效,注册的时候虽然能添加上,但是不生效
+        $this->addMiddlewareGroup('api', \App\Http\Middleware\LaravelFastApi\V1\TimeVerifyMiddleware::class);
     }
 
     /**
@@ -113,44 +100,34 @@ class LaravelFastApiServiceProvider extends ServiceProvider
      * @return void
      */
     protected function makeConfig()
-    {     
-		
-		$systemConfigRedis = Redis::hget('system:config','listSystemConfig');
+    {
+        $systemConfigRedis = Redis::hget('system:config', 'listSystemConfig');
 
-		if($systemConfigRedis)
-		{
-			$systemConfigList = unserialize($systemConfigRedis);
-		}
-		else
-		{
-			$systemConfigList = SystemConfig::all();
+        if ($systemConfigRedis) {
+            $systemConfigList = unserialize($systemConfigRedis);
+        } else {
+            $systemConfigList = SystemConfig::all();
 
-			//p($systemConfigList);die;
-		
-			Redis::hset('system:config','listSystemConfig',serialize($systemConfigList));
-		}
+            //p($systemConfigList);die;
 
-		if($systemConfigList->count())
-		{
-			$isSetSystemConfig = Redis::hget('system:config','isSetSystemConfig');
+            Redis::hset('system:config', 'listSystemConfig', serialize($systemConfigList));
+        }
 
-			if(!$isSetSystemConfig)
-			{
-				foreach ($systemConfigList as $key => $item) 
-				{
-					$value = [10=>$item->item_label,20=>$item->item_value,30=>$item->item_price,40=>$item->item_path,50=>$item->item_path];
+        if ($systemConfigList->count()) {
+            $isSetSystemConfig = Redis::hget('system:config', 'isSetSystemConfig');
 
-					if($value[$item->item_type])
-					{
-						$result = Cache::put($item->item_label,$value[$item->item_type]);
-					}
+            if (!$isSetSystemConfig) {
+                foreach ($systemConfigList as $key => $item) {
+                    $value = [10 => $item->item_label,20 => $item->item_value,30 => $item->item_price,40 => $item->item_path,50 => $item->item_path];
 
-				}
+                    if ($value[$item->item_type]) {
+                        $result = Cache::put($item->item_label, $value[$item->item_type]);
+                    }
+                }
 
-				Redis::hset('system:config','isSetSystemConfig',1);
-			}
-
-		}	
+                Redis::hset('system:config', 'isSetSystemConfig', 1);
+            }
+        }
     }
 
 
@@ -161,170 +138,197 @@ class LaravelFastApiServiceProvider extends ServiceProvider
      */
     protected function mergeConfig()
     {
-		if(config('help.is_custom'))
-		{
-			//自定义配置文件
-			$this->mergeConfigFrom(
-            	config_path('custom/custom.php'),'custom',	
-        	);
+        if (config('help.is_custom')) {
+            //自定义配置文件
+            $this->mergeConfigFrom(
+                config_path('custom/custom.php'),
+                'custom',
+            );
 
-			//youhujun配置文件
-			$this->mergeConfigFrom(
-				config_path('custom/laravel-fast-api/youhujun.php'),'youhujun'
-			); 
-		}
+            //youhujun配置文件
+            $this->mergeConfigFrom(
+                config_path('custom/laravel-fast-api/youhujun.php'),
+                'youhujun'
+            );
+        }
 
-		if(config('youhujun.publish'))
-		{
-			$this->mergeCommonConfig();
-			$this->mergeAdminConfig();
-			$this->mergePhoneConfig();
-		}
-		
+        if (config('youhujun.publish')) {
+            $this->mergeCommonConfig();
+            $this->mergeAdminConfig();
+            $this->mergePhoneConfig();
+        }
     }
 
-	/**
-	 * 自定义通用配置文件
-	 */
-	protected function mergeCommonConfig()
-	{
-		//后台错误码
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/public/code/common_code.php'),'common_code'
+    /**
+     * 自定义通用配置文件
+     */
+    protected function mergeCommonConfig()
+    {
+        //后台错误码
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/public/code/common_code.php'),
+            'common_code'
         );
-		//短信错误码
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/public/code/common_sms_code.php'),'common_code'
-        );
-
-		//微信公众号
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/public/code/common_wechat_code.php'),'common_code'
+        //短信错误码
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/public/code/common_sms_code.php'),
+            'common_code'
         );
 
-		//地图
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/public/code/common_map_code.php'),'common_code'
+        //微信公众号
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/public/code/common_wechat_code.php'),
+            'common_code'
         );
 
-		//自定义验证规则错误码
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/public/rule/rule_code.php'),'rule_code'
-        );
-	}
-
-	/**
-	 * 自定义后台配置文件
-	 */
-	protected function mergeAdminConfig()
-	{
-		//后台错误码
-		//整合
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/admin/code/admin_code.php'),'admin_code'
-        );
-		//系统配置
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/admin/code/admin_system_code.php'),'admin_code'
-        );
-		//文章
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/admin/code/admin_article_code.php'),'admin_code'
-        );
-		//文件
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/admin/code/admin_file_code.php'),'admin_code'
-        );
-		
-		//日志
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/admin/code/admin_log_code.php'),'admin_code'
-        );
-		//登录
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/admin/code/admin_login_code.php'),'admin_code'
-        );
-		
-		//其他
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/admin/code/admin_other_code.php'),'admin_code'
-        );
-		//图片空间
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/admin/code/admin_picture_code.php'),'admin_code'
-        );
-		//用户
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/admin/code/admin_user_code.php'),'admin_code'
+        //地图
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/public/code/common_map_code.php'),
+            'common_code'
         );
 
-		//后台事件码
-		//全部
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/admin/event/admin_event.php'),'admin_event'
+        //自定义验证规则错误码
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/public/rule/rule_code.php'),
+            'rule_code'
         );
-		//文章
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/admin/event/admin_article_event.php'),'admin_event'
-        );
-		//文件
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/admin/event/admin_file_event.php'),'admin_event'
-        );
-		
-		//图片空间
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/admin/event/admin_picture_event.php'),'admin_event'
-        );
-		//系统
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/admin/event/admin_system_event.php'),'admin_event'
-        );
-		//用户
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/admin/event/admin_user_event.php'),'admin_event'
-        );
-	}
+    }
 
-	/**
-	 * 自定义手机配置文件
-	 */
-	protected function mergePhoneConfig()
-	{
-		//手机错误码
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/phone/code/phone_code.php'),'phone_code'
+    /**
+     * 自定义后台配置文件
+     */
+    protected function mergeAdminConfig()
+    {
+        //后台错误码
+        //整合
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/admin/code/admin_code.php'),
+            'admin_code'
         );
-		//登录注册
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/phone/code/phone_login_code.php'),'phone_code'
+        //系统配置
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/admin/code/admin_system_code.php'),
+            'admin_code'
         );
-		//文件
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/phone/code/phone_file_code.php'),'phone_code'
+        //文章
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/admin/code/admin_article_code.php'),
+            'admin_code'
         );
-		//支付
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/phone/code/phone_pay_code.php'),'phone_code'
-        );
-		//手机用户
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/phone/code/phone_user_code.php'),'phone_code'
+        //文件
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/admin/code/admin_file_code.php'),
+            'admin_code'
         );
 
-		//手机事件码
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/phone/event/phone_event.php'),'phone_event'
+        //日志
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/admin/code/admin_log_code.php'),
+            'admin_code'
         );
-		//文件
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/phone/event/phone_file_event.php'),'phone_event'
+        //登录
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/admin/code/admin_login_code.php'),
+            'admin_code'
         );
-		//用户
-		$this->mergeConfigFrom(
-            config_path('custom/laravel-fast-api/phone/event/phone_user_event.php'),'phone_event'
+
+        //其他
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/admin/code/admin_other_code.php'),
+            'admin_code'
         );
-	}
+        //图片空间
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/admin/code/admin_picture_code.php'),
+            'admin_code'
+        );
+        //用户
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/admin/code/admin_user_code.php'),
+            'admin_code'
+        );
+
+        //后台事件码
+        //全部
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/admin/event/admin_event.php'),
+            'admin_event'
+        );
+        //文章
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/admin/event/admin_article_event.php'),
+            'admin_event'
+        );
+        //文件
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/admin/event/admin_file_event.php'),
+            'admin_event'
+        );
+
+        //图片空间
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/admin/event/admin_picture_event.php'),
+            'admin_event'
+        );
+        //系统
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/admin/event/admin_system_event.php'),
+            'admin_event'
+        );
+        //用户
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/admin/event/admin_user_event.php'),
+            'admin_event'
+        );
+    }
+
+    /**
+     * 自定义手机配置文件
+     */
+    protected function mergePhoneConfig()
+    {
+        //手机错误码
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/phone/code/phone_code.php'),
+            'phone_code'
+        );
+        //登录注册
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/phone/code/phone_login_code.php'),
+            'phone_code'
+        );
+        //文件
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/phone/code/phone_file_code.php'),
+            'phone_code'
+        );
+        //支付
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/phone/code/phone_pay_code.php'),
+            'phone_code'
+        );
+        //手机用户
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/phone/code/phone_user_code.php'),
+            'phone_code'
+        );
+
+        //手机事件码
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/phone/event/phone_event.php'),
+            'phone_event'
+        );
+        //文件
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/phone/event/phone_file_event.php'),
+            'phone_event'
+        );
+        //用户
+        $this->mergeConfigFrom(
+            config_path('custom/laravel-fast-api/phone/event/phone_user_event.php'),
+            'phone_event'
+        );
+    }
 
 
 
@@ -338,49 +342,51 @@ class LaravelFastApiServiceProvider extends ServiceProvider
         //运行数据库迁移
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
 
-		//系统模块
-		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System');
-		//系统配置
-		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Config');
-		//系统--级别
-		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Level');
-		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Level/Union');
-		//系统--模块
-		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Module');
-		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Module/Article');
-		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Module/Goods');
+        //系统模块
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System');
+        //系统配置
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Config');
+        //系统--级别
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Level');
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Level/Union');
+        //系统--模块
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Module');
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Module/Article');
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Module/Goods');
 
-		//系统-权限
-		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Permission');
-		//系统-平台
-		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Platform');
-		//系统-地区
-		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Region');
-		//系统-角色
-		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Role');
-		//系统-关联
-		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Union');
-	
-		//用户模块
+        //系统-权限
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Permission');
+        //系统-平台
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Platform');
+        //系统-地区
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Region');
+        //系统-角色
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Role');
+        //系统-关联
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Union');
+
+        //用户模块
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/User');
-		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/User/Info');
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/User/Info');
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/User/Log');
-		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/User/Platform');
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/User/Platform');
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/User/Union');
-        
-		//用户管理--管理员管理
-		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Admin');
-		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Admin/Log');
-		
-		//文章管理
-		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Article');
-		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Article/Info');
-		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Article/Union');
-		
-		//图片空间
-		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Picture');
-		//任务
-		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Job');
+
+        //用户管理--管理员管理
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Admin');
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Admin/Log');
+
+        //文章管理
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Article');
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Article/Info');
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Article/Union');
+
+        //图片空间
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Picture');
+        //任务
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Job');
+        //支付
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Pay');
     }
 
     /**
@@ -388,12 +394,12 @@ class LaravelFastApiServiceProvider extends ServiceProvider
      * @param string $class
      * @return void
      */
-    protected function addAliasMiddleware(string $name,string $class)
+    protected function addAliasMiddleware(string $name, string $class)
     {
-         $router = $this->app['router'];
-         //执行完相当于在app/Http/Kernel.php中注册了中间件
-		 $router = $router->aliasMiddleware($name, $class);
-         return $router;
+        $router = $this->app['router'];
+        //执行完相当于在app/Http/Kernel.php中注册了中间件
+        $router = $router->aliasMiddleware($name, $class);
+        return $router;
     }
 
     /**
@@ -405,24 +411,23 @@ class LaravelFastApiServiceProvider extends ServiceProvider
     {
         $router = $this->app['router'];
 
-		$router = $router->pushMiddlewareToGroup($group, $class);
+        $router = $router->pushMiddlewareToGroup($group, $class);
 
-		//dd($result);
+        //dd($result);
         //执行完相当于在app/Http/Kernel.php中注册了中间件
         return $router;
     }
 
 
 
-       /**
+    /**
      * @description: 注册自定义命令
-     * @param {type} 
-     * @return: 
+     * @param {type}
+     * @return:
      */
     protected function registerCommand()
     {
-        if($this->app->runningInConsole())
-        {
+        if ($this->app->runningInConsole()) {
             $this->commands([
                 \YouHuJun\LaravelFastApi\App\Console\Commands\BuildFacadeCommand::class,
                 \YouHuJun\LaravelFastApi\App\Console\Commands\BuildFacadeServiceCommand::class,
