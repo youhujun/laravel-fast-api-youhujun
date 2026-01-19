@@ -28,13 +28,13 @@ return new class () extends Migration {
         if (!Schema::connection($db_connection)->hasTable('jobs')) {
             Schema::connection($db_connection)->create('jobs', function (Blueprint $table) {
                 $table->bigIncrements('id')->comment('主键');
-                $table->string('queue')->notNull()->default('')->comment('队列');
-                $table->longText('payload')->notNull()->default('')->comment('有效载荷');
-                $table->unsignedTinyInteger('attempts')->notNull()->default(0)->comment('允许尝试次数');
+                $table->string('queue')->default('')->comment('队列');
+                $table->longText('payload')->default('')->comment('有效载荷');
+                $table->unsignedTinyInteger('attempts')->default(0)->comment('允许尝试次数');
                 $table->unsignedInteger('reserved_at')->nullable()->comment('重新尝试时间');
-                $table->unsignedInteger('available_at')->notNull()->comment('完成时间');
+                $table->unsignedInteger('available_at')->comment('完成时间');
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-                $table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+                $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
 
                 // 索引
                 $table->index('queue');

@@ -26,22 +26,22 @@ return new class () extends Migration {
         if (!Schema::connection($db_connection)->hasTable('system_config')) {
             Schema::connection($db_connection)->create('user_role_unions', function (Blueprint $table) {
                 $table->id()->comment('主键');
-                $table->char('user_role_union_uid', 20)->notNull()->comment('用户角色关联雪花ID');
-                $table->char('user_uid', 20)->notNull()->default('')->comment('用户uid');
-                $table->unsignedTinyInteger('role_id')->notNull()->default(0)->comment('角色id');
+                $table->char('user_role_union_uid', 20)->comment('用户角色关联雪花ID');
+                $table->char('user_uid', 20)->default('')->comment('用户uid');
+                $table->unsignedTinyInteger('role_id')->default(0)->comment('角色id');
 
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-                $table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+                $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
                 $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-                $table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+                $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
                 // 索引
-                $table->unique('user_role_union_uid');
-                $table->index('user_uid');
-                $table->index('role_id');
-                $table->index('created_time');
-                $table->index('updated_time');
+                $table->unique('user_role_union_uid', 'uni_role_unions_ur_uid');
+                $table->index('user_uid', 'idx_role_unions_user_uid');
+                $table->index('role_id', 'idx_role_unions_role_id');
+                $table->index('created_time', 'idx_role_unions_cre_time');
+                $table->index('updated_time', 'idx_role_unions_upd_time');
             });
 
             $prefix = config('database.connections.'.$db_connection.'.prefix');

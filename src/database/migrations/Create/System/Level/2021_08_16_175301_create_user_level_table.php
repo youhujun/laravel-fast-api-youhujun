@@ -29,26 +29,26 @@ return new class extends Migration
 			Schema::connection($db_connection)->create('user_levels', function (Blueprint $table) {
 
 				$table->id()->comment('主键');
-				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
+				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 
 				$table->string('level_name',32)->unique()->nullable()->comment('级别名称');
 				$table->string('level_code',32)->unique()->nullable()->comment('级别代码');
-				$table->decimal('amount',32,8,true)->notNull()->default(0)->comment('金额');
-				$table->char('background_picture_uid')->notNull()->default('')->comment('背景图标雪花id');
-				$table->string('note',128)->notNull()->default('')->comment('备注信息');
-				$table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
+				$table->decimal('amount',32,8,true)->default(0)->comment('金额');
+				$table->char('background_picture_uid')->default('')->comment('背景图标雪花id');
+				$table->string('note',128)->default('')->comment('备注信息');
+				$table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
 				// 时间字段（自动填充+索引，关键优化）
 				$table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-				$table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+				$table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
 				$table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-				$table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+				$table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
 				$table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
 
 				// 索引
-				$table->index('background_picture_uid');
-				$table->index('created_time');
+				$table->index('background_picture_uid', 'idx_user_levels_bg_pic_uid');
+				$table->index('created_time', 'idx_user_levels_cre_time');
 
 			});
 	

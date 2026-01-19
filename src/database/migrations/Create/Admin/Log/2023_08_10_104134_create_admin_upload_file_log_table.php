@@ -29,29 +29,29 @@ return new class extends Migration
 		{
 			Schema::connection($db_connection)->create('admin_upload_file_logs', function (Blueprint $table)
 			{
-			   $table->char('admin_upload_file_log_uid', 20)->notNull()->comment('日志uid,雪花ID');
-			   $table->char('admin_uid', 20)->notNull()->default('')->comment('管理员uid,雪花ID');
-			   $table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
+			   $table->char('admin_upload_file_log_uid', 20)->comment('日志uid,雪花ID');
+			   $table->char('admin_uid', 20)->default('')->comment('管理员uid,雪花ID');
+			   $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 
-			   $table->unsignedBigInteger('save_type')->notNull()->default(0)->comment('存储类型 10本地 20存储桶');
-			   $table->unsignedBigInteger('use_type')->notNull()->default(0)->comment('使用类型0  10系统配置 20管理员配置');
+			   $table->unsignedBigInteger('save_type')->default(0)->comment('存储类型 10本地 20存储桶');
+			   $table->unsignedBigInteger('use_type')->default(0)->comment('使用类型0  10系统配置 20管理员配置');
 
-			   $table->string('file_name',128)->notNull()->default('')->comment('文件名');
-			   $table->string('file_path',128)->notNull()->default('')->comment('文件路径');
-			   $table->string('file_extension',12)->notNull()->default('')->comment('文件后缀');
-			   $table->string('file',128)->notNull()->default('')->comment('文件');
-			   $table->string('file_url',255)->notNull()->default('')->comment('文件url (存储桶类型)');
+			   $table->string('file_name',128)->default('')->comment('文件名');
+			   $table->string('file_path',128)->default('')->comment('文件路径');
+			   $table->string('file_extension',12)->default('')->comment('文件后缀');
+			   $table->string('file',128)->default('')->comment('文件');
+			   $table->string('file_url',255)->default('')->comment('文件url (存储桶类型)');
 
 			   // 时间字段（自动填充+索引，关键优化）
 			   $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-			   $table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+			   $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
 			   $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-			   $table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+			   $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
 			   $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
 			   // 索引
-			   $table->unique('admin_upload_file_log_uid');
-			   $table->index('admin_uid');
+			   $table->unique('admin_upload_file_log_uid', 'uni_admin_upload_file_logs_log_uid');
+			   $table->index('admin_uid', 'idx_admin_upload_file_logs_admin_uid');
 
 			});
 	

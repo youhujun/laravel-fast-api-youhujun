@@ -31,23 +31,23 @@ return new class extends Migration
 			Schema::connection($db_connection)->create('system_withdraw_configs', function (Blueprint $table)
 			{
 				$table->id()->comment('主键');
-				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
-				$table->char('admin_uid', 20)->notNull()->default('')->comment('管理员uid,雪花ID');
+				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+				$table->char('admin_uid', 20)->default('')->comment('管理员uid,雪花ID');
 				$table->string('item_name',32)->unique()->nullable()->comment('字段名称 唯一');
-				$table->string('item_value',32)->notNull()->default('')->comment('字段值');
-				$table->unsignedTinyInteger('value_type')->notNull()->default(10)->comment('值得类型 10整数 20小数');
-				$table->string('note',128)->notNull()->default('')->comment('备注');
-				$table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
+				$table->string('item_value',32)->default('')->comment('字段值');
+				$table->unsignedTinyInteger('value_type')->default(10)->comment('值得类型 10整数 20小数');
+				$table->string('note',128)->default('')->comment('备注');
+				$table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
 				// 时间字段（自动填充+索引，关键优化）
 				$table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-				$table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+				$table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
 				$table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-				$table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+				$table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
 				$table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
 				// 索引
-				$table->index('value_type');
+				$table->index('value_type', 'idx_sys_withdraw_cfgs_val_type');
 			});
 
 			//注意是否需要修改mysql连接名

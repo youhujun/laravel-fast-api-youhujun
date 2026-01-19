@@ -29,23 +29,23 @@ return new class extends Migration
 			Schema::connection($db_connection)->create('failed_jobs', function (Blueprint $table) {
 
 				$table->id()->comment('主键');
-				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
+				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 
 				$table->dateTime('failed_at')->useCurrent()->comment('失败时间');
-				$table->unsignedInteger('failed_time')->notNull()->default(0)->comment('失败时间戳');
+				$table->unsignedInteger('failed_time')->default(0)->comment('失败时间戳');
 				$table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-				$table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+				$table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
 				$table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
 				$table->string('uuid',100)->comment('唯一标识');
-				$table->text('connection')->notNull()->comment('连接');
-				$table->text('queue')->notNull()->comment('队列');
-				$table->longtext('payload')->notNull()->comment('有效载荷');
+				$table->text('connection')->comment('连接');
+				$table->text('queue')->comment('队列');
+				$table->longtext('payload')->comment('有效载荷');
 				$table->longtext('exception')->nullable()->comment('异常');
 
 				// 索引
-				$table->unique('uuid');
-				$table->index('failed_time');
+				$table->unique('uuid', 'uni_failed_jobs_uuid');
+				$table->index('failed_time', 'idx_failed_jobs_failed_time');
 
 			});
 			

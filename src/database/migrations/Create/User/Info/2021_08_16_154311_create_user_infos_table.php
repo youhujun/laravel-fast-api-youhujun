@@ -28,35 +28,35 @@ return new class extends Migration
 		{
 			Schema::connection($db_connection)->create('user_infos', function (Blueprint $table) {
 				$table->id()->comment('主键');
-				$table->char('user_info_uid', 20)->notNull()->comment('用户信息雪花ID');
-				$table->char('user_uid', 20)->notNull()->default('')->comment('用户uid');
-				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
-				$table->string('nick_name',64)->notNull()->default('')->comment('昵称');
-				$table->string('family_name',32)->notNull()->default('')->comment('姓');
-				$table->string('name',64)->notNull()->default('')->comment('名');
-				$table->string('real_name',128)->notNull()->default('')->comment('真实姓名');
+				$table->char('user_info_uid', 20)->comment('用户信息雪花ID');
+				$table->char('user_uid', 20)->default('')->comment('用户uid');
+				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+				$table->string('nick_name',64)->default('')->comment('昵称');
+				$table->string('family_name',32)->default('')->comment('姓');
+				$table->string('name',64)->default('')->comment('名');
+				$table->string('real_name',128)->default('')->comment('真实姓名');
 				$table->string('id_number',32)->nullable()->comment('身份证号');
-				$table->unsignedTinyInteger('sex')->notNull()->default(0)->comment('性别 0未知10男20女');
+				$table->unsignedTinyInteger('sex')->default(0)->comment('性别 0未知10男20女');
 				$table->date('solar_birthday_at')->nullable()->comment('阳历生日');
-				$table->unsignedInteger('solar_birthday_time')->notNull()->default(0)->comment('阳历生日');
+				$table->unsignedInteger('solar_birthday_time')->default(0)->comment('阳历生日');
 				$table->date('chinese_birthday_at')->nullable()->comment('阴日生日');
-				$table->unsignedInteger('chinese_birthday_time')->notNull()->default(0)->comment('阴日生日');
-				$table->string('introduction',255)->notNull()->default('')->comment('简介');
+				$table->unsignedInteger('chinese_birthday_time')->default(0)->comment('阴日生日');
+				$table->string('introduction',255)->default('')->comment('简介');
 
 				$table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-				$table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+				$table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
 				$table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-				$table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+				$table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
 				$table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
 				// 索引
-				$table->unique('user_info_uid');
-				$table->unique('id_number');
-				$table->index('user_uid');
-				$table->index('created_time');
-				$table->index('sex');
-				$table->index('solar_birthday_time');
-				$table->index('chinese_birthday_time');
+				$table->unique('user_info_uid', 'uni_user_infos_uid');
+				$table->unique('id_number', 'uni_user_infos_id_number');
+				$table->index('user_uid', 'idx_user_infos_user_uid');
+				$table->index('created_time', 'idx_user_infos_created_time');
+				$table->index('sex', 'idx_user_infos_sex');
+				$table->index('solar_birthday_time', 'idx_user_infos_solar_birthday');
+				$table->index('chinese_birthday_time', 'idx_user_infos_chinese_birthday');
 			});
 	
 			$prefix = config('database.connections.'.$db_connection.'.prefix');

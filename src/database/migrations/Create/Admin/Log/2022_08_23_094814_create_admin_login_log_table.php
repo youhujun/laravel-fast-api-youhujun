@@ -28,24 +28,24 @@ return new class extends Migration
 		{
 			Schema::connection($db_connection)->create('admin_login_logs', function (Blueprint $table) {
 
-				$table->char('admin_login_log_uid', 20)->notNull()->comment('日志uid,雪花ID');
-				$table->char('admin_uid', 20)->notNull()->default('')->comment('管理员uid,雪花ID');
-				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
+				$table->char('admin_login_log_uid', 20)->comment('日志uid,雪花ID');
+				$table->char('admin_uid', 20)->default('')->comment('管理员uid,雪花ID');
+				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 
-				$table->unsignedTinyInteger('status')->notNull()->default(0)->comment('状态 0未知 10登录 20退出');
-				$table->string('instruction',64)->notNull()->default('')->comment('说明');
-				$table->string('ip',64)->notNull()->default('')->comment('ip地址');
+				$table->unsignedTinyInteger('status')->default(0)->comment('状态 0未知 10登录 20退出');
+				$table->string('instruction',64)->default('')->comment('说明');
+				$table->string('ip',64)->default('')->comment('ip地址');
 
 				// 时间字段（自动填充+索引，关键优化）
 				$table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-				$table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+				$table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
 				$table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-				$table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+				$table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
 				$table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
 				// 索引
-				$table->unique('admin_login_log_uid');
-				$table->index('admin_uid');
+				$table->unique('admin_login_log_uid', 'uni_admin_login_logs_log_uid');
+				$table->index('admin_uid', 'idx_admin_login_logs_admin_uid');
 			});
 	 
 			 $prefix = config('database.connections.'.$db_connection.'.prefix');

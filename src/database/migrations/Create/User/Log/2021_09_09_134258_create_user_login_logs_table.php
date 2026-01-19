@@ -26,24 +26,24 @@ return new class () extends Migration {
 
         if (!Schema::connection($db_connection)->hasTable('user_login_logs')) {
             Schema::connection($db_connection)->create('user_login_logs', function (Blueprint $table) {
-                $table->char('user_login_log_uid', 20)->notNull()->comment('日志uid,雪花ID');
-                $table->char('user_uid', 20)->notNull()->default('')->comment('用户uid');
-                $table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
-                $table->unsignedTinyInteger('status')->notNull()->default(0)->comment('状态 0未知 10登录 20退出');
-                $table->string('instruction', 128)->notNull()->default('')->comment('说明');
-                $table->string('ip', 32)->notNull()->default('')->comment('ip地址');
-                $table->unsignedTinyInteger('source_type')->notNull()->default(0)->comment('登录来源类型 10phone 20pc');
+                $table->char('user_login_log_uid', 20)->comment('日志uid,雪花ID');
+                $table->char('user_uid', 20)->default('')->comment('用户uid');
+                $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+                $table->unsignedTinyInteger('status')->default(0)->comment('状态 0未知 10登录 20退出');
+                $table->string('instruction', 128)->default('')->comment('说明');
+                $table->string('ip', 32)->default('')->comment('ip地址');
+                $table->unsignedTinyInteger('source_type')->default(0)->comment('登录来源类型 10phone 20pc');
 
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-                $table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+                $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
                 $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-                $table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+                $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
-                $table->unique('user_login_log_uid');
-                $table->index('user_uid');
-                $table->index('created_time');
-                $table->index('status');
+                $table->unique('user_login_log_uid', 'uni_user_login_logs_uid');
+                $table->index('user_uid', 'idx_user_login_logs_user_uid');
+                $table->index('created_time', 'idx_user_login_logs_created_time');
+                $table->index('status', 'idx_user_login_logs_status');
             });
 
             $prefix = config('database.connections.'.$db_connection.'.prefix');

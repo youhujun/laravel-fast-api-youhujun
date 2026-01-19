@@ -27,20 +27,20 @@ return new class () extends Migration {
         if (!Schema::connection($db_connection)->hasTable('regions')) {
             Schema::connection($db_connection)->create('regions', function (Blueprint $table) {
                 $table->id()->comment('主键');
-                $table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
-                $table->unsignedInteger('parent_id')->notNull()->default(0)->comment('父级id');
-                $table->unsignedTinyInteger('deep')->notNull()->default(0)->comment('深度');
-                $table->string('region_name', 64)->notNull()->default('')->comment('地区名称');
-                $table->string('region_area', 32)->notNull()->default('')->comment('大区名称');
-                $table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
+                $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+                $table->unsignedInteger('parent_id')->default(0)->comment('父级id');
+                $table->unsignedTinyInteger('deep')->default(0)->comment('深度');
+                $table->string('region_name', 64)->default('')->comment('地区名称');
+                $table->string('region_area', 32)->default('')->comment('大区名称');
+                $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
 
 
                 // 时间字段（自动填充+索引，关键优化）
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-                $table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+                $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
                 $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-                $table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+                $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
 

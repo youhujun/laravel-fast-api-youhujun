@@ -26,26 +26,26 @@ return new class () extends Migration {
 
         if (!Schema::connection($db_connection)->hasTable('user_coin_logs')) {
             Schema::connection($db_connection)->create('user_coin_logs', function (Blueprint $table) {
-                $table->char('user_coin_log_uid', 20)->notNull()->comment('日志uid,雪花ID');
-                $table->char('user_uid', 20)->notNull()->default('')->comment('用户uid');
-                $table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
-                $table->decimal('before_amount', 32, 8)->notNull()->default(0)->comment('金额');
-                $table->decimal('change_value', 32, 8)->notNull()->default(0)->comment('变动数值');
-                $table->unsignedTinyInteger('change_type')->notNull()->default(0)->comment('0未知 10充值 20 支出  30退款');
-                $table->decimal('amount', 32, 8)->notNull()->default(0)->comment('系统币');
+                $table->char('user_coin_log_uid', 20)->comment('日志uid,雪花ID');
+                $table->char('user_uid', 20)->default('')->comment('用户uid');
+                $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+                $table->decimal('before_amount', 32, 8)->default(0)->comment('金额');
+                $table->decimal('change_value', 32, 8)->default(0)->comment('变动数值');
+                $table->unsignedTinyInteger('change_type')->default(0)->comment('0未知 10充值 20 支出  30退款');
+                $table->decimal('amount', 32, 8)->default(0)->comment('系统币');
                 $table->string('note', 32)->nullable()->comment('备注');
-                $table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
+                $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-                $table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+                $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
                 $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-                $table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+                $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
-                $table->unique('user_coin_log_uid');
-                $table->index('user_uid');
-                $table->index('created_time');
-                $table->index('change_type');
+                $table->unique('user_coin_log_uid', 'uni_user_coin_logs_uid');
+                $table->index('user_uid', 'idx_user_coin_logs_user_uid');
+                $table->index('created_time', 'idx_user_coin_logs_created_time');
+                $table->index('change_type', 'idx_user_coin_logs_change_type');
             });
 
             $prefix = config('database.connections.'.$db_connection.'.prefix');

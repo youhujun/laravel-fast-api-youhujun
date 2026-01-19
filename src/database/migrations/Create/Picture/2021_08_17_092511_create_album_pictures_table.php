@@ -29,35 +29,35 @@ return new class () extends Migration {
                 $table->id()->comment('主键');
 
                 // 雪花ID核心字段（非空+唯一+索引，适配分库分表）
-                $table->char('album_picture_uid', 20)->notNull()->comment('相册图片全局唯一ID,雪花ID,业务核心ID');
+                $table->char('album_picture_uid', 20)->comment('相册图片全局唯一ID,雪花ID,业务核心ID');
 
-                $table->char('admin_uid', 20)->notNull()->default('')->comment('管理员uid,雪花ID');
-                $table->char('user_uid', 20)->notNull()->default('')->comment('用户uid,雪花ID');
-                $table->char('album_uid', 20)->notNull()->default('')->comment('相册uid,雪花ID');
-                $table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
+                $table->char('admin_uid', 20)->default('')->comment('管理员uid,雪花ID');
+                $table->char('user_uid', 20)->default('')->comment('用户uid,雪花ID');
+                $table->char('album_uid', 20)->default('')->comment('相册uid,雪花ID');
+                $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 
-                $table->string('picture_name', 64)->notNull()->default('')->comment('图片名称');
-                $table->string('picture_tag', 64)->notNull()->default('')->comment('图片标签');
-                $table->string('picture_path', 128)->notNull()->default('')->comment('图片路径');
-                $table->string('picture_file', 64)->notNull()->default('')->comment('图片文件');
-                $table->unsignedInteger('picture_size')->notNull()->default(0)->comment('图片大小(kb)');
-                $table->string('picture_spec', 64)->notNull()->default('')->comment('图片规格(长*宽)');
+                $table->string('picture_name', 64)->default('')->comment('图片名称');
+                $table->string('picture_tag', 64)->default('')->comment('图片标签');
+                $table->string('picture_path', 128)->default('')->comment('图片路径');
+                $table->string('picture_file', 64)->default('')->comment('图片文件');
+                $table->unsignedInteger('picture_size')->default(0)->comment('图片大小(kb)');
+                $table->string('picture_spec', 64)->default('')->comment('图片规格(长*宽)');
 
-                $table->unsignedTinyInteger('picture_type')->notNull()->default(0)->comment('图片类型 10 本地 20存储桶 30微信头像');
-                $table->string('picture_url', 255)->notNull()->default('')->comment('图片地址(存放于存储桶中)');
+                $table->unsignedTinyInteger('picture_type')->default(0)->comment('图片类型 10 本地 20存储桶 30微信头像');
+                $table->string('picture_url', 255)->default('')->comment('图片地址(存放于存储桶中)');
 
                 // 时间字段（自动填充+索引，关键优化）
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-                $table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+                $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
                 $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-                $table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+                $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
                 // 索引
-                $table->unique('album_picture_uid');
-                $table->index('admin_uid');
-                $table->index('user_uid');
-                $table->index('album_uid');
+                $table->unique('album_picture_uid', 'uni_album_pictures_ap_uid');
+                $table->index('admin_uid', 'idx_album_pictures_admin_uid');
+                $table->index('user_uid', 'idx_album_pictures_user_uid');
+                $table->index('album_uid', 'idx_album_pictures_album_uid');
             });
 
             $prefix = config('database.connections.'.$db_connection.'.prefix');

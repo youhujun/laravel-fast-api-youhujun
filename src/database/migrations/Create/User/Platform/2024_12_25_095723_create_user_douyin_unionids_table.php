@@ -28,23 +28,23 @@ return new class () extends Migration {
         if (!Schema::connection($db_connection)->hasTable('user_douyin_unionids')) {
             Schema::connection($db_connection)->create('user_douyin_unionids', function (Blueprint $table) {
                 $table->id()->comment('主键');
-                $table->char('user_douyin_unionid_uid', 20)->notNull()->comment('用户抖音unionid雪花ID');
-                $table->char('user_uid', 20)->notNull()->default('')->comment('用户uid');
+                $table->char('user_douyin_unionid_uid', 20)->comment('用户抖音unionid雪花ID');
+                $table->char('user_uid', 20)->default('')->comment('用户uid');
                 $table->string('unionid', 64)->nullable()->comment('抖音unionid 唯一');
-                $table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
-                $table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
+                $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+                $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-                $table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+                $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
                 $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-                $table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+                $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
-                $table->unique('user_douyin_unionid_uid');
-                $table->unique('unionid');
-                $table->index('user_uid');
-                $table->index('created_time');
-                $table->index('sort');
+                $table->unique('user_douyin_unionid_uid', 'uni_douyin_uids_ud_uid');
+                $table->unique('unionid', 'uni_douyin_uids_unionid');
+                $table->index('user_uid', 'idx_douyin_uids_user_uid');
+                $table->index('created_time', 'idx_douyin_uids_cre_time');
+                $table->index('sort', 'idx_douyin_uids_sort');
             });
 
             $prefix = config('database.connections.'.$db_connection.'.prefix');

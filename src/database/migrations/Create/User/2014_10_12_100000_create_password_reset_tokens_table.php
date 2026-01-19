@@ -29,17 +29,17 @@ return new class extends Migration
 			Schema::connection($db_connection)->create('password_reset_tokens', function (Blueprint $table) {
 
 				$table->id()->comment('主键');
-				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
-				$table->string('email',128)->notNull()->default('')->comment('邮箱');
-				$table->char('phone',12)->notNull()->default('')->comment('手机号');
-				$table->string('token',255)->notNull()->default('')->comment('令牌');
+				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+				$table->string('email',128)->default('')->comment('邮箱');
+				$table->char('phone',12)->default('')->comment('手机号');
+				$table->string('token',255)->default('')->comment('令牌');
 
 				$table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-				$table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+				$table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
 
-				$table->index('email');
-				$table->index('phone');
-				$table->index('created_time');
+				$table->index('email', 'idx_pwd_tokens_email');
+				$table->index('phone', 'idx_pwd_tokens_phone');
+				$table->index('created_time', 'idx_pwd_tokens_cre_time');
 			});
 	
 			$prefix = config('database.connections.'.$db_connection.'.prefix');

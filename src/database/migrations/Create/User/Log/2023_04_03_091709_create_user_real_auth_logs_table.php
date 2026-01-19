@@ -26,31 +26,31 @@ return new class () extends Migration {
 
         if (!Schema::connection($db_connection)->hasTable('user_real_auth_logs')) {
             Schema::connection($db_connection)->create('user_real_auth_logs', function (Blueprint $table) {
-                $table->char('user_real_auth_log_uid', 20)->notNull()->comment('日志uid,雪花ID');
-                $table->char('user_uid', 20)->notNull()->default('')->comment('用户uid');
-                $table->char('admin_uid',20)->notNull()->default('')->comment('审核的管理员id');
-                $table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
-                $table->unsignedTinyInteger('status')->notNull()->default(0)->comment('状态 10申请中  20通过 30拒绝');
+                $table->char('user_real_auth_log_uid', 20)->comment('日志uid,雪花ID');
+                $table->char('user_uid', 20)->default('')->comment('用户uid');
+                $table->char('admin_uid',20)->default('')->comment('审核的管理员id');
+                $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+                $table->unsignedTinyInteger('status')->default(0)->comment('状态 10申请中  20通过 30拒绝');
                 $table->dateTime('auth_apply_at')->nullable()->comment('实名认证申请时间string');
-                $table->unsignedInteger('auth_apply_time')->notNull()->default(0)->comment('实名认证申请时间int');
+                $table->unsignedInteger('auth_apply_time')->default(0)->comment('实名认证申请时间int');
                 $table->dateTime('auth_at')->nullable()->comment('实名认证审核时间string');
-                $table->unsignedInteger('auth_time')->notNull()->default(0)->comment('实名认证审核时间int');
-                $table->string('refuse_info', 64)->notNull()->default('')->comment('拒绝原因');
-                $table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
+                $table->unsignedInteger('auth_time')->default(0)->comment('实名认证审核时间int');
+                $table->string('refuse_info', 64)->default('')->comment('拒绝原因');
+                $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-                $table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+                $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
                 $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-                $table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+                $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
-                $table->unique('user_real_auth_log_uid');
-                $table->index('user_uid');
-                $table->index('auth_apply_time');
-                $table->index('created_time');
-                $table->index('auth_time');
-                $table->index('sort');
-                $table->index('status');
+                $table->unique('user_real_auth_log_uid', 'uni_user_real_auth_logs_uid');
+                $table->index('user_uid', 'idx_user_real_auth_logs_user_uid');
+                $table->index('auth_apply_time', 'idx_user_real_auth_logs_apply');
+                $table->index('created_time', 'idx_user_real_auth_logs_created');
+                $table->index('auth_time', 'idx_user_real_auth_logs_auth');
+                $table->index('sort', 'idx_user_real_auth_logs_sort');
+                $table->index('status', 'idx_user_real_auth_logs_status');
             });
 
             $prefix = config('database.connections.'.$db_connection.'.prefix');

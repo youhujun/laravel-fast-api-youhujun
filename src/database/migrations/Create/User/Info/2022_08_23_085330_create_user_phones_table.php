@@ -28,27 +28,27 @@ return new class extends Migration
 		{
 			Schema::connection($db_connection)->create('user_phones', function (Blueprint $table) {
 				$table->id()->comment('主键');
-				$table->char('user_phone_uid', 20)->notNull()->comment('用户电话雪花ID');
-				$table->char('user_uid', 20)->notNull()->default('')->comment('用户uid');
-				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
-				$table->unsignedTinyInteger('type')->notNull()->default(100)->comment('类型 10紧急联系人');
-				$table->unsignedTinyInteger('is_default')->notNull()->default(0)->comment('是否默认 0不 1是');
-				$table->string('phone',12)->notNull()->default('')->comment('电话');
+				$table->char('user_phone_uid', 20)->comment('用户电话雪花ID');
+				$table->char('user_uid', 20)->default('')->comment('用户uid');
+				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+				$table->unsignedTinyInteger('type')->default(100)->comment('类型 10紧急联系人');
+				$table->unsignedTinyInteger('is_default')->default(0)->comment('是否默认 0不 1是');
+				$table->string('phone',12)->default('')->comment('电话');
 				$table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
 				$table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-				$table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+				$table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
 				$table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-				$table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+				$table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
 				$table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
 				// 索引
-				$table->unique('user_phone_uid');
-				$table->index('user_uid');
-				$table->index('created_time');
-				$table->index('type');
-				$table->index('is_default');
-				$table->index('sort');
+				$table->unique('user_phone_uid', 'uni_user_phones_uid');
+				$table->index('user_uid', 'idx_user_phones_user_uid');
+				$table->index('created_time', 'idx_user_phones_created_time');
+				$table->index('type', 'idx_user_phones_type');
+				$table->index('is_default', 'idx_user_phones_is_default');
+				$table->index('sort', 'idx_user_phones_sort');
 			});
 	
 			$prefix = config('database.connections.'.$db_connection.'.prefix');

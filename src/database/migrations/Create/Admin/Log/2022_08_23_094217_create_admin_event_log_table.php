@@ -29,27 +29,27 @@ return new class extends Migration
 		{
 			Schema::connection($db_connection)->create('admin_event_logs', function (Blueprint $table) {
 
-				$table->char('admin_event_log_uid', 20)->notNull()->comment('日志uid,雪花ID');
-				$table->char('admin_uid', 20)->notNull()->default('')->comment('管理员uid,雪花ID');
-				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
+				$table->char('admin_event_log_uid', 20)->comment('日志uid,雪花ID');
+				$table->char('admin_uid', 20)->default('')->comment('管理员uid,雪花ID');
+				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 
-				$table->unsignedInteger('event_type')->notNull()->default(0)->comment('事件类型');
-				$table->string('event_route_action',128)->notNull()->default('')->comment('事件路由');
-				$table->string('event_name',64)->notNull()->default('')->comment('事件名称');
-				$table->string('event_code',64)->notNull()->default('')->comment('事件编码');
+				$table->unsignedInteger('event_type')->default(0)->comment('事件类型');
+				$table->string('event_route_action',128)->default('')->comment('事件路由');
+				$table->string('event_name',64)->default('')->comment('事件名称');
+				$table->string('event_code',64)->default('')->comment('事件编码');
 				$table->text('note')->nullable()->comment('备注数据');
 
 				// 时间字段（自动填充+索引，关键优化）
 				$table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-				$table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+				$table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
 				$table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-				$table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+				$table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
 				$table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
 				// 索引
-				$table->unique('admin_event_log_uid');
-				$table->index('admin_uid');
-				$table->index('event_type');
+				$table->unique('admin_event_log_uid', 'uni_admin_event_logs_log_uid');
+				$table->index('admin_uid', 'idx_admin_event_logs_admin_uid');
+				$table->index('event_type', 'idx_admin_event_logs_event_type');
 			});
 
 			$prefix = config('database.connections.'.$db_connection.'.prefix');

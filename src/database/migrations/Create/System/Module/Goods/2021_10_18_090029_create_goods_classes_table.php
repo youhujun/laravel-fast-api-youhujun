@@ -27,37 +27,37 @@ return new class () extends Migration {
         if (!Schema::connection($db_connection)->hasTable('goods_classes')) {
             Schema::connection($db_connection)->create('goods_classes', function (Blueprint $table) {
                 $table->id()->comment('主键');
-                $table->unsignedInteger('parent_id')->notNull()->default(0)->comment('父级id');
-                $table->unsignedTinyInteger('deep')->notNull()->default(0)->comment('级别');
-                $table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
-                $table->unsignedTinyInteger('switch')->notNull()->default(0)->comment('是否|开关 0关否1是开');
-                $table->decimal('rate', 4, 2)->notNull()->default(0)->comment('分润比例%');
+                $table->unsignedInteger('parent_id')->default(0)->comment('父级id');
+                $table->unsignedTinyInteger('deep')->default(0)->comment('级别');
+                $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+                $table->unsignedTinyInteger('switch')->default(0)->comment('是否|开关 0关否1是开');
+                $table->decimal('rate', 4, 2)->default(0)->comment('分润比例%');
                 $table->string('goods_class_name', 64)->nullable()->comment('商品类名称');
                 $table->string('goods_class_code', 64)->nullable()->comment('商品分类逻辑名称');
-                $table->char('goods_class_picture_uid', 20)->notNull()->default('')->comment('分类图片雪花ID(相册图片id)');
-                $table->unsignedTinyInteger('is_certificate')->notNull()->default(0)->comment('是否需要要资质证书 0否1是');
-                $table->unsignedTinyInteger('certificate_number')->notNull()->default(0)->comment('主要资质证书数量');
+                $table->char('goods_class_picture_uid', 20)->default('')->comment('分类图片雪花ID(相册图片id)');
+                $table->unsignedTinyInteger('is_certificate')->default(0)->comment('是否需要要资质证书 0否1是');
+                $table->unsignedTinyInteger('certificate_number')->default(0)->comment('主要资质证书数量');
                 $table->string('note', 255)->nullable()->comment('备注说明');
-                $table->unsignedTinyInteger('sort')->notNull()->default(0)->comment('排序');
+                $table->unsignedTinyInteger('sort')->default(0)->comment('排序');
 
 
 
                 // 时间字段（自动填充+索引，关键优化）
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-                $table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+                $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
                 $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-                $table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+                $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
 
                 // 索引
-                $table->unique(['goods_class_name','deleted_at']);
-                $table->unique(['goods_class_code','deleted_at']);
-                $table->index('parent_id');
-                $table->index('deep');
-                $table->index('is_certificate');
-                $table->index('goods_class_picture_uid');
-                $table->index('created_time');
+                $table->unique(['goods_class_name','deleted_at'], 'uni_goods_classes_name_del');
+                $table->unique(['goods_class_code','deleted_at'], 'uni_goods_classes_code_del');
+                $table->index('parent_id', 'idx_goods_classes_parent_id');
+                $table->index('deep', 'idx_goods_classes_deep');
+                $table->index('is_certificate', 'idx_goods_classes_is_cert');
+                $table->index('goods_class_picture_uid', 'idx_goods_classes_pic_uid');
+                $table->index('created_time', 'idx_goods_classes_cre_time');
             });
 
             $prefix = config('database.connections.'.$db_connection.'.prefix');

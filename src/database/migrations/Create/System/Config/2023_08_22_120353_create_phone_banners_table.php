@@ -29,18 +29,18 @@ return new class extends Migration
 			Schema::connection($db_connection)->create('phone_banners', function (Blueprint $table)
 			{
 				$table->id()->comment('主键-手机轮播图');
-				$table->char('admin_uid', 20)->notNull()->default('')->comment('管理员uid,雪花ID');
-				$table->char('album_picture_uid', 20)->notNull()->default('')->comment('相册图片uid,雪花ID');
-				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
+				$table->char('admin_uid', 20)->default('')->comment('管理员uid,雪花ID');
+				$table->char('album_picture_uid', 20)->default('')->comment('相册图片uid,雪花ID');
+				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 				$table->string('redirect_url',128)->nullable()->comment('跳转路径');
 				$table->string('note',128)->nullable()->comment('备注');
-				$table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
+				$table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
 				// 时间字段（自动填充+索引，关键优化）
 				$table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-				$table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+				$table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
 				$table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-				$table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+				$table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
 				$table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
 

@@ -27,26 +27,26 @@ return new class () extends Migration {
         if (!Schema::connection($db_connection)->hasTable('user_pictures')) {
             Schema::connection($db_connection)->create('user_pictures', function (Blueprint $table) {
                 $table->id()->comment('主键');
-                $table->char('user_picture_uid', 20)->notNull()->comment('用户图片雪花ID');
-                $table->char('user_uid', 20)->notNull()->default('')->comment('用户uid');
-                $table->char('album_picture_uid', 20)->notNull()->default('')->comment('相册图片uid,雪花ID');
-                $table->unsignedTinyInteger('is_default')->notNull()->default(0)->comment('是否默认 0否 1是');
-                $table->unsignedTinyInteger('type')->notNull()->default(0)->comment('图片类型');
-                $table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
-                $table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
+                $table->char('user_picture_uid', 20)->comment('用户图片雪花ID');
+                $table->char('user_uid', 20)->default('')->comment('用户uid');
+                $table->char('album_picture_uid', 20)->default('')->comment('相册图片uid,雪花ID');
+                $table->unsignedTinyInteger('is_default')->default(0)->comment('是否默认 0否 1是');
+                $table->unsignedTinyInteger('type')->default(0)->comment('图片类型');
+                $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+                $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-                $table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+                $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
                 $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-                $table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+                $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
-                $table->unique('user_picture_uid');
-                $table->index('user_uid');
-                $table->index('album_picture_uid');
-                $table->index('created_time');
-                $table->index('is_default');
-                $table->index('sort');
+                $table->unique('user_picture_uid', 'uni_user_pictures_uid');
+                $table->index('user_uid', 'idx_user_pictures_user_uid');
+                $table->index('album_picture_uid', 'idx_user_pictures_picture_uid');
+                $table->index('created_time', 'idx_user_pictures_created_time');
+                $table->index('is_default', 'idx_user_pictures_is_default');
+                $table->index('sort', 'idx_user_pictures_sort');
             });
 
             $prefix = config('database.connections.'.$db_connection.'.prefix');

@@ -29,26 +29,26 @@ return new class extends Migration
 			Schema::connection($db_connection)->create('personal_access_tokens', function (Blueprint $table) {
 				$table->id()->comment('个人token表主键');
 
-				$table->char('user_uid', 20)->notNull()->default('')->comment('用户uid');
+				$table->char('user_uid', 20)->default('')->comment('用户uid');
 
-				$table->string('tokenable_type',255)->notNull()->comment('类型');
-				$table->bigInteger('tokenable_id')->notNull()->comment('id');
-				$table->string('name')->notNull()->comment('姓名');
-				$table->string('token', 64)->notNull()->comment('token');
+				$table->string('tokenable_type',255)->comment('类型');
+				$table->bigInteger('tokenable_id')->comment('id');
+				$table->string('name')->comment('姓名');
+				$table->string('token', 64)->comment('token');
 				$table->text('abilities')->nullable()->comment('能力');
 				$table->dateTime('last_used_at')->nullable()->comment('最后使用时间');
 
 				$table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-				$table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+				$table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
 				$table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-				$table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+				$table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
 
 				// 索引
-				$table->index('user_uid');
-				$table->index('tokenable_type');
-				$table->index('tokenable_id');
-				$table->index('last_used_at');
-				$table->unique('token');
+				$table->index('user_uid', 'idx_personal_access_tokens_user_uid');
+				$table->index('tokenable_type', 'idx_personal_access_tokens_type');
+				$table->index('tokenable_id', 'idx_personal_access_tokens_id');
+				$table->index('last_used_at', 'idx_personal_access_tokens_last_used');
+				$table->unique('token', 'uni_personal_access_tokens_token');
 			});
 	
 			$prefix = config('database.connections.'.$db_connection.'.prefix');

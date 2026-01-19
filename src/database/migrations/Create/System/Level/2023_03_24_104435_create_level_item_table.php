@@ -36,18 +36,18 @@ return new class () extends Migration {
 
                 // 时间字段（自动填充+索引，关键优化）
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-                $table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+                $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
                 $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-                $table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+                $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
                 $table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
 
                 // 索引
-                $table->unique(['item_name','deleted_at']);
-                $table->unique(['item_code','deleted_at']);
-                $table->index('type');
-                $table->index('created_time');
+                $table->unique(['item_name','deleted_at'], 'uni_level_items_name_del');
+                $table->unique(['item_code','deleted_at'], 'uni_level_items_code_del');
+                $table->index('type', 'idx_level_items_type');
+                $table->index('created_time', 'idx_level_items_cre_time');
             });
 
             $prefix = config('database.connections.'.$db_connection.'.prefix');

@@ -28,26 +28,26 @@ return new class extends Migration
 		{
 			Schema::connection($db_connection)->create('user_event_logs', function (Blueprint $table) {
 
-				$table->char('user_event_log_uid', 20)->notNull()->comment('日志uid,雪花ID');
-				$table->char('user_uid', 20)->notNull()->default('')->comment('用户uid');
-				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
+				$table->char('user_event_log_uid', 20)->comment('日志uid,雪花ID');
+				$table->char('user_uid', 20)->default('')->comment('用户uid');
+				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 
-				$table->unsignedInteger('event_type')->notNull()->default(0)->comment('事件类型');
-				$table->string('event_route_action',128)->notNull()->default('')->comment('事件路由');
-				$table->string('event_name',64)->notNull()->default('')->comment('事件名称');
-				$table->string('event_code',64)->notNull()->default('')->comment('事件编码');
+				$table->unsignedInteger('event_type')->default(0)->comment('事件类型');
+				$table->string('event_route_action',128)->default('')->comment('事件路由');
+				$table->string('event_name',64)->default('')->comment('事件名称');
+				$table->string('event_code',64)->default('')->comment('事件编码');
 				$table->text('note')->nullable()->comment('备注数据');
 
 				$table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-				$table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+				$table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
 				$table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-				$table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+				$table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
 				$table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
-				$table->unique('user_event_log_uid');
-				$table->index('user_uid');
-				$table->index('event_type');
-				$table->index('created_time');
+				$table->unique('user_event_log_uid', 'uni_user_event_logs_uid');
+				$table->index('user_uid', 'idx_user_event_logs_user_uid');
+				$table->index('event_type', 'idx_user_event_logs_event_type');
+				$table->index('created_time', 'idx_user_event_logs_created_time');
 			});
 	
 			$prefix = config('database.connections.'.$db_connection.'.prefix');

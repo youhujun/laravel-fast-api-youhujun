@@ -27,25 +27,25 @@ return new class () extends Migration {
         if (!Schema::connection($db_connection)->hasTable('user_id_cards')) {
             Schema::connection($db_connection)->create('user_id_cards', function (Blueprint $table) {
                 $table->id()->comment('主键');
-                $table->char('user_id_card_uid', 20)->notNull()->comment('用户身份证雪花ID');
-                $table->char('user_uid', 20)->notNull()->default('')->comment('用户uid');
-                $table->char('id_card_front_uid', 20)->notNull()->default('')->comment('身份证正面(相册图片雪花ID)');
-                $table->char('id_card_back_uid', 20)->notNull()->default('')->comment('身份证背面(相册图片雪花ID)');
-                $table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
-                $table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
+                $table->char('user_id_card_uid', 20)->comment('用户身份证雪花ID');
+                $table->char('user_uid', 20)->default('')->comment('用户uid');
+                $table->char('id_card_front_uid', 20)->default('')->comment('身份证正面(相册图片雪花ID)');
+                $table->char('id_card_back_uid', 20)->default('')->comment('身份证背面(相册图片雪花ID)');
+                $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+                $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-                $table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+                $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
                 $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-                $table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+                $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
-                $table->unique('user_id_card_uid');
-                $table->index('user_uid');
-                $table->index('created_time');
-                $table->index('id_card_front_uid');
-                $table->index('id_card_back_uid');
-                $table->index('sort');
+                $table->unique('user_id_card_uid', 'uni_user_id_cards_uid');
+                $table->index('user_uid', 'idx_user_id_cards_user_uid');
+                $table->index('created_time', 'idx_user_id_cards_created_time');
+                $table->index('id_card_front_uid', 'idx_user_id_cards_front_uid');
+                $table->index('id_card_back_uid', 'idx_user_id_cards_back_uid');
+                $table->index('sort', 'idx_user_id_cards_sort');
             });
 
             $prefix = config('database.connections.'.$db_connection.'.prefix');

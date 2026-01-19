@@ -32,35 +32,35 @@ return new class () extends Migration {
                 $table->id()->comment('物理主键（自增）');
 
                 // 2. 雪花ID核心业务字段（和user_uid命名/类型统一，适配分库分表）
-                $table->char('payment_uid', 20)->notNull()->comment('支付全局唯一ID,雪花ID,业务核心ID');
+                $table->char('payment_uid', 20)->comment('支付全局唯一ID,雪花ID,业务核心ID');
 
                 // 3. 关联字段（统一用uid后缀，和系统其他表对齐）
-                $table->char('payer_uid', 20)->notNull()->default('')->comment('支付主体UID（用户/商户/机构，关联对应表的*_uid）');
+                $table->char('payer_uid', 20)->default('')->comment('支付主体UID（用户/商户/机构，关联对应表的*_uid）');
                 $table->char('order_uid', 20)->nullable()->comment('主订单UID（单支付对应单主订单时用）');
                 $table->char('refund_uid', 20)->nullable()->default('')->comment('关联退款UID（退款场景用）');
                 $table->char('operator_uid', 20)->nullable()->default('')->comment('操作人UID（后台人工干预时记录）');
 
                 // 4. 支付核心业务字段
-                $table->string('payment_no', 64)->notNull()->comment('系统内部支付单号（唯一，用于对账/展示）');
+                $table->string('payment_no', 64)->comment('系统内部支付单号（唯一，用于对账/展示）');
                 $table->string('out_trade_no', 64)->nullable()->comment('第三方支付流水号（微信/支付宝/银行等）');
-                $table->decimal('total_amount', 16, 2)->notNull()->comment('支付总金额（单位：元，精确到分）');
+                $table->decimal('total_amount', 16, 2)->comment('支付总金额（单位：元，精确到分）');
                 $table->decimal('actual_paid_amount', 16, 2)->nullable()->comment('实际支付金额（可能有优惠/减免）');
                 $table->decimal('fee_amount', 16, 2)->nullable()->default(0.00)->comment('支付手续费金额');
-                $table->string('pay_channel', 32)->notNull()->comment('支付渠道：wechat/ali_pay/bank_card/digital_cny等');
+                $table->string('pay_channel', 32)->comment('支付渠道：wechat/ali_pay/bank_card/digital_cny等');
                 $table->string('pay_sub_channel', 64)->nullable()->comment('支付子渠道：wechat_app/wechat_h5/ali_pay_wap等');
 
                 // 5. 状态字段（枚举值明确，和系统状态设计统一）
-                $table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
-                $table->unsignedTinyInteger('status')->notNull()->default(0)->comment('支付状态：0-待支付 1-支付中 2-支付成功 3-支付失败 4-退款中 5-已退款 6-已关闭');
+                $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+                $table->unsignedTinyInteger('status')->default(0)->comment('支付状态：0-待支付 1-支付中 2-支付成功 3-支付失败 4-退款中 5-已退款 6-已关闭');
                 $table->unsignedTinyInteger('fail_type')->nullable()->comment('失败类型：1-用户取消 2-超时 3-渠道异常 4-风控拦截 5-其他');
                 $table->string('fail_reason', 255)->nullable()->comment('支付失败原因（详细描述）');
-                $table->unsignedTinyInteger('data_source')->notNull()->default(1)->comment('数据来源：1-前端支付 2-后台操作 3-第三方回调 4-系统自动');
+                $table->unsignedTinyInteger('data_source')->default(1)->comment('数据来源：1-前端支付 2-后台操作 3-第三方回调 4-系统自动');
 
                 // 6. 时间字段（统一双时间格式：datetime + timestamp，适配不同查询场景）
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-                $table->unsignedInteger('created_time')->notNull()->default(DB::raw('UNIX_TIMESTAMP()'))->comment('创建时间戳');
+                $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
                 $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-                $table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+                $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
                 $table->dateTime('paid_at')->nullable()->comment('实际支付成功时间');
                 $table->dateTime('closed_at')->nullable()->comment('支付关闭时间');
@@ -70,16 +70,16 @@ return new class () extends Migration {
                 $table->text('extend_params')->nullable()->comment('扩展参数（JSON格式，存储渠道特殊参数）');
 
                 // 8. 索引设计（核心优化：复合唯一+业务索引，适配软删除）
-                $table->unique('payment_uid');
-                $table->unique(['payment_no', 'deleted_at']); // 支付单号+软删除 复合唯一
-                $table->unique(['out_trade_no', 'pay_channel', 'deleted_at']); // 第三方流水+渠道 复合唯一（避免重复回调）
-                $table->index('payer_uid');
-                $table->index('order_uid');
-                $table->index('refund_uid');
-                $table->index('status');
-                $table->index('pay_channel');
-                $table->index('paid_at');
-                $table->index('created_time'); // 时间戳索引（高效范围查询）
+                $table->unique('payment_uid', 'uni_payments_payment_uid');
+                $table->unique(['payment_no', 'deleted_at'], 'uni_payments_payno_del'); // 支付单号+软删除 复合唯一
+                $table->unique(['out_trade_no', 'pay_channel', 'deleted_at'], 'uni_payments_outno_ch_del'); // 第三方流水+渠道 复合唯一（避免重复回调）
+                $table->index('payer_uid', 'idx_payments_payer_uid');
+                $table->index('order_uid', 'idx_payments_order_uid');
+                $table->index('refund_uid', 'idx_payments_refund_uid');
+                $table->index('status', 'idx_payments_status');
+                $table->index('pay_channel', 'idx_payments_pay_channel');
+                $table->index('paid_at', 'idx_payments_paid_at');
+                $table->index('created_time', 'idx_payments_cre_time'); // 时间戳索引（高效范围查询）
             });
 
             // 统一设置表注释（和users表保持一致的写法）
