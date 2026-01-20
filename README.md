@@ -31,15 +31,13 @@
 composer require youhujun/laravel-fast-api-youhujun
 ```
 
-
-::: tip 注意
-目前已经适配laravel12
-:::
+> 目前已经适配laravel12
 
 ### 环境要求
 
-- PHP >= 8.0.2
-- 扩展: openssl, json, gd
+- PHP >= 8.2
+- 扩展: 除了laravel框架需要安装的扩展以外,还需要安装 imagick,swoole,安装nodejs
 
+以上扩展安装和配置在博客中都有详细介绍不需要担心 [游鹄君博客](https://www.youhujun.com/)
 
 **更多文档请查看[文档地址](https://www.youhu.club/)**
