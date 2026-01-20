@@ -24,7 +24,6 @@
 
 [uniaapx-youhujun](https://www.youhu.club/document/uniappx-youhujun/)
 
-
 ## 安装
 
 ```bash
@@ -45,3 +44,7 @@ composer require youhujun/laravel-fast-api-youhujun
 [游鹄君博客](https://www.youhujun.com/)
 
 **更多文档请查看[文档地址](https://www.youhu.club/)**
+
+### 如果有其他问题可以与作者联系交流
+
+微信:youhujun88
