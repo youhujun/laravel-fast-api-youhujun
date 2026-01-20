@@ -49,4 +49,4 @@ composer require youhujun/laravel-fast-api-youhujun
 
 微信号:youhujun88
 
-**备注请说明来意,否则不回复,请谅解**
+**备注请说明来意**
