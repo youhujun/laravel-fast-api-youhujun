@@ -42,6 +42,6 @@ composer require youhujun/laravel-fast-api-youhujun
 
 <br/>
 
-[查看游鹄君博客](https://www.youhujun.com/)
+[游鹄君博客](https://www.youhujun.com/)
 
 **更多文档请查看[文档地址](https://www.youhu.club/)**
