@@ -6,42 +6,50 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Models\Traits\WithTimeStampFields;
+use App\Models\Traits\WithSnowflakeId;
+use App\Models\Traits\WithInviteCode;
+use App\Models\Traits\WithCustomConnection;
 
 class {{ class }} extends Model
 {
     use HasFactory,Notifiable,SoftDeletes;
+	use WithTimeStampFields;  // 时间戳填充
+    use WithSnowflakeId;      // 雪花ID生成
+    use WithInviteCode;       // 邀请码生成
+    use WithCustomConnection; // 自定义数据库连接
 
-	//链接
-	protected $connection = '';
-	//表名
-    protected $table = '';
-	//主键
-	protected $primaryKey = 'id';
-	//是否自动维护时间戳
-	public $timestamps = false;
-	//时间戳格式
-	protected $dateFormat = 'Y-m-d H:i:s';
-
-    protected $guarded = [''];
-    protected $attributes =
-    [
+	    /**
+         * 批量赋值字段（明确可赋值字段，杜绝安全风险）
+         *
+         */
+    protected $fillable = [
+        'user_uid', 'source_user_uid', 'parent_user_uid',
+        'revision', 'account_status', 'real_auth_status', 'level_id', 'source',
+        'remember_token', 'auth_token', 'account_name', 'invite_code',
+        'phone_area_code', 'phone', 'password', 'email',
+        'created_at', 'created_time', 'updated_at', 'updated_time'
     ];
 
-    protected function createdAt():Attribute
-    {
-        return new Attribute(
+    /**
+     * 隐藏敏感/无用字段
+     */
 
-            set:fn($time) => date('Y-m-d H:i:s',$time),
-        );
-    }
+    protected $hidden = ['id', 'password', 'revision'];
 
-    protected function updatedAt():Attribute
-    {
-        return new Attribute(
+    // 表名
+    protected $table = 'users';
+    // 主键
+    protected $primaryKey = 'user_uid';
+    // 雪花ID非自增
+    public $incrementing = false;
+    // 雪花ID是字符串类型
+    protected $keyType = 'string';
+    //开启自动时间戳（Laravel自动维护created_at/updated_at）
+    public $timestamps = true;
 
-            set:fn($time) => date('Y-m-d H:i:s',$time),
-        );
-    }
+    // 时间戳格式
+    protected $dateFormat = 'Y-m-d H:i:s';
+
 
 }
