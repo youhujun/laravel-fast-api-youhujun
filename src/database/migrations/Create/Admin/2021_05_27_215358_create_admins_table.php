@@ -34,7 +34,7 @@ return new class () extends Migration {
                 $table->char('user_uid', 20)->default('')->comment('用户全局唯一ID,雪花ID,业务核心ID');
 
                 $table->string('role_id', 255)->default('')->comment('管理员角色id集合');
-                $table->unsignedTinyInteger('switch')->default(0)->comment('是否|开关 0关否1是开');
+                $table->unsignedTinyInteger('account_status')->default(1)->comment('账户状态 0禁用 1启用');
                 $table->string('remember_token', 128)->nullable()->comment('记住token');
                 $table->string('account_name', 64)->nullable()->comment('账户名称 唯一');
                 $table->char('phone_area_code', 5)->default('')->comment('手机号区号');
@@ -55,7 +55,7 @@ return new class () extends Migration {
                 $table->unique(['email', 'deleted_at'], 'uni_admins_email_deleted'); // 邮箱+软删除字段复合唯一
 
                 $table->index('user_uid', 'idx_admins_user_uid');
-                $table->index('switch', 'idx_admins_switch');
+                $table->index('account_status', 'idx_admins_account_status');
             });
 
             $prefix = config('database.connections.'.$db_connection.'.prefix');
