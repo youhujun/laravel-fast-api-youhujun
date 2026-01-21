@@ -23,19 +23,13 @@ class {{ class }} extends Model
          * 批量赋值字段（明确可赋值字段，杜绝安全风险）
          *
          */
-    protected $fillable = [
-        'user_uid', 'source_user_uid', 'parent_user_uid',
-        'revision', 'account_status', 'real_auth_status', 'level_id', 'source',
-        'remember_token', 'auth_token', 'account_name', 'invite_code',
-        'phone_area_code', 'phone', 'password', 'email',
-        'created_at', 'created_time', 'updated_at', 'updated_time'
-    ];
+    protected $fillable = ['user_uid'];
 
     /**
      * 隐藏敏感/无用字段
      */
 
-    protected $hidden = ['id', 'password', 'revision'];
+    protected $hidden = ['id','revision'];
 
     // 表名
     protected $table = 'users';
