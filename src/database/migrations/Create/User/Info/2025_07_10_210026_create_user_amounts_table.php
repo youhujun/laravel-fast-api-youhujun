@@ -24,7 +24,6 @@ return new class extends Migration
 				$table->char('user_amount_uid', 20)->comment('用户余额雪花ID');
 				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 				$table->char('user_uid', 20)->default('')->comment('用户uid');
-				$table->string('userId')->default('')->comment('用户id');
 				$table->decimal('amount',32,8)->default(0)->comment('余额');
 				$table->decimal('bonus',32,8)->default(0)->comment('奖金');
 				$table->decimal('prepare_bonus',32,8)->default(0)->comment('预计增加奖金');

@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-27 21:53:58
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-16 18:43:53
+ * @LastEditTime: 2026-01-22 11:32:35
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -33,7 +33,6 @@ return new class () extends Migration {
                 $table->char('admin_uid', 20)->default('')->comment('管理员全局唯一ID,雪花ID,业务核心ID');
                 $table->char('user_uid', 20)->default('')->comment('用户全局唯一ID,雪花ID,业务核心ID');
 
-                $table->string('role_id', 255)->default('')->comment('管理员角色id集合');
                 $table->unsignedTinyInteger('account_status')->default(1)->comment('账户状态 0禁用 1启用');
                 $table->string('remember_token', 128)->nullable()->comment('记住token');
                 $table->string('account_name', 64)->nullable()->comment('账户名称 唯一');

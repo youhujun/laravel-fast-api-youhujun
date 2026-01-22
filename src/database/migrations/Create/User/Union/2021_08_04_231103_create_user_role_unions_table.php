@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-08-13 14:58:33
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-16 15:48:48
+ * @LastEditTime: 2026-01-22 11:36:47
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -28,7 +28,7 @@ return new class () extends Migration {
                 $table->id()->comment('主键');
                 $table->char('user_role_union_uid', 20)->comment('用户角色关联雪花ID');
                 $table->char('user_uid', 20)->default('')->comment('用户uid');
-                $table->unsignedTinyInteger('role_id')->default(0)->comment('角色id');
+                $table->unsignedInteger('role_id')->default(0)->comment('角色id');
 
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
                 $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
