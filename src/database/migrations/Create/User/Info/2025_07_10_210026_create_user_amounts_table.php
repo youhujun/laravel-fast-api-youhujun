@@ -21,6 +21,8 @@ return new class extends Migration
 			Schema::connection($db_connection)->create('user_amounts', function (Blueprint $table)
 			{
 				$table->id()->comment('主键');
+				// 分片键：user_uid%100，未来分库分表用
+				$table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键：user_uid%100，未来分库分表用');
 				$table->unsignedBigInteger('user_amount_uid')->comment('用户余额雪花ID');
 				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 				$table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
