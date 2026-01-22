@@ -24,10 +24,10 @@ return new class () extends Migration {
                 // 物理主键
                 $table->id()->comment('物理主键（自增）');
 
-                $table->char('user_certification_uid', 20)->default('')->comment('用户认证UID');
+                $table->unsignedBigInteger('user_certification_uid')->default(0)->comment('用户认证UID');
 
                 // 核心关联字段（和用户表一致的雪花ID）
-                $table->char('user_uid', 20)->default('')->comment('关联用户表user_uid');
+                $table->unsignedBigInteger('user_uid')->default(0)->comment('关联用户表user_uid');
                 // 认证类型（扩展关键：新增类型只需加枚举值，无需改表）
                 $table->unsignedTinyInteger('cert_type')->comment('认证类型 10手机 20邮箱 30身份证 40人脸 50企业');
                 // 认证状态（和主表的real_auth_status互补，更细粒度）

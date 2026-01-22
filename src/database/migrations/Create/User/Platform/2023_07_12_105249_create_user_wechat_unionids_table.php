@@ -28,8 +28,8 @@ return new class () extends Migration {
         if (!Schema::connection($db_connection)->hasTable('user_wechat_unionids')) {
             Schema::connection($db_connection)->create('user_wechat_unionids', function (Blueprint $table) {
                 $table->id()->comment('主键');
-                $table->char('user_wechat_unionid_uid', 20)->comment('用户微信unionid雪花ID');
-                $table->char('user_uid', 20)->default('')->comment('用户uid');
+                $table->unsignedBigInteger('user_wechat_unionid_uid')->comment('用户微信unionid雪花ID');
+                $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                 $table->string('unionid', 64)->nullable()->comment('微信的unionid 唯一');
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                 $table->unsignedTinyInteger('sort')->default(100)->comment('排序');

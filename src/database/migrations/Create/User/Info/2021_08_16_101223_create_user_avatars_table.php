@@ -27,9 +27,9 @@ return new class () extends Migration {
         if (!Schema::connection($db_connection)->hasTable('user_avatars')) {
             Schema::connection($db_connection)->create('user_avatars', function (Blueprint $table) {
                 $table->id()->comment('主键');
-                $table->char('user_avatar_uid', 20)->comment('用户头像雪花ID');
-                $table->char('user_uid', 20)->default('')->comment('用户uid');
-                $table->char('album_picture_uid', 20)->default('')->comment('相册图片uid,雪花ID');
+                $table->unsignedBigInteger('user_avatar_uid')->comment('用户头像雪花ID');
+                $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
+                $table->unsignedBigInteger('album_picture_uid')->default(0)->comment('相册图片uid,雪花ID');
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                 $table->unsignedTinyInteger('is_default')->default(0)->comment('是否默认使用 0否1是 ');
 

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @Descripttion:
  * @version: v1
@@ -14,8 +15,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      *
@@ -23,37 +23,34 @@ return new class extends Migration
      */
     public function up()
     {
-		$db_connection = config('youhujun.db_connection');
-		if (!Schema::connection($db_connection)->hasTable('phone_banners'))
-		{
-			Schema::connection($db_connection)->create('phone_banners', function (Blueprint $table)
-			{
-				$table->id()->comment('主键-手机轮播图');
-				$table->char('admin_uid', 20)->default('')->comment('管理员uid,雪花ID');
-				$table->char('album_picture_uid', 20)->default('')->comment('相册图片uid,雪花ID');
-				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
-				$table->string('redirect_url',128)->nullable()->comment('跳转路径');
-				$table->string('note',128)->nullable()->comment('备注');
-				$table->unsignedTinyInteger('sort')->default(100)->comment('排序');
+        $db_connection = config('youhujun.db_connection');
+        if (!Schema::connection($db_connection)->hasTable('phone_banners')) {
+            Schema::connection($db_connection)->create('phone_banners', function (Blueprint $table) {
+                $table->id()->comment('主键-手机轮播图');
+                $table->unsignedBigInteger('admin_uid')->default(0)->comment('管理员uid,雪花ID');
+                $table->unsignedBigInteger('album_picture_uid')->default(0)->comment('相册图片uid,雪花ID');
+                $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+                $table->string('redirect_url', 128)->nullable()->comment('跳转路径');
+                $table->string('note', 128)->nullable()->comment('备注');
+                $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
-				// 时间字段（自动填充+索引，关键优化）
-				$table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-				$table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
-				$table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-				$table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
-				$table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
+                // 时间字段（自动填充+索引，关键优化）
+                $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
+                $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
+                $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
+                $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
+                $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
 
-				// 索引
-				$table->index('album_picture_uid');
-				$table->index('sort');
-			});
+                // 索引
+                $table->index('album_picture_uid');
+                $table->index('sort');
+            });
 
-			$prefix = config('database.connections.'.$db_connection.'.prefix');
+            $prefix = config('database.connections.'.$db_connection.'.prefix');
 
-			DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}phone_banners` comment '手机轮播图'");
-		}
-        
+            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}phone_banners` comment '手机轮播图'");
+        }
     }
 
     /**
@@ -63,12 +60,10 @@ return new class extends Migration
      */
     public function down()
     {
-		$db_connection = config('youhujun.db_connection');
+        $db_connection = config('youhujun.db_connection');
 
-		if (Schema::connection($db_connection)->hasTable('phone_banners'))
-		{
-			Schema::connection($db_connection)->dropIfExists('phone_banners');
-		}
-        
+        if (Schema::connection($db_connection)->hasTable('phone_banners')) {
+            Schema::connection($db_connection)->dropIfExists('phone_banners');
+        }
     }
 };

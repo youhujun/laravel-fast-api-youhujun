@@ -31,7 +31,7 @@ return new class extends Migration
 			Schema::connection($db_connection)->create('sessions', function (Blueprint $table)
 			{
 				$table->id()->comment('主键');
-				$table->char('user_uid', 20)->default('')->comment('用户uid');
+				$table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
 				$table->string('ip_address', 45)->nullable()->comment('ip地址');
 				$table->text('user_agent')->nullable()->comment('用户代理');
 				$table->longText('payload')->comment('载荷');

@@ -27,10 +27,10 @@ return new class () extends Migration {
         if (!Schema::connection($db_connection)->hasTable('user_id_cards')) {
             Schema::connection($db_connection)->create('user_id_cards', function (Blueprint $table) {
                 $table->id()->comment('主键');
-                $table->char('user_id_card_uid', 20)->comment('用户身份证雪花ID');
-                $table->char('user_uid', 20)->default('')->comment('用户uid');
-                $table->char('id_card_front_uid', 20)->default('')->comment('身份证正面(相册图片雪花ID)');
-                $table->char('id_card_back_uid', 20)->default('')->comment('身份证背面(相册图片雪花ID)');
+                $table->unsignedBigInteger('user_id_card_uid')->comment('用户身份证雪花ID');
+                $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
+                $table->unsignedBigInteger('id_card_front_uid')->default(0)->comment('身份证正面(相册图片雪花ID)');
+                $table->unsignedBigInteger('id_card_back_uid')->default(0)->comment('身份证背面(相册图片雪花ID)');
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                 $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 

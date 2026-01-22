@@ -29,8 +29,8 @@ return new class extends Migration
 			Schema::connection($db_connection)->create('article_infos', function (Blueprint $table) {
 
 				$table->id()->comment('主键');
-				$table->char('article_info_uid', 20)->comment('文章详情雪花ID');
-				$table->char('article_uid', 20)->default('')->comment('文章uid,雪花ID');
+				$table->unsignedBigInteger('article_info_uid')->comment('文章详情雪花ID');
+				$table->unsignedBigInteger('article_uid')->default(0)->comment('文章uid,雪花ID');
 				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 				$table->text('article_info')->nullable()->comment('文章详情');
 

@@ -27,8 +27,8 @@ return new class () extends Migration {
         if (!Schema::connection($db_connection)->hasTable('user_source_unions')) {
             Schema::connection($db_connection)->create('user_source_unions', function (Blueprint $table) {
                 $table->id()->comment('主键--用户父关联表');
-                $table->char('user_source_union_uid', 20)->comment('用户来源关联雪花ID');
-                $table->char('user_uid', 20)->default('')->comment('用户uid');
+                $table->unsignedBigInteger('user_source_union_uid')->comment('用户来源关联雪花ID');
+                $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                 $table->unsignedBigInteger('first_id')->default(0)->comment('一级id');
                 $table->unsignedBigInteger('second_id')->default(0)->comment('二级id');
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');

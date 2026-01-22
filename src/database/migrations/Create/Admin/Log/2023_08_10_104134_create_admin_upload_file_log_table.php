@@ -29,8 +29,8 @@ return new class extends Migration
 		{
 			Schema::connection($db_connection)->create('admin_upload_file_logs', function (Blueprint $table)
 			{
-			   $table->char('admin_upload_file_log_uid', 20)->comment('日志uid,雪花ID');
-			   $table->char('admin_uid', 20)->default('')->comment('管理员uid,雪花ID');
+			   $table->unsignedBigInteger('admin_upload_file_log_uid')->comment('日志uid,雪花ID');
+			   $table->unsignedBigInteger('admin_uid')->default(0)->comment('管理员uid,雪花ID');
 			   $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 
 			   $table->unsignedBigInteger('save_type')->default(0)->comment('存储类型 10本地 20存储桶');

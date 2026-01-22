@@ -27,11 +27,11 @@ return new class () extends Migration {
         if (!Schema::connection($db_connection)->hasTable('user_banks')) {
             Schema::connection($db_connection)->create('user_banks', function (Blueprint $table) {
                 $table->id()->comment('主键 用户银行信息表');
-                $table->char('user_bank_uid', 20)->comment('用户银行卡雪花ID');
-                $table->char('user_uid', 20)->default('')->comment('用户uid');
+                $table->unsignedBigInteger('user_bank_uid')->comment('用户银行卡雪花ID');
+                $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                 $table->unsignedInteger('bank_id')->default(0)->comment('银行id');
-                $table->char('bank_front_uid', 20)->default('')->comment('银行卡正面(相册图片雪花ID)');
-                $table->char('bank_back_uid', 20)->default('')->comment('银行卡背面(相册图片雪花ID)');
+                $table->unsignedBigInteger('bank_front_uid')->default(0)->comment('银行卡正面(相册图片雪花ID)');
+                $table->unsignedBigInteger('bank_back_uid')->default(0)->comment('银行卡背面(相册图片雪花ID)');
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                 $table->unsignedTinyInteger('is_default')->default(0)->comment('是否默认 0不 1是');
                 $table->string('bank_number', 32)->default('')->comment('银行卡号');

@@ -29,10 +29,11 @@ return new class () extends Migration {
                 $table->id()->comment('主键');
 
                 // 雪花ID核心字段（非空+唯一+索引，适配分库分表）
-                $table->char('article_uid', 20)->notNull()->comment('文章全局唯一ID,雪花ID,业务核心ID');
+                $table->unsignedBigInteger('article_uid')->notNull()->comment('文章全局唯一ID,雪花ID,业务核心ID');
 
-                $table->char('admin_uid', 20)->notNull()->default('')->comment('管理员uid,雪花ID');
-                $table->char('user_uid', 20)->notNull()->default('')->comment('发布人uid,雪花ID');
+                $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键：user_id%100/ID%100，未来分库分表用');
+                $table->unsignedBigInteger('admin_uid')->notNull()->default(0)->comment('管理员uid,雪花ID');
+                $table->unsignedBigInteger('user_uid')->notNull()->default(0)->comment('发布人uid,雪花ID');
                 $table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
                 $table->string('title', 64)->notNull()->default('')->comment('文章标题');
                 $table->unsignedTinyInteger('status')->notNull()->default(0)->comment('状态 默认0 0未发布 10已发布');

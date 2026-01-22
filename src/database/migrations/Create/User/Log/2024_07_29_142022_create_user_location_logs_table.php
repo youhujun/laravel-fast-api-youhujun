@@ -20,8 +20,8 @@ return new class extends Migration
 		{
 			Schema::connection($db_connection)->create('user_location_logs', function (Blueprint $table)
 			{
-				$table->char('user_location_log_uid', 20)->comment('日志uid,雪花ID');
-				$table->char('user_uid', 20)->default('')->comment('用户uid');
+				$table->unsignedBigInteger('user_location_log_uid')->comment('日志uid,雪花ID');
+				$table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
 				$table->tinyInteger('type')->default(0)->comment('类型 10用户');
 				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 				$table->decimal('latitude',32,10,true)->default(0)->comment('维度');

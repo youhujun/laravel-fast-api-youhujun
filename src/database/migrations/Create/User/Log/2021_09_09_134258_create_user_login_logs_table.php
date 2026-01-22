@@ -26,8 +26,8 @@ return new class () extends Migration {
 
         if (!Schema::connection($db_connection)->hasTable('user_login_logs')) {
             Schema::connection($db_connection)->create('user_login_logs', function (Blueprint $table) {
-                $table->char('user_login_log_uid', 20)->comment('日志uid,雪花ID');
-                $table->char('user_uid', 20)->default('')->comment('用户uid');
+                $table->unsignedBigInteger('user_login_log_uid')->comment('日志uid,雪花ID');
+                $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                 $table->unsignedTinyInteger('status')->default(0)->comment('状态 0未知 10登录 20退出');
                 $table->string('instruction', 128)->default('')->comment('说明');

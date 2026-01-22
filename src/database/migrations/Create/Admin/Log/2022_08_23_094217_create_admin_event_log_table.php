@@ -29,8 +29,8 @@ return new class extends Migration
 		{
 			Schema::connection($db_connection)->create('admin_event_logs', function (Blueprint $table) {
 
-				$table->char('admin_event_log_uid', 20)->comment('日志uid,雪花ID');
-				$table->char('admin_uid', 20)->default('')->comment('管理员uid,雪花ID');
+				$table->unsignedBigInteger('admin_event_log_uid')->comment('日志uid,雪花ID');
+				$table->unsignedBigInteger('admin_uid')->default(0)->comment('管理员uid,雪花ID');
 				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 
 				$table->unsignedInteger('event_type')->default(0)->comment('事件类型');

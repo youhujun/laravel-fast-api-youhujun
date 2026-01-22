@@ -30,8 +30,9 @@ return new class () extends Migration {
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 
 
-                $table->char('admin_uid', 20)->default('')->comment('管理员全局唯一ID,雪花ID,业务核心ID');
-                $table->char('user_uid', 20)->default('')->comment('用户全局唯一ID,雪花ID,业务核心ID');
+                $table->unsignedBigInteger('admin_uid')->default(0)->comment('管理员全局唯一ID,雪花ID,业务核心ID');
+                $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键：user_id%100/ID%100，未来分库分表用');
+                $table->unsignedBigInteger('user_uid')->default(0)->comment('用户全局唯一ID,雪花ID,业务核心ID');
 
                 $table->unsignedTinyInteger('account_status')->default(1)->comment('账户状态 0禁用 1启用');
                 $table->string('remember_token', 128)->nullable()->comment('记住token');

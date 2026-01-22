@@ -29,11 +29,12 @@ return new class () extends Migration {
                 $table->id()->comment('主键');
 
                 // 雪花ID核心字段（非空+唯一+索引，适配分库分表）
-                $table->char('album_picture_uid', 20)->comment('相册图片全局唯一ID,雪花ID,业务核心ID');
+                $table->unsignedBigInteger('album_picture_uid')->comment('相册图片全局唯一ID,雪花ID,业务核心ID');
 
-                $table->char('admin_uid', 20)->default('')->comment('管理员uid,雪花ID');
-                $table->char('user_uid', 20)->default('')->comment('用户uid,雪花ID');
-                $table->char('album_uid', 20)->default('')->comment('相册uid,雪花ID');
+                $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键：user_id%100/ID%100，未来分库分表用');
+                $table->unsignedBigInteger('admin_uid')->default(0)->comment('管理员uid,雪花ID');
+                $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid,雪花ID');
+                $table->unsignedBigInteger('album_uid')->default(0)->comment('相册uid,雪花ID');
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 
                 $table->string('picture_name', 64)->default('')->comment('图片名称');

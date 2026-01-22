@@ -29,11 +29,13 @@ return new class () extends Migration {
                 // 物理自增主键（仅数据库层面用，业务代码不碰）
                 $table->id()->comment('物理主键（自增）');
                 // 雪花ID核心字段（非空+唯一+索引，适配分库分表）
-                $table->char('user_uid', 20)->comment('用户全局唯一ID,雪花ID,业务核心ID');
+                $table->unsignedBigInteger('user_uid')->comment('用户全局唯一ID,雪花ID,业务核心ID');
+                // 分片键：user_id%100/ID%100，未来分库分表用
+                $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键：user_id%100/ID%100，未来分库分表用');
                 // 关联字段同步改为 uid 后缀，保持命名一致
-                $table->char('source_user_uid', 20)->default('')->comment('推荐人全局唯一ID');
+                $table->unsignedBigInteger('source_user_uid')->default(0)->comment('推荐人全局唯一ID');
 
-                $table->char('parent_user_uid', 20)->default('')->comment('父级全局唯一ID');
+                $table->unsignedBigInteger('parent_user_uid')->default(0)->comment('父级全局唯一ID');
 
                 // 状态字段
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');

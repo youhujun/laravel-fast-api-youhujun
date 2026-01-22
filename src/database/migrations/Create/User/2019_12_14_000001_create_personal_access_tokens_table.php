@@ -29,7 +29,7 @@ return new class extends Migration
 			Schema::connection($db_connection)->create('personal_access_tokens', function (Blueprint $table) {
 				$table->id()->comment('个人token表主键');
 
-				$table->char('user_uid', 20)->default('')->comment('用户uid');
+				$table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
 
 				$table->string('tokenable_type',255)->comment('类型');
 				$table->bigInteger('tokenable_id')->comment('id');

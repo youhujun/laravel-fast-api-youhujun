@@ -28,8 +28,8 @@ return new class extends Migration
 		{
 			Schema::connection($db_connection)->create('admin_login_logs', function (Blueprint $table) {
 
-				$table->char('admin_login_log_uid', 20)->comment('日志uid,雪花ID');
-				$table->char('admin_uid', 20)->default('')->comment('管理员uid,雪花ID');
+				$table->unsignedBigInteger('admin_login_log_uid')->comment('日志uid,雪花ID');
+				$table->unsignedBigInteger('admin_uid')->default(0)->comment('管理员uid,雪花ID');
 				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 
 				$table->unsignedTinyInteger('status')->default(0)->comment('状态 0未知 10登录 20退出');

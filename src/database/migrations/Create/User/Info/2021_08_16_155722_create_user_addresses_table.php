@@ -27,8 +27,8 @@ return new class () extends Migration {
         if (!Schema::connection($db_connection)->hasTable('user_addresses')) {
             Schema::connection($db_connection)->create('user_addresses', function (Blueprint $table) {
                 $table->id()->comment('主键');
-                $table->char('user_address_uid', 20)->comment('用户地址雪花ID');
-                $table->char('user_uid', 20)->default('')->comment('用户uid');
+                $table->unsignedBigInteger('user_address_uid')->comment('用户地址雪花ID');
+                $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                 $table->unsignedTinyInteger('address_type')->default(0)->comment('地址类型 默认0家庭10工作20 学校30 其他40');
                 $table->unsignedTinyInteger('is_default')->default(0)->comment('是否默认地址 0否1是');

@@ -28,8 +28,8 @@ return new class extends Migration
 		{
 			Schema::connection($db_connection)->create('user_phones', function (Blueprint $table) {
 				$table->id()->comment('主键');
-				$table->char('user_phone_uid', 20)->comment('用户电话雪花ID');
-				$table->char('user_uid', 20)->default('')->comment('用户uid');
+				$table->unsignedBigInteger('user_phone_uid')->comment('用户电话雪花ID');
+				$table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
 				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 				$table->unsignedTinyInteger('type')->default(100)->comment('类型 10紧急联系人');
 				$table->unsignedTinyInteger('is_default')->default(0)->comment('是否默认 0不 1是');

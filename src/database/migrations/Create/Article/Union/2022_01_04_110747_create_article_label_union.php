@@ -29,8 +29,8 @@ return new class extends Migration
 			Schema::connection($db_connection)->create('article_label_unions', function (Blueprint $table) {
 
 				$table->id()->comment('主键');
-				$table->char('article_label_union_uid', 20)->comment('文章标签关联雪花ID');
-				$table->char('article_uid', 20)->default('')->comment('文章uid,雪花ID');
+				$table->unsignedBigInteger('article_label_union_uid')->comment('文章标签关联雪花ID');
+				$table->unsignedBigInteger('article_uid')->default(0)->comment('文章uid,雪花ID');
 				$table->unsignedInteger('label_id')->default(0)->comment('标签id');
 				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 

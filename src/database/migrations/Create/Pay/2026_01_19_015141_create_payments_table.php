@@ -32,13 +32,14 @@ return new class () extends Migration {
                 $table->id()->comment('物理主键（自增）');
 
                 // 2. 雪花ID核心业务字段（和user_uid命名/类型统一，适配分库分表）
-                $table->char('payment_uid', 20)->comment('支付全局唯一ID,雪花ID,业务核心ID');
+                $table->unsignedBigInteger('payment_uid')->comment('支付全局唯一ID,雪花ID,业务核心ID');
 
                 // 3. 关联字段（统一用uid后缀，和系统其他表对齐）
-                $table->char('payer_uid', 20)->default('')->comment('支付主体UID（用户/商户/机构，关联对应表的*_uid）');
-                $table->char('order_uid', 20)->nullable()->comment('主订单UID（单支付对应单主订单时用）');
-                $table->char('refund_uid', 20)->nullable()->default('')->comment('关联退款UID（退款场景用）');
-                $table->char('operator_uid', 20)->nullable()->default('')->comment('操作人UID（后台人工干预时记录）');
+                $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键：user_id%100/ID%100，未来分库分表用');
+                $table->unsignedBigInteger('payer_uid')->default(0)->comment('支付主体UID（用户/商户/机构，关联对应表的*_uid）');
+                $table->unsignedBigInteger('order_uid')->nullable()->comment('主订单UID（单支付对应单主订单时用）');
+                $table->unsignedBigInteger('refund_uid')->nullable()->default(0)->comment('关联退款UID（退款场景用）');
+                $table->unsignedBigInteger('operator_uid')->nullable()->default(0)->comment('操作人UID（后台人工干预时记录）');
 
                 // 4. 支付核心业务字段
                 $table->string('payment_no', 64)->comment('系统内部支付单号（唯一，用于对账/展示）');

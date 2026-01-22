@@ -30,8 +30,8 @@ return new class extends Migration
 			{
 
 			   $table->id()->comment('主键');
-			   $table->char('article_category_union_uid', 20)->comment('文章分类关联雪花ID');
-			   $table->char('article_uid', 20)->default('')->comment('文章uid,雪花ID');
+			   $table->unsignedBigInteger('article_category_union_uid')->comment('文章分类关联雪花ID');
+			   $table->unsignedBigInteger('article_uid')->default(0)->comment('文章uid,雪花ID');
 			   $table->unsignedInteger('category_id')->default(0)->comment('文章分类id');
 			   $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 

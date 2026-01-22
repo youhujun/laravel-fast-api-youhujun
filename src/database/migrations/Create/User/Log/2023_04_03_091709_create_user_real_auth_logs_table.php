@@ -26,9 +26,9 @@ return new class () extends Migration {
 
         if (!Schema::connection($db_connection)->hasTable('user_real_auth_logs')) {
             Schema::connection($db_connection)->create('user_real_auth_logs', function (Blueprint $table) {
-                $table->char('user_real_auth_log_uid', 20)->comment('日志uid,雪花ID');
-                $table->char('user_uid', 20)->default('')->comment('用户uid');
-                $table->char('admin_uid',20)->default('')->comment('审核的管理员id');
+                $table->unsignedBigInteger('user_real_auth_log_uid')->comment('日志uid,雪花ID');
+                $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
+                $table->unsignedBigInteger('admin_uid')->default(0)->comment('审核的管理员id');
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                 $table->unsignedTinyInteger('status')->default(0)->comment('状态 10申请中  20通过 30拒绝');
                 $table->dateTime('auth_apply_at')->nullable()->comment('实名认证申请时间string');

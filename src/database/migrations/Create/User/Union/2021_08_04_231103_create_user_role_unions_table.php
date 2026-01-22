@@ -26,8 +26,8 @@ return new class () extends Migration {
         if (!Schema::connection($db_connection)->hasTable('system_config')) {
             Schema::connection($db_connection)->create('user_role_unions', function (Blueprint $table) {
                 $table->id()->comment('主键');
-                $table->char('user_role_union_uid', 20)->comment('用户角色关联雪花ID');
-                $table->char('user_uid', 20)->default('')->comment('用户uid');
+                $table->unsignedBigInteger('user_role_union_uid')->comment('用户角色关联雪花ID');
+                $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                 $table->unsignedInteger('role_id')->default(0)->comment('角色id');
 
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');

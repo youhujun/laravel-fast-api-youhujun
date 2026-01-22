@@ -27,8 +27,8 @@ return new class () extends Migration {
         if (!Schema::connection($db_connection)->hasTable('user_system_douyin_config_unions')) {
             Schema::connection($db_connection)->create('user_system_douyin_config_unions', function (Blueprint $table) {
                 $table->id()->comment('主键');
-                $table->char('user_system_douyin_config_union_uid', 20)->comment('用户抖音配置关联雪花ID');
-                $table->char('user_uid', 20)->default('')->comment('用户uid');
+                $table->unsignedBigInteger('user_system_douyin_config_union_uid')->comment('用户抖音配置关联雪花ID');
+                $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                 $table->string('openid', 100)->nullable()->comment('唯一openid');
                 $table->string('session_key', 100)->default('')->comment('session_key');

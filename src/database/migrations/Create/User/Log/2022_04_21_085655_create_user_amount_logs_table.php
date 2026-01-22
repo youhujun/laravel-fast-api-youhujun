@@ -26,8 +26,8 @@ return new class () extends Migration {
 
         if (!Schema::connection($db_connection)->hasTable('user_amount_logs')) {
             Schema::connection($db_connection)->create('user_amount_logs', function (Blueprint $table) {
-                $table->char('user_amount_log_uid', 20)->comment('日志uid,雪花ID');
-                $table->char('user_uid', 20)->default('')->comment('用户uid');
+                $table->unsignedBigInteger('user_amount_log_uid')->comment('日志uid,雪花ID');
+                $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                 $table->decimal('before_amount', 32, 8)->default(0)->comment('实际金额');
                 $table->decimal('change_value', 32, 8)->default(0)->comment('变动数值');

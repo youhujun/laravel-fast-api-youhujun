@@ -21,9 +21,9 @@ return new class extends Migration
 			Schema::connection($db_connection)->create('user_amounts', function (Blueprint $table)
 			{
 				$table->id()->comment('主键');
-				$table->char('user_amount_uid', 20)->comment('用户余额雪花ID');
+				$table->unsignedBigInteger('user_amount_uid')->comment('用户余额雪花ID');
 				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
-				$table->char('user_uid', 20)->default('')->comment('用户uid');
+				$table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
 				$table->decimal('amount',32,8)->default(0)->comment('余额');
 				$table->decimal('bonus',32,8)->default(0)->comment('奖金');
 				$table->decimal('prepare_bonus',32,8)->default(0)->comment('预计增加奖金');

@@ -28,8 +28,8 @@ return new class extends Migration
 		{
 			Schema::connection($db_connection)->create('user_event_logs', function (Blueprint $table) {
 
-				$table->char('user_event_log_uid', 20)->comment('日志uid,雪花ID');
-				$table->char('user_uid', 20)->default('')->comment('用户uid');
+				$table->unsignedBigInteger('user_event_log_uid')->comment('日志uid,雪花ID');
+				$table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
 				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 
 				$table->unsignedInteger('event_type')->default(0)->comment('事件类型');
