@@ -6,15 +6,19 @@
  * @Author: YouHuJun
  * @Date: 2022-11-16 15:32:33
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-17 11:29:38
+ * @LastEditTime: 2026-01-23 21:05:57
  */
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 
 return new class () extends Migration {
+    protected $baseTable = 'system_configs';
+    protected $hasSnowflake = false;
+    protected $tableComment = '系统配置表';
     /**
      * Run the migrations.
      *
@@ -22,10 +26,12 @@ return new class () extends Migration {
      */
     public function up()
     {
-        $db_connection = config('youhujun.db_connection');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
+
         //注意是否需要修改mysql连接名和表名
-        if (!Schema::connection($db_connection)->hasTable('system_configs')) {
-            Schema::connection($db_connection)->create('system_configs', function (Blueprint $table) {
+        if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
                 $table->increments('id')->comment('主键');
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                 $table->unsignedTinyInteger('parent_id')->default(0)->comment('父级id');
@@ -48,12 +54,12 @@ return new class () extends Migration {
 
 
                 // 索引
-                $table->index('sort');
+                $table->index('sort', 'idx_system_configs_sort');
             });
 
-            $prefix = config('database.connections.'.$db_connection.'.prefix');
+            $prefix = config('database.connections.'.$dbConnection.'.prefix');
 
-            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}system_configs` comment '系统配置表'");
+            DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable}` comment '{$this->tableComment}'");
         }
     }
 
@@ -64,10 +70,12 @@ return new class () extends Migration {
      */
     public function down()
     {
-        $db_connection = config('youhujun.db_connection');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
 
-        if (Schema::connection($db_connection)->hasTable('system_configs')) {
-            Schema::connection($db_connection)->dropIfExists('system_configs');
+
+        if (Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->dropIfExists($this->baseTable);
         }
     }
 };

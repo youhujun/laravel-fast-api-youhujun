@@ -12,9 +12,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 
-return new class extends Migration
-{
+return new class () extends Migration {
+    protected $baseTable = 'password_reset_tokens';
+    protected $hasSnowflake = false;
+    protected $tableComment = '密码重置表';
+
     /**
      * Run the migrations.
      *
@@ -22,31 +26,31 @@ return new class extends Migration
      */
     public function up()
     {
-		$db_connection = config('youhujun.db_connection');
-		
-		if (!Schema::connection($db_connection)->hasTable('password_reset_tokens'))
-		{
-			Schema::connection($db_connection)->create('password_reset_tokens', function (Blueprint $table) {
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
 
-				$table->id()->comment('主键');
-				$table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
-				$table->string('email',128)->default('')->comment('邮箱');
-				$table->char('phone',12)->default('')->comment('手机号');
-				$table->string('token',255)->default('')->comment('令牌');
+        if (!Schema::connection($dbConnection)->hasTable($this->baseTable))
+        {
+            Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
+                $table->id()->comment('主键');
+                $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+                $table->string('email',128)->default('')->comment('邮箱');
+                $table->char('phone',12)->default('')->comment('手机号');
+                $table->string('token',255)->default('')->comment('令牌');
 
-				$table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-				$table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
+                $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
+                $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
 
-				$table->index('email', 'idx_pwd_tokens_email');
-				$table->index('phone', 'idx_pwd_tokens_phone');
-				$table->index('created_time', 'idx_pwd_tokens_cre_time');
-			});
-	
-			$prefix = config('database.connections.'.$db_connection.'.prefix');
-	
-			DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}password_reset_tokens` comment '密码重置表'");
-		}
-        
+                $table->index('email', 'idx_pwd_tokens_email');
+                $table->index('phone', 'idx_pwd_tokens_phone');
+                $table->index('created_time', 'idx_pwd_tokens_cre_time');
+            });
+
+            $prefix = config('database.connections.'.$dbConnection.'.prefix');
+
+            DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable}` comment '{$this->tableComment}'");
+        }
+
     }
 
     /**
@@ -56,12 +60,13 @@ return new class extends Migration
      */
     public function down()
     {
-		$db_connection = config('youhujun.db_connection');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
 
-		if (Schema::connection($db_connection)->hasTable('password_reset_tokens')) 
-		{
-			Schema::connection($db_connection)->dropIfExists('password_reset_tokens');
-		}
-       
+        if (Schema::connection($dbConnection)->hasTable($this->baseTable))
+        {
+            Schema::connection($dbConnection)->dropIfExists($this->baseTable);
+        }
+
     }
 };

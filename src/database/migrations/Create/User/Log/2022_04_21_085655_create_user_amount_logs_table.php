@@ -6,15 +6,20 @@
  * @Author: YouHuJun
  * @Date: 2022-04-21 08:56:55
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-16 15:33:18
+ * @LastEditTime: 2026-01-23 21:05:57
  */
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 
 return new class () extends Migration {
+    protected $baseTable = 'user_amount_logs';
+    protected $hasSnowflake = false;
+    protected $tableComment = '用户余额日志表';
+
     /**
      * Run the migrations.
      *
@@ -22,10 +27,11 @@ return new class () extends Migration {
      */
     public function up()
     {
-        $db_connection = config('youhujun.db_connection');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
 
-        if (!Schema::connection($db_connection)->hasTable('user_amount_logs')) {
-            Schema::connection($db_connection)->create('user_amount_logs', function (Blueprint $table) {
+        if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
                 $table->unsignedBigInteger('user_amount_log_uid')->comment('日志uid,雪花ID');
                 // 分片键：user_uid%100，未来分库分表用
                 $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键：user_uid%100，未来分库分表用');
@@ -51,9 +57,9 @@ return new class () extends Migration {
                 $table->index('sort', 'idx_user_amount_logs_sort');
             });
 
-            $prefix = config('database.connections.'.$db_connection.'.prefix');
+            $prefix = config('database.connections.'.$dbConnection.'.prefix');
 
-            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}user_amount_logs` comment '用户余额日志表'");
+            DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable}` comment '{$this->tableComment}'");
         }
     }
 
@@ -64,10 +70,11 @@ return new class () extends Migration {
      */
     public function down()
     {
-        $db_connection = config('youhujun.db_connection');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
 
-        if (Schema::connection($db_connection)->hasTable('user_amount_logs')) {
-            Schema::connection($db_connection)->dropIfExists('user_amount_logs');
+        if (Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->dropIfExists($this->baseTable);
         }
     }
 };

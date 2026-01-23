@@ -6,15 +6,20 @@
  * @Author: YouHuJun
  * @Date: 2022-04-20 17:05:30
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-17 11:47:00
+ * @LastEditTime: 2026-01-23 21:05:57
  */
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 
 return new class () extends Migration {
+    protected $baseTable = 'banks';
+    protected $hasSnowflake = false;
+    protected $tableComment = '系统银行表';
+
     /**
      * Run the migrations.
      *
@@ -22,10 +27,11 @@ return new class () extends Migration {
      */
     public function up()
     {
-        $db_connection = config('youhujun.db_connection');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
 
-        if (!Schema::connection($db_connection)->hasTable('banks')) {
-            Schema::connection($db_connection)->create('banks', function (Blueprint $table) {
+        if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
                 $table->id()->comment('银行表主键');
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                 $table->string('bank_name', 32)->nullable()->comment('银行名称 唯一');
@@ -47,9 +53,9 @@ return new class () extends Migration {
                 $table->index('is_default', 'idx_banks_is_default');
             });
 
-            $prefix = config('database.connections.'.$db_connection.'.prefix');
+            $prefix = config('database.connections.'.$dbConnection.'.prefix');
 
-            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}banks` comment '系统银行表'");
+            DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable}` comment '{$this->tableComment}'");
         }
     }
 
@@ -60,10 +66,11 @@ return new class () extends Migration {
      */
     public function down()
     {
-        $db_connection = config('youhujun.db_connection');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
 
-        if (Schema::connection($db_connection)->hasTable('banks')) {
-            Schema::connection($db_connection)->dropIfExists('banks');
+        if (Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->dropIfExists($this->baseTable);
         }
     }
 };

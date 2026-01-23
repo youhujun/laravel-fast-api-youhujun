@@ -12,9 +12,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 
-return new class extends Migration
-{
+return new class () extends Migration {
+    protected $baseTable = 'article_category_unions';
+    protected $hasSnowflake = false;
+    protected $tableComment = '文章和分类关联表';
+
     /**
      * Run the migrations.
      *
@@ -22,37 +26,38 @@ return new class extends Migration
      */
     public function up()
     {
-		$db_connection = config('youhujun.db_connection');
-		//注意是否需要修改mysql连接名和表名
-		if (!Schema::connection($db_connection)->hasTable('article_category_unions'))
-		{
-			Schema::connection($db_connection)->create('article_category_unions', function (Blueprint $table)
-			{
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
 
-			   $table->id()->comment('主键');
-			   $table->unsignedBigInteger('article_category_union_uid')->comment('文章分类关联雪花ID');
-			   $table->unsignedBigInteger('article_uid')->default(0)->comment('文章uid,雪花ID');
-			   $table->unsignedInteger('category_id')->default(0)->comment('文章分类id');
-			   $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+        //注意是否需要修改mysql连接名和表名
+        if (!Schema::connection($dbConnection)->hasTable($this->baseTable))
+        {
+            Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table)
+            {
+                $table->id()->comment('主键');
+                $table->unsignedBigInteger('article_category_union_uid')->comment('文章分类关联雪花ID');
+                $table->unsignedBigInteger('article_uid')->default(0)->comment('文章uid,雪花ID');
+                $table->unsignedInteger('category_id')->default(0)->comment('文章分类id');
+                $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 
-			   // 时间字段（自动填充+索引，关键优化）
-			   $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-			   $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
-			   $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-			   $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
-			   $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
+                // 时间字段（自动填充+索引，关键优化）
+                $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
+                $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
+                $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
+                $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
+                $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
-			   // 索引
-			   $table->unique('article_category_union_uid', 'uni_article_cat_uns_union_uid');
-			   $table->index('article_uid', 'idx_article_cat_uns_article_uid');
+                // 索引
+                $table->unique('article_category_union_uid', 'uni_article_cat_uns_union_uid');
+                $table->index('article_uid', 'idx_article_cat_uns_article_uid');
 
-			});
-	
-			$prefix = config('database.connections.'.$db_connection.'.prefix');
-	
-			DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}article_category_unions` comment '文章和分类关联表'");
-		}
-       
+            });
+
+            $prefix = config('database.connections.'.$dbConnection.'.prefix');
+
+            DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable}` comment '{$this->tableComment}'");
+        }
+
 
     }
 
@@ -63,12 +68,14 @@ return new class extends Migration
      */
     public function down()
     {
-		$db_connection = config('youhujun.db_connection');
-		//注意是否需要修改mysql连接名和表名
-		if (Schema::connection($db_connection)->hasTable('article_category_unions'))
-		{
-			Schema::connection($db_connection)->dropIfExists('article_category_unions');
-		}
-        
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
+
+        //注意是否需要修改mysql连接名和表名
+        if (Schema::connection($dbConnection)->hasTable($this->baseTable))
+        {
+            Schema::connection($dbConnection)->dropIfExists($this->baseTable);
+        }
+
     }
 };

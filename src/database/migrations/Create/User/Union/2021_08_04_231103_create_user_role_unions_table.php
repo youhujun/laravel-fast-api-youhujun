@@ -6,15 +6,20 @@
  * @Author: YouHuJun
  * @Date: 2021-08-13 14:58:33
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-22 11:36:47
+ * @LastEditTime: 2026-01-23 21:05:57
  */
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 
 return new class () extends Migration {
+    protected $baseTable = 'user_role_unions';
+    protected $hasSnowflake = false;
+    protected $tableComment = '用户和角色关联表';
+
     /**
      * Run the migrations.
      *
@@ -22,9 +27,11 @@ return new class () extends Migration {
      */
     public function up()
     {
-        $db_connection = config('youhujun.db_connection');
-        if (!Schema::connection($db_connection)->hasTable('system_config')) {
-            Schema::connection($db_connection)->create('user_role_unions', function (Blueprint $table) {
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
+
+        if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
                 $table->id()->comment('主键');
                 $table->unsignedBigInteger('user_role_union_uid')->comment('用户角色关联雪花ID');
                 $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
@@ -44,9 +51,9 @@ return new class () extends Migration {
                 $table->index('updated_time', 'idx_role_unions_upd_time');
             });
 
-            $prefix = config('database.connections.'.$db_connection.'.prefix');
+            $prefix = config('database.connections.'.$dbConnection.'.prefix');
 
-            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}user_role_unions` comment '用户和角色关联表'");
+            DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable}` comment '{$this->tableComment}'");
         }
     }
 
@@ -57,10 +64,11 @@ return new class () extends Migration {
      */
     public function down()
     {
-        $db_connection = config('youhujun.db_connection');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
 
-        if (Schema::connection($db_connection)->hasTable('user_role_unions')) {
-            Schema::connection($db_connection)->dropIfExists('user_role_unions');
+        if (Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->dropIfExists($this->baseTable);
         }
     }
 };

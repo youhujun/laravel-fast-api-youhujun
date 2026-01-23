@@ -13,8 +13,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 
 return new class () extends Migration {
+    protected $baseTable = 'user_login_logs';
+    protected $hasSnowflake = false;
+    protected $tableComment = '用户登录退出日志表';
+
     /**
      * Run the migrations.
      *
@@ -22,10 +27,11 @@ return new class () extends Migration {
      */
     public function up()
     {
-        $db_connection = config('youhujun.db_connection');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
 
-        if (!Schema::connection($db_connection)->hasTable('user_login_logs')) {
-            Schema::connection($db_connection)->create('user_login_logs', function (Blueprint $table) {
+        if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
                 $table->unsignedBigInteger('user_login_log_uid')->comment('日志uid,雪花ID');
                 $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
@@ -46,9 +52,9 @@ return new class () extends Migration {
                 $table->index('status', 'idx_user_login_logs_status');
             });
 
-            $prefix = config('database.connections.'.$db_connection.'.prefix');
+            $prefix = config('database.connections.'.$dbConnection.'.prefix');
 
-            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}user_login_logs` comment '用户登录退出日志表'");
+            DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable}` comment '{$this->tableComment}'");
         }
     }
 
@@ -59,10 +65,11 @@ return new class () extends Migration {
      */
     public function down()
     {
-        $db_connection = config('youhujun.db_connection');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
 
-        if (Schema::connection($db_connection)->hasTable('user_login_logs')) {
-            Schema::connection($db_connection)->dropIfExists('user_login_logs');
+        if (Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->dropIfExists($this->baseTable);
         }
     }
 };

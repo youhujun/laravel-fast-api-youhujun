@@ -6,15 +6,20 @@
  * @Author: YouHuJun
  * @Date: 2022-04-21 09:02:37
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-16 14:45:41
+ * @LastEditTime: 2026-01-23 21:05:57
  */
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 
 return new class () extends Migration {
+    protected $baseTable = 'user_coin_logs';
+    protected $hasSnowflake = false;
+    protected $tableComment = '用户系统币日志表';
+
     /**
      * Run the migrations.
      *
@@ -22,10 +27,11 @@ return new class () extends Migration {
      */
     public function up()
     {
-        $db_connection = config('youhujun.db_connection');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
 
-        if (!Schema::connection($db_connection)->hasTable('user_coin_logs')) {
-            Schema::connection($db_connection)->create('user_coin_logs', function (Blueprint $table) {
+        if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
                 $table->unsignedBigInteger('user_coin_log_uid')->comment('日志uid,雪花ID');
                 // 分片键：user_uid%100，未来分库分表用
                 $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键：user_uid%100，未来分库分表用');
@@ -33,7 +39,7 @@ return new class () extends Migration {
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                 $table->decimal('before_amount', 32, 8)->default(0)->comment('金额');
                 $table->decimal('change_value', 32, 8)->default(0)->comment('变动数值');
-                $table->unsignedTinyInteger('change_type')->default(0)->comment('0未知 10充值 20 支出  30退款');
+                $table->unsignedTinyInteger('change_type')->default(0)->comment('0未知 10充值 20 支出 30退款');
                 $table->decimal('amount', 32, 8)->default(0)->comment('系统币');
                 $table->string('note', 32)->nullable()->comment('备注');
                 $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
@@ -50,9 +56,9 @@ return new class () extends Migration {
                 $table->index('change_type', 'idx_user_coin_logs_change_type');
             });
 
-            $prefix = config('database.connections.'.$db_connection.'.prefix');
+            $prefix = config('database.connections.'.$dbConnection.'.prefix');
 
-            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}user_coin_logs` comment '用户系统币日志表'");
+            DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable}` comment '{$this->tableComment}'");
         }
     }
 
@@ -63,10 +69,11 @@ return new class () extends Migration {
      */
     public function down()
     {
-        $db_connection = config('youhujun.db_connection');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
 
-        if (Schema::connection($db_connection)->hasTable('user_coin_logs')) {
-            Schema::connection($db_connection)->dropIfExists('user_coin_logs');
+        if (Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->dropIfExists($this->baseTable);
         }
     }
 };

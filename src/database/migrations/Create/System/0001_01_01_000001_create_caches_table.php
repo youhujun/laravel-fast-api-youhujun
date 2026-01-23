@@ -14,51 +14,58 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 
-return new class extends Migration
-{
+return new class () extends Migration {
+    protected $baseTable1 = 'cache';
+    protected $baseTable2 = 'cache_locks';
+    protected $hasSnowflake = false;
+    protected $tableComment1 = 'cache表';
+    protected $tableComment2 = 'cache_locks表';
+
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-		$db_connection = config('youhujun.db_connection');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
 
-		if (!Schema::connection($db_connection)->hasTable('cache')) 
-		{
-			Schema::connection($db_connection)->create('cache', function (Blueprint $table) {
-				$table->string('key')->primary()->comment('主键key');
-				$table->mediumText('value')->comment('cache锁值');
-				$table->integer('expiration')->comment('有效期单位分钟');
+        if (!Schema::connection($dbConnection)->hasTable($this->baseTable1))
+        {
+            Schema::connection($dbConnection)->create($this->baseTable1, function (Blueprint $table) {
+                $table->string('key')->primary()->comment('主键key');
+                $table->mediumText('value')->comment('cache锁值');
+                $table->integer('expiration')->comment('有效期单位分钟');
 
-				// 索引
-				$table->index('expiration');
-			});
+                // 索引
+                $table->index('expiration', 'idx_cache_expiration');
+            });
 
-			$prefix = config('database.connections.'.$db_connection.'.prefix');
+            $prefix = config('database.connections.'.$dbConnection.'.prefix');
 
-			DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}cache` comment 'cache表'");
-		}
+            DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable1}` comment '{$this->tableComment1}'");
+        }
 
-		if (!Schema::connection($db_connection)->hasTable('cache_locks')) 
-		{
-			Schema::connection($db_connection)->create('cache_locks', function (Blueprint $table)
-			{
-				$table->string('key')->primary()->comment('主键key');
-				$table->string('owner')->comment('所有者');
-				$table->integer('expiration')->comment('有效期单位分钟');
+        if (!Schema::connection($dbConnection)->hasTable($this->baseTable2))
+        {
+            Schema::connection($dbConnection)->create($this->baseTable2, function (Blueprint $table)
+            {
+                $table->string('key')->primary()->comment('主键key');
+                $table->string('owner')->comment('所有者');
+                $table->integer('expiration')->comment('有效期单位分钟');
 
-				// 索引
-				$table->index('owner');
-				$table->index('expiration');
-			});
+                // 索引
+                $table->index('owner', 'idx_cache_locks_owner');
+                $table->index('expiration', 'idx_cache_locks_expiration');
+            });
 
-			$prefix = config('database.connections.'.$db_connection.'.prefix');
+            $prefix = config('database.connections.'.$dbConnection.'.prefix');
 
-			DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}cache_locks` comment 'cache_locks表'");
-		}
+            DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable2}` comment '{$this->tableComment2}'");
+        }
 
-        
+
     }
 
     /**
@@ -66,15 +73,17 @@ return new class extends Migration
      */
     public function down(): void
     {
-		$db_connection = config('youhujun.db_connection');
-		if (Schema::connection($db_connection)->hasTable('cache')) 
-		{
-			Schema::dropIfExists('cache');
-		}
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
 
-		if (Schema::connection($db_connection)->hasTable('cache_locks')) 
-		{
-			Schema::dropIfExists('cache_locks');
-		} 
+        if (Schema::connection($dbConnection)->hasTable($this->baseTable1))
+        {
+            Schema::connection($dbConnection)->dropIfExists($this->baseTable1);
+        }
+
+        if (Schema::connection($dbConnection)->hasTable($this->baseTable2))
+        {
+            Schema::connection($dbConnection)->dropIfExists($this->baseTable2);
+        }
     }
 };

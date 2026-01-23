@@ -12,8 +12,14 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 
 return new class () extends Migration {
+    protected $baseTable = 'job_batches';
+    protected $hasSnowflake = false;
+    protected $tableComment = '批处理队列表';
+
     /**
      * Run the migrations.
      *
@@ -21,10 +27,12 @@ return new class () extends Migration {
      */
     public function up()
     {
-        $db_connection = config('youhujun.db_connection');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
+
         //注意是否需要修改mysql连接名和表名
-        if (!Schema::connection($db_connection)->hasTable('job_batches')) {
-            Schema::connection($db_connection)->create('job_batches', function (Blueprint $table) {
+        if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
                 $table->string('id')->primary()->comment('批处理任务表主键');
                 $table->string('name')->default('')->comment('名称');
                 $table->integer('total_jobs')->default(0)->comment('任务总数');
@@ -38,9 +46,9 @@ return new class () extends Migration {
                 $table->integer('finished_at')->nullable()->comment('完成时间');
             });
 
-            $prefix = config('database.connections.'.$db_connection.'.prefix');
+            $prefix = config('database.connections.'.$dbConnection.'.prefix');
 
-            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}job_batches` comment '批处理队列表'");
+            DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable}` comment '{$this->tableComment}'");
         }
     }
 
@@ -51,10 +59,12 @@ return new class () extends Migration {
      */
     public function down()
     {
-        $db_connection = config('youhujun.db_connection');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
+
         //注意是否需要修改mysql连接名和表名
-        if (Schema::connection($db_connection)->hasTable('job_batches')) {
-            Schema::connection($db_connection)->dropIfExists('job_batches');
+        if (Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->dropIfExists($this->baseTable);
         }
     }
 };

@@ -20,6 +20,10 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 use App\Models\LaravelFastApi\V1\System\SystemConfig;
+use YouHuJun\Tool\App\Facade\V1\Utils\Shard\ShardFacade;
+
+use Illuminate\Support\Facades\Config;
+
 
 class LaravelFastApiServiceProvider extends ServiceProvider
 {
@@ -72,6 +76,16 @@ class LaravelFastApiServiceProvider extends ServiceProvider
 
             Log::channel('sql')->debug(['sql' => $data]);
         });
+
+
+        // 全局初始化ShardFacade配置（只执行一次，所有地方复用）
+        ShardFacade::setConfig([
+            'db_count' => Config::get('youhujun.shard.db_count', 1),
+            'table_count' => Config::get('youhujun.shard.table_count', 1),
+            'db_prefix' => Config::get('youhujun.shard.db_prefix', 'ds_'),
+            'default_db' => Config::get('youhujun.shard.default_db', 'ds_0'),
+        ]);
+
 
         if (config('youhujun.runing')) {
             //启动自定义命令

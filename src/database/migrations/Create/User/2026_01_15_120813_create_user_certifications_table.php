@@ -6,66 +6,84 @@
  * @Author: youhujun youhu8888@163.com
  * @Date: 2026-01-15 12:08:13
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-17 11:16:02
+ * @LastEditTime: 2026-01-23 21:20:00
  * @FilePath: \src\database\migrations\Create\User\2026_01_15_120813_create_user_certifications_table.php
  * Copyright (C) 2026 youhujun. All rights reserved.
  */
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 
 return new class () extends Migration {
+    protected $baseTable = 'user_certifications';
+    protected $hasSnowflake = true;
+    protected $tableComment = '用户认证信息表';
+
     public function up()
     {
-        $db_connection = config('youhujun.db_connection');
-        if (!Schema::connection($db_connection)->hasTable('user_certifications')) {
-            Schema::connection($db_connection)->create('user_certifications', function (Blueprint $table) {
-                // 物理主键
-                $table->id()->comment('物理主键（自增）');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
+        $tableCount = Config::get('youhujun.shard.table_count', 1);
 
-                $table->unsignedBigInteger('user_certification_uid')->default(0)->comment('用户认证UID');
+        for ($i = 0; $i < $tableCount; $i++) {
+            $tableName = $this->baseTable . '_' . $i;
+            if (!Schema::connection($dbConnection)->hasTable($tableName)) {
+                Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
+                    // 物理主键
+                    $table->id()->comment('物理主键（自增）');
 
-                // 核心关联字段（和用户表一致的雪花ID）
-                $table->unsignedBigInteger('user_uid')->default(0)->comment('关联用户表user_uid');
-                // 认证类型（扩展关键：新增类型只需加枚举值，无需改表）
-                $table->unsignedTinyInteger('cert_type')->comment('认证类型 10手机 20邮箱 30身份证 40人脸 50企业');
-                // 认证状态（和主表的real_auth_status互补，更细粒度）
-                $table->unsignedTinyInteger('cert_status')->default(10)->comment('认证状态 10未认证 20认证中 30未通过 40通过');
-                // 认证时间（datetime+时间戳双存储，和主表保持一致）
-                $table->dateTime('certified_at')->nullable()->comment('认证通过时间');
-                $table->unsignedInteger('certified_time')->default(0)->comment('认证通过时间戳');
-                // 扩展字段
-                $table->string('auditor_uid', 20)->nullable()->comment('审核人admin_uid');
-                $table->string('cert_remark', 255)->nullable()->comment('认证备注/失败原因');
-                $table->dateTime('expired_at')->nullable()->comment('认证有效期');
+                    $table->unsignedBigInteger('user_certification_uid')->default(0)->comment('用户认证UID');
 
-                // 基础时间字段
-                $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-                $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
-                $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-                $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
+                    // 核心关联字段（和用户表一致的雪花ID）
+                    $table->unsignedBigInteger('user_uid')->default(0)->comment('关联用户表user_uid');
+                    // 认证类型（扩展关键：新增类型只需加枚举值，无需改表）
+                    $table->unsignedTinyInteger('cert_type')->comment('认证类型 10手机 20邮箱 30身份证 40人脸 50企业');
+                    // 认证状态（和主表的real_auth_status互补，更细粒度）
+                    $table->unsignedTinyInteger('cert_status')->default(10)->comment('认证状态 10未认证 20认证中 30未通过 40通过');
+                    // 认证时间（datetime+时间戳双存储，和主表保持一致）
+                    $table->dateTime('certified_at')->nullable()->comment('认证通过时间');
+                    $table->unsignedInteger('certified_time')->default(0)->comment('认证通过时间戳');
+                    // 扩展字段
+                    $table->string('auditor_uid', 20)->nullable()->comment('审核人admin_uid');
+                    $table->string('cert_remark', 255)->nullable()->comment('认证备注/失败原因');
+                    $table->dateTime('expired_at')->nullable()->comment('认证有效期');
 
-                // 索引
-                $table->unique('user_certification_uid', 'uni_user_certifications_uid');
-                $table->unique(['user_uid', 'cert_type'], 'uni_user_certifications_uid_type');
-                $table->index('user_uid', 'idx_user_certifications_user_uid');
-                $table->index('cert_type', 'idx_user_certifications_cert_type');
-                $table->index('cert_status', 'idx_user_certifications_cert_status');
-                $table->index('certified_time', 'idx_user_certifications_certified');
-                $table->index('created_time', 'idx_user_certifications_created');
-            });
+                    // 基础时间字段
+                    $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
+                    $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
+                    $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
+                    $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
 
-            $prefix = config('database.connections.'.$db_connection.'.prefix');
-            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}user_certifications` comment '用户认证信息表'");
+                    // 索引
+                    $table->unique('user_certification_uid', 'uni_user_certifications_uid_' . $i);
+                    $table->unique(['user_uid', 'cert_type'], 'uni_user_certifications_uid_type_' . $i);
+                    $table->index('user_uid', 'idx_user_certifications_user_uid_' . $i);
+                    $table->index('cert_type', 'idx_user_certifications_cert_type_' . $i);
+                    $table->index('cert_status', 'idx_user_certifications_cert_status_' . $i);
+                    $table->index('certified_time', 'idx_user_certifications_certified_' . $i);
+                    $table->index('created_time', 'idx_user_certifications_created_' . $i);
+                });
+
+                $prefix = config('database.connections.'.$dbConnection.'.prefix');
+                DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$tableName}` comment '{$this->tableComment}-分表{$i}'");
+            }
         }
     }
 
     public function down()
     {
-        $db_connection = config('youhujun.db_connection');
-        if (Schema::connection($db_connection)->hasTable('user_certifications')) {
-            Schema::connection($db_connection)->dropIfExists('user_certifications');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
+        $tableCount = Config::get('youhujun.shard.table_count', 1);
+
+        for ($i = 0; $i < $tableCount; $i++) {
+            $tableName = $this->baseTable . '_' . $i;
+            if (Schema::connection($dbConnection)->hasTable($tableName)) {
+                Schema::connection($dbConnection)->dropIfExists($tableName);
+            }
         }
     }
 };

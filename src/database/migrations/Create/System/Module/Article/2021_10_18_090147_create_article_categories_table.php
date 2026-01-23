@@ -13,8 +13,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 
 return new class () extends Migration {
+    protected $baseTable = 'article_categories';
+    protected $hasSnowflake = false;
+    protected $tableComment = '文章分类表';
+
     /**
      * Run the migrations.
      *
@@ -22,9 +27,11 @@ return new class () extends Migration {
      */
     public function up()
     {
-        $db_connection = config('youhujun.db_connection');
-        if (!Schema::connection($db_connection)->hasTable('article_categories')) {
-            Schema::connection($db_connection)->create('article_categories', function (Blueprint $table) {
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
+
+        if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
                 $table->id()->comment('主键');
                 $table->unsignedInteger('parent_id')->default(0)->comment('父级id');
                 $table->unsignedTinyInteger('deep')->default(0)->comment('级别');
@@ -55,9 +62,9 @@ return new class () extends Migration {
                 $table->index('created_time', 'idx_article_categories_cre_time');
             });
 
-            $prefix = config('database.connections.'.$db_connection.'.prefix');
+            $prefix = config('database.connections.'.$dbConnection.'.prefix');
 
-            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}article_categories` comment '文章分类表'");
+            DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable}` comment '{$this->tableComment}'");
         }
     }
 
@@ -68,10 +75,11 @@ return new class () extends Migration {
      */
     public function down()
     {
-        $db_connection = config('youhujun.db_connection');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
 
-        if (Schema::connection($db_connection)->hasTable('article_categories')) {
-            Schema::connection($db_connection)->dropIfExists('article_categories');
+        if (Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->dropIfExists($this->baseTable);
         }
     }
 };

@@ -6,15 +6,20 @@
  * @Author: YouHuJun
  * @Date: 2023-04-03 09:17:09
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-16 15:35:41
+ * @LastEditTime: 2026-01-23 21:05:57
  */
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 
 return new class () extends Migration {
+    protected $baseTable = 'user_real_auth_logs';
+    protected $hasSnowflake = false;
+    protected $tableComment = '用户实名认证日志表';
+
     /**
      * Run the migrations.
      *
@@ -22,15 +27,16 @@ return new class () extends Migration {
      */
     public function up()
     {
-        $db_connection = config('youhujun.db_connection');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
 
-        if (!Schema::connection($db_connection)->hasTable('user_real_auth_logs')) {
-            Schema::connection($db_connection)->create('user_real_auth_logs', function (Blueprint $table) {
+        if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
                 $table->unsignedBigInteger('user_real_auth_log_uid')->comment('日志uid,雪花ID');
                 $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                 $table->unsignedBigInteger('admin_uid')->default(0)->comment('审核的管理员id');
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
-                $table->unsignedTinyInteger('status')->default(0)->comment('状态 10申请中  20通过 30拒绝');
+                $table->unsignedTinyInteger('status')->default(0)->comment('状态 10申请中 20通过 30拒绝');
                 $table->dateTime('auth_apply_at')->nullable()->comment('实名认证申请时间string');
                 $table->unsignedInteger('auth_apply_time')->default(0)->comment('实名认证申请时间int');
                 $table->dateTime('auth_at')->nullable()->comment('实名认证审核时间string');
@@ -53,9 +59,9 @@ return new class () extends Migration {
                 $table->index('status', 'idx_user_real_auth_logs_status');
             });
 
-            $prefix = config('database.connections.'.$db_connection.'.prefix');
+            $prefix = config('database.connections.'.$dbConnection.'.prefix');
 
-            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}user_real_auth_logs` comment '用户实名认证日志表'");
+            DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable}` comment '{$this->tableComment}'");
         }
     }
 
@@ -66,10 +72,11 @@ return new class () extends Migration {
      */
     public function down()
     {
-        $db_connection = config('youhujun.db_connection');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
 
-        if (Schema::connection($db_connection)->hasTable('user_real_auth_logs')) {
-            Schema::connection($db_connection)->dropIfExists('user_real_auth_logs');
+        if (Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->dropIfExists($this->baseTable);
         }
     }
 };

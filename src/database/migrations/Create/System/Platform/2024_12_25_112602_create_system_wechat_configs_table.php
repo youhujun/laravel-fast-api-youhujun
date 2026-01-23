@@ -6,7 +6,7 @@
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2024-12-25 11:44:12
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-17 11:59:05
+ * @LastEditTime: 2026-01-23 21:20:00
  * @FilePath: \src\database\migrations\Create\System\Platform\2024_12_25_112602_create_system_wechat_configs_table.php
  */
 
@@ -14,23 +14,28 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 
 return new class () extends Migration {
+    protected $baseTable = 'system_wechat_configs';
+    protected $hasSnowflake = false;
+    protected $tableComment = '系统微信配置表';
+
     /**
      * Run the migrations.
-     *
      * @return void
      */
     public function up()
     {
-        $db_connection = config('youhujun.db_connection');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
 
-        if (!Schema::connection($db_connection)->hasTable('system_wechat_configs')) {
-            Schema::connection($db_connection)->create('system_wechat_configs', function (Blueprint $table) {
+        if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
                 $table->id()->comment('主键');
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                 $table->string('name', 64)->default('')->comment('名称');
-                $table->unsignedtinyInteger('type')->default(0)->comment('类型 10小程序 20小游戏 30公众号 40 测试微信公众号');
+                $table->unsignedTinyInteger('type')->default(0)->comment('类型 10小程序 20小游戏 30公众号 40 测试微信公众号');
                 $table->string('appid', 64)->nullable()->comment('appid');
                 $table->string('appsecret', 64)->default('')->comment('appsecret');
                 $table->string('note', 128)->default('')->comment('备注');
@@ -43,7 +48,6 @@ return new class () extends Migration {
                 $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
-
                 // 索引
                 $table->index('type', 'idx_sys_wechat_cfgs_type');
                 $table->index('created_time', 'idx_sys_wechat_cfgs_cre_time');
@@ -51,23 +55,23 @@ return new class () extends Migration {
                 $table->unique(['name','deleted_at'], 'uni_sys_wechat_cfgs_name_del');
             });
 
-            $prefix = config('database.connections.'.$db_connection.'.prefix');
+            $prefix = config('database.connections.'.$dbConnection.'.prefix');
 
-            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}system_wechat_configs` comment '系统微信配置表'");
+            DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable}` comment '{$this->tableComment}'");
         }
     }
 
     /**
      * Reverse the migrations.
-     *
      * @return void
      */
     public function down()
     {
-        $db_connection = config('youhujun.db_connection');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
 
-        if (Schema::connection($db_connection)->hasTable('system_wechat_configs')) {
-            Schema::connection($db_connection)->dropIfExists('system_wechat_configs');
+        if (Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->dropIfExists($this->baseTable);
         }
     }
 };

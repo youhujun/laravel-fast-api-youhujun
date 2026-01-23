@@ -14,8 +14,13 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 
 return new class () extends Migration {
+    protected $baseTable = 'jobs';
+    protected $hasSnowflake = false;
+    protected $tableComment = '队列表';
     /**
      * Run the migrations.
      *
@@ -23,10 +28,12 @@ return new class () extends Migration {
      */
     public function up()
     {
-        $db_connection = config('youhujun.db_connection');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
+
         //注意是否需要修改mysql连接名和表名
-        if (!Schema::connection($db_connection)->hasTable('jobs')) {
-            Schema::connection($db_connection)->create('jobs', function (Blueprint $table) {
+        if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
                 $table->bigIncrements('id')->comment('主键');
                 $table->string('queue')->default('')->comment('队列');
                 $table->longText('payload')->default('')->comment('有效载荷');
@@ -37,12 +44,12 @@ return new class () extends Migration {
                 $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
 
                 // 索引
-                $table->index('queue');
+                $table->index('queue', 'idx_jobs_queue');
             });
 
-            $prefix = config('database.connections.'.$db_connection.'.prefix');
+            $prefix = config('database.connections.'.$dbConnection.'.prefix');
 
-            DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}jobs` comment '队列表'");
+            DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable}` comment '{$this->tableComment}'");
         }
     }
 
@@ -53,10 +60,11 @@ return new class () extends Migration {
      */
     public function down()
     {
-        $db_connection = config('youhujun.db_connection');
-        //注意是否需要修改mysql连接名和表名
-        if (Schema::connection($db_connection)->hasTable('jobs')) {
-            Schema::connection($db_connection)->dropIfExists('jobs');
+        $shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db'];
+
+        if (Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->dropIfExists($this->baseTable);
         }
     }
 };
