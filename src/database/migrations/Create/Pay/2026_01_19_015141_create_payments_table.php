@@ -41,7 +41,7 @@ return new class () extends Migration {
                     $table->unsignedBigInteger('payment_uid')->comment('支付全局唯一ID,雪花ID,业务核心ID');
 
                     // 3. 关联字段（统一用uid后缀，和系统其他表对齐）
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键：user_id%100/ID%100，未来分库分表用');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
                     $table->unsignedBigInteger('payer_uid')->default(0)->comment('支付主体UID（用户/商户/机构，关联对应表的*_uid）');
                     $table->unsignedBigInteger('order_uid')->nullable()->comment('主订单UID（单支付对应单主订单时用）');
                     $table->unsignedBigInteger('refund_uid')->nullable()->default(0)->comment('关联退款UID（退款场景用）');

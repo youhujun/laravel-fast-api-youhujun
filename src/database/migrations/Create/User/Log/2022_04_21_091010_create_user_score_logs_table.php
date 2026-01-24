@@ -36,7 +36,7 @@ return new class () extends Migration {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->unsignedBigInteger('user_score_log_uid')->comment('日志uid,雪花ID');
                     // 分片键：user_uid%100，未来分库分表用
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键：user_uid%100，未来分库分表用');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                     $table->decimal('before_amount', 32, 8)->default(0)->comment('金额');
