@@ -20,6 +20,8 @@ return new class () extends Migration {
      * 基础表名（和ShardFacade::getTableName的baseTable对齐）
      */
     protected $baseTable = 'admins';
+    protected $hasSnowflake = true;
+    protected $tableComment = '管理员表';
 
     /**
      * Run the migrations.
@@ -75,9 +77,8 @@ return new class () extends Migration {
                     $table->index('created_time', 'idx_admins_created_time_' . $i);
                 });
 
-                // 关键修复：补全单引号，修正SQL语法
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');
-                DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$tableName}` comment '游鹄生态-管理员分片表_{$i}'");
+                DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$tableName}` comment '{$this->tableComment}'");
             }
         }
     }

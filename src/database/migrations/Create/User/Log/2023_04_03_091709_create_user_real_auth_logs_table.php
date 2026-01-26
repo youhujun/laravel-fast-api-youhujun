@@ -38,6 +38,7 @@ return new class () extends Migration {
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('admin_uid')->default(0)->comment('审核的管理员id');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+                    $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
                     $table->unsignedTinyInteger('status')->default(0)->comment('状态 10申请中 20通过 30拒绝');
                     $table->dateTime('auth_apply_at')->nullable()->comment('实名认证申请时间string');
                     $table->unsignedInteger('auth_apply_time')->default(0)->comment('实名认证申请时间int');
@@ -59,6 +60,7 @@ return new class () extends Migration {
                     $table->index('auth_time', 'idx_user_real_auth_logs_auth_' . $i);
                     $table->index('sort', 'idx_user_real_auth_logs_sort_' . $i);
                     $table->index('status', 'idx_user_real_auth_logs_status_' . $i);
+                    $table->index('data_type', 'idx_user_real_auth_logs_data_type_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

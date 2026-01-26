@@ -37,6 +37,7 @@ return new class () extends Migration {
                     $table->unsignedBigInteger('user_event_log_uid')->comment('日志uid,雪花ID');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+                    $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
 
                     $table->unsignedInteger('event_type')->default(0)->comment('事件类型');
                     $table->string('event_route_action',128)->default('')->comment('事件路由');
@@ -54,6 +55,7 @@ return new class () extends Migration {
                     $table->index('user_uid', 'idx_user_event_logs_user_uid_' . $i);
                     $table->index('event_type', 'idx_user_event_logs_event_type_' . $i);
                     $table->index('created_time', 'idx_user_event_logs_created_time_' . $i);
+                    $table->index('data_type', 'idx_user_event_logs_data_type_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

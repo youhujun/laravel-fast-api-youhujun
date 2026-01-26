@@ -40,6 +40,7 @@ return new class extends Migration
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->tinyInteger('type')->default(0)->comment('类型 10用户');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+                    $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
                     $table->decimal('latitude',32,10,true)->default(0)->comment('维度');
                     $table->decimal('longitude',32,10,true)->default(0)->comment('经度');
                     $table->string('address',128)->default('')->comment('位置信息');
@@ -55,6 +56,7 @@ return new class extends Migration
                     $table->index('user_uid', 'idx_user_location_logs_user_uid_' . $i);
                     $table->index('created_time', 'idx_user_location_logs_created_time_' . $i);
                     $table->index('sort', 'idx_user_location_logs_sort_' . $i);
+                    $table->index('data_type', 'idx_user_location_logs_data_type_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

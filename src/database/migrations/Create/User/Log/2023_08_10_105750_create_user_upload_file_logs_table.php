@@ -39,6 +39,7 @@ return new class extends Migration
                     $table->unsignedBigInteger('user_upload_file_log_uid')->comment('日志uid,雪花ID');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+                    $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
 
                     $table->unsignedTinyInteger('use_type')->default(0)->comment('使用类型0  10个人配置 20个人文件');
                     $table->unsignedTinyInteger('save_type')->default(0)->comment('存储类型 10本地 20存储桶');
@@ -58,6 +59,7 @@ return new class extends Migration
                     $table->unique('user_upload_file_log_uid', 'uni_user_upload_file_logs_uid_' . $i);
                     $table->index('user_uid', 'idx_user_upload_file_logs_user_uid_' . $i);
                     $table->index('created_time', 'idx_user_upload_file_logs_created_' . $i);
+                    $table->index('data_type', 'idx_user_upload_file_logs_data_type_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

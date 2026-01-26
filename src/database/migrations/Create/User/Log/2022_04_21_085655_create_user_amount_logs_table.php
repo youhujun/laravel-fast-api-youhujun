@@ -39,6 +39,7 @@ return new class () extends Migration {
                     $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+                    $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
                     $table->decimal('before_amount', 32, 8)->default(0)->comment('实际金额');
                     $table->decimal('change_value', 32, 8)->default(0)->comment('变动数值');
                     $table->unsignedTinyInteger('change_type')->default(0)->comment('变动类型 0未知 10增加 20减少');
@@ -57,6 +58,7 @@ return new class () extends Migration {
                     $table->index('created_time', 'idx_user_amount_logs_created_time_' . $i);
                     $table->index('change_type', 'idx_user_amount_logs_change_type_' . $i);
                     $table->index('sort', 'idx_user_amount_logs_sort_' . $i);
+                    $table->index('data_type', 'idx_user_amount_logs_data_type_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

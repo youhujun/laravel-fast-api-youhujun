@@ -37,6 +37,7 @@ return new class () extends Migration {
                     $table->unsignedBigInteger('user_login_log_uid')->comment('日志uid,雪花ID');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+                    $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
                     $table->unsignedTinyInteger('status')->default(0)->comment('状态 0未知 10登录 20退出');
                     $table->string('instruction', 128)->default('')->comment('说明');
                     $table->string('ip', 32)->default('')->comment('ip地址');
@@ -52,6 +53,7 @@ return new class () extends Migration {
                     $table->index('user_uid', 'idx_user_login_logs_user_uid_' . $i);
                     $table->index('created_time', 'idx_user_login_logs_created_time_' . $i);
                     $table->index('status', 'idx_user_login_logs_status_' . $i);
+                    $table->index('data_type', 'idx_user_login_logs_data_type_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

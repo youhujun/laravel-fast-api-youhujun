@@ -30,52 +30,10 @@ return new class () extends Migration {
         $dbConnection = $shardConfig['default_db'];
         $tableCount = Config::get('youhujun.shard.table_count', 1);
 
-        if ($this->hasSnowflake) {
-            for ($i = 0; $i < $tableCount; $i++) {
-                $tableName = $this->baseTable . '_' . $i;
-                if (!Schema::connection($dbConnection)->hasTable($tableName)) {
-                    Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
-                        $table->id()->comment('主键');
-                        $table->unsignedBigInteger('user_info_uid')->comment('用户信息雪花ID');
-                        $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
-                        $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
-                        $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
-                        $table->string('nick_name',64)->default('')->comment('昵称');
-                        $table->string('family_name',32)->default('')->comment('姓');
-                        $table->string('name',64)->default('')->comment('名');
-                        $table->string('real_name',128)->default('')->comment('真实姓名');
-                        $table->string('id_number',32)->nullable()->comment('身份证号');
-                        $table->unsignedTinyInteger('sex')->default(0)->comment('性别 0未知10男20女');
-                        $table->date('solar_birthday_at')->nullable()->comment('阳历生日');
-                        $table->unsignedInteger('solar_birthday_time')->default(0)->comment('阳历生日');
-                        $table->date('chinese_birthday_at')->nullable()->comment('阴日生日');
-                        $table->unsignedInteger('chinese_birthday_time')->default(0)->comment('阴日生日');
-                        $table->string('introduction',255)->default('')->comment('简介');
-
-                        $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
-                        $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
-                        $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
-                        $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
-                        $table->dateTime('deleted_at')->nullable()->comment('删除时间');
-
-                        // 索引
-                        $table->unique('user_info_uid', 'uni_user_infos_uid_' . $i);
-                        $table->unique('id_number', 'uni_user_infos_id_number_' . $i);
-                        $table->index('user_uid', 'idx_user_infos_user_uid_' . $i);
-                        $table->index('created_time', 'idx_user_infos_created_time_' . $i);
-                        $table->index('sex', 'idx_user_infos_sex_' . $i);
-                        $table->index('solar_birthday_time', 'idx_user_infos_solar_birthday_' . $i);
-                        $table->index('chinese_birthday_time', 'idx_user_infos_chinese_birthday_' . $i);
-                    });
-
-                    $prefix = config('database.connections.'.$dbConnection.'.prefix');
-                    DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$tableName}` comment '{$this->tableComment}'");
-                }
-            }
-        } else {
-            if (!Schema::connection($dbConnection)->hasTable($this->baseTable))
-            {
-                Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
+        for ($i = 0; $i < $tableCount; $i++) {
+            $tableName = $this->baseTable . '_' . $i;
+            if (!Schema::connection($dbConnection)->hasTable($tableName)) {
+                Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->id()->comment('主键');
                     $table->unsignedBigInteger('user_info_uid')->comment('用户信息雪花ID');
                     $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
@@ -100,17 +58,17 @@ return new class () extends Migration {
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
                     // 索引
-                    $table->unique('user_info_uid', 'uni_user_infos_uid');
-                    $table->unique('id_number', 'uni_user_infos_id_number');
-                    $table->index('user_uid', 'idx_user_infos_user_uid');
-                    $table->index('created_time', 'idx_user_infos_created_time');
-                    $table->index('sex', 'idx_user_infos_sex');
-                    $table->index('solar_birthday_time', 'idx_user_infos_solar_birthday');
-                    $table->index('chinese_birthday_time', 'idx_user_infos_chinese_birthday');
+                    $table->unique('user_info_uid', 'uni_user_infos_uid_' . $i);
+                    $table->unique('id_number', 'uni_user_infos_id_number_' . $i);
+                    $table->index('user_uid', 'idx_user_infos_user_uid_' . $i);
+                    $table->index('created_time', 'idx_user_infos_created_time_' . $i);
+                    $table->index('sex', 'idx_user_infos_sex_' . $i);
+                    $table->index('solar_birthday_time', 'idx_user_infos_solar_birthday_' . $i);
+                    $table->index('chinese_birthday_time', 'idx_user_infos_chinese_birthday_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');
-                DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable}` comment '{$this->tableComment}'");
+                DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$tableName}` comment '{$this->tableComment}'");
             }
         }
 
@@ -127,17 +85,10 @@ return new class () extends Migration {
         $dbConnection = $shardConfig['default_db'];
         $tableCount = Config::get('youhujun.shard.table_count', 1);
 
-        if ($this->hasSnowflake) {
-            for ($i = 0; $i < $tableCount; $i++) {
-                $tableName = $this->baseTable . '_' . $i;
-                if (Schema::connection($dbConnection)->hasTable($tableName)) {
-                    Schema::connection($dbConnection)->dropIfExists($tableName);
-                }
-            }
-        } else {
-            if (Schema::connection($dbConnection)->hasTable($this->baseTable))
-            {
-                Schema::connection($dbConnection)->dropIfExists($this->baseTable);
+        for ($i = 0; $i < $tableCount; $i++) {
+            $tableName = $this->baseTable . '_' . $i;
+            if (Schema::connection($dbConnection)->hasTable($tableName)) {
+                Schema::connection($dbConnection)->dropIfExists($tableName);
             }
         }
 

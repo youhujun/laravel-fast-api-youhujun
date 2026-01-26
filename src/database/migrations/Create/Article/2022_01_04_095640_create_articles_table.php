@@ -16,10 +16,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 
 return new class () extends Migration {
-    /**
-     * 基础表名（和ShardFacade::getTableName的baseTable对齐）
-     */
     protected $baseTable = 'articles';
+    protected $hasSnowflake = true;
+    protected $tableComment = '文章表';
 
     /**
      * Run the migrations.
