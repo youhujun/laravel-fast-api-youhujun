@@ -48,6 +48,7 @@ return new class () extends Migration {
                     $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
                     $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间');
+                    $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
 
                     // 索引
                     $table->unique('user_picture_uid', 'uni_user_pictures_uid_' . $i);
@@ -56,6 +57,7 @@ return new class () extends Migration {
                     $table->index('created_time', 'idx_user_pictures_created_time_' . $i);
                     $table->index('is_default', 'idx_user_pictures_is_default_' . $i);
                     $table->index('sort', 'idx_user_pictures_sort_' . $i);
+                    $table->index('data_type', 'idx_user_pictures_data_type_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

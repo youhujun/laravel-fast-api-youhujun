@@ -46,12 +46,14 @@ return new class () extends Migration {
                     $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
                     $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
+                    $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
 
                     // 索引
                     $table->unique('user_qrcode_uid', 'uni_user_qrcodes_uid_' . $i);
                     $table->index('user_uid', 'idx_user_qrcodes_user_uid_' . $i);
                     $table->index('album_picture_uid', 'idx_user_qrcodes_picture_uid_' . $i);
                     $table->index('created_time', 'idx_user_qrcodes_created_time_' . $i);
+                    $table->index('data_type', 'idx_user_qrcodes_data_type_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');
