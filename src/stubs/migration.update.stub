@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class {{ class }} extends Migration
 {
+	protected $baseTable = {{ table }};
+    protected $hasSnowflake = false;
+    protected $tableComment = ''; // 改注释
     /**
      * Run the migrations.
      *
@@ -13,13 +16,16 @@ class {{ class }} extends Migration
      */
     public function up()
     {
-		$db_connection = config('youhujun.db_connection');
+		$shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db']; // 读取ds_0
+        $tableCount = Config::get('youhujun.shard.table_count', 1);
+		
 		//注意是否需要修改mysql连接名和表名
-		if (Schema::connection($db_connection)->hasTable('{{ table }}')) 
+		if (Schema::connection($db_connection)->hasTable($this->baseTable)) 
 		{
-			if (!Schema::hasColumn('{{ table }}', 'revision')) 
+			if (!Schema::hasColumn($this->baseTable, 'revision')) 
 			{
-				Schema::connection($db_connection)->table('{{ table }}', function (Blueprint $table) 
+				Schema::connection($db_connection)->table($this->baseTable, function (Blueprint $table) 
 				{
 					$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁')->after('id');
 					$table->unsignedTinyInteger('sort')->notNull()->index()->default(100)->comment('排序');
@@ -32,7 +38,7 @@ class {{ class }} extends Migration
 					$table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
 					// 索引
-					$table->index('created_time');
+					$table->index('created_time', 'idx_users_created_time_' . $i);
 				});
 			}
 			
@@ -48,9 +54,9 @@ class {{ class }} extends Migration
     {
 		$db_connection = config('youhujun.db_connection');
 
-        if (Schema::connection($db_connection)->hasTable('{{ table }}')) 
+        if (Schema::connection($db_connection)->hasTable($this->baseTable)) 
 		{
-			Schema::connection($db_connection)->table('{{ table }}', function (Blueprint $table) 
+			Schema::connection($db_connection)->table($this->baseTable, function (Blueprint $table) 
 			{
 				$table->dropColumn([
 					'revision', 

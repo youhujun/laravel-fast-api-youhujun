@@ -44,7 +44,6 @@ return new class () extends Migration {
                         $table->unsignedTinyInteger('status')->default(0)->comment('状态 0未知 10登录 20退出');
                     $table->string('instruction',64)->default('')->comment('说明');
                     $table->string('ip',64)->default('')->comment('ip地址');
-                    $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
 
                     // 时间字段（自动填充+索引，关键优化）
                     $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');

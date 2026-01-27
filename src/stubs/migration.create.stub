@@ -7,6 +7,13 @@ use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
+
+	/**
+     * 基础表名（和ShardFacade::getTableName的baseTable对齐）
+     */
+    protected $baseTable = {{ table }};
+    protected $hasSnowflake = false;
+    protected $tableComment = ''; // 改注释
     /**
      * Run the migrations.
      *
@@ -14,49 +21,77 @@ return new class extends Migration
      */
     public function up()
     {
-		$db_connection = config('youhujun.db_connection');
-		//注意是否需要修改mysql连接名和表名
-		if (!Schema::connection($db_connection)->hasTable('{{ table }}')) 
-		{
-			Schema::connection($db_connection)->create('{{ table }}', function (Blueprint $table)
-			{
-				$table->id()->comment('主键');
-				 // 雪花ID核心字段（大厂风格，非空+唯一+索引，适配分库分表）
-                $table->char('{{ table }}_uid', 20)->notNull()->comment('全局唯一ID,雪花ID,业务核心ID');
-                $table->char('user_uid', 20)->notNull()->comment('用户ID,雪花ID');
-				$table->char('admin_uid', 20)->notNull()->default(0)->comment('全局唯一ID,雪花ID,业务核心ID');
-				$table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
-				$table->unsignedtinyInteger('type')->notNull()->default(0)->comment('类型');
-				$table->string('name',32)->unique()->nullable()->comment('名称 唯一');
-				$table->string('name',32)->notNull()->default('')->comment('名称');
-				$table->char('char',12)->notNull()->default('')->comment('名称');
-				$table->unsignedTinyInteger('deep')->notNull()->default(0)->comment('');
-				$table->decimal('price',32,8,true)->notNull()->default(0)->comment('商品价格');
+		$shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db']; // 读取ds_0
+        $tableCount = Config::get('youhujun.shard.table_count', 1);
 
-				$table->string('note',128)->notNull()->default('')->comment('备注');
-				$table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
+		//分片
+        for ($i = 0; $i < $tableCount; $i++) {
+            $tableName = $this->baseTable . '_' . $i; // 对齐ShardFacade::getTableName规则
+            if (!Schema::connection($dbConnection)->hasTable($tableName)) {
+                Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) { // 关键：把$i传入闭包
+                    // 物理自增主键（仅数据库层面用，业务代码不碰）
+                    $table->id()->comment('物理主键（自增）');
+                    // 雪花ID核心字段（非空+唯一+索引，适配分库分表）
+                    $table->unsignedBigInteger('user_uid')->comment('用户全局唯一ID,雪花ID,业务核心ID');
+                    // 分片键：user_id%100/ID%100，未来分库分表用
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                   
+                    // 状态字段
+                    $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+                    $table->unsignedTinyInteger('account_status')->default(1)->comment('账户状态 0禁用 1启用');
+                   
+                    // 时间字段（自动填充+索引，关键优化）
+                    $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
+                    $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
+                    $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
+                    $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
+                    $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
-				// 时间字段（自动填充+索引，关键优化）
-                $table->dateTime('created_at')->useCurrent()->comment('创建时间');
-                $table->unsignedInteger('created_time')->notNull()->default(0)->comment('创建时间戳');
-                $table->dateTime('updated_at')->useCurrentOnUpdate()->comment('更新时间');
-                $table->unsignedInteger('updated_time')->notNull()->default(0)->comment('更新时间戳');
+                    // 索引 - 关键修复：加$i区分分表索引名，避免重复
+                    $table->unique('user_uid', 'uni_users_user_uid_' . $i);
+                    // 适配软删除
+                    $table->index('created_time', 'idx_users_created_time_' . $i);
+                });
+
+                // 关键修复：补全单引号，修正SQL语法
+                $prefix = config('database.connections.'.$dbConnection.'.prefix');
+                DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$tableName}` comment '{$this->tableComment}-分表{$i}'");
+            }
+        }
+
+		//不分片
+		if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
+                $table->increments('id')->comment('主键');
+                $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+                $table->unsignedTinyInteger('parent_id')->default(0)->comment('父级id');
+                $table->unsignedTinyInteger('deep')->default(0)->comment('深度级别');
+                $table->unsignedTinyInteger('item_type')->default(0)->comment('值的类型  10标签 20字符串 30数值 40路径');
+
+                $table->string('item_label', 128)->default('')->comment('配置项标签');
+                $table->string('item_value', 128)->default('')->comment('配置项值');
+                $table->decimal('item_price', 32, 8, true)->default(0)->comment('配置项数值,一般为金额或积分');
+                $table->string('item_path', 255)->default('')->comment('文件路径');
+                $table->string('item_introduction', 255)->default('')->comment('配置项说明');
+                $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
+
+                // 时间字段（自动填充+索引，关键优化）
+                $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
+                $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
+                $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
+                $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
-				// 索引
-				$table->unique('{{ table }}_uid','');
-				$table->unique('name','');
-                $table->index('admin_uid','');
-                $table->index('deep','');
-                $table->index('type','');
-                $table->index('created_time','');
-			});
 
-			//注意是否需要修改mysql连接名
-			$prefix = config('database.connections.'.$db_connection.'.prefix');
+                // 索引
+                $table->index('sort', 'idx_system_configs_sort');
+            });
 
-			DB::connection($db_connection)->statement("ALTER TABLE `{$prefix}{{table}}` comment '表名'");
-		}
+            $prefix = config('database.connections.'.$dbConnection.'.prefix');
+
+            DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable}` comment '{$this->tableComment}'");
+        }
        
     }
 
@@ -67,12 +102,23 @@ return new class extends Migration
      */
     public function down()
     {
-		$db_connection = config('youhujun.db_connection');
+		$shardConfig = Config::get('youhujun.shard');
+        $dbConnection = $shardConfig['default_db']; // 读取ds_0
 
-		if (Schema::connection($db_connection)->hasTable('{{ table }}')) 
-		{
-			 Schema::connection($db_connection)->dropIfExists('{{ table }}');
-		}
+        $tableCount = Config::get('youhujun.shard.table_count', 1);
+
+		//分片
+        for ($i = 0; $i < $tableCount; $i++) {
+            $tableName = $this->baseTable . '_' . $i;
+            if (Schema::connection($dbConnection)->hasTable($tableName)) {
+                Schema::connection($dbConnection)->dropIfExists($tableName);
+            }
+        }
+
+		//不分片
+		if (Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->dropIfExists($this->baseTable);
+        }
        
     }
 };
