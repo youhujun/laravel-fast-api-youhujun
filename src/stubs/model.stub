@@ -10,9 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Models\Traits\WithTimeStampFields;
 use App\Models\Traits\WithSnowflakeId;
 use App\Models\Traits\WithCustomConnection;
-use App\Models\Traits\WithInviteCode;
 use App\Models\Traits\WithShardRouting;
-use App\Models\Traits\WithCustomConnection;
 
 class {{ class }} extends Model
 {
@@ -23,67 +21,9 @@ class {{ class }} extends Model
     use WithTimeStampFields;  // 时间戳填充
     use WithSnowflakeId;      // 雪花ID生成
     use WithCustomConnection; // 自定义数据库连接
-    use WithInviteCode; //邀请码
+    use WithShardRouting;     // 分片路由
 
-    use WithShardRouting;
-
-	    /**
-         * 批量赋值字段（明确可赋值字段，杜绝安全风险）
-         *
-         */
-    protected $fillable = ['user_uid'];
-
-    /**
-     * 隐藏敏感/无用字段
-     */
-
-    protected $hidden = ['id','revision'];
-
-    // 表名
-    protected $table = 'users';
-    // 主键
-    protected $primaryKey = 'user_uid';
-    // 雪花ID非自增
-    public $incrementing = false;
-    // 雪花ID是字符串类型
-    protected $keyType = 'string';
-    //开启自动时间戳（Laravel自动维护created_at/updated_at）
-    public $timestamps = true;
-
-    // 时间戳格式
-    protected $dateFormat = 'Y-m-d H:i:s';
-
-	// 实现抽象方法（替代原来的属性定义）
-    protected function getBaseTable(): string
-    {
-        return 'users';
-    }
-
-    protected function getShardBusinessKey(): string
-    {
-        return 'user_uid';
-    }
-
-    protected function casts(): array
-    {
-        return [
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-            'deleted_at' => 'datetime',
-        ];
-    }
-    /**
-         * 批量赋值字段（明确可赋值字段，杜绝安全风险）
-         *
-         */
-    protected $fillable = ['_uid','shard_key','created_at', 'created_time', 'updated_at', 'updated_time'];
-    /**
-     * 隐藏敏感/无用字段
-     */
-
-    protected $hidden = ['id', 'revision'];
-
-    // 表名
+	// 表名
     protected $table = '';
     // 主键
     protected $primaryKey = '_uid';
@@ -94,8 +34,39 @@ class {{ class }} extends Model
     //开启自动时间戳（Laravel自动维护created_at/updated_at）
     public $timestamps = true;
 
+	/**
+	* 批量赋值字段（明确可赋值字段，杜绝安全风险）
+	*
+	*/
+    protected $fillable = ['_uid','shard_key','revision','created_at', 'created_time', 'updated_at', 'updated_time'];
+    /**
+     * 隐藏敏感/无用字段
+     */
+    protected $hidden = ['id', 'revision'];
+
     // 时间戳格式
     protected $dateFormat = 'Y-m-d H:i:s';
+
+	// 实现抽象方法（替代原来的属性定义）
+    protected function getBaseTable(): string
+    {
+        return '';
+    }
+
+    protected function getShardBusinessKey(): string
+    {
+        return '';
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'deleted_at' => 'datetime',
+        ];
+    }
+
 
     // ========= 模型专属的快捷宏 ==========
     public function addShardMacro(Builder $builder)

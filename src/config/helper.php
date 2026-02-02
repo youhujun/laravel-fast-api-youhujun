@@ -51,7 +51,6 @@ if(!function_exists('plog'))
         $content = date("H:i:s") . " " . json_encode($data, JSON_UNESCAPED_UNICODE) . "\r\n";
         return file_put_contents($file, $content, FILE_APPEND);
     }
-
 }
 
  if(!function_exists('f'))
