@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-23 15:35:15
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-23 20:41:52
+ * @LastEditTime: 2026-02-06 03:21:19
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -57,7 +57,7 @@ return new class () extends Migration {
 
                     // 认证/登录字段（长度优化）
                     $table->string('remember_token', 128)->nullable()->comment('记住登录token');
-                    $table->string('auth_token', 128)->nullable()->comment('认证token');
+                    $table->char('auth_token', 32)->nullable()->comment('认证token');
                     $table->string('account_name', 64)->nullable()->comment('账户名称（唯一）');
                     $table->char('invite_code', 7)->nullable()->comment('唯一邀请码4-7位纯小写字母+数字，用户可见');
                     $table->char('phone_area_code', 5)->default('')->comment('手机号区号如+86');
@@ -78,6 +78,9 @@ return new class () extends Migration {
                     $table->unique('auth_token', 'uni_users_auth_token_' . $i);
                     // 适配软删除
                     $table->unique(['account_name', 'deleted_at'], 'uni_users_account_name_deleted_' . $i);
+
+                    $table->unique(['auth_token', 'deleted_at'], 'uni_users_auth_token_deleted_' . $i);
+
                     $table->unique(['invite_code', 'deleted_at'], 'uni_users_invite_code_deleted_' . $i);
                     $table->unique(['phone', 'deleted_at'], 'uni_users_phone_deleted_' . $i);
                     $table->unique(['email', 'deleted_at'], 'uni_users_email_deleted_' . $i);
