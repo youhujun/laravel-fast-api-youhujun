@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-23 15:35:15
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-02-06 03:21:19
+ * @LastEditTime: 2026-02-06 23:16:43
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -57,7 +57,7 @@ return new class () extends Migration {
 
                     // 认证/登录字段（长度优化）
                     $table->string('remember_token', 128)->nullable()->comment('记住登录token');
-                    $table->char('auth_token', 32)->nullable()->comment('认证token');
+                    $table->char('auth_token', 36)->nullable()->comment('认证token');
                     $table->string('account_name', 64)->nullable()->comment('账户名称（唯一）');
                     $table->char('invite_code', 7)->nullable()->comment('唯一邀请码4-7位纯小写字母+数字，用户可见');
                     $table->char('phone_area_code', 5)->default('')->comment('手机号区号如+86');

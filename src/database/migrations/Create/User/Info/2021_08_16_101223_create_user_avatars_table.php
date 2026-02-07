@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-08-16 10:12:23
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-23 21:20:00
+ * @LastEditTime: 2026-02-07 07:23:35
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -37,6 +37,9 @@ return new class () extends Migration {
                     $table->id()->comment('主键');
                     $table->unsignedBigInteger('user_avatar_uid')->comment('用户头像雪花ID');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
+
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+
                     $table->unsignedBigInteger('album_picture_uid')->default(0)->comment('相册图片uid,雪花ID');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                     $table->unsignedTinyInteger('is_default')->default(0)->comment('是否默认使用 0否1是 ');
@@ -44,6 +47,10 @@ return new class () extends Migration {
                     // 时间字段（自动填充+索引，关键优化）
                     $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
                     $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
+
+                    $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
+                    $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
+
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
                     // 索引
