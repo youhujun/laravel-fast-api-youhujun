@@ -36,6 +36,9 @@ return new class () extends Migration {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->id()->comment('主键 用户银行信息表');
                     $table->unsignedBigInteger('user_bank_uid')->comment('用户银行卡雪花ID');
+					
+$table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedInteger('bank_id')->default(0)->comment('银行id');
                     $table->unsignedBigInteger('bank_front_uid')->default(0)->comment('银行卡正面(相册图片雪花ID)');

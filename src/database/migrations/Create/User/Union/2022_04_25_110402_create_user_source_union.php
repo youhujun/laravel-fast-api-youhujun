@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2022-04-25 11:04:02
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-23 21:20:00
+ * @LastEditTime: 2026-02-11 04:25:01
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -36,6 +36,9 @@ return new class () extends Migration {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->id()->comment('主键--用户父关联表');
                     $table->unsignedBigInteger('user_source_union_uid')->default(0)->comment('用户来源关联雪花ID');
+
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('first_id')->default(0)->comment('一级id');
                     $table->unsignedBigInteger('second_id')->default(0)->comment('二级id');

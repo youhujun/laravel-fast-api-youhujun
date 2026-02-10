@@ -6,8 +6,8 @@
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2024-12-25 09:57:23
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-23 21:20:00
- * @FilePath: \database\migrations\2024_12_25_095723_create_user_douyin_unionid_table.php
+ * @LastEditTime: 2026-02-11 04:22:55
+ * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\database\migrations\Create\User\Platform\2024_12_25_095723_create_user_douyin_unionids_table.php
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -37,6 +37,9 @@ return new class () extends Migration {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->id()->comment('主键');
                     $table->unsignedBigInteger('user_douyin_unionid_uid')->default(0)->comment('用户抖音unionid雪花ID');
+
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->string('unionid', 64)->nullable()->comment('抖音unionid 唯一');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');

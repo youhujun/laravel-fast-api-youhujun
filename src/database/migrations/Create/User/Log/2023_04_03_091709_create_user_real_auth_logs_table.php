@@ -36,6 +36,9 @@ return new class () extends Migration {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->unsignedBigInteger('user_real_auth_log_uid')->comment('日志uid,雪花ID');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
+
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+
                     $table->unsignedBigInteger('admin_uid')->default(0)->comment('审核的管理员id');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                     $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');

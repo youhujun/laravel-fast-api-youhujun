@@ -1,11 +1,12 @@
 <?php
+
 /*
  * @Descripttion:
  * @version:
  * @Author: YouHuJun
  * @Date: 2021-08-16 16:28:26
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-23 21:20:00
+ * @LastEditTime: 2026-02-11 04:24:19
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -14,8 +15,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     protected $baseTable = 'user_system_wechat_config_unions';
     protected $hasSnowflake = true;
     protected $tableComment = '用户和系统微信配置关联表openid';
@@ -32,25 +32,26 @@ return new class extends Migration
 
         for ($i = 0; $i < $tableCount; $i++) {
             $tableName = $this->baseTable . '_' . $i;
-            if (!Schema::connection($dbConnection)->hasTable($tableName))
-            {
+            if (!Schema::connection($dbConnection)->hasTable($tableName)) {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
-
                     $table->id()->comment('主键');
                     $table->unsignedBigInteger('user_system_wechat_config_union_uid')->default(0)->comment('用户微信配置关联雪花ID');
+
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
-                    $table->string('openid',100)->nullable()->comment('唯一openid');
-                    $table->string('session_key',100)->default('')->comment('session_key');
+                    $table->string('openid', 100)->nullable()->comment('唯一openid');
+                    $table->string('session_key', 100)->default('')->comment('session_key');
                     $table->unsignedTinyInteger('type')->default(30)->comment('类型 10小程序 20小游戏 30公众号 40 测试微信公众号');
                     $table->unsignedInteger('system_wechat_config_id')->default(0)->comment('系统微信配置id');
 
-                    $table->string('access_token',128)->default('')->comment('网页授权接口调用凭证,注意,此access_token与基础支持的access_token不同');
+                    $table->string('access_token', 128)->default('')->comment('网页授权接口调用凭证,注意,此access_token与基础支持的access_token不同');
                     $table->unsignedInteger('expires_in')->comment('access_token接口调用凭证超时时间,单位(秒)');
 
-                    $table->string('refresh_token',128)->default('')->comment('用户刷新access_token,有效期30天当refresh_token失效之后，需要用户重新授权。');
+                    $table->string('refresh_token', 128)->default('')->comment('用户刷新access_token,有效期30天当refresh_token失效之后，需要用户重新授权。');
 
-                    $table->string('scope',30)->default('')->comment('用户授权的作用域，使用逗号（,）分隔');
+                    $table->string('scope', 30)->default('')->comment('用户授权的作用域，使用逗号（,）分隔');
 
                     $table->unsignedTinyInteger('is_snapshotuser')->default(0)->comment('是否为快照页模式虚拟账号，只有当用户是快照页模式虚拟账号时返回，值为1');
 
@@ -80,9 +81,6 @@ return new class extends Migration
                 DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$tableName}` comment '{$this->tableComment}-分表{$i}'");
             }
         }
-
-
-
     }
 
     /**
@@ -97,11 +95,9 @@ return new class extends Migration
 
         for ($i = 0; $i < $tableCount; $i++) {
             $tableName = $this->baseTable . '_' . $i;
-            if (Schema::connection($dbConnection)->hasTable($tableName))
-            {
+            if (Schema::connection($dbConnection)->hasTable($tableName)) {
                 Schema::connection($dbConnection)->dropIfExists($tableName);
             }
         }
-
     }
 };

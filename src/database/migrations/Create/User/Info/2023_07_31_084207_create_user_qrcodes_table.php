@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2023-07-31 08:42:07
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-23 21:20:00
+ * @LastEditTime: 2026-02-11 04:19:23
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -37,6 +37,9 @@ return new class () extends Migration {
                     $table->id()->comment('主键');
 
                     $table->unsignedBigInteger('user_qrcode_uid')->comment('用户二维码雪花ID');
+
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('album_picture_uid')->default(0)->comment('相册图片uid,雪花ID');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');

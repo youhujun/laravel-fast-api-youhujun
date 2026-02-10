@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @Descripttion: 用户文件上传日志表
  * @version: v1
@@ -15,8 +16,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     protected $baseTable = 'user_upload_file_logs';
     protected $hasSnowflake = true;
     protected $tableComment = '用户文件上传日志表';
@@ -33,10 +33,12 @@ return new class extends Migration
 
         for ($i = 0; $i < $tableCount; $i++) {
             $tableName = $this->baseTable . '_' . $i;
-            if (!Schema::connection($dbConnection)->hasTable($tableName))
-            {
+            if (!Schema::connection($dbConnection)->hasTable($tableName)) {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->unsignedBigInteger('user_upload_file_log_uid')->comment('日志uid,雪花ID');
+
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                     $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
@@ -44,11 +46,11 @@ return new class extends Migration
                     $table->unsignedTinyInteger('use_type')->default(0)->comment('使用类型0  10个人配置 20个人文件');
                     $table->unsignedTinyInteger('save_type')->default(0)->comment('存储类型 10本地 20存储桶');
 
-                    $table->string('file_name',128)->default('')->comment('文件名');
-                    $table->string('file_path',128)->default('')->comment('文件路径');
-                    $table->string('file_extension',12)->default('')->comment('文件后缀');
-                    $table->string('file',128)->default('')->comment('文件');
-                    $table->string('file_url',255)->default('')->comment('文件url(存储桶类型)');
+                    $table->string('file_name', 128)->default('')->comment('文件名');
+                    $table->string('file_path', 128)->default('')->comment('文件路径');
+                    $table->string('file_extension', 12)->default('')->comment('文件后缀');
+                    $table->string('file', 128)->default('')->comment('文件');
+                    $table->string('file_url', 255)->default('')->comment('文件url(存储桶类型)');
 
                     $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
                     $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
@@ -67,7 +69,6 @@ return new class extends Migration
                 DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$tableName}` comment '{$this->tableComment}-分表{$i}'");
             }
         }
-
     }
 
     /**
@@ -82,11 +83,9 @@ return new class extends Migration
 
         for ($i = 0; $i < $tableCount; $i++) {
             $tableName = $this->baseTable . '_' . $i;
-            if (Schema::connection($dbConnection)->hasTable($tableName))
-            {
+            if (Schema::connection($dbConnection)->hasTable($tableName)) {
                 Schema::connection($dbConnection)->dropIfExists($tableName);
             }
         }
-
     }
 };

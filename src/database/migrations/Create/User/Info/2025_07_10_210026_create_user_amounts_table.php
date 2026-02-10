@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2025-07-10 21:00:26
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-23 21:20:00
+ * @LastEditTime: 2026-02-11 04:19:40
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -15,8 +15,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     protected $baseTable = 'user_amounts';
     protected $hasSnowflake = true;
     protected $tableComment = '用户余额表';
@@ -33,22 +32,21 @@ return new class extends Migration
 
         for ($i = 0; $i < $tableCount; $i++) {
             $tableName = $this->baseTable . '_' . $i;
-            if (!Schema::connection($dbConnection)->hasTable($tableName))
-            {
+            if (!Schema::connection($dbConnection)->hasTable($tableName)) {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->id()->comment('主键');
                     // 分片键：user_uid%100，未来分库分表用
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
                     $table->unsignedBigInteger('user_amount_uid')->comment('用户余额雪花ID');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
-                    $table->decimal('amount',32,8)->default(0)->comment('余额');
-                    $table->decimal('bonus',32,8)->default(0)->comment('奖金');
-                    $table->decimal('prepare_bonus',32,8)->default(0)->comment('预计增加奖金');
-                    $table->decimal('coin',32,8)->default(0)->comment('系统币');
-                    $table->decimal('score',32,8)->default(0)->comment('积分');
+                    $table->decimal('amount', 32, 8)->default(0)->comment('余额');
+                    $table->decimal('bonus', 32, 8)->default(0)->comment('奖金');
+                    $table->decimal('prepare_bonus', 32, 8)->default(0)->comment('预计增加奖金');
+                    $table->decimal('coin', 32, 8)->default(0)->comment('系统币');
+                    $table->decimal('score', 32, 8)->default(0)->comment('积分');
 
-                    $table->string('note',128)->default('')->comment('备注');
+                    $table->string('note', 128)->default('')->comment('备注');
                     $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
                     $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
@@ -70,7 +68,6 @@ return new class extends Migration
                 DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$tableName}` comment '{$this->tableComment}-分表{$i}'");
             }
         }
-
     }
 
     /**
@@ -85,11 +82,9 @@ return new class extends Migration
 
         for ($i = 0; $i < $tableCount; $i++) {
             $tableName = $this->baseTable . '_' . $i;
-            if (Schema::connection($dbConnection)->hasTable($tableName))
-            {
+            if (Schema::connection($dbConnection)->hasTable($tableName)) {
                 Schema::connection($dbConnection)->dropIfExists($tableName);
             }
         }
-
     }
 };

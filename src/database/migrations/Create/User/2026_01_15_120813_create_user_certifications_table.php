@@ -6,8 +6,8 @@
  * @Author: youhujun youhu8888@163.com
  * @Date: 2026-01-15 12:08:13
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-23 21:20:00
- * @FilePath: \src\database\migrations\Create\User\2026_01_15_120813_create_user_certifications_table.php
+ * @LastEditTime: 2026-02-11 04:25:53
+ * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\database\migrations\Create\User\2026_01_15_120813_create_user_certifications_table.php
  * Copyright (C) 2026 youhujun. All rights reserved.
  */
 
@@ -36,6 +36,9 @@ return new class () extends Migration {
                     $table->id()->comment('物理主键（自增）');
 
                     $table->unsignedBigInteger('user_certification_uid')->default(0)->comment('用户认证UID');
+
+
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
 
                     // 核心关联字段（和用户表一致的雪花ID）
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('关联用户表user_uid');

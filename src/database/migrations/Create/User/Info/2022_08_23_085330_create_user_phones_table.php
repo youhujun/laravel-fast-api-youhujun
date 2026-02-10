@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @Descripttion:
  * @version:
@@ -14,8 +15,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     protected $baseTable = 'user_phones';
     protected $hasSnowflake = true;
     protected $tableComment = '用户联系电话表';
@@ -36,11 +36,14 @@ return new class extends Migration
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->id()->comment('主键');
                     $table->unsignedBigInteger('user_phone_uid')->comment('用户电话雪花ID');
+
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                     $table->unsignedTinyInteger('type')->default(100)->comment('类型 10紧急联系人');
                     $table->unsignedTinyInteger('is_default')->default(0)->comment('是否默认 0不 1是');
-                    $table->string('phone',12)->default('')->comment('电话');
+                    $table->string('phone', 12)->default('')->comment('电话');
                     $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
                     $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
@@ -63,7 +66,6 @@ return new class extends Migration
                 DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$tableName}` comment '{$this->tableComment}-分表{$i}'");
             }
         }
-
     }
 
     /**
@@ -82,6 +84,5 @@ return new class extends Migration
                 Schema::connection($dbConnection)->dropIfExists($tableName);
             }
         }
-
     }
 };

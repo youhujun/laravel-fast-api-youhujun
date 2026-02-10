@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @Descripttion:
  * @version:
@@ -31,18 +32,20 @@ return new class () extends Migration {
 
         for ($i = 0; $i < $tableCount; $i++) {
             $tableName = $this->baseTable . '_' . $i;
-            if (!Schema::connection($dbConnection)->hasTable($tableName))
-            {
+            if (!Schema::connection($dbConnection)->hasTable($tableName)) {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->unsignedBigInteger('user_event_log_uid')->comment('日志uid,雪花ID');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
+
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                     $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
 
                     $table->unsignedInteger('event_type')->default(0)->comment('事件类型');
-                    $table->string('event_route_action',128)->default('')->comment('事件路由');
-                    $table->string('event_name',64)->default('')->comment('事件名称');
-                    $table->string('event_code',64)->default('')->comment('事件编码');
+                    $table->string('event_route_action', 128)->default('')->comment('事件路由');
+                    $table->string('event_name', 64)->default('')->comment('事件名称');
+                    $table->string('event_code', 64)->default('')->comment('事件编码');
                     $table->text('note')->nullable()->comment('备注数据');
 
                     $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
@@ -63,8 +66,6 @@ return new class () extends Migration {
                 DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$tableName}` comment '{$this->tableComment}-分表{$i}'");
             }
         }
-
-
     }
 
     /**
@@ -79,12 +80,9 @@ return new class () extends Migration {
 
         for ($i = 0; $i < $tableCount; $i++) {
             $tableName = $this->baseTable . '_' . $i;
-            if (Schema::connection($dbConnection)->hasTable($tableName))
-            {
+            if (Schema::connection($dbConnection)->hasTable($tableName)) {
                 Schema::connection($dbConnection)->dropIfExists($tableName);
             }
         }
-
-
     }
 };

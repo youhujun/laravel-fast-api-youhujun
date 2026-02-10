@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2023-03-16 20:14:37
- * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2026-01-23 21:20:00
+ * @LastEditors: youhujun youhu8888@163.com
+ * @LastEditTime: 2026-02-11 04:18:42
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -36,6 +36,9 @@ return new class () extends Migration {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->id()->comment('主键');
                     $table->unsignedBigInteger('user_id_card_uid')->comment('用户身份证雪花ID');
+
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('id_card_front_uid')->default(0)->comment('身份证正面(相册图片雪花ID)');
                     $table->unsignedBigInteger('id_card_back_uid')->default(0)->comment('身份证背面(相册图片雪花ID)');
