@@ -1,0 +1,67 @@
+<?php
+
+namespace DummyNamespace;
+
+use App\Rules\Pub\Required;
+use App\Rules\Pub\Numeric;
+use App\Rules\Pub\CheckString;
+
+class DummyClass
+{
+    /**
+     * 业务主键（*_uid，贴合游鹄分片规范）
+     *
+     * @var string
+     */
+    protected $business_uid;
+
+    /**
+     * 分片键（贴合游鹄分片规范）
+     *
+     * @var int
+     */
+    protected $shard_key;
+
+    /**
+     * 获取验证规则（对接你的控制器验证逻辑）
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'business_uid' => [new Required, new CheckString],
+            'shard_key' => [new Required, new Numeric],
+            // 可自动补充其他字段规则
+        ];
+    }
+
+    /**
+     * 赋值方法（批量赋值，贴合游鹄$fillable规范）
+     *
+     * @param array $attributes
+     * @return self
+     */
+    public function fill(array $attributes)
+    {
+        foreach ($attributes as $key => $value) {
+            if (property_exists($this, $key)) {
+                $this->{$key} = $value;
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * 转数组（对接资源转换器）
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'business_uid' => $this->business_uid,
+            'shard_key' => $this->shard_key,
+        ];
+    }
+}

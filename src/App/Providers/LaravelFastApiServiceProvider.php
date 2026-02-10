@@ -6,8 +6,8 @@
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2024-02-13 16:10:12
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-19 10:28:54
- * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api\src\App\Providers\LaravelFastApiServiceProvider.php
+ * @LastEditTime: 2026-02-11 02:55:39
+ * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\App\Providers\LaravelFastApiServiceProvider.php
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -445,7 +445,8 @@ class LaravelFastApiServiceProvider extends ServiceProvider
                 \YouHuJun\LaravelFastApi\App\Console\Commands\BuildFacadeServiceCommand::class,
                 \YouHuJun\LaravelFastApi\App\Console\Commands\CallFacadeServiceCommand::class,
                 \YouHuJun\LaravelFastApi\App\Console\Commands\BuildContractCommand::class,
-                \YouHuJun\LaravelFastApi\App\Console\Commands\BuildContractServiceCommand::class
+                \YouHuJun\LaravelFastApi\App\Console\Commands\BuildContractServiceCommand::class,
+                \YouHuJun\LaravelFastApi\App\Console\Commands\BuildDTOCommand::class
             ]);
         }
     }
