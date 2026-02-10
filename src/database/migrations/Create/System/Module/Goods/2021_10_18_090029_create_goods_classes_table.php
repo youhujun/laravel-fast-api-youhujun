@@ -40,7 +40,7 @@ return new class () extends Migration {
                 $table->decimal('rate', 4, 2)->default(0)->comment('分润比例%');
                 $table->string('goods_class_name', 64)->nullable()->comment('商品类名称');
                 $table->string('goods_class_code', 64)->nullable()->comment('商品分类逻辑名称');
-                $table->char('goods_class_picture_uid', 20)->default('')->comment('分类图片雪花ID(相册图片id)');
+                $table->unsignedBigInteger('goods_class_picture_uid')->default(0)->comment('分类图片雪花ID(相册图片id)');
                 $table->unsignedTinyInteger('is_certificate')->default(0)->comment('是否需要要资质证书 0否1是');
                 $table->unsignedTinyInteger('certificate_number')->default(0)->comment('主要资质证书数量');
                 $table->string('note', 255)->nullable()->comment('备注说明');

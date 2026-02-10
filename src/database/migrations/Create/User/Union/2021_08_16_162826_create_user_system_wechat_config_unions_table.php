@@ -37,7 +37,7 @@ return new class extends Migration
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
 
                     $table->id()->comment('主键');
-                    $table->unsignedBigInteger('user_system_wechat_config_union_uid')->comment('用户微信配置关联雪花ID');
+                    $table->unsignedBigInteger('user_system_wechat_config_union_uid')->default(0)->comment('用户微信配置关联雪花ID');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                     $table->string('openid',100)->nullable()->comment('唯一openid');

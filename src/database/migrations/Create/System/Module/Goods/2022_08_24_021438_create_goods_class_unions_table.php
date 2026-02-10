@@ -1,11 +1,12 @@
 <?php
+
 /*
  * @Descripttion:
  * @version:
  * @Author: YouHuJun
  * @Date: 2022-08-24 10:14:38
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-23 21:20:00
+ * @LastEditTime: 2026-02-10 23:31:04
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -14,8 +15,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     protected $baseTable = 'goods_class_unions';
     protected $hasSnowflake = false;
     protected $tableComment = '商品与分类关联表';
@@ -29,10 +29,8 @@ return new class extends Migration
         $shardConfig = Config::get('youhujun.shard');
         $dbConnection = $shardConfig['default_db'];
 
-        if (!Schema::connection($dbConnection)->hasTable($this->baseTable))
-        {
+        if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
             Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
-
                 $table->id()->comment('主键');
                 $table->char('goods_uid', 20)->comment('商品雪花ID');
                 $table->unsignedBigInteger('goods_class_id')->default(0)->comment('分类id');
@@ -57,14 +55,12 @@ return new class extends Migration
                 $table->index('goods_class_three_depp_id', 'idx_goods_cls_uns_thr_depp_id');
                 $table->index('goods_class_four_depp_id', 'idx_goods_cls_uns_fou_depp_id');
                 $table->index('created_time', 'idx_goods_cls_uns_cre_time');
-
             });
 
             $prefix = config('database.connections.'.$dbConnection.'.prefix');
 
             DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable}` comment '{$this->tableComment}'");
         }
-
     }
 
     /**
@@ -76,10 +72,8 @@ return new class extends Migration
         $shardConfig = Config::get('youhujun.shard');
         $dbConnection = $shardConfig['default_db'];
 
-        if (Schema::connection($dbConnection)->hasTable($this->baseTable))
-        {
+        if (Schema::connection($dbConnection)->hasTable($this->baseTable)) {
             Schema::connection($dbConnection)->dropIfExists($this->baseTable);
         }
-
     }
 };

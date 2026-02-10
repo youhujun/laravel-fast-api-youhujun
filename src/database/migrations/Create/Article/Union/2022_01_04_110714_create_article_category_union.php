@@ -36,7 +36,7 @@ return new class () extends Migration {
             if (!Schema::connection($dbConnection)->hasTable($tableName)) {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->id()->comment('主键');
-                    $table->unsignedBigInteger('article_category_union_uid')->comment('文章分类关联雪花ID');
+                    $table->unsignedBigInteger('article_category_union_uid')->default(0)->comment('文章分类关联雪花ID');
                     $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:article_uid%table_count(工具包自动计算)');
                     $table->unsignedBigInteger('article_uid')->default(0)->comment('文章uid,雪花ID');
                     $table->unsignedInteger('category_id')->default(0)->comment('文章分类id');

@@ -36,7 +36,7 @@ return new class () extends Migration {
             if (!Schema::connection($dbConnection)->hasTable($tableName)) {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->id()->comment('主键');
-                    $table->unsignedBigInteger('user_douyin_unionid_uid')->comment('用户抖音unionid雪花ID');
+                    $table->unsignedBigInteger('user_douyin_unionid_uid')->default(0)->comment('用户抖音unionid雪花ID');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->string('unionid', 64)->nullable()->comment('抖音unionid 唯一');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');

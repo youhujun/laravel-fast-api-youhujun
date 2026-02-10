@@ -37,7 +37,7 @@ return new class () extends Migration {
                     $table->id()->comment('主键');
 
                     // 雪花ID核心字段（非空+唯一+索引，适配分库分表）
-                    $table->unsignedBigInteger('album_uid')->comment('相册全局唯一ID,雪花ID,业务核心ID');
+                    $table->unsignedBigInteger('album_uid')->default(0)->comment('相册全局唯一ID,雪花ID,业务核心ID');
 
                     $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
                     $table->unsignedBigInteger('admin_uid')->default(0)->comment('管理员uid,雪花ID');

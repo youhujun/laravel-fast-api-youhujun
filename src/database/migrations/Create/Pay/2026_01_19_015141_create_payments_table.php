@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2026-01-19 10:00:00
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-23 21:20:00
+ * @LastEditTime: 2026-02-10 23:13:31
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -38,10 +38,10 @@ return new class () extends Migration {
                     $table->id()->comment('物理主键（自增）');
 
                     // 2. 雪花ID核心业务字段（和user_uid命名/类型统一，适配分库分表）
-                    $table->unsignedBigInteger('payment_uid')->comment('支付全局唯一ID,雪花ID,业务核心ID');
+                    $table->unsignedBigInteger('payment_uid')->default(0)->comment('支付全局唯一ID,雪花ID,业务核心ID');
 
                     // 3. 关联字段（统一用uid后缀，和系统其他表对齐）
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:payer_uid%table_count(工具包自动计算)');
                     $table->unsignedBigInteger('payer_uid')->default(0)->comment('支付主体UID（用户/商户/机构，关联对应表的*_uid）');
                     $table->unsignedBigInteger('order_uid')->nullable()->comment('主订单UID（单支付对应单主订单时用）');
                     $table->unsignedBigInteger('refund_uid')->nullable()->default(0)->comment('关联退款UID（退款场景用）');

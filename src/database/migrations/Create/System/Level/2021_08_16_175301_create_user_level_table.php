@@ -1,11 +1,12 @@
 <?php
+
 /*
  * @Descripttion:
  * @version:
  * @Author: YouHuJun
  * @Date: 2021-08-16 17:53:01
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-17 11:40:36
+ * @LastEditTime: 2026-02-10 23:31:58
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -29,17 +30,16 @@ return new class () extends Migration {
         $shardConfig = Config::get('youhujun.shard');
         $dbConnection = $shardConfig['default_db'];
 
-        if (!Schema::connection($dbConnection)->hasTable($this->baseTable))
-        {
+        if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
             Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
                 $table->id()->comment('主键');
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 
-                $table->string('level_name',32)->unique()->nullable()->comment('级别名称');
-                $table->string('level_code',32)->unique()->nullable()->comment('级别代码');
-                $table->decimal('amount',32,8,true)->default(0)->comment('金额');
-                $table->char('background_picture_uid')->default('')->comment('背景图标雪花id');
-                $table->string('note',128)->default('')->comment('备注信息');
+                $table->string('level_name', 32)->unique()->nullable()->comment('级别名称');
+                $table->string('level_code', 32)->unique()->nullable()->comment('级别代码');
+                $table->decimal('amount', 32, 8, true)->default(0)->comment('金额');
+                $table->unsignedBigInteger('background_picture_uid')->default(0)->comment('背景图标雪花id');
+                $table->string('note', 128)->default('')->comment('备注信息');
                 $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
                 // 时间字段（自动填充+索引，关键优化）
@@ -53,15 +53,12 @@ return new class () extends Migration {
                 // 索引
                 $table->index('background_picture_uid', 'idx_user_levels_bg_pic_uid');
                 $table->index('created_time', 'idx_user_levels_cre_time');
-
             });
 
             $prefix = config('database.connections.'.$dbConnection.'.prefix');
 
             DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable}` comment '{$this->tableComment}'");
         }
-
-
     }
 
     /**
@@ -74,10 +71,8 @@ return new class () extends Migration {
         $shardConfig = Config::get('youhujun.shard');
         $dbConnection = $shardConfig['default_db'];
 
-        if (Schema::connection($dbConnection)->hasTable($this->baseTable))
-        {
+        if (Schema::connection($dbConnection)->hasTable($this->baseTable)) {
             Schema::connection($dbConnection)->dropIfExists($this->baseTable);
         }
-
     }
 };

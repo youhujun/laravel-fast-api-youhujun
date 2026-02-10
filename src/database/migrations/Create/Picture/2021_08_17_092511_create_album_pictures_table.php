@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-08-17 09:25:11
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-23 21:20:00
+ * @LastEditTime: 2026-02-10 11:41:31
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -37,9 +37,9 @@ return new class () extends Migration {
                     $table->id()->comment('主键');
 
                     // 雪花ID核心字段（非空+唯一+索引，适配分库分表）
-                    $table->unsignedBigInteger('album_picture_uid')->comment('相册图片全局唯一ID,雪花ID,业务核心ID');
+                    $table->unsignedBigInteger('album_picture_uid')->default(0)->comment('相册图片全局唯一ID,雪花ID,业务核心ID');
 
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:album_uid%table_count(工具包自动计算)');
                     $table->unsignedBigInteger('admin_uid')->default(0)->comment('管理员uid,雪花ID');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid,雪花ID');
                     $table->unsignedBigInteger('album_uid')->default(0)->comment('相册uid,雪花ID');
