@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-08-16 10:12:23
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-02-07 07:23:35
+ * @LastEditTime: 2026-02-11 11:47:48
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'user_avatars';
     protected $hasSnowflake = true;
+    // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+    protected $shardKeyAnchor = 'user_uid';
     protected $tableComment = '用户头像表';
 
     /**

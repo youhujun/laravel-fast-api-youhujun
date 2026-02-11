@@ -6,8 +6,8 @@
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2024-12-25 11:44:12
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-23 21:20:00
- * @FilePath: \src\database\migrations\Create\System\Platform\2024_12_25_112602_create_system_wechat_configs_table.php
+ * @LastEditTime: 2026-02-11 11:47:31
+ * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\database\migrations\Create\System\Platform\2024_12_25_112602_create_system_wechat_configs_table.php
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'system_wechat_configs';
     protected $hasSnowflake = false;
+    // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+    protected $shardKeyAnchor = '';
     protected $tableComment = '系统微信配置表';
 
     /**

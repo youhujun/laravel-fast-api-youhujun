@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @Descripttion:
  * @version:
@@ -17,6 +18,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'personal_access_tokens';
     protected $hasSnowflake = false;
+		// 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+	protected $shardKeyAnchor = '';
     protected $tableComment = '个人token表';
 
     /**
@@ -29,14 +32,13 @@ return new class () extends Migration {
         $shardConfig = Config::get('youhujun.shard');
         $dbConnection = $shardConfig['default_db'];
 
-        if (!Schema::connection($dbConnection)->hasTable($this->baseTable))
-        {
+        if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
             Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
                 $table->id()->comment('个人token表主键');
 
                 $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
 
-                $table->string('tokenable_type',255)->comment('类型');
+                $table->string('tokenable_type', 255)->comment('类型');
                 $table->bigInteger('tokenable_id')->comment('id');
                 $table->string('name')->comment('姓名');
                 $table->string('token', 64)->comment('token');
@@ -60,7 +62,6 @@ return new class () extends Migration {
 
             DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable}` comment '{$this->tableComment}'");
         }
-
     }
 
     /**
@@ -73,10 +74,8 @@ return new class () extends Migration {
         $shardConfig = Config::get('youhujun.shard');
         $dbConnection = $shardConfig['default_db'];
 
-        if (Schema::connection($dbConnection)->hasTable($this->baseTable))
-        {
+        if (Schema::connection($dbConnection)->hasTable($this->baseTable)) {
             Schema::connection($dbConnection)->dropIfExists($this->baseTable);
         }
-
     }
 };

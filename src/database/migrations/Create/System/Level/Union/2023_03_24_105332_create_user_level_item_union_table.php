@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @Descripttion:
  * @version:
@@ -14,10 +15,11 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     protected $baseTable = 'user_level_item_unions';
     protected $hasSnowflake = false;
+		// 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+	protected $shardKeyAnchor = '';
     protected $tableComment = '用户级别和配置项关联表';
 
     /**
@@ -29,10 +31,8 @@ return new class extends Migration
         $shardConfig = Config::get('youhujun.shard');
         $dbConnection = $shardConfig['default_db'];
 
-        if (!Schema::connection($dbConnection)->hasTable($this->baseTable))
-        {
-            Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table)
-            {
+        if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
                 $table->id()->comment('主键');
                 $table->unsignedInteger('user_level_id')->notNull()->default(0)->comment('用户级别id');
                 $table->unsignedInteger('level_item_id')->notNull()->default(0)->comment('级别配置项id');
@@ -54,14 +54,12 @@ return new class extends Migration
                 $table->index('level_item_id', 'idx_user_lvl_itm_uns_lvl_itm_id');
                 $table->index('value_type', 'idx_user_lvl_itm_uns_val_type');
                 $table->index('sort', 'idx_user_lvl_itm_uns_sort');
-
             });
 
             $prefix = config('database.connections.'.$dbConnection.'.prefix');
 
             DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable}` comment '{$this->tableComment}'");
         }
-
     }
 
     /**
@@ -73,10 +71,8 @@ return new class extends Migration
         $shardConfig = Config::get('youhujun.shard');
         $dbConnection = $shardConfig['default_db'];
 
-        if (Schema::connection($dbConnection)->hasTable($this->baseTable))
-        {
+        if (Schema::connection($dbConnection)->hasTable($this->baseTable)) {
             Schema::connection($dbConnection)->dropIfExists($this->baseTable);
         }
-
     }
 };

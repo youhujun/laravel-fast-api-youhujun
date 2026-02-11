@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @Descripttion:
  * @version:
@@ -17,6 +18,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'article_label_unions';
     protected $hasSnowflake = true;
+    // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+    protected $shardKeyAnchor = 'article_uid';
     protected $tableComment = '文章和标签关联表';
 
     /**
@@ -59,8 +62,6 @@ return new class () extends Migration {
                 DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$tableName}` comment '{$this->tableComment}'");
             }
         }
-
-
     }
 
     /**
@@ -81,6 +82,5 @@ return new class () extends Migration {
                 Schema::connection($dbConnection)->dropIfExists($tableName);
             }
         }
-
     }
 };

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @Descripttion:
  * @version:
@@ -17,6 +18,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'admin_login_logs';
     protected $hasSnowflake = true;
+    // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+    protected $shardKeyAnchor = 'admin_uid';
     protected $tableComment = '管理员登录退出日志表';
 
     /**
@@ -35,15 +38,15 @@ return new class () extends Migration {
             $tableName = $this->baseTable . '_' . $i;
             if (!Schema::connection($dbConnection)->hasTable($tableName)) {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
-                        $table->unsignedBigInteger('admin_login_log_uid')->default(0)->comment('日志uid,雪花ID');
-                        $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:admin_uid%table_count(工具包自动计算)');
-                        $table->unsignedBigInteger('admin_uid')->default(0)->comment('管理员uid,雪花ID');
-                        $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+                    $table->unsignedBigInteger('admin_login_log_uid')->default(0)->comment('日志uid,雪花ID');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:admin_uid%table_count(工具包自动计算)');
+                    $table->unsignedBigInteger('admin_uid')->default(0)->comment('管理员uid,雪花ID');
+                    $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 
-                        $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
-                        $table->unsignedTinyInteger('status')->default(0)->comment('状态 0未知 10登录 20退出');
-                    $table->string('instruction',64)->default('')->comment('说明');
-                    $table->string('ip',64)->default('')->comment('ip地址');
+                    $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
+                    $table->unsignedTinyInteger('status')->default(0)->comment('状态 0未知 10登录 20退出');
+                    $table->string('instruction', 64)->default('')->comment('说明');
+                    $table->string('ip', 64)->default('')->comment('ip地址');
 
                     // 时间字段（自动填充+索引，关键优化）
                     $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
@@ -52,10 +55,10 @@ return new class () extends Migration {
                     $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
-                        // 索引
-                        $table->unique('admin_login_log_uid', 'uni_admin_login_logs_log_uid_' . $i);
-                        $table->index('admin_uid', 'idx_admin_login_logs_admin_uid_' . $i);
-                        $table->index('data_type', 'idx_admin_login_logs_data_type_' . $i);
+                    // 索引
+                    $table->unique('admin_login_log_uid', 'uni_admin_login_logs_log_uid_' . $i);
+                    $table->index('admin_uid', 'idx_admin_login_logs_admin_uid_' . $i);
+                    $table->index('data_type', 'idx_admin_login_logs_data_type_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

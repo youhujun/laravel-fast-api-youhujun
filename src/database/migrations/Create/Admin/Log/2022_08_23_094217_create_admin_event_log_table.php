@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2022-08-23 17:42:17
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-25 23:27:55
+ * @LastEditTime: 2026-02-11 11:46:16
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'admin_event_logs';
     protected $hasSnowflake = true;
+    // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+    protected $shardKeyAnchor = 'admin_uid';
     protected $tableComment = '管理员事件日志';
 
     /**
@@ -36,13 +38,13 @@ return new class () extends Migration {
             $tableName = $this->baseTable . '_' . $i;
             if (!Schema::connection($dbConnection)->hasTable($tableName)) {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
-                        $table->unsignedBigInteger('admin_event_log_uid')->default(0)->comment('日志uid,雪花ID');
-                        $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:admin_uid%table_count(工具包自动计算)');
-                        $table->unsignedBigInteger('admin_uid')->default(0)->comment('管理员uid,雪花ID');
-                        $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
-                        $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
+                    $table->unsignedBigInteger('admin_event_log_uid')->default(0)->comment('日志uid,雪花ID');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:admin_uid%table_count(工具包自动计算)');
+                    $table->unsignedBigInteger('admin_uid')->default(0)->comment('管理员uid,雪花ID');
+                    $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+                    $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
 
-                        $table->unsignedInteger('event_type')->default(0)->comment('事件类型');
+                    $table->unsignedInteger('event_type')->default(0)->comment('事件类型');
                     $table->string('event_route_action', 128)->default('')->comment('事件路由');
                     $table->string('event_name', 64)->default('')->comment('事件名称');
                     $table->string('event_code', 64)->default('')->comment('事件编码');
@@ -55,11 +57,11 @@ return new class () extends Migration {
                     $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
-                        // 索引
-                        $table->unique('admin_event_log_uid', 'uni_admin_event_logs_log_uid_' . $i);
-                        $table->index('admin_uid', 'idx_admin_event_logs_admin_uid_' . $i);
-                        $table->index('event_type', 'idx_admin_event_logs_event_type_' . $i);
-                        $table->index('data_type', 'idx_admin_event_logs_data_type_' . $i);
+                    // 索引
+                    $table->unique('admin_event_log_uid', 'uni_admin_event_logs_log_uid_' . $i);
+                    $table->index('admin_uid', 'idx_admin_event_logs_admin_uid_' . $i);
+                    $table->index('event_type', 'idx_admin_event_logs_event_type_' . $i);
+                    $table->index('data_type', 'idx_admin_event_logs_data_type_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

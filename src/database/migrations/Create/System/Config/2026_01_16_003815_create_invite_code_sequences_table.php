@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @Descripttion:
  * @version: v1
@@ -19,6 +20,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'invite_code_sequences';
     protected $hasSnowflake = false;
+    // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+    protected $shardKeyAnchor = '';
     protected $tableComment = '邀请码序列表';
 
     /**

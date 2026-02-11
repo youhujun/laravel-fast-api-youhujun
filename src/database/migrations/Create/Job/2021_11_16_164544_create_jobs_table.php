@@ -6,8 +6,8 @@
  * @Author: youhujun youhu8888@163.com
  * @Date: 2025-10-18 22:54:46
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-17 11:28:29
- * @FilePath: \src\database\migrations\Create\Job\2021_11_16_164544_create_jobs_table.php
+ * @LastEditTime: 2026-02-11 11:46:36
+ * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\database\migrations\Create\Job\2021_11_16_164544_create_jobs_table.php
  * Copyright (C) 2026 youhujun. All rights reserved.
  */
 
@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'jobs';
     protected $hasSnowflake = false;
+    // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+    protected $shardKeyAnchor = '';
     protected $tableComment = '队列表';
     /**
      * Run the migrations.

@@ -1,12 +1,13 @@
 <?php
+
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @version: v1
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2025-07-10 20:41:35
- * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2025-07-10 20:50:02
- * @FilePath: \database\migrations\2025_07_10_204135_create_sessions_table.php
+ * @LastEditors: youhujun youhu8888@163.com
+ * @LastEditTime: 2026-02-11 11:50:56
+ * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\database\migrations\Create\User\2025_07_10_204135_create_sessions_table.php
  * Copyright (C) 2025 youhujun. All rights reserved.
  */
 
@@ -19,6 +20,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'sessions';
     protected $hasSnowflake = false;
+    // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+    protected $shardKeyAnchor = '';
     protected $tableComment = '用户sessions表';
 
     /**
@@ -32,17 +35,15 @@ return new class () extends Migration {
         $dbConnection = $shardConfig['default_db'];
 
         //注意是否需要修改mysql连接名和表名
-        if (!Schema::connection($dbConnection)->hasTable($this->baseTable))
-        {
-            Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table)
-            {
+        if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
                 $table->id()->comment('主键');
                 $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                 $table->string('ip_address', 45)->nullable()->comment('ip地址');
                 $table->text('user_agent')->nullable()->comment('用户代理');
                 $table->longText('payload')->comment('载荷');
                 $table->integer('last_activity')->default(0)->comment('最后访问');
-                $table->string('note',128)->default('')->comment('备注');
+                $table->string('note', 128)->default('')->comment('备注');
                 $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
@@ -60,7 +61,6 @@ return new class () extends Migration {
 
             DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable}` comment '{$this->tableComment}'");
         }
-
     }
 
     /**
@@ -73,10 +73,8 @@ return new class () extends Migration {
         $shardConfig = Config::get('youhujun.shard');
         $dbConnection = $shardConfig['default_db'];
 
-        if (Schema::connection($dbConnection)->hasTable($this->baseTable))
-        {
+        if (Schema::connection($dbConnection)->hasTable($this->baseTable)) {
             Schema::connection($dbConnection)->dropIfExists($this->baseTable);
         }
-
     }
 };

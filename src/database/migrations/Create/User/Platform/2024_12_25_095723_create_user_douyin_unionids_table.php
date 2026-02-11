@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'user_douyin_unionids';
     protected $hasSnowflake = true;
+		// 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+	protected $shardKeyAnchor = 'user_uid';
     protected $tableComment = '用户抖音的unionid';
 
     /**

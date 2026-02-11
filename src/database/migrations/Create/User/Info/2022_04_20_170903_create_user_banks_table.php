@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2022-04-20 17:09:03
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-23 21:20:00
+ * @LastEditTime: 2026-02-11 11:42:09
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'user_banks';
     protected $hasSnowflake = true;
+    // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+    protected $shardKeyAnchor = 'user_uid';
     protected $tableComment = '用户银行信息表';
 
     /**
@@ -36,8 +38,8 @@ return new class () extends Migration {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->id()->comment('主键 用户银行信息表');
                     $table->unsignedBigInteger('user_bank_uid')->comment('用户银行卡雪花ID');
-					
-$table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
 
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedInteger('bank_id')->default(0)->comment('银行id');

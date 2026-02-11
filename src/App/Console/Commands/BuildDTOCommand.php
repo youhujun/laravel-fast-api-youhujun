@@ -15,6 +15,7 @@ namespace YouHuJun\LaravelFastApi\App\Console\Commands;
 
 use Illuminate\Support\Str;
 use Illuminate\Console\GeneratorCommand as Command;
+use Symfony\Component\Console\Input\InputOption;
 
 class BuildDTOCommand extends Command
 {
@@ -98,7 +99,8 @@ class BuildDTOCommand extends Command
     protected function getOptions()
     {
         return [
-            ['table', null, \Illuminate\Console\Input\InputOption::VALUE_OPTIONAL, 'The table name to generate DTO from'],
+
+            ['table', null, InputOption::VALUE_OPTIONAL, 'The table name to generate DTO from'],
         ];
     }
 }

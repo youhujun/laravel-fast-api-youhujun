@@ -1,12 +1,13 @@
 <?php
+
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @version: v1
  * @Author: youhujun youhu8888@163.com
  * @Date: 2026-01-16 11:49:20
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-16 11:49:43
- * @FilePath: \.php-cs-fixer.dist.php
+ * @LastEditTime: 2026-02-11 12:40:48
+ * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\.php-cs-fixer.dist.php
  * Copyright (C) 2026 youhujun. All rights reserved.
  */
 $finder = PhpCsFixer\Finder::create()
@@ -23,8 +24,6 @@ return (new PhpCsFixer\Config())
         'array_indentation' => true,
         // 仅保留3.x支持的braces规则配置
         'braces' => [
-            'allow_single_line_anonymous_class_with_empty_body' => true,
-            'allow_single_line_closure' => true,
             'position_after_functions_and_oop_constructs' => 'next',
             'position_after_control_structures' => 'next', // 控制结构（if/for等）后换行
         ],

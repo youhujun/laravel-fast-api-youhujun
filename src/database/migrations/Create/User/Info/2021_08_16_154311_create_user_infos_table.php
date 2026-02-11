@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @Descripttion:
  * @version:
@@ -17,6 +18,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'user_infos';
     protected $hasSnowflake = true;
+    // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+	protected $shardKeyAnchor = 'user_uid';
     protected $tableComment = '用户信息表';
 
     /**
@@ -39,17 +42,17 @@ return new class () extends Migration {
                     $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
-                    $table->string('nick_name',64)->default('')->comment('昵称');
-                    $table->string('family_name',32)->default('')->comment('姓');
-                    $table->string('name',64)->default('')->comment('名');
-                    $table->string('real_name',128)->default('')->comment('真实姓名');
-                    $table->string('id_number',32)->nullable()->comment('身份证号');
+                    $table->string('nick_name', 64)->default('')->comment('昵称');
+                    $table->string('family_name', 32)->default('')->comment('姓');
+                    $table->string('name', 64)->default('')->comment('名');
+                    $table->string('real_name', 128)->default('')->comment('真实姓名');
+                    $table->string('id_number', 32)->nullable()->comment('身份证号');
                     $table->unsignedTinyInteger('sex')->default(0)->comment('性别 0未知10男20女');
                     $table->date('solar_birthday_at')->nullable()->comment('阳历生日');
                     $table->unsignedInteger('solar_birthday_time')->default(0)->comment('阳历生日');
                     $table->date('chinese_birthday_at')->nullable()->comment('阴日生日');
                     $table->unsignedInteger('chinese_birthday_time')->default(0)->comment('阴日生日');
-                    $table->string('introduction',255)->default('')->comment('简介');
+                    $table->string('introduction', 255)->default('')->comment('简介');
 
                     $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
                     $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
@@ -71,7 +74,6 @@ return new class () extends Migration {
                 DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$tableName}` comment '{$this->tableComment}'");
             }
         }
-
     }
 
     /**
@@ -91,6 +93,5 @@ return new class () extends Migration {
                 Schema::connection($dbConnection)->dropIfExists($tableName);
             }
         }
-
     }
 };

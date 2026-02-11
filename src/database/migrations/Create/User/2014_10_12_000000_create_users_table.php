@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-23 15:35:15
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-02-06 23:16:43
+ * @LastEditTime: 2026-02-11 11:48:24
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -21,6 +21,8 @@ return new class () extends Migration {
      */
     protected $baseTable = 'users';
     protected $hasSnowflake = true;
+    // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+    protected $shardKeyAnchor = 'user_uid';
     protected $tableComment = '用户表'; // 改注释
 
 

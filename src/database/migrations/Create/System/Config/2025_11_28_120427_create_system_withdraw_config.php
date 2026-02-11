@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'system_withdraw_configs';
     protected $hasSnowflake = false;
+	// 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+	protected $shardKeyAnchor = '';
     protected $tableComment = '系统提现配置表';
 
     /**

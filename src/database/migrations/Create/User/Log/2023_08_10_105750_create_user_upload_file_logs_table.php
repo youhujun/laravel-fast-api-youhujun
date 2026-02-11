@@ -5,9 +5,9 @@
  * @version: v1
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2023-08-16 17:06:35
- * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2026-01-23 21:20:00
- * @FilePath: d:\wwwroot\Api\Components\Laravel\youhujun\laravel-fast-api\src\database\migrations\User\Log\2023_08_10_105750_create_user_upload_file_log_table.php
+ * @LastEditors: youhujun youhu8888@163.com
+ * @LastEditTime: 2026-02-11 11:27:51
+ * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\database\migrations\Create\User\Log\2023_08_10_105750_create_user_upload_file_logs_table.php
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'user_upload_file_logs';
     protected $hasSnowflake = true;
+    // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+    protected $shardKeyAnchor = 'user_uid';
     protected $tableComment = '用户文件上传日志表';
 
     /**

@@ -6,7 +6,7 @@
  * @Author: youhujun youhu8888@163.com
  * @Date: 2026-01-15 12:08:13
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-02-11 04:25:53
+ * @LastEditTime: 2026-02-11 11:38:37
  * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\database\migrations\Create\User\2026_01_15_120813_create_user_certifications_table.php
  * Copyright (C) 2026 youhujun. All rights reserved.
  */
@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'user_certifications';
     protected $hasSnowflake = true;
+    // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+    protected $shardKeyAnchor = 'user_uid';
     protected $tableComment = '用户认证信息表';
 
     public function up()

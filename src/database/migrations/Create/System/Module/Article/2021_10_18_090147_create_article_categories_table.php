@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-10-18 09:01:47
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-17 11:41:48
+ * @LastEditTime: 2026-02-11 11:47:08
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'article_categories';
     protected $hasSnowflake = false;
+    // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+    protected $shardKeyAnchor = '';
     protected $tableComment = '文章分类表';
 
     /**
