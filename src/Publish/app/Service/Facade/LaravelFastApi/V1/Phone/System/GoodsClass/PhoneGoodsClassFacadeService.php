@@ -6,10 +6,10 @@
  * @Date: 2024-09-03 16:48:37
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-02-22 17:05:50
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Phone\System\GoodsClass\PhoneGoodsClassFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Phone\System\GoodsClass\PhoneGoodsClassFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Phone\System\GoodsClass;
+namespace App\Services\Facade\LaravelFastApi\V1\Phone\System\GoodsClass;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -20,8 +20,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 
-use App\Service\Facade\Traits\V1\AlwaysService;
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\AlwaysService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 use App\Exceptions\Phone\CommonException;
 
@@ -32,7 +32,7 @@ use App\Models\LaravelFastApi\V1\System\Module\Goods\GoodsClass;
 use App\Http\Resources\LaravelFastApi\V1\Phone\System\Goods\GoodsClassResource;
 
 /**
- * @see \App\Facade\Phone\System\GoodsClass\PhoneGoodsClassFacade
+ * @see \App\Facades\Phone\System\GoodsClass\PhoneGoodsClassFacade
  */
 class PhoneGoodsClassFacadeService
 {

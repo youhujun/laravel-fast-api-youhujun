@@ -6,10 +6,10 @@
  * @Date: 2024-05-26 10:42:07
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-09-01 08:58:39
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\Service\Group\AdminGoodsClassFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\Service\Group\AdminGoodsClassFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\Service\Group;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\Service\Group;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Redis;
 use App\Exceptions\Admin\CommonException;
 use App\Events\Admin\CommonEvent;
 
-use App\Service\Facade\Traits\V1\AlwaysService;
+use App\Services\Facade\Traits\V1\AlwaysService;
 
 use App\Models\LaravelFastApi\V1\System\Module\Goods\GoodsClass;
 use App\Models\LaravelFastApi\V1\System\Module\Goods\GoodsClassUnion;
@@ -31,7 +31,7 @@ use App\Http\Resources\LaravelFastApi\V1\Admin\Goods\GoodsClassResource;
 
 
 /**
- * @see \App\Facade\Admin\Service\Group\AdminGoodsClassFacade
+ * @see \App\Facades\Admin\Service\Group\AdminGoodsClassFacade
  */
 class AdminGoodsClassFacadeService
 {

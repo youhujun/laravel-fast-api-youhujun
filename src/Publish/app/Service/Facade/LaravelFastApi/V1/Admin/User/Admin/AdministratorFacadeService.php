@@ -6,10 +6,10 @@
  * @Date: 2024-06-04 00:23:42
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2025-12-05 02:11:13
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\User\Admin\AdministratorFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\User\Admin\AdministratorFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\User\Admin;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\User\Admin;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 use App\Exceptions\Admin\CommonException;
 
@@ -35,11 +35,11 @@ use App\Models\LaravelFastApi\V1\User\Union\UserRoleUnion;
 use App\Http\Resources\LaravelFastApi\V1\Admin\Admin\AdminResource;
 use App\Http\Resources\LaravelFastApi\V1\Admin\Admin\AdminCollection;
 
-use YouHuJun\Tool\App\Facade\V1\Excel\ExcelFacade;
+use YouHuJun\Tool\App\Facades\V1\Excel\ExcelFacade;
 
 
 /**
- * @see \App\Facade\Admin\User\Admin\AdministratorFacade
+ * @see \App\Facades\Admin\User\Admin\AdministratorFacade
  */
 class AdministratorFacadeService
 {

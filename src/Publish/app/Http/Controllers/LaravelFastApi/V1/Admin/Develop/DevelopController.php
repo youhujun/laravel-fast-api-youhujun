@@ -33,7 +33,7 @@ use App\Exceptions\Common\RuleException;
 
 use App\Rules\LaravelFastApi\V1\Admin\Login\Password;
 
-use App\Facade\LaravelFastApi\V1\Admin\Develop\DeveloperFacade;
+use App\Facades\LaravelFastApi\V1\Admin\Develop\DeveloperFacade;
 
 class DevelopController extends Controller
 {

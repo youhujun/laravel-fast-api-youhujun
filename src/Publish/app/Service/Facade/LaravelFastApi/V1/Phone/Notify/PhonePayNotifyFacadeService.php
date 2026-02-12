@@ -7,10 +7,10 @@
  * @Date: 2024-07-12 12:50:24
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2026-01-10 23:04:47
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Phone\Notify\PhonePayNotifyFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Phone\Notify\PhonePayNotifyFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Phone\Notify;
+namespace App\Services\Facade\LaravelFastApi\V1\Phone\Notify;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -18,11 +18,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use App\Facade\Pub\V1\Wechat\Pay\WechatJsPayDecryptFacade;
-use App\Contract\LaravelFastApi\V1\Phone\Order\OrderPaymentHandlerContract;
+use App\Facades\Pub\V1\Wechat\Pay\WechatJsPayDecryptFacade;
+use App\Contracts\LaravelFastApi\V1\Phone\Order\OrderPaymentHandlerContract;
 
 /**
- * @see \App\Facade\Phone\Notify\PhonePayNotifyFacade
+ * @see \App\Facades\Phone\Notify\PhonePayNotifyFacade
  */
 class PhonePayNotifyFacadeService
 {

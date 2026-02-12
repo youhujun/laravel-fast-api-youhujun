@@ -7,10 +7,10 @@
  * @Date: 2024-07-14 14:53:46
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2026-01-10 04:09:16
- * @FilePath: \app\Service\Facade\Pub\V1\Map\TencentMapFacadeService.php
+ * @FilePath: \App\Services\Facade\Pub\V1\Map\TencentMapFacadeService.php
  */
 
-namespace App\Service\Facade\Pub\V1\Map;
+namespace App\Services\Facade\Pub\V1\Map;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -20,10 +20,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use App\Exceptions\Common\CommonException;
-use YouHuJun\Tool\App\Facade\V1\Map\Tencent\TencentMapFacade;
+use YouHuJun\Tool\App\Facades\V1\Map\Tencent\TencentMapFacade;
 
 /**
- * @see \App\Facade\Pub\V1\Map\TencentMapFacade
+ * @see \App\Facades\Pub\V1\Map\TencentMapFacade
  */
 class TencentMapFacadeService
 {

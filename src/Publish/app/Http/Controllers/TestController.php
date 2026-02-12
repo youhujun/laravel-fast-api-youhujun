@@ -29,16 +29,16 @@ use App\Rules\Pub\FormatTime;
 use App\Rules\Pub\CheckUnique;
 use App\Rules\Pub\ChineseCodeNumberLine;
 use App\Events\TestEvent;
-use App\Facade\LaravelFastApi\V1\Phone\Websocket\PhoneSocketFacade;
+use App\Facades\LaravelFastApi\V1\Phone\Websocket\PhoneSocketFacade;
 use App\Models\LaravelFastApi\V1\Admin\Admin;
-use App\Facade\YouHuShop\V1\Admin\Goods\Attribute\AdminGoodsAttributeValueFacade;
-use App\Facade\YouHuShop\V1\Admin\Goods\Spec\AdminGoodsSpecValueFacade;
-use App\Facade\LaravelFastApi\V1\Admin\User\Admin\AdminPersonalFacade;
-use App\Facade\Pub\V1\Qrcode\PubQrcodeFacade;
-use App\Contract\LaravelFastApi\V1\Phone\Order\OrderPaymentHandlerContract;
-use YouHuJun\Tool\App\Facade\V1\Calendar\CalendarFacade;
+use App\Facades\YouHuShop\V1\Admin\Goods\Attribute\AdminGoodsAttributeValueFacade;
+use App\Facades\YouHuShop\V1\Admin\Goods\Spec\AdminGoodsSpecValueFacade;
+use App\Facades\LaravelFastApi\V1\Admin\User\Admin\AdminPersonalFacade;
+use App\Facades\Pub\V1\Qrcode\PubQrcodeFacade;
+use App\Contracts\LaravelFastApi\V1\Phone\Order\OrderPaymentHandlerContract;
+use YouHuJun\Tool\App\Facades\V1\Calendar\CalendarFacade;
 use App\Exceptions\Common\CommonException;
-use App\Contract\LaravelFastApi\V1\Common\User\AddUserHandlerContract;
+use App\Contracts\LaravelFastApi\V1\Common\User\AddUserHandlerContract;
 
 //use PhoneBanner;
 

@@ -6,11 +6,11 @@
  * @Date: 2025-01-22 14:49:36
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-02-22 15:24:55
- * @FilePath: \app\Service\Facade\Common\V1\Login\CommonLoginFacadeService.php
+ * @FilePath: \App\Services\Facade\Common\V1\Login\CommonLoginFacadeService.php
  * Copyright (C) 2025 youhujun. All rights reserved.
  */
 
-namespace App\Service\Facade\Common\V1\Login;
+namespace App\Services\Facade\Common\V1\Login;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;
 
 /**
- * @see \App\Facade\Common\V1\Login\CommonLoginFacade
+ * @see \App\Facades\Common\V1\Login\CommonLoginFacade
  */
 class CommonLoginFacadeService
 {

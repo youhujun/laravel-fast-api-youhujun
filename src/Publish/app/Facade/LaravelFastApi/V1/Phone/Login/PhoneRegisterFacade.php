@@ -6,15 +6,15 @@
  * @Date: 2024-07-01 09:58:00
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-01-14 10:12:35
- * @FilePath: \app\Facade\LaravelFastApi\V1\Phone\Login\PhoneRegisterFacade.php
+ * @FilePath: \App\Facades\LaravelFastApi\V1\Phone\Login\PhoneRegisterFacade.php
  */
 
-namespace App\Facade\LaravelFastApi\V1\Phone\Login;
+namespace App\Facades\LaravelFastApi\V1\Phone\Login;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- *  @see \App\Service\Facade\LaravelFastApi\V1\Phone\Login\PhoneRegisterFacadeService
+ *  @see \App\Services\Facade\LaravelFastApi\V1\Phone\Login\PhoneRegisterFacadeService
  */
 class PhoneRegisterFacade extends Facade
 {

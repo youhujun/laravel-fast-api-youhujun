@@ -29,7 +29,7 @@ use App\Rules\Pub\CheckUnique;
 use App\Rules\Pub\ChineseCodeNumberLine;
 use App\Exceptions\Common\RuleException;
 
-use App\Facade\LaravelFastApi\V1\Phone\System\GoodsClass\PhoneGoodsClassFacade;
+use App\Facades\LaravelFastApi\V1\Phone\System\GoodsClass\PhoneGoodsClassFacade;
 
 class GoodsClassController extends Controller
 {

@@ -6,10 +6,10 @@
  * @Date: 2024-06-09 19:48:15
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2026-01-05 22:37:32
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserDetailsFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserDetailsFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\User\User;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\User\User;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -18,13 +18,13 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use YouHuJun\Tool\App\Facade\V1\Calendar\CalendarFacade;
+use YouHuJun\Tool\App\Facades\V1\Calendar\CalendarFacade;
 
 use App\Exceptions\Admin\CommonException;
 
 use App\Events\Admin\CommonEvent;
 
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 //模型
 //用户
@@ -54,7 +54,7 @@ use App\Http\Resources\LaravelFastApi\V1\Admin\System\Picture\AlbumPictureResour
 use LDAP\Result;
 
 /**
- * @see \App\Facade\Admin\User\User\AdminUserDetailsFacade
+ * @see \App\Facades\Admin\User\User\AdminUserDetailsFacade
  */
 class AdminUserDetailsFacadeService
 {

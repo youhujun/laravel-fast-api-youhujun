@@ -35,7 +35,7 @@ use App\Rules\Common\IdNumber;
 use App\Rules\LaravelFastApi\V1\Admin\User\User\CheckSex;
 use App\Rules\LaravelFastApi\V1\Admin\Login\Password;
 
-use App\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserFacade;
+use App\Facades\LaravelFastApi\V1\Admin\User\User\AdminUserFacade;
 
 class UserController extends Controller
 {

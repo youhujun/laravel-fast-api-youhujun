@@ -6,10 +6,10 @@
  * @Date: 2024-05-31 23:31:19
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2026-01-05 10:22:45
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\System\Bank\AdminBankFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\System\Bank\AdminBankFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\System\Bank;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\System\Bank;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 
-use  App\Service\Facade\Traits\V1\QueryService;
+use  App\Services\Facade\Traits\V1\QueryService;
 
 use App\Exceptions\Admin\CommonException;
 
@@ -31,10 +31,10 @@ use App\Http\Resources\LaravelFastApi\V1\Admin\System\BankResource;
 use App\Http\Resources\LaravelFastApi\V1\Admin\System\BankCollection;
 
 
-use YouHuJun\Tool\App\Facade\V1\Excel\ExcelFacade;
+use YouHuJun\Tool\App\Facades\V1\Excel\ExcelFacade;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Admin\System\Bank\AdminBankFacade
+ * @see \App\Facades\LaravelFastApi\V1\Admin\System\Bank\AdminBankFacade
  */
 class AdminBankFacadeService
 {

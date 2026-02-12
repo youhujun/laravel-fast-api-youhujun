@@ -6,12 +6,12 @@
  * @Date: 2025-01-14 15:27:06
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2025-11-28 01:31:07
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\Service\Platform\AdminPhoneBannerFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\Service\Platform\AdminPhoneBannerFacadeService.php
  * Copyright (C) 2025 youhujun. All rights reserved.
  */
 
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\Service\Platform;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\Service\Platform;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -24,14 +24,14 @@ use App\Exceptions\Admin\CommonException;
 
 use App\Events\Admin\CommonEvent;
 
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 use App\Models\LaravelFastApi\V1\System\Phone\PhoneBanner;
 
 use App\Http\Resources\LaravelFastApi\V1\Admin\Service\PhoneBanner\PhoneBannerCollection;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Admin\Service\Platform\AdminPhoneBannerFacade
+ * @see \App\Facades\LaravelFastApi\V1\Admin\Service\Platform\AdminPhoneBannerFacade
  */
 class AdminPhoneBannerFacadeService
 {

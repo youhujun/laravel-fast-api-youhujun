@@ -32,7 +32,7 @@ use App\Rules\Pub\ChineseCodeNumberLine;
 use App\Exceptions\Common\RuleException;
 use App\Rules\LaravelFastApi\V1\Admin\System\SystemConfig\VoiceConfigVoiceSaveType;
 
-use App\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\AdminVoiceConfigFacade;
+use App\Facades\LaravelFastApi\V1\Admin\System\SystemConfig\AdminVoiceConfigFacade;
 
 class VoiceConfigController extends Controller
 {

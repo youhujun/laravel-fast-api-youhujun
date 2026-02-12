@@ -6,10 +6,10 @@
  * @Date: 2024-07-01 09:58:00
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2025-12-22 11:29:22
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Phone\Login\PhoneRegisterFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Phone\Login\PhoneRegisterFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Phone\Login;
+namespace App\Services\Facade\LaravelFastApi\V1\Phone\Login;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -26,11 +26,11 @@ use App\Events\Phone\CommonEvent;
 
 use App\Models\LaravelFastApi\V1\User\User;
 
-use App\Facade\Pub\V1\Sms\SmsFacade;
-use App\Facade\Common\V1\User\User\CommonUserFacade;
+use App\Facades\Pub\V1\Sms\SmsFacade;
+use App\Facades\Common\V1\User\User\CommonUserFacade;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Phone\Login\PhoneRegisterFacade
+ * @see \App\Facades\LaravelFastApi\V1\Phone\Login\PhoneRegisterFacade
  */
 class PhoneRegisterFacadeService
 {

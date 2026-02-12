@@ -30,7 +30,7 @@ use App\Rules\Pub\ChineseCodeNumberLine;
 
 use App\Exceptions\Common\RuleException;
 
-use App\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserAccountFacade;
+use App\Facades\LaravelFastApi\V1\Admin\User\User\AdminUserAccountFacade;
 
 class UserAccountController extends Controller
 {

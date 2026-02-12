@@ -30,7 +30,7 @@ use App\Rules\Pub\CheckUnique;
 use App\Rules\Pub\LetterNumberUnderLine;
 use App\Exceptions\Common\RuleException;
 
-use App\Facade\LaravelFastApi\V1\Admin\Log\AdminUserLogFacade;
+use App\Facades\LaravelFastApi\V1\Admin\Log\AdminUserLogFacade;
 
 class UserLogController extends Controller
 {

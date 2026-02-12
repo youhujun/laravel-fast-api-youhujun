@@ -6,7 +6,7 @@
  * @Author: youhujun youhu8888@163.com
  * @Date: 2026-02-11 02:52:45
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-02-11 02:55:28
+ * @LastEditTime: 2026-02-12 15:42:35
  * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\App\Console\Commands\BuildDTOCommand.php
  * Copyright (C) 2026 youhujun. All rights reserved.
  */
@@ -31,7 +31,7 @@ class BuildDTOCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Create a new DTO class for YouHuJun ecosystem';
+    protected $description = 'Create a new dto class for YouHuJun ecosystem';
 
     /**
      * 生成的类类型
@@ -71,7 +71,7 @@ class BuildDTOCommand extends Command
 
         // DTO统一放在：根命名空间\DTO\XXX
         return $this->qualifyClass(
-            $this->getDefaultNamespace(trim($rootNamespace, '\\')).'\\'.'DTO'.'\\'.$name
+            $this->getDefaultNamespace(trim($rootNamespace, '\\')).'\\'.'DTOs'.'\\'.$name
         );
     }
 

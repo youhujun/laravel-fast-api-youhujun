@@ -6,10 +6,10 @@
  * @Date: 2024-05-26 10:46:25
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-06-23 23:32:25
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\Service\Group\AdminLabelFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\Service\Group\AdminLabelFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\Service\Group;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\Service\Group;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +23,7 @@ use App\Exceptions\Admin\CommonException;
 
 use App\Events\Admin\CommonEvent;
 
-use App\Service\Facade\Traits\V1\AlwaysService;
+use App\Services\Facade\Traits\V1\AlwaysService;
 
 use App\Models\LaravelFastApi\V1\System\Module\Label;
 use App\Models\LaravelFastApi\V1\Article\Union\ArticleLabelUnion;
@@ -31,7 +31,7 @@ use App\Models\LaravelFastApi\V1\Article\Union\ArticleLabelUnion;
 use App\Http\Resources\LaravelFastApi\V1\Admin\Help\LabelRecource;
 
 /**
- * @see \App\Facade\Admin\Service\Group\AdminLabelFacade
+ * @see \App\Facades\Admin\Service\Group\AdminLabelFacade
  */
 class AdminLabelFacadeService
 {

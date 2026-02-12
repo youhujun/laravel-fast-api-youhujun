@@ -6,10 +6,10 @@
  * @Date: 2024-09-04 08:16:51
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-02-25 10:03:20
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Phone\User\User\Address\PhoneUserAddressFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Phone\User\User\Address\PhoneUserAddressFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Phone\User\User\Address;
+namespace App\Services\Facade\LaravelFastApi\V1\Phone\User\User\Address;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 use App\Exceptions\Phone\CommonException;
 
@@ -34,7 +34,7 @@ use App\Http\Resources\LaravelFastApi\V1\Phone\User\User\UserAddressCollection;
 use App\Http\Resources\LaravelFastApi\V1\Phone\User\User\UserDefaultAddressResource;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Phone\User\User\Address\PhoneUserAddressFacade
+ * @see \App\Facades\LaravelFastApi\V1\Phone\User\User\Address\PhoneUserAddressFacade
  */
 class PhoneUserAddressFacadeService
 {

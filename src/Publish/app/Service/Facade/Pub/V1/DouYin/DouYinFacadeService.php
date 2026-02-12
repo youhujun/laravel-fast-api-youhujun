@@ -7,11 +7,11 @@
  * @Date: 2025-10-16 11:39:21
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2026-01-09 17:26:11
- * @FilePath: \app\Service\Facade\Pub\V1\DouYin\DouYinFacadeService.php
+ * @FilePath: \App\Services\Facade\Pub\V1\DouYin\DouYinFacadeService.php
  * Copyright (C) 2026 youhujun. All rights reserved.
  */
 
-namespace App\Service\Facade\Pub\V1\DouYin;
+namespace App\Services\Facade\Pub\V1\DouYin;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -24,10 +24,10 @@ use Illuminate\Support\Facades\Redis;
 use App\Exceptions\Phone\CommonException;
 use App\Events\Phone\CommonEvent;
 use App\Models\LaravelFastApi\V1\System\Platform\SystemDouyinConfig;
-use YouHuJun\Tool\App\Facade\V1\DouYin\Login\DouYinLoginFacade;
+use YouHuJun\Tool\App\Facades\V1\DouYin\Login\DouYinLoginFacade;
 
 /**
- * @see \App\Facade\Pub\V1\DouYin\DouYinFacade
+ * @see \App\Facades\Pub\V1\DouYin\DouYinFacade
  */
 class DouYinFacadeService
 {

@@ -6,11 +6,11 @@
  * @Date: 2025-01-21 15:44:57
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2025-12-22 12:01:03
- * @FilePath: \app\Service\Facade\Common\V1\User\User\CommonUserFacadeService.php
+ * @FilePath: \App\Services\Facade\Common\V1\User\User\CommonUserFacadeService.php
  * Copyright (C) 2025 youhujun. All rights reserved.
  */
 
-namespace App\Service\Facade\Common\V1\User\User;
+namespace App\Services\Facade\Common\V1\User\User;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -38,7 +38,7 @@ use App\Models\LaravelFastApi\V1\User\Union\UserSystemWechatConfigUnion;
 use App\Models\LaravelFastApi\V1\User\Union\UserRoleUnion;
 
 /**
- * @see \App\Facade\Common\V1\User\User\CommonUserFacade
+ * @see \App\Facades\Common\V1\User\User\CommonUserFacade
  */
 class CommonUserFacadeService
 {

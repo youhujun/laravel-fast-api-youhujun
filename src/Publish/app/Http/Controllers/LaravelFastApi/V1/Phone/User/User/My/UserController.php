@@ -30,8 +30,8 @@ use App\Rules\Pub\ChineseCodeNumberLine;
 use App\Exceptions\Common\RuleException;
 use App\Rules\Common\Phone;
 
-use App\Facade\LaravelFastApi\V1\Phone\User\User\UserInfo\PhoneUserInfoFacade;
-use App\Facade\LaravelFastApi\V1\Phone\File\PhonePictureFacade;
+use App\Facades\LaravelFastApi\V1\Phone\User\User\UserInfo\PhoneUserInfoFacade;
+use App\Facades\LaravelFastApi\V1\Phone\File\PhonePictureFacade;
 
 class UserController extends Controller
 {

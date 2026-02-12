@@ -6,10 +6,10 @@
  * @Date: 2024-07-29 15:47:45
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-01-12 15:51:07
- * @FilePath: \app\Service\Facade\Common\V1\Location\CalculateUserDistanceFacadeService.php
+ * @FilePath: \App\Services\Facade\Common\V1\Location\CalculateUserDistanceFacadeService.php
  */
 
-namespace App\Service\Facade\Common\V1\Location;
+namespace App\Services\Facade\Common\V1\Location;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +25,7 @@ use App\Models\User\User;
 use App\Models\User\Log\UserLocationLog;
 
 /**
- * @see \App\Facade\Common\Location\CalculateUserDistanceFacade
+ * @see \App\Facades\Common\Location\CalculateUserDistanceFacade
  */
 class CalculateUserDistanceFacadeService
 {

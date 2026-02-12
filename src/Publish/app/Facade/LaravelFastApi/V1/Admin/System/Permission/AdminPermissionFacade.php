@@ -6,15 +6,15 @@
  * @Date: 2024-05-05 21:54:15
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2024-05-05 21:54:25
- * @FilePath: \app\Facade\LaravelFastApi\V1\Admin\System\Permission\AdminPermissionFacade.php
+ * @FilePath: \App\Facades\LaravelFastApi\V1\Admin\System\Permission\AdminPermissionFacade.php
  */
 
-namespace App\Facade\LaravelFastApi\V1\Admin\System\Permission;
+namespace App\Facades\LaravelFastApi\V1\Admin\System\Permission;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \App\Service\Facade\LaravelFastApi\V1\Admin\System\Permission\AdminPermissionFacadeService
+ * @see \App\Services\Facade\LaravelFastApi\V1\Admin\System\Permission\AdminPermissionFacadeService
  */
 class AdminPermissionFacade extends Facade
 {

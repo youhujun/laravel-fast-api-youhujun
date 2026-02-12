@@ -6,10 +6,10 @@
  * @Date: 2024-05-20 23:10:20
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2025-11-25 06:41:07
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\File\AdminUploadFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\File\AdminUploadFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\File;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\File;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -30,12 +30,12 @@ use App\Models\LaravelFastApi\V1\Picture\Album;
 use App\Models\LaravelFastApi\V1\Picture\AlbumPicture;
 use App\Models\LaravelFastApi\V1\User\Info\UserAvatar;
 
-use App\Facade\Pub\V1\Store\QiNiuFacade;
+use App\Facades\Pub\V1\Store\QiNiuFacade;
 
 //响应
 use App\Http\Resources\LaravelFastApi\V1\Admin\System\Picture\AlbumPictureResource;
 /**
- * @see \App\Facade\LaravelFastApi\V1\Admin\File\AdminUploadFacade
+ * @see \App\Facades\LaravelFastApi\V1\Admin\File\AdminUploadFacade
  */
 class AdminUploadFacadeService
 {

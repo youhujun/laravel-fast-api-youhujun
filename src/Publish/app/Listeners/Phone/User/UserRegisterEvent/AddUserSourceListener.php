@@ -21,7 +21,7 @@ use App\Exceptions\Phone\CommonException;
 use App\Models\LaravelFastApi\V1\User\Union\UserSourceUnion;
 use App\Models\LaravelFastApi\V1\User\User;
 
-use App\Facade\Phone\User\PhoneUserSourceFacade;
+use App\Facades\Phone\User\PhoneUserSourceFacade;
 
 class AddUserSourceListener
 {

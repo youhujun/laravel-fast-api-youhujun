@@ -6,10 +6,10 @@
  * @Date: 2024-07-16 10:50:14
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-02-28 19:14:48
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Phone\Websocket\PhoneSocketFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Phone\Websocket\PhoneSocketFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Phone\Websocket;
+namespace App\Services\Facade\LaravelFastApi\V1\Phone\Websocket;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -23,10 +23,10 @@ use Swoole\WebSocket\Server;
 use Swoole\Http\Request;
 use Swoole\WebSocket\Frame;
 
-use App\Facade\LaravelFastApi\V1\Phone\Websocket\User\PhoneSocketUserFacade;
+use App\Facades\LaravelFastApi\V1\Phone\Websocket\User\PhoneSocketUserFacade;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Phone\Websocket\PhoneSocketFacade
+ * @see \App\Facades\LaravelFastApi\V1\Phone\Websocket\PhoneSocketFacade
  */
 class PhoneSocketFacadeService
 {

@@ -33,7 +33,7 @@ use App\Rules\LaravelFastApi\V1\Phone\Phone;
 
 use App\Exceptions\Common\RuleException;
 
-use App\Facade\LaravelFastApi\V1\Phone\Login\PhoneLoginFacade;
+use App\Facades\LaravelFastApi\V1\Phone\Login\PhoneLoginFacade;
 
 class LoginController extends Controller
 {

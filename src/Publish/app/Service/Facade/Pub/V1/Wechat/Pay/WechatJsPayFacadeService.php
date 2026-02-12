@@ -6,10 +6,10 @@
  * @Date: 2024-07-12 09:52:28
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2026-01-08 02:19:59
- * @FilePath: \app\Service\Facade\Pub\V1\Wechat\Pay\WechatJsPayFacadeService.php
+ * @FilePath: \App\Services\Facade\Pub\V1\Wechat\Pay\WechatJsPayFacadeService.php
  */
 
-namespace App\Service\Facade\Pub\V1\Wechat\Pay;
+namespace App\Services\Facade\Pub\V1\Wechat\Pay;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -24,10 +24,10 @@ use App\Exceptions\Common\CommonException;
 
 use App\Models\LaravelFastApi\V1\System\Platform\SystemWechatConfig;
 
-use YouHuJun\Tool\App\Facade\V1\Wechat\Pay\JSAPI\WechatPayByJSAPIFacade;
+use YouHuJun\Tool\App\Facades\V1\Wechat\Pay\JSAPI\WechatPayByJSAPIFacade;
 
 /**
- * @see \App\Facade\Pub\V1\Wechat\Pay\WechatJsPayFacade
+ * @see \App\Facades\Pub\V1\Wechat\Pay\WechatJsPayFacade
  */
 class WechatJsPayFacadeService
 {

@@ -6,10 +6,10 @@
  * @Date: 2024-09-02 18:13:30
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-02-22 16:44:57
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Phone\System\Region\PhoneRegionFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Phone\System\Region\PhoneRegionFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Phone\System\Region;
+namespace App\Services\Facade\LaravelFastApi\V1\Phone\System\Region;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -20,8 +20,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 
-use App\Service\Facade\Traits\V1\AlwaysService;
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\AlwaysService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 use App\Exceptions\Phone\CommonException;
 
@@ -32,7 +32,7 @@ use App\Models\LaravelFastApi\V1\System\Region\Region;
 use App\Http\Resources\LaravelFastApi\V1\Phone\System\RegionResource;
 
 /**
- * @see \App\Facade\Phone\System\Region\PhoneRegionFacade
+ * @see \App\Facades\Phone\System\Region\PhoneRegionFacade
  */
 class PhoneRegionFacadeService
 {

@@ -21,7 +21,7 @@ use App\Models\LaravelFastApi\V1\Picture\AlbumPicture;
 
 use App\Models\LaravelFastApi\V1\User\Info\UserQrcode;
 
-use App\Facade\Pub\V1\Qrcode\PublicQrcodeFacade;
+use App\Facades\Pub\V1\Qrcode\PublicQrcodeFacade;
 
 /**
  * @see \App\Events\LaravelFastApi\V1\Admin\User\User\AddUserEvent

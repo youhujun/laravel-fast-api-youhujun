@@ -6,10 +6,10 @@
  * @Date: 2024-12-24 17:00:59
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-02-22 15:30:56
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Phone\Login\DouYin\PhoneLoginDouYinFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Phone\Login\DouYin\PhoneLoginDouYinFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Phone\Login\DouYin;
+namespace App\Services\Facade\LaravelFastApi\V1\Phone\Login\DouYin;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -35,12 +35,12 @@ use UserSystemDouyinConfigUnion;
 
 use App\Models\LaravelFastApi\V1\User\User;
 
-use App\Facade\Common\V1\Login\CommonLoginFacade;
-use App\Facade\Common\V1\User\User\CommonUserFacade;
+use App\Facades\Common\V1\Login\CommonLoginFacade;
+use App\Facades\Common\V1\User\User\CommonUserFacade;
 
 
 /**
- * @see \App\Facade\Phone\Login\DouYin\PhoneLoginDouYinFacade
+ * @see \App\Facades\Phone\Login\DouYin\PhoneLoginDouYinFacade
  */
 class PhoneLoginDouYinFacadeService
 {

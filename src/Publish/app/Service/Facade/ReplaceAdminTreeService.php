@@ -8,7 +8,7 @@
  * @LastEditTime: 2024-06-02 04:44:20
  */
 
-namespace App\Service\Facade;
+namespace App\Services\Facade;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 
-use App\Service\Facade\Traits\V1\AlwaysService;
+use App\Services\Facade\Traits\V1\AlwaysService;
 
 use App\Exceptions\Admin\CommonException;
 

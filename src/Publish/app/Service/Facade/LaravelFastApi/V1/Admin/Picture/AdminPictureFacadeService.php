@@ -6,10 +6,10 @@
  * @Date: 2024-06-02 02:59:54
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2025-11-05 22:43:24
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\Picture\AdminPictureFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\Picture\AdminPictureFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\Picture;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\Picture;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -31,7 +31,7 @@ use App\Models\LaravelFastApi\V1\User\Info\UserAvatar;
 use App\Http\Resources\LaravelFastApi\V1\Admin\System\Picture\AlbumPictureResource;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Admin\Picture\AdminPictureFacade
+ * @see \App\Facades\LaravelFastApi\V1\Admin\Picture\AdminPictureFacade
  */
 class AdminPictureFacadeService
 {

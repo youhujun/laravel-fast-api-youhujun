@@ -33,7 +33,7 @@ use App\Rules\Common\IdNumber;
 
 use App\Exceptions\Common\RuleException;
 
-use App\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserDetailsFacade;
+use App\Facades\LaravelFastApi\V1\Admin\User\User\AdminUserDetailsFacade;
 
 
 class UserDetailsController extends Controller

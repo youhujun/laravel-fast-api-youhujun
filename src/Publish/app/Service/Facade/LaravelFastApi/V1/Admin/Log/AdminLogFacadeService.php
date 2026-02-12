@@ -6,10 +6,10 @@
  * @Date: 2024-06-02 16:16:01
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-06-21 04:40:18
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\Log\AdminLogFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\Log\AdminLogFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\Log;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\Log;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 use App\Exceptions\Admin\CommonException;
 use App\Events\Admin\CommonEvent;
@@ -31,7 +31,7 @@ use App\Http\Resources\LaravelFastApi\V1\Admin\Log\AdminEventLogCollection;
 use App\Http\Resources\LaravelFastApi\V1\Admin\Log\AdminLoginLogCollection;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Admin\Log\AdminLogFacade
+ * @see \App\Facades\LaravelFastApi\V1\Admin\Log\AdminLogFacade
  */
 class AdminLogFacadeService
 {

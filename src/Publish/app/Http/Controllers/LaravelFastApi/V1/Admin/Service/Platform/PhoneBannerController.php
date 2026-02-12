@@ -30,7 +30,7 @@ use App\Rules\Pub\CheckUnique;
 use App\Rules\Pub\ChineseCodeNumberLine;
 use App\Exceptions\Common\RuleException;
 
-use App\Facade\LaravelFastApi\V1\Admin\Service\Platform\AdminPhoneBannerFacade;
+use App\Facades\LaravelFastApi\V1\Admin\Service\Platform\AdminPhoneBannerFacade;
 
 class PhoneBannerController extends Controller
 {

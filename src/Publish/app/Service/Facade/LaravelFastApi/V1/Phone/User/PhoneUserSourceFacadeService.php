@@ -6,10 +6,10 @@
  * @Date: 2024-07-03 09:46:04
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2025-12-02 21:19:06
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Phone\User\PhoneUserSourceFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Phone\User\PhoneUserSourceFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Phone\User;
+namespace App\Services\Facade\LaravelFastApi\V1\Phone\User;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\LaravelFastApi\V1\User\User;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Phone\User\PhoneUserSourceFacade
+ * @see \App\Facades\LaravelFastApi\V1\Phone\User\PhoneUserSourceFacade
  */
 class PhoneUserSourceFacadeService
 {

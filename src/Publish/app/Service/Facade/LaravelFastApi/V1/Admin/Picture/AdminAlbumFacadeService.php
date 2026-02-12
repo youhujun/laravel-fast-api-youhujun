@@ -6,10 +6,10 @@
  * @Date: 2024-06-02 02:54:25
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2025-11-10 18:07:52
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\Picture\AdminAlbumFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\Picture\AdminAlbumFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\Picture;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\Picture;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 use App\Exceptions\Admin\CommonException;
 use App\Events\Admin\CommonEvent;
@@ -32,7 +32,7 @@ use App\Http\Resources\LaravelFastApi\V1\Admin\System\Picture\AlbumCollection;
 use App\Http\Resources\LaravelFastApi\V1\Admin\System\Picture\AlbumPictureCollection;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Admin\Picture\AdminAlbumFacade
+ * @see \App\Facades\LaravelFastApi\V1\Admin\Picture\AdminAlbumFacade
  */
 class AdminAlbumFacadeService
 {

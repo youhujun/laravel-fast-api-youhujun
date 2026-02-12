@@ -14,7 +14,7 @@ namespace App\Console\Commands\LaravelFastApi\V1;
 
 use Illuminate\Console\Command;
 
-use App\Facade\Common\V1\Total\TotalAllDataFacade;
+use App\Facades\Common\V1\Total\TotalAllDataFacade;
 
 class ExecuteTotalCommand extends Command
 {

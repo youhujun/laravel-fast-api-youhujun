@@ -7,10 +7,10 @@
  * @Date: 2024-06-06 20:33:33
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2026-01-10 12:21:28
- * @FilePath: \app\Service\Facade\Pub\V1\Qrcode\PubQrcodeFacadeService.php
+ * @FilePath: \App\Services\Facade\Pub\V1\Qrcode\PubQrcodeFacadeService.php
  */
 
-namespace App\Service\Facade\Pub\V1\Qrcode;
+namespace App\Services\Facade\Pub\V1\Qrcode;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
@@ -24,10 +24,10 @@ use Endroid\QrCode\RoundBlockSizeMode;
 use Endroid\QrCode\Writer\PngWriter;
 use App\Models\LaravelFastApi\V1\User\User;
 use App\Exceptions\Common\CommonException;
-use YouHuJun\Tool\App\Facade\V1\Qrcode\QrcodeFacade;
+use YouHuJun\Tool\App\Facades\V1\Qrcode\QrcodeFacade;
 
 /**
- * @see \App\Facade\Pub\V1\Qrcode\PubQrcodeFacade
+ * @see \App\Facades\Pub\V1\Qrcode\PubQrcodeFacade
  */
 class PubQrcodeFacadeService
 {

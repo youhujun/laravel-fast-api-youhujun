@@ -6,15 +6,15 @@
  * @Date: 2024-07-14 16:16:37
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-01-14 10:14:05
- * @FilePath: \app\Facade\LaravelFastApi\V1\Phone\System\PhoneMapFacade.php
+ * @FilePath: \App\Facades\LaravelFastApi\V1\Phone\System\PhoneMapFacade.php
  */
 
-namespace App\Facade\LaravelFastApi\V1\Phone\System;
+namespace App\Facades\LaravelFastApi\V1\Phone\System;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \App\Service\Facade\LaravelFastApi\V1\Phone\System\PhoneMapFacadeService
+ * @see \App\Services\Facade\LaravelFastApi\V1\Phone\System\PhoneMapFacadeService
  */
 class PhoneMapFacade extends Facade
 {

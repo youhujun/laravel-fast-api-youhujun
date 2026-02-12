@@ -32,7 +32,7 @@ use App\Exceptions\Common\RuleException;
 use App\Rules\Common\IdNumber;
 use App\Rules\Common\Phone;
 
-use App\Facade\LaravelFastApi\V1\Phone\User\User\PhoneUserFacade;
+use App\Facades\LaravelFastApi\V1\Phone\User\User\PhoneUserFacade;
 
 class UserController extends Controller
 {

@@ -6,10 +6,10 @@
  * @Date: 2024-12-28 15:08:15
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2025-12-20 11:38:42
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Phone\Login\Wechat\PhoneLoginWechatFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Phone\Login\Wechat\PhoneLoginWechatFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Phone\Login\Wechat;
+namespace App\Services\Facade\LaravelFastApi\V1\Phone\Login\Wechat;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -36,11 +36,11 @@ use App\Models\LaravelFastApi\V1\User\Info\UserAvatar;
 use App\Models\LaravelFastApi\V1\Picture\Album;
 use App\Models\LaravelFastApi\V1\Picture\AlbumPicture;
 
-use App\Facade\Common\V1\Login\CommonLoginFacade;
-use App\Facade\Common\V1\User\User\CommonUserFacade;
+use App\Facades\Common\V1\Login\CommonLoginFacade;
+use App\Facades\Common\V1\User\User\CommonUserFacade;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Phone\Login\Wechat\PhoneLoginWechatFacade
+ * @see \App\Facades\LaravelFastApi\V1\Phone\Login\Wechat\PhoneLoginWechatFacade
  */
 class PhoneLoginWechatFacadeService
 {

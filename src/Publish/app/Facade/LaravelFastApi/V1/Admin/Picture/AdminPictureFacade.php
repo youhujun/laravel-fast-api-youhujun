@@ -6,15 +6,15 @@
  * @Date: 2024-06-02 02:59:54
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2024-06-02 03:00:27
- * @FilePath: \app\Facade\LaravelFastApi\V1\Admin\Picture\AdminPictureFacade.php
+ * @FilePath: \App\Facades\LaravelFastApi\V1\Admin\Picture\AdminPictureFacade.php
  */
 
-namespace App\Facade\LaravelFastApi\V1\Admin\Picture;
+namespace App\Facades\LaravelFastApi\V1\Admin\Picture;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \App\Service\Facade\LaravelFastApi\V1\Admin\Picture\AdminPictureFacadeService
+ * @see \App\Services\Facade\LaravelFastApi\V1\Admin\Picture\AdminPictureFacadeService
  */
 class AdminPictureFacade extends Facade
 {

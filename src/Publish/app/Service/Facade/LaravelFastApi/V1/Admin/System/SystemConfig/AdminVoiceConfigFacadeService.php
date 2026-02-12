@@ -6,10 +6,10 @@
  * @Date: 2024-07-19 10:23:21
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-06-21 02:17:03
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\AdminVoiceConfigFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\AdminVoiceConfigFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\System\SystemConfig;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\System\SystemConfig;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 use App\Exceptions\Admin\CommonException;
 
@@ -32,7 +32,7 @@ use App\Http\Resources\LaravelFastApi\V1\Admin\System\SystemConfig\Admin\SystemV
 
 
 /**
- * @see \app\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\AdminVoiceConfigFacade
+ * @see \App\Facades\LaravelFastApi\V1\Admin\System\SystemConfig\AdminVoiceConfigFacade
  */
 class AdminVoiceConfigFacadeService
 {

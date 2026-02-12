@@ -14,7 +14,7 @@ namespace App\Console\Commands\LaravelFastApi\V1;
 
 use Illuminate\Console\Command;
 
-use App\Facade\LaravelFastApi\V1\Phone\Websocket\PhoneSocketFacade;
+use App\Facades\LaravelFastApi\V1\Phone\Websocket\PhoneSocketFacade;
 
 class WebSocketServerCommand extends Command
 {

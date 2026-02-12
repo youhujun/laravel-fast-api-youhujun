@@ -6,15 +6,15 @@
  * @Date: 2024-06-09 19:48:15
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2024-06-26 09:34:08
- * @FilePath: \app\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserDetailsFacade.php
+ * @FilePath: \App\Facades\LaravelFastApi\V1\Admin\User\User\AdminUserDetailsFacade.php
  */
 
-namespace App\Facade\LaravelFastApi\V1\Admin\User\User;
+namespace App\Facades\LaravelFastApi\V1\Admin\User\User;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \App\Service\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserDetailsFacadeService
+ * @see \App\Services\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserDetailsFacadeService
  */
 class AdminUserDetailsFacade extends Facade
 {

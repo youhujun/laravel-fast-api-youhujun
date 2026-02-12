@@ -6,10 +6,10 @@
  * @Date: 2024-05-05 21:54:15
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-09-27 14:15:14
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\System\Permission\AdminPermissionFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\System\Permission\AdminPermissionFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\System\Permission;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\System\Permission;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +24,7 @@ use App\Exceptions\Admin\CommonException;
 
 use App\Events\Admin\CommonEvent;
 
-use App\Service\Facade\Traits\V1\AlwaysService;
+use App\Services\Facade\Traits\V1\AlwaysService;
 
 use App\Models\LaravelFastApi\V1\Admin\Admin;
 use App\Models\LaravelFastApi\V1\System\Permission\Permission;
@@ -34,10 +34,10 @@ use App\Http\Resources\LaravelFastApi\V1\Admin\System\Permission\MenuResource;
 use App\Http\Resources\LaravelFastApi\V1\Admin\System\Permission\MenuOptionsResource;
 use App\Http\Resources\LaravelFastApi\V1\Admin\System\Permission\SingleMenuFormResource;
 
-use App\Facade\Common\V1\User\User\CommonUserFacade;
+use App\Facades\Common\V1\User\User\CommonUserFacade;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Admin\System\Permission\AdminPermissionFacade
+ * @see \App\Facades\LaravelFastApi\V1\Admin\System\Permission\AdminPermissionFacade
  */
 class AdminPermissionFacadeService
 {

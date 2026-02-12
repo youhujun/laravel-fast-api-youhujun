@@ -6,10 +6,10 @@
  * @Date: 2024-07-11 09:10:04
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-01-14 10:55:10
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Phone\File\PhonePictureFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Phone\File\PhonePictureFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Phone\File;
+namespace App\Services\Facade\LaravelFastApi\V1\Phone\File;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -30,13 +30,13 @@ use App\Models\LaravelFastApi\V1\Picture\AlbumPicture;
 use App\Models\LaravelFastApi\V1\User\User;
 use App\Models\LaravelFastApi\V1\User\Info\UserAvatar;
 
-use App\Facade\Pub\V1\Store\QiNiuFacade;
+use App\Facades\Pub\V1\Store\QiNiuFacade;
 
 use App\Http\Resources\LaravelFastApi\V1\Admin\System\Picture\AlbumPictureResource;
 
 
 /**
- * @see \App\Facade\Phone\File\PhonePictureFacade
+ * @see \App\Facades\Phone\File\PhonePictureFacade
  */
 class PhonePictureFacadeService
 {

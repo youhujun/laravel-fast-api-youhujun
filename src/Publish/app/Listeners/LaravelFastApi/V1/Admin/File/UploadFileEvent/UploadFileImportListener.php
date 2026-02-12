@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Log;
 
 use App\Exceptions\Admin\CommonException;
 
-use App\Facade\LaravelFastApi\V1\Admin\System\Bank\AdminBankFacade;
+use App\Facades\LaravelFastApi\V1\Admin\System\Bank\AdminBankFacade;
 
 /**
  * @see \App\Events\LaravelFastApi\V1\Admin\File\UploadFileEvent

@@ -29,7 +29,7 @@ use App\Rules\Pub\CheckUnique;
 use App\Rules\Pub\LetterNumberUnderLine;
 
 
-use App\Facade\LaravelFastApi\V1\Admin\System\Permission\AdminPermissionFacade;
+use App\Facades\LaravelFastApi\V1\Admin\System\Permission\AdminPermissionFacade;
 
 class PermissionController extends Controller
 {

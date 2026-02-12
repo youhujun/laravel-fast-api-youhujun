@@ -2,66 +2,60 @@
 
 namespace DummyNamespace;
 
+use App\DTOs\Traits\BaseDTOTrait;
 use App\Rules\Pub\Required;
 use App\Rules\Pub\Numeric;
 use App\Rules\Pub\CheckString;
 
+/**
+ * DummyClass（游鹄生态DTO，贴合{TABLE_NAME}表字段规范）
+ *
+ * @Description: 自动生成：游鹄生态{BUSINESS_MODULE}模块DTO，适配微服务/TS类型生成
+ * @Author: youhujun youhu8888@163.com
+ * @Date: DUMMY_DATE
+ */
 class DummyClass
 {
+    use BaseDTOTrait;
+
     /**
-     * 业务主键（*_uid，贴合游鹄分片规范）
-     *
-     * @var string
+     * 业务主键（*_uid，游鹄分片规范）
+     * @var string|int 雪花ID/分片UID
      */
     protected $business_uid;
 
     /**
-     * 分片键（贴合游鹄分片规范）
-     *
-     * @var int
+     * 分片键（游鹄分片规范，锚定业务归属）
+     * @var int 如user_uid/payer_uid
      */
     protected $shard_key;
 
+    // ========== 表字段自动填充区（--table参数触发） ==========
+    // {TABLE_FIELDS}
+
     /**
-     * 获取验证规则（对接你的控制器验证逻辑）
-     *
+     * 字段映射（供TS类型生成/微服务对接）
      * @return array
      */
-    public function rules()
+    public function getFieldMap(): array
     {
         return [
-            'business_uid' => [new Required, new CheckString],
-            'shard_key' => [new Required, new Numeric],
-            // 可自动补充其他字段规则
+            'business_uid' => 'string|int (雪花ID/分片UID)',
+            'shard_key' => 'int (分片锚定字段)',
+            // {FIELD_MAP}
         ];
     }
 
     /**
-     * 赋值方法（批量赋值，贴合游鹄$fillable规范）
-     *
-     * @param array $attributes
-     * @return self
-     */
-    public function fill(array $attributes)
-    {
-        foreach ($attributes as $key => $value) {
-            if (property_exists($this, $key)) {
-                $this->{$key} = $value;
-            }
-        }
-        return $this;
-    }
-
-    /**
-     * 转数组（对接资源转换器）
-     *
+     * 验证规则（对接控制器，按业务场景调整）
      * @return array
      */
-    public function toArray()
+    public function rules(): array
     {
         return [
-            'business_uid' => $this->business_uid,
-            'shard_key' => $this->shard_key,
+            'business_uid' => [new Required, new CheckString],
+            'shard_key' => [new Required, new Numeric],
+            // {RULES}
         ];
     }
 }

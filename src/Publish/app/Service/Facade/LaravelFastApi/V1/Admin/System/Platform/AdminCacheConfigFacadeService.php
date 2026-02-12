@@ -6,10 +6,10 @@
  * @Date: 2024-05-12 19:41:57
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-03-06 16:27:26
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\System\Platform\AdminCacheConfigFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\System\Platform\AdminCacheConfigFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\System\Platform;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\System\Platform;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +27,7 @@ use App\Events\Admin\CommonEvent;
 
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Admin\System\Platform\AdminCacheConfigFacade
+ * @see \App\Facades\LaravelFastApi\V1\Admin\System\Platform\AdminCacheConfigFacade
  */
 class AdminCacheConfigFacadeService
 {

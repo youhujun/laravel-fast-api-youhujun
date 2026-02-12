@@ -28,7 +28,7 @@ use App\Rules\Pub\Required;
 use App\Rules\Pub\CheckBetween;
 use App\Rules\Pub\CheckUnique;
 
-use App\Facade\LaravelFastApi\V1\Admin\System\Bank\AdminBankFacade;
+use App\Facades\LaravelFastApi\V1\Admin\System\Bank\AdminBankFacade;
 
 class BankController extends Controller
 {

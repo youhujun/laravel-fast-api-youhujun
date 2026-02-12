@@ -32,7 +32,7 @@ use App\Exceptions\Common\RuleException;
 
 use App\Rules\Common\Phone;
 
-use App\Facade\LaravelFastApi\V1\Admin\User\Admin\AdministratorFacade;
+use App\Facades\LaravelFastApi\V1\Admin\User\Admin\AdministratorFacade;
 
 class AdministratorController extends Controller
 {

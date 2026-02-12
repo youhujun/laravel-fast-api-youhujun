@@ -7,10 +7,10 @@
  * @Date: 2024-06-27 10:40:52
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2025-12-20 01:26:48
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Phone\Login\PhoneLoginFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Phone\Login\PhoneLoginFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Phone\Login;
+namespace App\Services\Facade\LaravelFastApi\V1\Phone\Login;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -28,12 +28,12 @@ use App\Events\LaravelFastApi\V1\Phone\User\UserLoginEvent;
 use App\Events\LaravelFastApi\V1\Phone\User\UserLogoutEvent;
 use App\Models\LaravelFastApi\V1\User\User;
 use App\Models\LaravelFastApi\V1\User\Info\UserInfo;
-use App\Facade\Common\V1\User\User\CommonUserFacade;
-use App\Facade\Common\V1\Login\CommonLoginFacade;
-use App\Facade\Pub\V1\Sms\SmsFacade;
+use App\Facades\Common\V1\User\User\CommonUserFacade;
+use App\Facades\Common\V1\Login\CommonLoginFacade;
+use App\Facades\Pub\V1\Sms\SmsFacade;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Phone\Login\PhoneLoginFacade
+ * @see \App\Facades\LaravelFastApi\V1\Phone\Login\PhoneLoginFacade
  */
 class PhoneLoginFacadeService
 {

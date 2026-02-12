@@ -30,7 +30,7 @@ use App\Rules\Pub\LetterNumberUnderLine;
 
 use App\Rules\LaravelFastApi\V1\Admin\Common\TreeDeep;
 
-use App\Facade\LaravelFastApi\V1\Admin\Service\Group\AdminCategoryFacade;
+use App\Facades\LaravelFastApi\V1\Admin\Service\Group\AdminCategoryFacade;
 
 class CategoryController extends Controller
 {

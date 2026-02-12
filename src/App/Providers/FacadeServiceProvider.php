@@ -55,13 +55,13 @@ class FacadeServiceProvider extends ServiceProvider
 	{
 		
 		//通用的用户门面
-		$this->app->bind('CommonUserFacade',\App\Service\Facade\Common\V1\User\User\CommonUserFacadeService::class);
+		$this->app->bind('CommonUserFacade',\App\Services\Facade\Common\V1\User\User\CommonUserFacadeService::class);
 		//通用的登录门面
-		$this->app->bind('CommonLoginFacade',\App\Service\Facade\Common\V1\Login\CommonLoginFacadeService::class);
+		$this->app->bind('CommonLoginFacade',\App\Services\Facade\Common\V1\Login\CommonLoginFacadeService::class);
 		//公共统计
-		$this->app->bind('TotalAllDataFacade',\App\Service\Facade\Common\V1\Total\TotalAllDataFacadeService::class);
+		$this->app->bind('TotalAllDataFacade',\App\Services\Facade\Common\V1\Total\TotalAllDataFacadeService::class);
 		//用户之间计算距离
-		$this->app->bind('CalculateUserDistanceFacade',\App\Service\Facade\Common\V1\Location\CalculateUserDistanceFacadeService::class);
+		$this->app->bind('CalculateUserDistanceFacade',\App\Services\Facade\Common\V1\Location\CalculateUserDistanceFacadeService::class);
 	}
 	/**
 	 * 公共的门面 第三方跟业务无关
@@ -70,18 +70,18 @@ class FacadeServiceProvider extends ServiceProvider
 	{
 
 		//二维码
-		$this->app->bind('PubQrcodeFacade',\App\Service\Facade\Pub\V1\Qrcode\PubQrcodeFacadeService::class);
+		$this->app->bind('PubQrcodeFacade',\App\Services\Facade\Pub\V1\Qrcode\PubQrcodeFacadeService::class);
 
 		//短信
-		$this->app->bind('SmsFacade',\App\Service\Facade\Pub\V1\Sms\SmsFacadeService::class);
+		$this->app->bind('SmsFacade',\App\Services\Facade\Pub\V1\Sms\SmsFacadeService::class);
 		//腾讯云短信 
-		$this->app->bind('TencentSmsFacade',\App\Service\Facade\Pub\V1\Sms\TencentSmsFacadeService::class);
+		$this->app->bind('TencentSmsFacade',\App\Services\Facade\Pub\V1\Sms\TencentSmsFacadeService::class);
 
 		//七牛云
-		$this->app->bind('QiNiuFacade',\App\Service\Facade\Pub\V1\Store\QiNiuFacadeService::class);
+		$this->app->bind('QiNiuFacade',\App\Services\Facade\Pub\V1\Store\QiNiuFacadeService::class);
 
 		//抖音
-		$this->app->bind('DouYinFacade',\App\Service\Facade\Pub\V1\DouYin\DouYinFacadeService::class);
+		$this->app->bind('DouYinFacade',\App\Services\Facade\Pub\V1\DouYin\DouYinFacadeService::class);
 
 		//平台 腾讯和微信
 		$this->publishPubTencentWechatFacade();
@@ -100,19 +100,19 @@ class FacadeServiceProvider extends ServiceProvider
 	protected function publishPubTencentWechatFacade()
 	{
 		//地图位置
-		$this->app->bind('TencentMapFacade',\App\Service\Facade\Pub\V1\Map\TencentMapFacadeService::class);
+		$this->app->bind('TencentMapFacade',\App\Services\Facade\Pub\V1\Map\TencentMapFacadeService::class);
 
 		//微信H5的js支付
-		$this->app->bind('WechatJsPayFacade',\App\Service\Facade\Pub\V1\Wechat\Pay\WechatJsPayFacadeService::class);
+		$this->app->bind('WechatJsPayFacade',\App\Services\Facade\Pub\V1\Wechat\Pay\WechatJsPayFacadeService::class);
 
 		//微信H5支付回调解密
-		$this->app->bind('WechatJsPayDecryptFacade',\App\Service\Facade\Pub\V1\Wechat\Pay\WechatJsPayDecryptFacadeService::class);
+		$this->app->bind('WechatJsPayDecryptFacade',\App\Services\Facade\Pub\V1\Wechat\Pay\WechatJsPayDecryptFacadeService::class);
 
 		//微信公众号
-		$this->app->bind('WechatOfficialFacade',\App\Service\Facade\Pub\V1\Wechat\WechatOfficialFacadeService::class);
+		$this->app->bind('WechatOfficialFacade',\App\Services\Facade\Pub\V1\Wechat\WechatOfficialFacadeService::class);
 
 		//微信登录 
-		$this->app->bind('WechatLoginFacade',\App\Service\Facade\Pub\V1\Wechat\WechatLoginFacadeService::class);
+		$this->app->bind('WechatLoginFacade',\App\Services\Facade\Pub\V1\Wechat\WechatLoginFacadeService::class);
 	}
 
 	/**
@@ -139,25 +139,25 @@ class FacadeServiceProvider extends ServiceProvider
 	protected function publishAdminFacade()
 	{
 		//后台登录辅助门面
-		$this->app->bind('AdminBackgroundLoginFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\Login\Common\AdminBackgroundLoginFacadeService::class);
+		$this->app->bind('AdminBackgroundLoginFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\Login\Common\AdminBackgroundLoginFacadeService::class);
 		//后台登录管理门面
-		$this->app->bind('AdminLoginFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\Login\AdminLoginFacadeService::class);
+		$this->app->bind('AdminLoginFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\Login\AdminLoginFacadeService::class);
 
 		//后台路由权限
-		$this->app->bind('AdminPermissionFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\System\Permission\AdminPermissionFacadeService::class);
+		$this->app->bind('AdminPermissionFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\System\Permission\AdminPermissionFacadeService::class);
 
 		//后台开发者
-		$this->app->bind('DeveloperFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\Develop\DeveloperFacadeService::class);
+		$this->app->bind('DeveloperFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\Develop\DeveloperFacadeService::class);
 		//后台个人中心
-		$this->app->bind('AdminPersonalFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\User\Admin\AdminPersonalFacadeService::class);
+		$this->app->bind('AdminPersonalFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\User\Admin\AdminPersonalFacadeService::class);
 
 		//|--后台管理
 		//|--|--文件处理
 		//|--|--|--|文件上传
-		$this->app->bind('AdminUploadFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\File\AdminUploadFacadeService::class);
+		$this->app->bind('AdminUploadFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\File\AdminUploadFacadeService::class);
 
 		//文章
-        $this->app->bind('AdminArticleFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\Article\AdminArticleFacadeService::class);
+        $this->app->bind('AdminArticleFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\Article\AdminArticleFacadeService::class);
 
 		//后台管理-系统设置
 		$this->publishAdminSystemFacade();
@@ -180,25 +180,25 @@ class FacadeServiceProvider extends ServiceProvider
 		//|--|--系统设置
 		//|--|--|--系统配置
 		//|--|--|--|--参数配置
-		$this->app->bind('AdminSystemConfigFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\AdminSystemConfigFacadeService::class);
+		$this->app->bind('AdminSystemConfigFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\AdminSystemConfigFacadeService::class);
 		//|--|--|--|--提示配置
-		$this->app->bind('AdminVoiceConfigFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\AdminVoiceConfigFacadeService::class);
+		$this->app->bind('AdminVoiceConfigFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\AdminVoiceConfigFacadeService::class);
 		//|--|--|--|--三方平台
 		//|--|--|--|--|--|--微信平台
-		$this->app->bind('SystemWechatConfigFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\OtherPlatform\SystemWechatConfigFacadeService::class);
+		$this->app->bind('SystemWechatConfigFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\OtherPlatform\SystemWechatConfigFacadeService::class);
 		//|--|--|--|--|--|--抖音平台
-		$this->app->bind('SystemDouyinConfigFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\OtherPlatform\SystemDouyinConfigFacadeService::class);
+		$this->app->bind('SystemDouyinConfigFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\OtherPlatform\SystemDouyinConfigFacadeService::class);
 		//|--|--|--平台配置
 		//|--|--|--|--缓存设置
-		$this->app->bind('AdminCacheConfigFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\System\Platform\AdminCacheConfigFacadeService::class);
+		$this->app->bind('AdminCacheConfigFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\System\Platform\AdminCacheConfigFacadeService::class);
 		
 		//|--|--|--|--角色管理
-        $this->app->bind('AdminRoleFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\System\Role\AdminRoleFacadeService::class);
+        $this->app->bind('AdminRoleFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\System\Role\AdminRoleFacadeService::class);
 
 		//|--|--|--|--地区管理
-        $this->app->bind('AdminRegionFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\System\Region\AdminRegionFacadeService::class);
+        $this->app->bind('AdminRegionFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\System\Region\AdminRegionFacadeService::class);
         //|--|--|--|--银行管理
-        $this->app->bind('AdminBankFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\System\Bank\AdminBankFacadeService::class);
+        $this->app->bind('AdminBankFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\System\Bank\AdminBankFacadeService::class);
 	}
 
 	/**
@@ -207,26 +207,26 @@ class FacadeServiceProvider extends ServiceProvider
 	protected function publishAdminServiceFacade()
 	{
 		//|--|--业务设置
-		$this->app->bind('AdminWithdrawConfigFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\AdminWithdrawConfigFacadeService::class);
+		$this->app->bind('AdminWithdrawConfigFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\AdminWithdrawConfigFacadeService::class);
 
 		//|--|--|--|--分类管理
 		//|--|--|--|--|产品分类
-        $this->app->bind('AdminGoodsClassFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\Service\Group\AdminGoodsClassFacadeService::class);
+        $this->app->bind('AdminGoodsClassFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\Service\Group\AdminGoodsClassFacadeService::class);
         //|--|--|--|--|文章分类
-        $this->app->bind('AdminCategoryFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\Service\Group\AdminCategoryFacadeService::class);
+        $this->app->bind('AdminCategoryFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\Service\Group\AdminCategoryFacadeService::class);
         //|--|--|--|--|标签管理
-        $this->app->bind('AdminLabelFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\Service\Group\AdminLabelFacadeService::class);
+        $this->app->bind('AdminLabelFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\Service\Group\AdminLabelFacadeService::class);
 		
 		//|--|--|--|--级别管理
 		//|--|--|--|--|--级别条件
-        $this->app->bind('AdminLevelItemFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\Service\Level\AdminLevelItemFacadeService::class);
+        $this->app->bind('AdminLevelItemFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\Service\Level\AdminLevelItemFacadeService::class);
 		//|--|--|--|--|--用户级别
-        $this->app->bind('AdminUserLevelFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\Service\Level\AdminUserLevelFacadeService::class);
+        $this->app->bind('AdminUserLevelFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\Service\Level\AdminUserLevelFacadeService::class);
 
 		//|--|--|--|--首页轮播
-		$this->app->bind('AdminPhoneBannerFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\Service\Platform\AdminPhoneBannerFacadeService::class);
+		$this->app->bind('AdminPhoneBannerFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\Service\Platform\AdminPhoneBannerFacadeService::class);
 		//|--|--|----|--轮播图详情
-		$this->app->bind('AdminPhoneBannerDetailsFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\Service\Platform\PhoneBanner\AdminPhoneBannerDetailsFacadeService::class);
+		$this->app->bind('AdminPhoneBannerDetailsFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\Service\Platform\PhoneBanner\AdminPhoneBannerDetailsFacadeService::class);
 	}
 
 	/**
@@ -236,26 +236,26 @@ class FacadeServiceProvider extends ServiceProvider
 	{
 		//|--|--用户管理
 			//|--|--|--管理员管理
-        	$this->app->bind('AdministratorFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\User\Admin\AdministratorFacadeService::class);
+        	$this->app->bind('AdministratorFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\User\Admin\AdministratorFacadeService::class);
 			//|--|--|--用户管理
-			$this->app->bind('AdminUserFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserFacadeService::class);
+			$this->app->bind('AdminUserFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserFacadeService::class);
 			//|--|--|--|++用户三级关系
-			$this->app->bind('AdminUserSourceFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserSourceFacadeService::class);
+			$this->app->bind('AdminUserSourceFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserSourceFacadeService::class);
 			//|--|--|--|++用户选项
-			$this->app->bind('AdminUserItemFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserItemFacadeService::class);
+			$this->app->bind('AdminUserItemFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserItemFacadeService::class);
 
 			//|--|--|--|++用户详情
-			$this->app->bind('AdminUserDetailsFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserDetailsFacadeService::class);
+			$this->app->bind('AdminUserDetailsFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserDetailsFacadeService::class);
 			//|--|--|--|++用户地址
-			$this->app->bind('AdminUserAddressFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserAddressFacadeService::class);
+			$this->app->bind('AdminUserAddressFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserAddressFacadeService::class);
 			//|--|--|--|++用户银行卡
-			$this->app->bind('AdminUserBankFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserBankFacadeService::class);
+			$this->app->bind('AdminUserBankFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserBankFacadeService::class);
 			//|--|--|--|++用户团队
-			$this->app->bind('AdminUserTeamFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserTeamFacadeService::class);
+			$this->app->bind('AdminUserTeamFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserTeamFacadeService::class);
 			//|--|--|--|++用户账户
-			$this->app->bind('AdminUserAccountFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserAccountFacadeService::class);
+			$this->app->bind('AdminUserAccountFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserAccountFacadeService::class);
 			//|--|--|--|++用户实名认证
-        	$this->app->bind('AdminUserRealAuthFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserRealAuthFacadeService::class);
+        	$this->app->bind('AdminUserRealAuthFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserRealAuthFacadeService::class);
 	}
 
 
@@ -266,10 +266,10 @@ class FacadeServiceProvider extends ServiceProvider
 	{
 		//|--|--图片空间
 		//|--|--|--我的相册
-		$this->app->bind('AdminAlbumFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\Picture\AdminAlbumFacadeService::class);
+		$this->app->bind('AdminAlbumFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\Picture\AdminAlbumFacadeService::class);
 			
 		//|--|--|--|--图片处理
-		$this->app->bind('AdminPictureFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\Picture\AdminPictureFacadeService::class);
+		$this->app->bind('AdminPictureFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\Picture\AdminPictureFacadeService::class);
 	}
 
 	/**
@@ -280,9 +280,9 @@ class FacadeServiceProvider extends ServiceProvider
 		//后台管理
 		//后台管理-日志管理
 		//后台管理-日志管理-后台日志
-        $this->app->bind('AdminLogFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\Log\AdminLogFacadeService::class);
+        $this->app->bind('AdminLogFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\Log\AdminLogFacadeService::class);
 		//后台管理-日志管理-用户日志
-        $this->app->bind('AdminUserLogFacade',\App\Service\Facade\LaravelFastApi\V1\Admin\Log\AdminUserLogFacadeService::class);
+        $this->app->bind('AdminUserLogFacade',\App\Services\Facade\LaravelFastApi\V1\Admin\Log\AdminUserLogFacadeService::class);
 
 		
 	}
@@ -313,16 +313,16 @@ class FacadeServiceProvider extends ServiceProvider
 	protected function publishPhoneLoginFacade()
 	{
 		//手机端登录
-		$this->app->bind('PhoneLoginFacade',\App\Service\Facade\LaravelFastApi\V1\Phone\Login\PhoneLoginFacadeService::class);
+		$this->app->bind('PhoneLoginFacade',\App\Services\Facade\LaravelFastApi\V1\Phone\Login\PhoneLoginFacadeService::class);
 
 		//手机端抖音登录 
-		$this->app->bind('PhoneLoginDouYinFacade',\App\Service\Facade\LaravelFastApi\V1\Phone\Login\DouYin\PhoneLoginDouYinFacadeService::class);
+		$this->app->bind('PhoneLoginDouYinFacade',\App\Services\Facade\LaravelFastApi\V1\Phone\Login\DouYin\PhoneLoginDouYinFacadeService::class);
 
 		//手机端微信登录
-		$this->app->bind('PhoneLoginWechatFacade',\App\Service\Facade\LaravelFastApi\V1\Phone\Login\Wechat\PhoneLoginWechatFacadeService::class);
+		$this->app->bind('PhoneLoginWechatFacade',\App\Services\Facade\LaravelFastApi\V1\Phone\Login\Wechat\PhoneLoginWechatFacadeService::class);
 		
 		//手机端注册
-		$this->app->bind('PhoneRegisterFacade',\App\Service\Facade\LaravelFastApi\V1\Phone\Login\PhoneRegisterFacadeService::class);
+		$this->app->bind('PhoneRegisterFacade',\App\Services\Facade\LaravelFastApi\V1\Phone\Login\PhoneRegisterFacadeService::class);
 
 	}
 
@@ -332,10 +332,10 @@ class FacadeServiceProvider extends ServiceProvider
 	protected function publishPhoneSocketFacade()
 	{
 		//手机端websocket门面
-		$this->app->bind('PhoneSocketFacade', \App\Service\Facade\LaravelFastApi\V1\Phone\Websocket\PhoneSocketFacadeService::class);
+		$this->app->bind('PhoneSocketFacade', \App\Services\Facade\LaravelFastApi\V1\Phone\Websocket\PhoneSocketFacadeService::class);
 
 		//手机端-websocket-用户门面
-		$this->app->bind('PhoneSocketUserFacade', \App\Service\Facade\LaravelFastApi\V1\Phone\Websocket\User\PhoneSocketUserFacadeService::class);
+		$this->app->bind('PhoneSocketUserFacade', \App\Services\Facade\LaravelFastApi\V1\Phone\Websocket\User\PhoneSocketUserFacadeService::class);
 	}
 
 	/**
@@ -344,13 +344,13 @@ class FacadeServiceProvider extends ServiceProvider
 	protected function publishPhoneSystemFacade()
 	{
 		//手机地图门面
-		$this->app->bind('PhoneMapFacade',\App\Service\Facade\LaravelFastApi\V1\Phone\System\PhoneMapFacadeService::class);
+		$this->app->bind('PhoneMapFacade',\App\Services\Facade\LaravelFastApi\V1\Phone\System\PhoneMapFacadeService::class);
 
 		//手机地区门面
-		$this->app->bind('PhoneRegionFacade',\App\Service\Facade\LaravelFastApi\V1\Phone\System\Region\PhoneRegionFacadeService::class);
+		$this->app->bind('PhoneRegionFacade',\App\Services\Facade\LaravelFastApi\V1\Phone\System\Region\PhoneRegionFacadeService::class);
 
 		//手机产品分类门面
-		$this->app->bind('PhoneGoodsClassFacade',\App\Service\Facade\LaravelFastApi\V1\Phone\System\GoodsClass\PhoneGoodsClassFacadeService::class);
+		$this->app->bind('PhoneGoodsClassFacade',\App\Services\Facade\LaravelFastApi\V1\Phone\System\GoodsClass\PhoneGoodsClassFacadeService::class);
 	}
 
 	/**
@@ -359,7 +359,7 @@ class FacadeServiceProvider extends ServiceProvider
 	protected function publishPhoneFileFacade()
 	{
 		//手机端-图片处理
-		$this->app->bind('PhonePictureFacade',\App\Service\Facade\LaravelFastApi\V1\Phone\File\PhonePictureFacadeService::class);
+		$this->app->bind('PhonePictureFacade',\App\Services\Facade\LaravelFastApi\V1\Phone\File\PhonePictureFacadeService::class);
 	}
 
 	/**
@@ -368,13 +368,13 @@ class FacadeServiceProvider extends ServiceProvider
 	protected function publishPhonePayFacade()
 	{
 		//手机端-支付管理
-		$this->app->bind('PhonePayFacade',\App\Service\Facade\LaravelFastApi\V1\Phone\Pay\PhonePayFacadeService::class);
+		$this->app->bind('PhonePayFacade',\App\Services\Facade\LaravelFastApi\V1\Phone\Pay\PhonePayFacadeService::class);
 
 		//手机端-支付管理-微信支付
-		$this->app->bind('WechatPayFacade',\App\Service\Facade\LaravelFastApi\V1\Phone\Pay\WechatPayFacadeService::class);
+		$this->app->bind('WechatPayFacade',\App\Services\Facade\LaravelFastApi\V1\Phone\Pay\WechatPayFacadeService::class);
 
 		//手机端-支付回调
-		$this->app->bind('PhonePayNotifyFacade',\App\Service\Facade\LaravelFastApi\V1\Phone\Notify\PhonePayNotifyFacadeService::class);
+		$this->app->bind('PhonePayNotifyFacade',\App\Services\Facade\LaravelFastApi\V1\Phone\Notify\PhonePayNotifyFacadeService::class);
 	}
 
 	/**
@@ -383,17 +383,17 @@ class FacadeServiceProvider extends ServiceProvider
 	protected function publishPhoneUserFacade()
 	{
 		//手机用户Source门面
-		$this->app->bind('PhoneUserSourceFacade',\App\Service\Facade\LaravelFastApi\V1\Phone\User\PhoneUserSourceFacadeService::class);
+		$this->app->bind('PhoneUserSourceFacade',\App\Services\Facade\LaravelFastApi\V1\Phone\User\PhoneUserSourceFacadeService::class);
 		//手机端-用户门面
-		$this->app->bind('PhoneUserFacade',\App\Service\Facade\LaravelFastApi\V1\Phone\User\User\PhoneUserFacadeService::class);
+		$this->app->bind('PhoneUserFacade',\App\Services\Facade\LaravelFastApi\V1\Phone\User\User\PhoneUserFacadeService::class);
 		//手机端-用户配置门面
-		$this->app->bind('PhoneUserConfigFacade',\App\Service\Facade\LaravelFastApi\V1\Phone\User\User\PhoneUserConfigFacadeService::class);
+		$this->app->bind('PhoneUserConfigFacade',\App\Services\Facade\LaravelFastApi\V1\Phone\User\User\PhoneUserConfigFacadeService::class);
 
 		//手机端-用户-用户信息
-		$this->app->bind('PhoneUserInfoFacade',\App\Service\Facade\LaravelFastApi\V1\Phone\User\User\UserInfo\PhoneUserInfoFacadeService::class);
+		$this->app->bind('PhoneUserInfoFacade',\App\Services\Facade\LaravelFastApi\V1\Phone\User\User\UserInfo\PhoneUserInfoFacadeService::class);
 
 		// 手机端-用户-我的地址
-		$this->app->bind('PhoneUserAddressFacade',\App\Service\Facade\LaravelFastApi\V1\Phone\User\User\Address\PhoneUserAddressFacadeService::class);
+		$this->app->bind('PhoneUserAddressFacade',\App\Services\Facade\LaravelFastApi\V1\Phone\User\User\Address\PhoneUserAddressFacadeService::class);
 	}
 	
     /**
@@ -404,7 +404,7 @@ class FacadeServiceProvider extends ServiceProvider
     public function publishFacade()
     {
 		 //模板替换
-        $this->app->bind('Replace',\App\Service\Facade\ReplaceService::class);
+        $this->app->bind('Replace',\App\Services\Facade\ReplaceService::class);
     }
 
 

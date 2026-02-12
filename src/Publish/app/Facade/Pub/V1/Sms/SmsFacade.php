@@ -6,15 +6,15 @@
  * @Date: 2024-06-28 18:18:00
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2024-06-28 18:19:58
- * @FilePath: \app\Facade\Pub\V1\Sms\SmsFacade.php
+ * @FilePath: \App\Facades\Pub\V1\Sms\SmsFacade.php
  */
 
-namespace App\Facade\Pub\V1\Sms;
+namespace App\Facades\Pub\V1\Sms;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \App\Service\Facade\Pub\V1\Sms\SmsFacadeService
+ * @see \App\Services\Facade\Pub\V1\Sms\SmsFacadeService
  */
 class SmsFacade extends Facade
 {

@@ -6,10 +6,10 @@
  * @Date: 2024-05-24 22:30:33
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2025-11-15 17:33:46
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\System\Role\AdminRoleFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\System\Role\AdminRoleFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\System\Role;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\System\Role;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Collection;
 
-use App\Service\Facade\Traits\V1\AlwaysService;
+use App\Services\Facade\Traits\V1\AlwaysService;
 
 use App\Exceptions\Admin\CommonException;
 
@@ -33,7 +33,7 @@ use App\Models\LaravelFastApi\V1\User\Union\UserRoleUnion;
 use App\Http\Resources\LaravelFastApi\V1\Admin\System\Role\RoleResource;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Admin\System\Role\AdminRoleFacade
+ * @see \App\Facades\LaravelFastApi\V1\Admin\System\Role\AdminRoleFacade
  */
 class AdminRoleFacadeService
 {

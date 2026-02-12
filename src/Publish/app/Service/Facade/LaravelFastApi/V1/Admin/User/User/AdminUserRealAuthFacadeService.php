@@ -6,10 +6,10 @@
  * @Date: 2024-06-19 22:02:46
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2025-12-02 11:08:50
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserRealAuthFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserRealAuthFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\User\User;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\User\User;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +25,7 @@ use App\Events\Admin\CommonEvent;
 use App\Events\LaravelFastApi\V1\Admin\User\User\CheckUserRealAuthEvent;
 use App\Events\LaravelFastApi\V1\Admin\User\User\SetUserIdCardEvent;
 
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 use App\Models\LaravelFastApi\V1\User\User;
 use App\Models\LaravelFastApi\V1\User\Log\UserRealAuthLog;
@@ -36,7 +36,7 @@ use App\Http\Resources\LaravelFastApi\V1\Admin\User\UserRealAuthLogCollection;
 use App\Http\Resources\LaravelFastApi\V1\Admin\User\UserResource;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserRealAuthFacade
+ * @see \App\Facades\LaravelFastApi\V1\Admin\User\User\AdminUserRealAuthFacade
  */
 class AdminUserRealAuthFacadeService
 {

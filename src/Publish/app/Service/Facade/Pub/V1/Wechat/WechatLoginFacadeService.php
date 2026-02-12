@@ -7,10 +7,10 @@
  * @Date: 2024-12-28 14:19:30
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-05-20 17:47:33
- * @FilePath: \app\Service\Facade\Pub\V1\Wechat\WechatLoginFacadeService.php
+ * @FilePath: \App\Services\Facade\Pub\V1\Wechat\WechatLoginFacadeService.php
  */
 
-namespace App\Service\Facade\Pub\V1\Wechat;
+namespace App\Services\Facade\Pub\V1\Wechat;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -22,10 +22,10 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 use App\Exceptions\Common\CommonException;
 use App\Models\LaravelFastApi\V1\System\Platform\SystemWechatConfig;
-use YouHuJun\Tool\App\Facade\V1\Wechat\MiniProgram\WechatMiniProgramFacade;
+use YouHuJun\Tool\App\Facades\V1\Wechat\MiniProgram\WechatMiniProgramFacade;
 
 /**
- * @see \App\Facade\Pub\V1\Wechat\WechatLoginFacade
+ * @see \App\Facades\Pub\V1\Wechat\WechatLoginFacade
  */
 class WechatLoginFacadeService
 {

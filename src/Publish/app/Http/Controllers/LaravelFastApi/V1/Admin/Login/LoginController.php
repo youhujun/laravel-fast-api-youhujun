@@ -32,7 +32,7 @@ use App\Exceptions\Common\RuleException;
 
 use App\Rules\LaravelFastApi\V1\Admin\Login\LoginAdminAccount;
 
-use App\Facade\LaravelFastApi\V1\Admin\Login\AdminLoginFacade;
+use App\Facades\LaravelFastApi\V1\Admin\Login\AdminLoginFacade;
 
 class LoginController extends Controller
 {

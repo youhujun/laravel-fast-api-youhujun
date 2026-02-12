@@ -6,10 +6,10 @@
  * @Date: 2024-06-09 19:49:00
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2025-12-09 14:07:42
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserTeamFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserTeamFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\User\User;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\User\User;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +22,7 @@ use App\Exceptions\Admin\CommonException;
 
 use App\Events\Admin\CommonEvent;
 
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 //用户
 use App\Models\LaravelFastApi\V1\User\User;
@@ -33,7 +33,7 @@ use App\Http\Resources\LaravelFastApi\V1\Admin\User\UserResource;
 use App\Http\Resources\LaravelFastApi\V1\Admin\User\UserCollection;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserTeamFacade
+ * @see \App\Facades\LaravelFastApi\V1\Admin\User\User\AdminUserTeamFacade
  */
 class AdminUserTeamFacadeService
 {

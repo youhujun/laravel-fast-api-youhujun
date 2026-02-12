@@ -17,7 +17,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\DB;
 
 use App\Exceptions\Phone\CommonException;
-use App\Facade\Common\Common;
+use App\Facades\Common\Common;
 use App\Models\LaravelFastApi\V1\User\User;
 
 class UpdateUserRealAuthStatusListener

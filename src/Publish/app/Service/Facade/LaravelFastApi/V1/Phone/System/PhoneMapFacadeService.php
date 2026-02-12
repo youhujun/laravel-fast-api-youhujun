@@ -7,10 +7,10 @@
  * @Date: 2024-07-14 16:16:37
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2024-07-29 15:00:07
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Phone\System\PhoneMapFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Phone\System\PhoneMapFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Phone\System;
+namespace App\Services\Facade\LaravelFastApi\V1\Phone\System;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -21,10 +21,10 @@ use Illuminate\Support\Facades\Log;
 use App\Exceptions\Phone\CommonException;
 use App\Events\Phone\CommonEvent;
 use App\Events\LaravelFastApi\V1\Phone\User\Location\UserLocationLogEvent;
-use App\Facade\Pub\V1\Map\TencentMapFacade;
+use App\Facades\Pub\V1\Map\TencentMapFacade;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Phone\System\PhoneMapFacade
+ * @see \App\Facades\LaravelFastApi\V1\Phone\System\PhoneMapFacade
  */
 class PhoneMapFacadeService
 {

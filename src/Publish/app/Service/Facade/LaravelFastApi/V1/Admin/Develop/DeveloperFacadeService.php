@@ -6,12 +6,12 @@
  * @Date: 2025-01-12 16:57:21
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-07-11 09:21:39
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\Develop\DeveloperFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\Develop\DeveloperFacadeService.php
  * Copyright (C) 2025 youhujun. All rights reserved.
  */
 
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\Develop;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\Develop;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +30,7 @@ use App\Events\LaravelFastApi\V1\Admin\Develop\AddDeveloperEvent;
 use App\Models\LaravelFastApi\V1\User\User;
 
 /**
- * @see \App\Facade\Admin\Develop\DeveloperFacade
+ * @see \App\Facades\Admin\Develop\DeveloperFacade
  */
 class DeveloperFacadeService
 {

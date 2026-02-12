@@ -6,10 +6,10 @@
  * @Date: 2024-09-05 10:35:13
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-02-25 09:21:53
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Phone\User\User\UserInfo\PhoneUserInfoFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Phone\User\User\UserInfo\PhoneUserInfoFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Phone\User\User\UserInfo;
+namespace App\Services\Facade\LaravelFastApi\V1\Phone\User\User\UserInfo;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 
-use App\Service\Facade\Traits\QueryService;
+use App\Services\Facade\Traits\QueryService;
 
 use App\Exceptions\Phone\CommonException;
 
@@ -32,7 +32,7 @@ use App\Models\LaravelFastApi\V1\User\Info\UserInfo;
 use App\Http\Resources\LaravelFastApi\V1\Phone\User\User\UserInfoResource;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Phone\User\User\UserInfo\PhoneUserInfoFacade
+ * @see \App\Facades\LaravelFastApi\V1\Phone\User\User\UserInfo\PhoneUserInfoFacade
  */
 class PhoneUserInfoFacadeService
 {

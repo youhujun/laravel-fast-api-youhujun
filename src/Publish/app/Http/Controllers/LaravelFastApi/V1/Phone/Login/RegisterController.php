@@ -32,7 +32,7 @@ use App\Rules\LaravelFastApi\V1\Phone\RegisterPhone;
 
 use App\Exceptions\Common\RuleException;
 
-use App\Facade\LaravelFastApi\V1\Phone\Login\PhoneRegisterFacade;
+use App\Facades\LaravelFastApi\V1\Phone\Login\PhoneRegisterFacade;
 
 class RegisterController extends Controller
 {

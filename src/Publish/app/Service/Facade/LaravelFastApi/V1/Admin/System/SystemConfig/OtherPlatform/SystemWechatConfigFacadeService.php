@@ -6,10 +6,10 @@
  * @Date: 2024-12-31 15:27:03
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2025-11-23 11:14:28
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\OtherPlatform\SystemWechatConfigFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\OtherPlatform\SystemWechatConfigFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\OtherPlatform;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\OtherPlatform;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 use App\Exceptions\Admin\CommonException;
 
@@ -32,10 +32,10 @@ use App\Http\Resources\LaravelFastApi\V1\Admin\System\SystemConfig\OtherPlatform
 use App\Http\Resources\LaravelFastApi\V1\Admin\System\SystemConfig\OtherPlatform\SystemWechatConfigCollection;
 
 
-use App\Facade\Pub\Excel\ExcelFacade;
+use App\Facades\Pub\Excel\ExcelFacade;
 
 /**
- * @see \App\Facade\Admin\System\SystemConfig\OtherPlatform\SystemWechatConfigFacade
+ * @see \App\Facades\Admin\System\SystemConfig\OtherPlatform\SystemWechatConfigFacade
  */
 class SystemWechatConfigFacadeService
 {

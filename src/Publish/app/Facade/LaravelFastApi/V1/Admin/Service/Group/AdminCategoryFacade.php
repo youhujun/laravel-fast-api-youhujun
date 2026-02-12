@@ -6,15 +6,15 @@
  * @Date: 2024-05-26 10:46:02
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-01-15 11:11:56
- * @FilePath: \app\Facade\LaravelFastApi\V1\Admin\Service\Group\AdminCategoryFacade.php
+ * @FilePath: \App\Facades\LaravelFastApi\V1\Admin\Service\Group\AdminCategoryFacade.php
  */
 
-namespace App\Facade\LaravelFastApi\V1\Admin\Service\Group;
+namespace App\Facades\LaravelFastApi\V1\Admin\Service\Group;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \App\Service\Facade\LaravelFastApi\V1\Admin\Service\Group\AdminCategoryFacadeService
+ * @see \App\Services\Facade\LaravelFastApi\V1\Admin\Service\Group\AdminCategoryFacadeService
  */
 class AdminCategoryFacade extends Facade
 {

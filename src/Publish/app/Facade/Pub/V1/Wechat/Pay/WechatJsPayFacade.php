@@ -6,15 +6,15 @@
  * @Date: 2024-07-12 09:52:28
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2024-07-12 09:53:58
- * @FilePath: \app\Facade\Pub\V1\Wechat\Pay\WechatJsPayFacade.php
+ * @FilePath: \App\Facades\Pub\V1\Wechat\Pay\WechatJsPayFacade.php
  */
 
-namespace App\Facade\Pub\V1\Wechat\Pay;
+namespace App\Facades\Pub\V1\Wechat\Pay;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \App\Service\Facade\Pub\V1\Wechat\Pay\WechatJsPayFacadeService
+ * @see \App\Services\Facade\Pub\V1\Wechat\Pay\WechatJsPayFacadeService
  */
 class WechatJsPayFacade extends Facade
 {

@@ -6,12 +6,12 @@
  * @Date: 2025-01-13 20:26:46
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-06-22 23:22:57
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\AdminSystemConfigFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\AdminSystemConfigFacadeService.php
  * Copyright (C) 2025 youhujun. All rights reserved.
  */
 
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\System\SystemConfig;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\System\SystemConfig;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +26,7 @@ use App\Exceptions\Admin\CommonException;
 
 use App\Events\Admin\CommonEvent;
 
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 use App\Models\LaravelFastApi\V1\System\SystemConfig;
 
@@ -35,7 +35,7 @@ use  App\Http\Resources\LaravelFastApi\V1\Admin\System\SystemConfig\System\Syste
 
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\AdminSystemConfigFacade
+ * @see \App\Facades\LaravelFastApi\V1\Admin\System\SystemConfig\AdminSystemConfigFacade
  */
 class AdminSystemConfigFacadeService
 {

@@ -6,15 +6,15 @@
  * @Date: 2024-05-12 19:41:57
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2024-05-12 19:42:13
- * @FilePath: \app\Facade\LaravelFastApi\V1\Admin\System\Platform\AdminCacheConfigFacade.php
+ * @FilePath: \App\Facades\LaravelFastApi\V1\Admin\System\Platform\AdminCacheConfigFacade.php
  */
 
-namespace App\Facade\LaravelFastApi\V1\Admin\System\Platform;
+namespace App\Facades\LaravelFastApi\V1\Admin\System\Platform;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \App\Service\Facade\LaravelFastApi\V1\Admin\System\Platform\AdminCacheConfigFacadeService
+ * @see \App\Services\Facade\LaravelFastApi\V1\Admin\System\Platform\AdminCacheConfigFacadeService
  */
 class AdminCacheConfigFacade extends Facade
 {

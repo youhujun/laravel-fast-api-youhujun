@@ -6,10 +6,10 @@
  * @Date: 2024-05-26 22:32:30
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2024-07-26 16:53:24
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\Service\Level\AdminLevelItemFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\Service\Level\AdminLevelItemFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\Service\Level;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\Service\Level;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +23,7 @@ use App\Exceptions\Admin\CommonException;
 
 use App\Events\Admin\CommonEvent;
 
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 use App\Models\LaravelFastApi\V1\System\Level\LevelItem;
 
@@ -33,7 +33,7 @@ use App\Http\Resources\LaravelFastApi\V1\Admin\Service\Level\LevelItemResource;
 use App\Http\Resources\LaravelFastApi\V1\Admin\Service\Level\LevelItemCollection;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Admin\Service\Level\AdminLevelItemFacade
+ * @see \App\Facades\LaravelFastApi\V1\Admin\Service\Level\AdminLevelItemFacade
  */
 class AdminLevelItemFacadeService
 {

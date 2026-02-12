@@ -30,7 +30,7 @@ use App\Rules\Pub\ChineseCodeNumberLine;
 use App\Exceptions\Common\RuleException;
 use App\Rules\Common\Phone;
 
-use App\Facade\LaravelFastApi\V1\Phone\User\User\Address\PhoneUserAddressFacade;
+use App\Facades\LaravelFastApi\V1\Phone\User\User\Address\PhoneUserAddressFacade;
 
 class UserAddressController extends Controller
 {

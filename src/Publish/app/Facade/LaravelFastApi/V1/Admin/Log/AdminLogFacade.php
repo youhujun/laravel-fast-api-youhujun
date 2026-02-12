@@ -6,15 +6,15 @@
  * @Date: 2024-06-02 16:16:01
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2024-06-02 16:16:25
- * @FilePath: \app\Facade\LaravelFastApi\V1\Admin\Log\AdminLogFacade.php
+ * @FilePath: \App\Facades\LaravelFastApi\V1\Admin\Log\AdminLogFacade.php
  */
 
-namespace App\Facade\LaravelFastApi\V1\Admin\Log;
+namespace App\Facades\LaravelFastApi\V1\Admin\Log;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \App\Service\Facade\LaravelFastApi\V1\Admin\Log\AdminLogFacadeService
+ * @see \App\Services\Facade\LaravelFastApi\V1\Admin\Log\AdminLogFacadeService
  */
 class AdminLogFacade extends Facade
 {

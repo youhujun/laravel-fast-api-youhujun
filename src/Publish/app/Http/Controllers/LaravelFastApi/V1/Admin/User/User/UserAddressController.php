@@ -31,7 +31,7 @@ use App\Rules\Pub\CheckUnique;
 use App\Rules\Pub\ChineseCodeNumberLine;
 use App\Rules\Common\Phone;
 
-use App\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserAddressFacade;
+use App\Facades\LaravelFastApi\V1\Admin\User\User\AdminUserAddressFacade;
 
 class UserAddressController extends Controller
 {

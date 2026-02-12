@@ -6,15 +6,15 @@
  * @Date: 2024-07-12 12:50:24
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2024-07-12 12:50:48
- * @FilePath: \app\Facade\LaravelFastApi\V1\Phone\Notify\PhonePayNotifyFacade.php
+ * @FilePath: \App\Facades\LaravelFastApi\V1\Phone\Notify\PhonePayNotifyFacade.php
  */
 
-namespace App\Facade\LaravelFastApi\V1\Phone\Notify;
+namespace App\Facades\LaravelFastApi\V1\Phone\Notify;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \App\Service\Facade\LaravelFastApi\V1\Phone\Notify\PhonePayNotifyFacadeService
+ * @see \App\Services\Facade\LaravelFastApi\V1\Phone\Notify\PhonePayNotifyFacadeService
  */
 class PhonePayNotifyFacade extends Facade
 {

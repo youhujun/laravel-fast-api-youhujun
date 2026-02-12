@@ -18,7 +18,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\Phone\CommonException;
 
-use App\Facade\Pub\V1\Qrcode\PubQrcodeFacade;
+use App\Facades\Pub\V1\Qrcode\PubQrcodeFacade;
 
 use App\Models\LaravelFastApi\V1\User\Info\UserQrcode;
 use App\Models\LaravelFastApi\V1\Picture\AlbumPicture;

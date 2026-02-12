@@ -30,11 +30,11 @@ use App\Rules\Pub\CheckUnique;
 use App\Rules\Pub\ChineseCodeNumberLine;
 use App\Exceptions\Common\RuleException;
 
-use App\Facade\LaravelFastApi\V1\Admin\Login\AdminLoginFacade;
+use App\Facades\LaravelFastApi\V1\Admin\Login\AdminLoginFacade;
 
-use App\Facade\LaravelFastApi\V1\Admin\System\Permission\AdminPermissionFacade;
+use App\Facades\LaravelFastApi\V1\Admin\System\Permission\AdminPermissionFacade;
 
-use App\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\AdminVoiceConfigFacade;
+use App\Facades\LaravelFastApi\V1\Admin\System\SystemConfig\AdminVoiceConfigFacade;
 
 class LoginAfterController extends Controller
 {

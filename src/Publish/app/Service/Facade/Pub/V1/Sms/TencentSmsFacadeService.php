@@ -7,10 +7,10 @@
  * @Date: 2024-06-28 18:22:35
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2026-01-10 11:51:26
- * @FilePath: \app\Service\Facade\Pub\V1\Sms\TencentSmsFacadeService.php
+ * @FilePath: \App\Services\Facade\Pub\V1\Sms\TencentSmsFacadeService.php
  */
 
-namespace App\Service\Facade\Pub\V1\Sms;
+namespace App\Services\Facade\Pub\V1\Sms;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -20,10 +20,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use App\Exceptions\Common\CommonException;
-use YouHuJun\Tool\App\Facade\V1\SMS\Tencent\TencentSMSFacade;
+use YouHuJun\Tool\App\Facades\V1\SMS\Tencent\TencentSMSFacade;
 
 /**
- * @see \App\Facade\Pub\V1\Sms\TencentSmsFacade
+ * @see \App\Facades\Pub\V1\Sms\TencentSmsFacade
  */
 class TencentSmsFacadeService
 {

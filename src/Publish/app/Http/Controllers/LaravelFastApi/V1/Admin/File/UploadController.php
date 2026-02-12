@@ -35,7 +35,7 @@ use App\Exceptions\Common\RuleException;
 use App\Rules\LaravelFastApi\V1\Admin\File\Action;
 use App\Rules\LaravelFastApi\V1\Admin\File\UseType;
 
-use App\Facade\LaravelFastApi\V1\Admin\File\AdminUploadFacade;
+use App\Facades\LaravelFastApi\V1\Admin\File\AdminUploadFacade;
 
 class UploadController extends Controller
 {

@@ -6,10 +6,10 @@
  * @Date: 2024-07-07 10:25:15
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2026-01-06 19:19:28
- * @FilePath: \app\Service\Facade\Pub\V1\Wechat\WechatOfficialFacadeService.php
+ * @FilePath: \App\Services\Facade\Pub\V1\Wechat\WechatOfficialFacadeService.php
  */
 
-namespace App\Service\Facade\Pub\V1\Wechat;
+namespace App\Services\Facade\Pub\V1\Wechat;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -29,10 +29,10 @@ use App\Exceptions\Common\CommonException;
  */
 use App\Models\LaravelFastApi\V1\System\Platform\SystemWechatConfig;
 
-use YouHuJun\Tool\App\Facade\V1\Wechat\Official\WechatOfficialWebAuthFacade;
+use YouHuJun\Tool\App\Facades\V1\Wechat\Official\WechatOfficialWebAuthFacade;
 
 /**
- * @see \App\Facade\Pub\V1\Wechat\WechatOfficialFacade
+ * @see \App\Facades\Pub\V1\Wechat\WechatOfficialFacade
  */
 class WechatOfficialFacadeService
 {

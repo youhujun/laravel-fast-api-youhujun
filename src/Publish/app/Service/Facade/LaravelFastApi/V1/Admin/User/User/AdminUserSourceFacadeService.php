@@ -6,10 +6,10 @@
  * @Date: 2024-08-06 09:24:30
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2024-08-06 09:32:55
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserSourceFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserSourceFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\User\User;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\User\User;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Cache;
 use App\Models\LaravelFastApi\V1\User\User;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserSourceFacade
+ * @see \App\Facades\LaravelFastApi\V1\Admin\User\User\AdminUserSourceFacade
  */
 class AdminUserSourceFacadeService
 {

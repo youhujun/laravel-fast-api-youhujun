@@ -28,7 +28,7 @@ use App\Exceptions\Common\RuleException;
 use App\Rules\Pub\Numeric;
 use App\Rules\Pub\Required;
 
-use \App\Facade\LaravelFastApi\V1\Admin\Service\Level\AdminLevelItemFacade;
+use \App\Facades\LaravelFastApi\V1\Admin\Service\Level\AdminLevelItemFacade;
 
 class LevelItemController extends Controller
 {

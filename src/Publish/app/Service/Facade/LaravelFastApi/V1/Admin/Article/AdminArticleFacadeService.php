@@ -6,11 +6,11 @@
  * @Date: 2025-01-12 08:42:37
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2025-11-12 19:20:53
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\Article\AdminArticleFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\Article\AdminArticleFacadeService.php
  * Copyright (C) 2025 youhujun. All rights reserved.
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\Article;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\Article;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 use App\Exceptions\Admin\CommonException;
 use App\Events\Admin\CommonEvent;
@@ -36,7 +36,7 @@ use App\Http\Resources\LaravelFastApi\V1\Admin\Article\ArticleResource;
 use App\Http\Resources\LaravelFastApi\V1\Admin\Article\ArticleCollection;
 
 /**
- * @see \App\Facade\Admin\Article\AdminArticleFacade
+ * @see \App\Facades\Admin\Article\AdminArticleFacade
  */
 class AdminArticleFacadeService
 {

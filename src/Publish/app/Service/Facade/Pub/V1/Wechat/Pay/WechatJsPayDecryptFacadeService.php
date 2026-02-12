@@ -6,10 +6,10 @@
  * @Date: 2024-07-12 13:12:32
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2026-01-08 02:16:46
- * @FilePath: \app\Service\Facade\Pub\V1\Wechat\Pay\WechatJsPayDecryptFacadeService.php
+ * @FilePath: \App\Services\Facade\Pub\V1\Wechat\Pay\WechatJsPayDecryptFacadeService.php
  */
 
-namespace App\Service\Facade\Pub\V1\Wechat\Pay;
+namespace App\Services\Facade\Pub\V1\Wechat\Pay;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -21,11 +21,11 @@ use Illuminate\Support\Facades\Cache;
 
 use App\Exceptions\Common\CommonException;
 
-use YouHuJun\Tool\App\Facade\V1\Wechat\Pay\JSAPI\WechatPayDecryptFacade;
+use YouHuJun\Tool\App\Facades\V1\Wechat\Pay\JSAPI\WechatPayDecryptFacade;
 
 
 /**
- * @see \App\Facade\Pub\V1\Wechat\Pay\WechatJsPayDecryptFacade
+ * @see \App\Facades\Pub\V1\Wechat\Pay\WechatJsPayDecryptFacade
  */
 class WechatJsPayDecryptFacadeService
 {

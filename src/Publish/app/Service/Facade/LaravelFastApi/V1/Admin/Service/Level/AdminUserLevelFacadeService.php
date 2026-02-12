@@ -6,10 +6,10 @@
  * @Date: 2024-05-26 22:36:08
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-01-15 15:19:48
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\Service\Level\AdminUserLevelFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\Service\Level\AdminUserLevelFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\Service\Level;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\Service\Level;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +23,7 @@ use App\Exceptions\Admin\CommonException;
 
 use App\Events\Admin\CommonEvent;
 
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 use App\Models\LaravelFastApi\V1\System\Level\UserLevel;
 use App\Models\LaravelFastApi\V1\System\Level\Union\UserLevelItemUnion;
@@ -33,7 +33,7 @@ use App\Http\Resources\LaravelFastApi\V1\Admin\Service\Level\UserLevelCollection
 use App\Http\Resources\LaravelFastApi\V1\Admin\Service\Level\SelectUserLevelCollection;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Admin\Service\Level\AdminUserLevelFacade
+ * @see \App\Facades\LaravelFastApi\V1\Admin\Service\Level\AdminUserLevelFacade
  */
 class AdminUserLevelFacadeService
 {

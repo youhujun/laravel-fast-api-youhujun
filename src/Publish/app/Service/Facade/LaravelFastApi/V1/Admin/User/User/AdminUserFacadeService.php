@@ -7,10 +7,10 @@
  * @Date: 2024-05-12 14:58:02
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2026-01-10 22:44:46
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\User\User;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\User\User;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Log;
 //必用
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 use App\Exceptions\Admin\CommonException;
 use App\Events\Admin\CommonEvent;
 use App\Events\Common\V1\User\User\CommonUserRegisterEvent;
@@ -29,11 +29,11 @@ use App\Models\LaravelFastApi\V1\User\User;
 use App\Models\LaravelFastApi\V1\Admin\Admin;
 use App\Http\Resources\LaravelFastApi\V1\Admin\User\UserResource;
 use App\Http\Resources\LaravelFastApi\V1\Admin\User\UserCollection;
-use YouHuJun\Tool\App\Facade\V1\Excel\ExcelFacade;
-use App\Contract\LaravelFastApi\V1\Common\User\AddUserHandlerContract;
+use YouHuJun\Tool\App\Facades\V1\Excel\ExcelFacade;
+use App\Contracts\LaravelFastApi\V1\Common\User\AddUserHandlerContract;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserFacade
+ * @see \App\Facades\LaravelFastApi\V1\Admin\User\User\AdminUserFacade
  */
 class AdminUserFacadeService
 {

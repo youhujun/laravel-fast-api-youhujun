@@ -6,14 +6,14 @@
  * @Date: 2025-12-08 14:10:45
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2025-12-08 14:58:03
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\User\Admin\AdminPersonalFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\User\Admin\AdminPersonalFacadeService.php
  * Copyright (C) 2025 youhujun. All rights reserved.
  */
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Admin\User\Admin\AdminPersonalFacade
+ * @see \App\Facades\LaravelFastApi\V1\Admin\User\Admin\AdminPersonalFacade
  */
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\User\Admin;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\User\Admin;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;

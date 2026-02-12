@@ -31,7 +31,7 @@ use App\Exceptions\Common\RuleException;
 use App\Rules\LaravelFastApi\V1\Admin\User\User\Password;
 
 //开发者门面
-use App\Facade\LaravelFastApi\V1\Admin\User\Developer\Developer;
+use App\Facades\LaravelFastApi\V1\Admin\User\Developer\Developer;
 
 class DeveloperController extends Controller
 {

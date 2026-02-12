@@ -28,7 +28,7 @@ use App\Rules\Pub\FormatTime;
 use App\Rules\Pub\CheckUnique;
 use App\Rules\Pub\ChineseCodeNumberLine;
 use App\Exceptions\Common\RuleException;
-use App\Facade\LaravelFastApi\V1\Admin\Article\AdminArticleFacade;
+use App\Facades\LaravelFastApi\V1\Admin\Article\AdminArticleFacade;
 
 class ArticleController extends Controller
 {

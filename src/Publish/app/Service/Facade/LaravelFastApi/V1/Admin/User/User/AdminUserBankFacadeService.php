@@ -6,10 +6,10 @@
  * @Date: 2024-06-09 19:48:46
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2024-06-25 17:10:32
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserBankFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserBankFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\User\User;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\User\User;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +22,7 @@ use App\Exceptions\Admin\CommonException;
 
 use App\Events\Admin\CommonEvent;
 
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 //用户银行卡
 use App\Models\LaravelFastApi\V1\User\Info\UserBank;
@@ -30,7 +30,7 @@ use App\Models\LaravelFastApi\V1\User\Info\UserBank;
 use App\Http\Resources\LaravelFastApi\V1\Admin\User\UserBankCollection;
 
 /**
- * @see \App\Facade\Admin\User\User\AdminUserBankFacade
+ * @see \App\Facades\Admin\User\User\AdminUserBankFacade
  */
 class AdminUserBankFacadeService
 {

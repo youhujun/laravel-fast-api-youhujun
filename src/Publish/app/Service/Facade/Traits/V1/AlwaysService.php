@@ -8,7 +8,7 @@
  * @LastEditTime: 2025-08-31 18:08:06
  */
 
-namespace App\Service\Facade\Traits\V1;
+namespace App\Services\Facade\Traits\V1;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;

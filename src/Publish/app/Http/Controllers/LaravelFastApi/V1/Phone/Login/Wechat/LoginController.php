@@ -32,10 +32,10 @@ use App\Rules\Pub\ChineseCodeNumberLine;
 
 use App\Exceptions\Common\RuleException;
 
-use App\Facade\Pub\V1\Wechat\WechatLoginFacade;
-use App\Facade\Pub\V1\Wechat\WechatOfficialFacade;
+use App\Facades\Pub\V1\Wechat\WechatLoginFacade;
+use App\Facades\Pub\V1\Wechat\WechatOfficialFacade;
 
-use App\Facade\LaravelFastApi\V1\Phone\Login\Wechat\PhoneLoginWechatFacade;
+use App\Facades\LaravelFastApi\V1\Phone\Login\Wechat\PhoneLoginWechatFacade;
 
 class LoginController extends Controller
 {

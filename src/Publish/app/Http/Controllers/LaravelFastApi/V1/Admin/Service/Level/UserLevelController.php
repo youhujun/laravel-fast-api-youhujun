@@ -28,7 +28,7 @@ use App\Rules\Pub\Required;
 use App\Rules\Pub\CheckBetween;
 use App\Rules\Pub\CheckUnique;
 
-use App\Facade\LaravelFastApi\V1\Admin\Service\Level\AdminUserLevelFacade;
+use App\Facades\LaravelFastApi\V1\Admin\Service\Level\AdminUserLevelFacade;
 
 class UserLevelController extends Controller
 {

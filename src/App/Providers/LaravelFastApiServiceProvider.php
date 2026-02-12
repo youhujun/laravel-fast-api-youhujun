@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 use App\Models\LaravelFastApi\V1\System\SystemConfig;
-use YouHuJun\Tool\App\Facade\V1\Utils\Shard\ShardFacade;
+use YouHuJun\Tool\App\Facades\V1\Utils\Shard\ShardFacade;
 use Illuminate\Support\Facades\Config;
 
 class LaravelFastApiServiceProvider extends ServiceProvider

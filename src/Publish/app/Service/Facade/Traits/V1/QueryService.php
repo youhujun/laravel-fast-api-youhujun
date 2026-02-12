@@ -8,7 +8,7 @@
  * @LastEditTime: 2025-11-10 19:57:30
  */
 
-namespace App\Service\Facade\Traits\V1;
+namespace App\Services\Facade\Traits\V1;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;

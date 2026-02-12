@@ -7,10 +7,10 @@
  * @Date: 2024-07-17 12:19:11
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-05-20 17:46:56
- * @FilePath: \app\Service\Facade\Pub\V1\Store\QiNiuFacadeService.php
+ * @FilePath: \App\Services\Facade\Pub\V1\Store\QiNiuFacadeService.php
  */
 
-namespace App\Service\Facade\Pub\V1\Store;
+namespace App\Services\Facade\Pub\V1\Store;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use App\Exceptions\Common\CommonException;
-use YouHuJun\Tool\App\Facade\V1\Store\QiNiuFacade;
+use YouHuJun\Tool\App\Facades\V1\Store\QiNiuFacade;
 //引入鉴权类
 use Qiniu\Auth as QiniuAuth;
 // 引入上传类
@@ -29,7 +29,7 @@ use Qiniu\Storage\UploadManager;
 use Qiniu\Storage\BucketManager;
 
 /**
- * @see \App\Facade\Pub\V1\Store\QiNiuFacade
+ * @see \App\Facades\Pub\V1\Store\QiNiuFacade
  */
 class QiNiuFacadeService
 {

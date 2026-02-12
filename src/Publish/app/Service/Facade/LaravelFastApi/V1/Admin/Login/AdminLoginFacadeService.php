@@ -6,12 +6,12 @@
  * @Date: 2025-01-13 09:38:04
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-06-20 23:31:27
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\Login\AdminLoginFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\Login\AdminLoginFacadeService.php
  * Copyright (C) 2025 youhujun. All rights reserved.
  */
 
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\Login;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\Login;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -30,13 +30,13 @@ use App\Events\LaravelFastApi\V1\Admin\Login\AdminLogoutEvent;
 
 use App\Jobs\LaravelFastApi\V1\Admin\Login\AdminLogoutJob;
 
-use App\Facade\LaravelFastApi\V1\Admin\Login\Common\AdminBackgroundLoginFacade;
+use App\Facades\LaravelFastApi\V1\Admin\Login\Common\AdminBackgroundLoginFacade;
 
 use App\Http\Resources\LaravelFastApi\V1\Admin\Login\AdminInfoResource;
 
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Admin\Login\AdminLoginFacade
+ * @see \App\Facades\LaravelFastApi\V1\Admin\Login\AdminLoginFacade
  */
 class AdminLoginFacadeService
 {

@@ -33,7 +33,7 @@ use App\Rules\Common\IdNumber;
 
 use App\Exceptions\Common\RuleException;
 
-use App\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserRealAuthFacade;
+use App\Facades\LaravelFastApi\V1\Admin\User\User\AdminUserRealAuthFacade;
 
 class UserRealAuthController extends Controller
 {

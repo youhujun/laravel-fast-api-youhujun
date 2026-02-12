@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-23 15:35:15
  * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-02-11 11:48:24
+ * @LastEditTime: 2026-02-12 17:37:28
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Config;
 
 return new class () extends Migration {
     /**
-     * 基础表名（和ShardFacade::getTableName的baseTable对齐）
+     * 
      */
     protected $baseTable = 'users';
     protected $hasSnowflake = true;

@@ -35,7 +35,7 @@ use App\Exceptions\Common\RuleException;
 
 
 
-use App\Facade\LaravelFastApi\V1\Admin\User\Admin\AdminPersonalFacade;
+use App\Facades\LaravelFastApi\V1\Admin\User\Admin\AdminPersonalFacade;
 
 class PersonalController extends Controller
 {

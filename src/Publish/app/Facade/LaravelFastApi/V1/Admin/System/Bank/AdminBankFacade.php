@@ -6,15 +6,15 @@
  * @Date: 2024-05-31 23:31:19
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2024-05-31 23:31:24
- * @FilePath: \app\Facade\LaravelFastApi\V1\Admin\System\Bank\AdminBankFacade.php
+ * @FilePath: \App\Facades\LaravelFastApi\V1\Admin\System\Bank\AdminBankFacade.php
  */
 
-namespace App\Facade\LaravelFastApi\V1\Admin\System\Bank;
+namespace App\Facades\LaravelFastApi\V1\Admin\System\Bank;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \App\Service\Facade\LaravelFastApi\V1\Admin\System\Bank\AdminBankFacadeService
+ * @see \App\Services\Facade\LaravelFastApi\V1\Admin\System\Bank\AdminBankFacadeService
  */
 class AdminBankFacade extends Facade
 {

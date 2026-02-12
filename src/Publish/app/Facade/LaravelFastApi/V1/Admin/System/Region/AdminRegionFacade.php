@@ -6,15 +6,15 @@
  * @Date: 2024-05-31 23:22:53
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2024-05-31 23:23:02
- * @FilePath: \app\Facade\LaravelFastApi\V1\Admin\System\Region\AdminRegionFacade.php
+ * @FilePath: \App\Facades\LaravelFastApi\V1\Admin\System\Region\AdminRegionFacade.php
  */
 
-namespace App\Facade\LaravelFastApi\V1\Admin\System\Region;
+namespace App\Facades\LaravelFastApi\V1\Admin\System\Region;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \App\Service\Facade\LaravelFastApi\V1\Admin\System\Region\AdminRegionFacadeService
+ * @see \App\Services\Facade\LaravelFastApi\V1\Admin\System\Region\AdminRegionFacadeService
  */
 class AdminRegionFacade extends Facade
 {

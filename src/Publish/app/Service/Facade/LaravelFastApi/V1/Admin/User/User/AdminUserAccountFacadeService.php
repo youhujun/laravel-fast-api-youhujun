@@ -6,10 +6,10 @@
  * @Date: 2024-06-09 19:49:11
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2025-12-03 17:25:40
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserAccountFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserAccountFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\User\User;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\User\User;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +24,7 @@ use App\Events\Admin\CommonEvent;
 
 use App\Events\LaravelFastApi\V1\Admin\User\User\SetUserAccountEvent;
 
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 use App\Models\LaravelFastApi\V1\User\User;
 use App\Models\LaravelFastApi\V1\User\Info\UserAmount;
@@ -36,7 +36,7 @@ use App\Http\Resources\LaravelFastApi\V1\Admin\User\UserAccountLogCollection;
 use App\Http\Resources\LaravelFastApi\V1\Admin\User\UserInfo\UserAmountResource;
 
 /**
- * @see \App\Facade\Admin\User\User\AdminUserAccountFacade
+ * @see \App\Facades\Admin\User\User\AdminUserAccountFacade
  */
 class AdminUserAccountFacadeService
 {

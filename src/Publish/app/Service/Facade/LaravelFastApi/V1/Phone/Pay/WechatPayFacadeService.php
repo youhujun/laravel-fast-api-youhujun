@@ -6,10 +6,10 @@
  * @Date: 2024-07-12 08:18:45
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2026-01-08 02:22:27
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Phone\Pay\WechatPayFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Phone\Pay\WechatPayFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Phone\Pay;
+namespace App\Services\Facade\LaravelFastApi\V1\Phone\Pay;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -23,10 +23,10 @@ use App\Events\Phone\CommonEvent;
 
 use App\Models\LaravelFastApi\V1\User\Union\UserSystemWechatConfigUnion;
 
-use App\Facade\Pub\V1\Wechat\Pay\WechatJsPayFacade;
+use App\Facades\Pub\V1\Wechat\Pay\WechatJsPayFacade;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Phone\Pay\WechatPayFacade
+ * @see \App\Facades\LaravelFastApi\V1\Phone\Pay\WechatPayFacade
  */
 class WechatPayFacadeService
 {

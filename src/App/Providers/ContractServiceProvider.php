@@ -14,7 +14,7 @@ namespace YouHuJun\LaravelFastApi\App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-use \App\Contract\LaravelFastApi\V1\Phone\Order\OrderPaymentHandlerContrat;
+use \App\Contracts\LaravelFastApi\V1\Phone\Order\OrderPaymentHandlerContrat;
 
 class ContractServiceProvider extends ServiceProvider
 {
@@ -22,15 +22,15 @@ class ContractServiceProvider extends ServiceProvider
 	 {
 
 	 	$this->bindContract(
-			\App\Contract\LaravelFastApi\V1\Common\User\AddUserHandlerContract::class,
+			\App\Contracts\LaravelFastApi\V1\Common\User\AddUserHandlerContract::class,
 			'add_user_handler',
-			\App\Service\Contract\LaravelFastApi\V1\Common\User\BaseAddUserHandlerContractService::class
+			\App\Services\Contract\LaravelFastApi\V1\Common\User\BaseAddUserHandlerContractService::class
 		);
 		
 		$this->bindContract(
-			\App\Contract\LaravelFastApi\V1\Phone\Order\OrderPaymentHandlerContract::class,
+			\App\Contracts\LaravelFastApi\V1\Phone\Order\OrderPaymentHandlerContract::class,
 			'order_payment_handler',
-			\App\Service\Contract\LaravelFastApi\V1\Phone\Order\BaseOrderPaymentHandlerContractService::class
+			\App\Services\Contract\LaravelFastApi\V1\Phone\Order\BaseOrderPaymentHandlerContractService::class
 		);
 	 }
 

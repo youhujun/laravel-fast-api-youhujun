@@ -6,10 +6,10 @@
  * @Date: 2024-05-31 23:22:53
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-08-31 17:58:56
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\System\Region\AdminRegionFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\System\Region\AdminRegionFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\System\Region;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\System\Region;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Collection;
 
-use App\Service\Facade\Traits\V1\AlwaysService;
+use App\Services\Facade\Traits\V1\AlwaysService;
 
 use App\Exceptions\Admin\CommonException;
 
@@ -32,7 +32,7 @@ use App\Models\LaravelFastApi\V1\User\Info\UserAddress;
 use App\Http\Resources\LaravelFastApi\V1\Admin\System\RegionResource;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Admin\System\Region\AdminRegionFacade
+ * @see \App\Facades\LaravelFastApi\V1\Admin\System\Region\AdminRegionFacade
  */
 class AdminRegionFacadeService
 {

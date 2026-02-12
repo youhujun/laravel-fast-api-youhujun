@@ -31,7 +31,7 @@ use App\Rules\Pub\CheckUnique;
 
 use App\Rules\LaravelFastApi\V1\Admin\Common\TreeDeep;
 
-use App\Facade\LaravelFastApi\V1\Admin\System\Role\AdminRoleFacade;
+use App\Facades\LaravelFastApi\V1\Admin\System\Role\AdminRoleFacade;
 
 class RoleController extends Controller
 {

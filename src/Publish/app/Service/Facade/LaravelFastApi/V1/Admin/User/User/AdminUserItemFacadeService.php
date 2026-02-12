@@ -6,10 +6,10 @@
  * @Date: 2024-06-09 19:43:46
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2024-06-21 17:01:19
- * @FilePath: \app\Service\Facade\Admin\User\User\AdminUserItemFacadeService.php
+ * @FilePath: \App\Services\Facade\Admin\User\User\AdminUserItemFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\User\User;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\User\User;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -24,12 +24,12 @@ use App\Events\Admin\CommonEvent;
 
 use App\Models\LaravelFastApi\V1\User\User;
 
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 use App\Http\Resources\LaravelFastApi\V1\Admin\User\UserCollection;
 
 /**
- * @see \App\Service\Facade\Admin\User\User\AdminUserItemFacadeService
+ * @see \App\Services\Facade\Admin\User\User\AdminUserItemFacadeService
  */
 class AdminUserItemFacadeService
 {

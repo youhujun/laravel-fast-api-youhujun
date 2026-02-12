@@ -6,10 +6,10 @@
  * @Date: 2024-07-12 09:14:49
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-06-23 22:56:26
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Phone\Pay\PhonePayFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Phone\Pay\PhonePayFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Phone\Pay;
+namespace App\Services\Facade\LaravelFastApi\V1\Phone\Pay;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Log;
 
 use App\Exceptions\Phone\CommonException;
 
-use App\Facade\LaravelFastApi\V1\Phone\Pay\WechatPayFacade;
+use App\Facades\LaravelFastApi\V1\Phone\Pay\WechatPayFacade;
 
 use App\Models\LaravelFastApi\V1\User\User;
 //use UserWechat;需要替换
@@ -29,7 +29,7 @@ use App\Models\YouHuShop\V1\Order\Union\OrderGoodsUnion;
 use App\Models\YouHuShop\V1\Order\Union\OrderGoodsSkuUnion;
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Phone\Pay\PhonePayFacade
+ * @see \App\Facades\LaravelFastApi\V1\Phone\Pay\PhonePayFacade
  */
 class PhonePayFacadeService
 {

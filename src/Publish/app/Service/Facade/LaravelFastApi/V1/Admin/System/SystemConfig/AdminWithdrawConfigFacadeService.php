@@ -6,11 +6,11 @@
  * @Date: 2025-11-28 14:42:33
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2025-11-28 15:51:49
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\AdminWithdrawConfigFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\AdminWithdrawConfigFacadeService.php
  * Copyright (C) 2025 youhujun. All rights reserved.
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\System\SystemConfig;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\System\SystemConfig;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 use App\Exceptions\Admin\CommonException;
 
@@ -32,12 +32,12 @@ use App\Models\LaravelFastApi\V1\System\SystemWithdrawConfig;
 use App\Http\Resources\LaravelFastApi\V1\Admin\System\SystemConfig\Withdraw\SystemWithdrawConfigResource;
 use App\Http\Resources\LaravelFastApi\V1\Admin\System\SystemConfig\Withdraw\SystemWithdrawConfigCollection;
 
-use YouHuJun\Tool\App\Facade\V1\Excel\ExcelFacade;
+use YouHuJun\Tool\App\Facades\V1\Excel\ExcelFacade;
 
 
 
 /**
- * @see \App\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\AdminWithdrawConfigFacade
+ * @see \App\Facades\LaravelFastApi\V1\Admin\System\SystemConfig\AdminWithdrawConfigFacade
  */
 class AdminWithdrawConfigFacadeService
 {

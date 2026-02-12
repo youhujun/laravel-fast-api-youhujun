@@ -6,10 +6,10 @@
  * @Date: 2024-07-17 03:09:50
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2024-07-17 03:16:55
- * @FilePath: \app\Service\Facade\Common\V1\Total\TotalAllDataFacadeService.php
+ * @FilePath: \App\Services\Facade\Common\V1\Total\TotalAllDataFacadeService.php
  */
 
-namespace App\Service\Facade\Common\V1\Total;
+namespace App\Services\Facade\Common\V1\Total;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 /**
- * @see \App\Facade\Common\V1\Total\TotalAllDataFacade
+ * @see \App\Facades\Common\V1\Total\TotalAllDataFacade
  */
 class TotalAllDataFacadeService
 {

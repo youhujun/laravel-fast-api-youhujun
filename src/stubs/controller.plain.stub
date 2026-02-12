@@ -24,7 +24,7 @@ use App\Rules\Pub\ChineseCodeNumberLine;
 
 use App\Exceptions\Common\RuleException;
 
-use App\Facade\ReplaceFacade;
+use App\Facades\ReplaceFacade;
 
 class {{ class }} extends Controller
 {

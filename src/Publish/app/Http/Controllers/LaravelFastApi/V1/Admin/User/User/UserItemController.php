@@ -28,7 +28,7 @@ use App\Rules\Pub\FormatTime;
 use App\Rules\Pub\CheckUnique;
 use App\Exceptions\Common\RuleException;
 
-use App\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserItemFacade;
+use App\Facades\LaravelFastApi\V1\Admin\User\User\AdminUserItemFacade;
 
 class UserItemController extends Controller
 {

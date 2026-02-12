@@ -29,9 +29,9 @@ use App\Rules\Pub\CheckUnique;
 use App\Rules\Pub\ChineseCodeNumberLine;
 use App\Exceptions\Common\RuleException;
 
-use App\Facade\Pub\V1\DouYin\DouYinFacade;
+use App\Facades\Pub\V1\DouYin\DouYinFacade;
 
-use App\Facade\LaravelFastApi\V1\Phone\Login\DouYin\PhoneLoginDouYinFacade;
+use App\Facades\LaravelFastApi\V1\Phone\Login\DouYin\PhoneLoginDouYinFacade;
 
 
 class LoginController extends Controller

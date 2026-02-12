@@ -31,7 +31,7 @@ use App\Rules\Pub\LetterNumberUnderLine;
 
 use App\Rules\LaravelFastApi\V1\Admin\Common\TreeDeep;
 
-use App\Facade\LaravelFastApi\V1\Admin\System\Region\AdminRegionFacade;
+use App\Facades\LaravelFastApi\V1\Admin\System\Region\AdminRegionFacade;
 
 class RegionController extends Controller
 {

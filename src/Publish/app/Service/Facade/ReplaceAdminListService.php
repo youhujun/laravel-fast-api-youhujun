@@ -8,7 +8,7 @@
  * @LastEditTime: 2024-08-28 11:14:57
  */
 
-namespace App\Service\Facade;
+namespace App\Services\Facade;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Cache;
 
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 use App\Exceptions\Admin\CommonException;
 
@@ -28,7 +28,7 @@ use App\Models\Replace;
 use App\Http\Resources\YouHuShop\V1\Admin\Goods\GoodsResource;
 use App\Http\Resources\YouHuShop\V1\Admin\Goods\GoodsCollection;
 
-use YouHuJun\Tool\App\Facade\V1\Excel\ExcelFacade;
+use YouHuJun\Tool\App\Facades\V1\Excel\ExcelFacade;
 
 class ReplaceAdminListService
 {

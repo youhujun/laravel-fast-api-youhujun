@@ -23,7 +23,7 @@ use App\Exceptions\Phone\CommonException;
 use App\Models\LaravelFastApi\V1\User\Union\UserSourceUnion;
 use App\Models\LaravelFastApi\V1\User\User;
 
-use App\Facade\LaravelFastApi\V1\Phone\User\PhoneUserSourceFacade;
+use App\Facades\LaravelFastApi\V1\Phone\User\PhoneUserSourceFacade;
 
 /**
  * @see \App\Events\LaravelFastApi\V1\Phone\User\UserRegisterEvent

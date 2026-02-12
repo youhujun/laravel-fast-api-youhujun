@@ -6,10 +6,10 @@
  * @Date: 2024-12-31 15:42:03
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-01-14 18:03:16
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\OtherPlatform\SystemDouyinConfigFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\OtherPlatform\SystemDouyinConfigFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\OtherPlatform;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\System\SystemConfig\OtherPlatform;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 use App\Exceptions\Admin\CommonException;
 
@@ -32,10 +32,10 @@ use App\Http\Resources\LaravelFastApi\V1\Admin\System\SystemConfig\OtherPlatform
 use App\Http\Resources\LaravelFastApi\V1\Admin\System\SystemConfig\OtherPlatform\SystemDouyinConfigCollection;
 
 
-use YouHuJun\Tool\App\Facade\V1\Excel\ExcelFacade;
+use YouHuJun\Tool\App\Facades\V1\Excel\ExcelFacade;
 
 /**
- * @see \App\Facade\Admin\System\SystemConfig\OtherPlatform\SystemDouyinConfigFacade
+ * @see \App\Facades\Admin\System\SystemConfig\OtherPlatform\SystemDouyinConfigFacade
  */
 class SystemDouyinConfigFacadeService
 {

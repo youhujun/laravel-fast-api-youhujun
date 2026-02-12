@@ -6,10 +6,10 @@
  * @Date: 2024-06-28 18:18:00
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2025-05-20 17:46:29
- * @FilePath: \app\Service\Facade\Pub\V1\Sms\SmsFacadeService.php
+ * @FilePath: \App\Services\Facade\Pub\V1\Sms\SmsFacadeService.php
  */
 
-namespace App\Service\Facade\Pub\V1\Sms;
+namespace App\Services\Facade\Pub\V1\Sms;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -24,11 +24,11 @@ use Illuminate\Support\Facades\Cache;
 use App\Exceptions\Phone\CommonException;
 use App\Events\Phone\CommonEvent;
 
-use App\Facade\Pub\V1\Sms\TencentSmsFacade;
+use App\Facades\Pub\V1\Sms\TencentSmsFacade;
 
 
 /**
- * @see \App\Facade\Pub\V1\Sms\SmsFacade
+ * @see \App\Facades\Pub\V1\Sms\SmsFacade
  */
 class SmsFacadeService
 {

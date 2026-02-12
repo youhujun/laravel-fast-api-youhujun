@@ -6,10 +6,10 @@
  * @Date: 2024-06-09 19:48:35
  * @LastEditors: youhujun youhu8888@163.com
  * @LastEditTime: 2025-12-01 02:39:09
- * @FilePath: \app\Service\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserAddressFacadeService.php
+ * @FilePath: \App\Services\Facade\LaravelFastApi\V1\Admin\User\User\AdminUserAddressFacadeService.php
  */
 
-namespace App\Service\Facade\LaravelFastApi\V1\Admin\User\User;
+namespace App\Services\Facade\LaravelFastApi\V1\Admin\User\User;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +22,7 @@ use App\Exceptions\Admin\CommonException;
 
 use App\Events\Admin\CommonEvent;
 
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 //用户地址
 use App\Models\LaravelFastApi\V1\User\User;
@@ -31,7 +31,7 @@ use App\Models\LaravelFastApi\V1\User\Info\UserAddress;
 use App\Http\Resources\LaravelFastApi\V1\Admin\User\UserAddressCollection;
 
 /**
- * @see  \App\Facade\Admin\User\User\AdminUserAddressFacade
+ * @see  \App\Facades\Admin\User\User\AdminUserAddressFacade
  */
 class AdminUserAddressFacadeService
 {

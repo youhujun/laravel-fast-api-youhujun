@@ -6,15 +6,15 @@
  * @Date: 2024-06-06 20:33:33
  * @LastEditors: youhujun 2900976495@qq.com
  * @LastEditTime: 2024-06-06 20:34:12
- * @FilePath: \app\Facade\Pub\V1\Qrcode\PubQrcodeFacade.php
+ * @FilePath: \App\Facades\Pub\V1\Qrcode\PubQrcodeFacade.php
  */
 
-namespace App\Facade\Pub\V1\Qrcode;
+namespace App\Facades\Pub\V1\Qrcode;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \App\Service\Facade\Pub\V1\Qrcode\PubQrcodeFacadeService
+ * @see \App\Services\Facade\Pub\V1\Qrcode\PubQrcodeFacadeService
  */
 class PubQrcodeFacade extends Facade
 {

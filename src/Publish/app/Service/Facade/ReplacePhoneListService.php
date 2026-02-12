@@ -8,7 +8,7 @@
  * @LastEditTime: 2025-01-21 15:15:57
  */
 
-namespace App\Service\Facade;
+namespace App\Services\Facade;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Cache;
 
-use App\Service\Facade\Traits\V1\QueryService;
+use App\Services\Facade\Traits\V1\QueryService;
 
 use App\Exceptions\Phone\CommonException;
 
@@ -28,7 +28,7 @@ use App\Models\Replace;
 use App\Http\Resources\YouHuShop\V1\Phone\Goods\GoodsResource;
 use App\Http\Resources\YouHuShop\V1\Phone\Goods\GoodsCollection;
 
-use App\Facade\Pub\Excel\ExcelFacade;
+use App\Facades\Pub\Excel\ExcelFacade;
 
 class ReplacePhoneListService
 {
