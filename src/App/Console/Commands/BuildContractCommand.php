@@ -78,7 +78,7 @@ class BuildContractCommand extends Command
         $name = str_replace('/', '\\', $name);
        
         return $this->qualifyClass(
-            $this->getDefaultNamespace(trim($rootNamespace, '\\')).'\\'.'Contract'.'\\'.$name
+            $this->getDefaultNamespace(trim($rootNamespace, '\\')).'\\'.'Contracts'.'\\'.$name
         );
         
     }

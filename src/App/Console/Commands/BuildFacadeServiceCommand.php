@@ -1,17 +1,19 @@
 <?php
+
 /*
- * @Descripttion: 
- * @version: 
+ * @Descripttion:
+ * @version:
  * @Author: YouHuJun
  * @Date: 2022-02-09 13:42:27
- * @LastEditors: YouHuJun
- * @LastEditTime: 2022-02-09 13:52:11
+ * @LastEditors: youhujun youhu8888@163.com
+ * @LastEditTime: 2026-02-12 21:51:55
  */
 
 namespace YouHuJun\LaravelFastApi\App\Console\Commands;
 
 use Illuminate\Support\Str;
 use Illuminate\Console\GeneratorCommand as Command;
+
 //use Illuminate\Console\Command;
 
 class BuildFacadeServiceCommand extends Command
@@ -52,7 +54,7 @@ class BuildFacadeServiceCommand extends Command
      *
      * @return mixed
      */
-    
+
 
     /**
      * Get the stub file for the generator.
@@ -85,12 +87,9 @@ class BuildFacadeServiceCommand extends Command
         }
 
         $name = str_replace('/', '\\', $name."Service");
-       
-        return $this->qualifyClass(
-            $this->getDefaultNamespace(trim($rootNamespace, '\\')).'\\'.'Service'.'\\'.'Facade'.'\\'.$name
-        );
-        
-    }
 
-   
+        return $this->qualifyClass(
+            $this->getDefaultNamespace(trim($rootNamespace, '\\')).'\\'.'Services'.'\\'.'Facade'.'\\'.$name
+        );
+    }
 }

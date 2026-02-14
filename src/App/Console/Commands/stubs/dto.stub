@@ -3,59 +3,69 @@
 namespace DummyNamespace;
 
 use App\DTOs\Traits\BaseDTOTrait;
-use App\Rules\Pub\Required;
-use App\Rules\Pub\Numeric;
-use App\Rules\Pub\CheckString;
 
 /**
- * DummyClass（游鹄生态DTO，贴合{TABLE_NAME}表字段规范）
+ * DummyClass（游鹄生态DTO，贴合{TABLE_NAME}表/多表字段规范）
  *
- * @Description: 自动生成：游鹄生态{BUSINESS_MODULE}模块DTO，适配微服务/TS类型生成
+ * @Description: 自动生成：游鹄生态{BUSINESS_MODULE}模块{DTO_TYPE}DTO，适配微服务/TS类型生成、多表字段整合
  * @Author: youhujun youhu8888@163.com
  * @Date: DUMMY_DATE
+ * @version: v1（游鹄生态标准版本）
  */
 class DummyClass
 {
     use BaseDTOTrait;
 
+    // ========== 游鹄生态基础字段（全DTO通用，分片/主键规范） ==========
     /**
      * 业务主键（*_uid，游鹄分片规范）
-     * @var string|int 雪花ID/分片UID
+     * @var string|int $business_uid 雪花ID/分片UID（非自增ID）
      */
-    protected $business_uid;
+    public string|int $business_uid = ''; // 改为public+类型声明+默认值，适配fill/fromArray
 
     /**
      * 分片键（游鹄分片规范，锚定业务归属）
-     * @var int 如user_uid/payer_uid
+     * @var int $shard_key 如user_uid/payer_uid（分片路由核心字段）
      */
-    protected $shard_key;
+    public int $shard_key = 0; // 改为public+类型声明+默认值，避免赋值报错
 
-    // ========== 表字段自动填充区（--table参数触发） ==========
+    // ========== 表字段自动填充区（--table参数触发，单表/多表兼容） ==========
     // {TABLE_FIELDS}
 
     /**
-     * 字段映射（供TS类型生成/微服务对接）
+     * 字段映射（供TS类型生成/微服务对接，支持单表/多表格式）
+     * 多表格式：['表名' => ['字段1','字段2'], ...]
+     * 单表格式：['字段1','字段2']（极简适配）
      * @return array
      */
     public function getFieldMap(): array
     {
+        // 多表场景示例（自动生成时根据--tables参数替换）
         return [
-            'business_uid' => 'string|int (雪花ID/分片UID)',
-            'shard_key' => 'int (分片锚定字段)',
-            // {FIELD_MAP}
+            // 基础字段（全DTO必含）
+            '{MAIN_TABLE}' => [
+                'business_uid',
+                'shard_key',
+                // {FIELD_MAP}
+            ],
+            // {EXT_TABLES_MAP} // 多表时自动追加其他表的字段映射
         ];
+
+        // 单表场景可简化为（自动生成时根据参数切换）
+        // return [
+        //     'business_uid',
+        //     'shard_key',
+        //     // {FIELD_MAP}
+        // ];
     }
 
     /**
-     * 验证规则（对接控制器，按业务场景调整）
-     * @return array
+     * 可选：快速获取单个字段（简化调用，提升开发手感）
+     * @param string $key 字段名
+     * @return mixed|null
      */
-    public function rules(): array
+    public function get(string $key): mixed
     {
-        return [
-            'business_uid' => [new Required, new CheckString],
-            'shard_key' => [new Required, new Numeric],
-            // {RULES}
-        ];
+        return property_exists($this, $key) ? $this->$key : null;
     }
 }
