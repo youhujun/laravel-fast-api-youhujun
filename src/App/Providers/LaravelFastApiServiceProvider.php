@@ -5,8 +5,8 @@
  * @version: v1
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2024-02-13 16:10:12
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-02-11 02:55:39
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-02-20 23:51:24
  * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\App\Providers\LaravelFastApiServiceProvider.php
  */
 
@@ -84,13 +84,6 @@ class LaravelFastApiServiceProvider extends ServiceProvider
             'default_db' => Config::get('youhujun.shard.default_db', 'ds_0'),
         ]);
 
-
-        if (config('youhujun.runing')) {
-            //启动自定义命令
-            $this->registerCommand();
-        }
-
-
         if (config('youhujun.publish')) {
             //执行运行数据库迁移文件
             $this->loadRun();
@@ -99,6 +92,9 @@ class LaravelFastApiServiceProvider extends ServiceProvider
 
         //运行时动态修改配置文件
         if (config('youhujun.runing')) {
+            //启动自定义命令
+            $this->registerCommand();
+
             $this->makeConfig();
         }
 
@@ -176,6 +172,18 @@ class LaravelFastApiServiceProvider extends ServiceProvider
      */
     protected function mergeCommonConfig()
     {
+        //common配置文件
+        $this->mergeConfigFrom(
+            config_path('custom/common/common.php'),
+            'common'
+        );
+
+        //错误码
+        $this->mergeConfigFrom(
+            config_path('custom/common/code/common_code.php'),
+            'common_code'
+        );
+
         //后台错误码
         $this->mergeConfigFrom(
             config_path('custom/laravel-fast-api/public/code/common_code.php'),
@@ -353,6 +361,10 @@ class LaravelFastApiServiceProvider extends ServiceProvider
     {
         //运行数据库迁移
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
+
+
+        //鉴权模块
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Auth');
 
         //系统模块
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System');
