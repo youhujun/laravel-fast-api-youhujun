@@ -6,7 +6,7 @@
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2024-02-13 16:10:12
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-02-20 23:51:24
+ * @LastEditTime: 2026-02-25 06:23:37
  * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\App\Providers\LaravelFastApiServiceProvider.php
  */
 
@@ -34,6 +34,10 @@ class LaravelFastApiServiceProvider extends ServiceProvider
             $this->addAliasMiddleware('admin.login', \App\Http\Middleware\LaravelFastApi\V1\AdminTokenMiddleware::class);
 
             $this->addAliasMiddleware('phone.login', \App\Http\Middleware\LaravelFastApi\V1\PhoneTokenMiddleware::class);
+
+            $this->addAliasMiddleware('youhubase.sign', \App\Http\Middleware\LaravelFastApi\V1\SignAuthMiddleWare::class);
+
+            $this->addAliasMiddleware('youhubase.auth', \App\Http\Middleware\LaravelFastApi\V1\AuthTokenMiddleWare::class);
         } else {
         }
     }
@@ -178,10 +182,32 @@ class LaravelFastApiServiceProvider extends ServiceProvider
             'common'
         );
 
+        //api请求url
+        $this->mergeConfigFrom(
+            config_path('custom/common/api/youhu.php'),
+            'youhu_api_url'
+        );
+
+        $this->mergeConfigFrom(
+            config_path('custom/common/api/youhushop.php'),
+            'youhushop_api_url'
+        );
+
+        $this->mergeConfigFrom(
+            config_path('custom/common/api/youhubase.php'),
+            'youhubase_api_url'
+        );
+
         //错误码
         $this->mergeConfigFrom(
             config_path('custom/common/code/common_code.php'),
             'common_code'
+        );
+
+        //事件码
+        $this->mergeConfigFrom(
+            config_path('custom/common/event/common_event.php'),
+            'common_event'
         );
 
         //后台错误码
@@ -189,6 +215,7 @@ class LaravelFastApiServiceProvider extends ServiceProvider
             config_path('custom/laravel-fast-api/public/code/common_code.php'),
             'common_code'
         );
+
         //短信错误码
         $this->mergeConfigFrom(
             config_path('custom/laravel-fast-api/public/code/common_sms_code.php'),
@@ -364,7 +391,8 @@ class LaravelFastApiServiceProvider extends ServiceProvider
 
 
         //鉴权模块
-        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Auth');
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Api');
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Api/Auth');
 
         //系统模块
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System');

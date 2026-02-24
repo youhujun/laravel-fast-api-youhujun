@@ -6,8 +6,8 @@
  * @Author: youhujun youhu8888@163.com & xueer
  * @Date: 2026-02-15 15:02:26
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-02-15 19:25:06
- * @FilePath: \youhu-laravel-api-12\database\migrations\2026_02_15_150226_create_youhu_auth_service_table.php
+ * @LastEditTime: 2026-02-24 00:53:37
+ * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\database\migrations\Create\Api\Auth\2026_02_15_150226_create_youhu_auth_services_table.php
  * Copyright (C) 2026 youhujun & xueer. All rights reserved.
  */
 
@@ -23,7 +23,7 @@ return new class () extends Migration {
     /**
      * 基础表名（和ShardFacade::getTableName的baseTable对齐）
      */
-    protected $baseTable = 'youhu_auth_service';
+    protected $baseTable = 'youhu_auth_services';
     //是否分片 仅做识别用,不参与代码逻辑
     protected $hasSnowflake = true;
     // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
@@ -55,7 +55,7 @@ return new class () extends Migration {
                     $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
                     $table->string('secret_key', 128)->default('')->comment('各微服务独立生成的秘钥（加密存储）');
                     $table->string('service_flag', 32)->default('youhu-base')->comment('微服务标识（youhu-base/youhu-main/youhu-shop）');
-                    $table->cahr('auth_token', 36)->nullable()->comment('前端使用唯一标识');
+                    $table->cahr('auth_token', 128)->nullable()->comment('前端使用唯一标识');
                     // 状态字段
                     $table->unsignedTinyInteger('status')->default(1)->comment('账户状态 0禁用 1启用');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');

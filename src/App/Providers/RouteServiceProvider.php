@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @Descripttion:
  * @version:
@@ -35,10 +36,10 @@ class RouteServiceProvider extends ServiceProvider
      * @var string|null
      */
 
-     //protected $namespace = 'App\\Http\\Controllers';
+    //protected $namespace = 'App\\Http\\Controllers';
 
-     protected $packageNamespace = 'YouHuJun\\LaravelFastApi\\App\\Http\\Controllers';
-    
+    protected $packageNamespace = 'YouHuJun\\LaravelFastApi\\App\\Http\\Controllers';
+
     /**
      * Define your route model bindings, pattern filters, etc.
      *
@@ -46,115 +47,114 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-		//p('here');die;
+        //p('here');die;
         $this->configureRateLimiting();
 
-        if(config('youhujun.runing'))
-        {
-            $this->routes(function () 
-            {
-				//测试路由
-				Route::prefix('api')
-				->middleware('api')
-				->group(\base_path('routes/api/test.php'));
-				//**********************************后台路由******************************** */
+        if (config('youhujun.runing')) {
+            $this->routes(function () {
+                //测试路由
+                Route::prefix('api')
+                ->middleware('api')
+                ->group(\base_path('routes/api/test.php'));
+                //**********************************后台路由******************************** */
 
-				//后台路由-登录退出
+                //api
+
                 Route::prefix('api')
                     ->middleware('api')
-                    ->group(\base_path('routes/api/laravel-fast-api/admin/login.php')); 
+                    ->group(\base_path('routes/api/laravel-fast-api/api/api.php'));
 
-				//开发
-				Route::prefix('api')
-                    ->middleware('api')
-                    ->group(\base_path('routes/api/laravel-fast-api/admin/develop.php')); 
-				
-				//后台管理-文件上传下载
+                //后台路由-登录退出
                 Route::prefix('api')
                     ->middleware('api')
-                    ->group(\base_path('routes/api/laravel-fast-api/admin/file.php')); 
-				
-			
-				//后台路由-系统配置
-				Route::prefix('api')
-                    ->middleware('api')
-                    ->group(\base_path('routes/api/laravel-fast-api/admin/system.php'));  
+                    ->group(\base_path('routes/api/laravel-fast-api/admin/login.php'));
 
-				//后台路由-业务配置
-				Route::prefix('api')
+                //开发
+                Route::prefix('api')
                     ->middleware('api')
-                    ->group(\base_path('routes/api/laravel-fast-api/admin/service.php'));  
+                    ->group(\base_path('routes/api/laravel-fast-api/admin/develop.php'));
 
-				//后台路由-用户管理模块
-				Route::prefix('api')
+                //后台管理-文件上传下载
+                Route::prefix('api')
                     ->middleware('api')
-                    ->group(\base_path('routes/api/laravel-fast-api/admin/user.php')); 
+                    ->group(\base_path('routes/api/laravel-fast-api/admin/file.php'));
 
-				//后台路由-文章管理模块
-				Route::prefix('api')
-                    ->middleware('api')
-                    ->group(\base_path('routes/api/laravel-fast-api/admin/article.php')); 
-				
-				//后台路由-图片空间
-				Route::prefix('api')
-                    ->middleware('api')
-                    ->group(\base_path('routes/api/laravel-fast-api/admin/picture.php')); 
-				//后台路由-日志管理模块
-				Route::prefix('api')
-                    ->middleware('api')
-                    ->group(\base_path('routes/api/laravel-fast-api/admin/log.php')); 
 
-				
-				//**********************************结束******************************** */
-				
-				//**********************************手机端路由******************************** */
-
-				//手机登录注册
-				Route::prefix('api')
+                //后台路由-系统配置
+                Route::prefix('api')
                     ->middleware('api')
-                    ->group(\base_path('routes/api/laravel-fast-api/phone/login.php')); 
+                    ->group(\base_path('routes/api/laravel-fast-api/admin/system.php'));
 
-				//文件系统模块
-				Route::prefix('api')
+                //后台路由-业务配置
+                Route::prefix('api')
+                    ->middleware('api')
+                    ->group(\base_path('routes/api/laravel-fast-api/admin/service.php'));
+
+                //后台路由-用户管理模块
+                Route::prefix('api')
+                    ->middleware('api')
+                    ->group(\base_path('routes/api/laravel-fast-api/admin/user.php'));
+
+                //后台路由-文章管理模块
+                Route::prefix('api')
+                    ->middleware('api')
+                    ->group(\base_path('routes/api/laravel-fast-api/admin/article.php'));
+
+                //后台路由-图片空间
+                Route::prefix('api')
+                    ->middleware('api')
+                    ->group(\base_path('routes/api/laravel-fast-api/admin/picture.php'));
+                //后台路由-日志管理模块
+                Route::prefix('api')
+                    ->middleware('api')
+                    ->group(\base_path('routes/api/laravel-fast-api/admin/log.php'));
+
+
+                //**********************************结束******************************** */
+
+                //**********************************手机端路由******************************** */
+
+                //手机登录注册
+                Route::prefix('api')
+                    ->middleware('api')
+                    ->group(\base_path('routes/api/laravel-fast-api/phone/login.php'));
+
+                //文件系统模块
+                Route::prefix('api')
                     ->middleware('api')
                     ->group(\base_path('routes/api/laravel-fast-api/phone/file.php'));
-				//手机系统
-				Route::prefix('api')
+                //手机系统
+                Route::prefix('api')
                     ->middleware('api')
                     ->group(\base_path('routes/api/laravel-fast-api/phone/system.php'));
 
-				//手机用户(我的)
-				Route::prefix('api')
+                //手机用户(我的)
+                Route::prefix('api')
                     ->middleware('api')
                     ->group(\base_path('routes/api/laravel-fast-api/phone/user.php'));
 
-				//订单模块
-				Route::prefix('api')
+                //订单模块
+                Route::prefix('api')
                     ->middleware('api')
                     ->group(\base_path('routes/api/laravel-fast-api/phone/order.php'));
 
-				//回调模块
-				Route::prefix('api')
+                //回调模块
+                Route::prefix('api')
                     ->middleware('api')
                     ->group(\base_path('routes/api/laravel-fast-api/phone/notify.php'));
-
             });
+        } else {
+            /*  $this->routes(function ()
+             {
+
+                 Route::middleware('web')
+                 ->group(__DIR__.'/../../routes/web.php');
+
+                 Route::middleware('api')
+                 ->prefix('api')
+                 ->group(__DIR__.'/../../routes/web.php');
+             }); */
         }
-        else
-        {
-           /*  $this->routes(function () 
-			{
-
-                Route::middleware('web')
-                ->group(__DIR__.'/../../routes/web.php');
-
-                Route::middleware('api')
-                ->prefix('api')
-                ->group(__DIR__.'/../../routes/web.php');
-            }); */
-
-        }
-
     }
 
     /**
@@ -165,11 +165,8 @@ class RouteServiceProvider extends ServiceProvider
     protected function configureRateLimiting()
     {
         RateLimiter::for('api', function (Request $request) {
-
-            return Limit::perMinute(60)->response(function(){
-
+            return Limit::perMinute(60)->response(function () {
                 return response()->json(code(\config('common_code.ThrottleError')));
-
             })->by(optional($request->attributes->get('user'))->id ?: $request->ip());
         });
     }

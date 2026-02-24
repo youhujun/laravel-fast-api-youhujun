@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
- * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2025-06-21 03:49:32
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-02-25 03:12:51
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -25,6 +25,8 @@ class FacadeServiceProvider extends ServiceProvider
         if (\config('youhujun.runing')) {
             //公共第三方门面
             $this->publishPubFacade();
+            //Api门面
+            $this->publishApiFacade();
             //后台门面
             $this->publishAdminFacade();
             //手机门面
@@ -63,6 +65,8 @@ class FacadeServiceProvider extends ServiceProvider
         //用户之间计算距离
         $this->app->bind('CalculateUserDistanceFacade', \App\Services\Facade\Common\V1\Location\CalculateUserDistanceFacadeService::class);
     }
+
+
     /**
      * 公共的门面 第三方跟业务无关
      */
@@ -127,6 +131,18 @@ class FacadeServiceProvider extends ServiceProvider
     {
     }
 
+
+    /**
+     * Api门面
+     */
+    public function publishApiFacade()
+    {
+        //后台登录辅助门面
+        $this->app->bind('YouHuBaseAuthFacade', \App\Services\Facade\LaravelFastApi\V1\Api\YouHuAuthService\YouHuBaseAuthFacadeService::class);
+
+        //api记录日志
+        $this->app->bind('ApiLogEventFacade', \App\Services\Facade\LaravelFastApi\V1\Log\ApiLogEventFacadeService::class);
+    }
 
 
     /**
