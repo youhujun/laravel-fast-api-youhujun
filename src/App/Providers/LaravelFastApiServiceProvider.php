@@ -6,7 +6,7 @@
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2024-02-13 16:10:12
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-02-25 06:23:37
+ * @LastEditTime: 2026-02-26 12:39:23
  * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\App\Providers\LaravelFastApiServiceProvider.php
  */
 
@@ -150,7 +150,7 @@ class LaravelFastApiServiceProvider extends ServiceProvider
      */
     protected function mergeConfig()
     {
-        if (config('help.is_custom')) {
+        if (config('help.youhujun_custom')) {
             //自定义配置文件
             $this->mergeConfigFrom(
                 config_path('custom/custom.php'),
