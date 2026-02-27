@@ -53,6 +53,7 @@ class FacadeServiceProvider extends ServiceProvider
     {
         //分库分表工具门面
         $this->app->bind('ShardHelperFacade', \App\Services\Facade\Common\V1\Shard\ShardHelperFacadeService::class);
+        $this->app->bind('ShardMapHelperFacade', \App\Services\Facade\Common\V1\Shard\Map\ShardMapHelperFacadeService::class);
         // API验签鉴权
         $this->app->bind('ApiAuthFacade', \App\Services\Facade\Common\V1\Api\Auth\ApiAuthFacadeService::class);
 
