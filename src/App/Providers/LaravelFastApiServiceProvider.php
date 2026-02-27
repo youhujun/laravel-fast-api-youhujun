@@ -81,7 +81,7 @@ class LaravelFastApiServiceProvider extends ServiceProvider
 
 
         // 全局初始化ShardFacade配置（只执行一次，所有地方复用）
-        ShardFacade::setConfig([
+        ShardFacade::setMultiConfig('youhujun', [
             'db_count' => Config::get('youhujun.shard.db_count', 1),
             'table_count' => Config::get('youhujun.shard.table_count', 1),
             'db_prefix' => Config::get('youhujun.shard.db_prefix', 'ds_'),
