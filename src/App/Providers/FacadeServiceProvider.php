@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-02-25 03:12:51
+ * @LastEditTime: 2026-02-28 16:03:23
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -25,14 +25,18 @@ class FacadeServiceProvider extends ServiceProvider
         if (\config('youhujun.runing')) {
             //公共第三方门面
             $this->publishPubFacade();
+
+            //通用公共门面
+            $this->publishCommonFacade();
+
             //Api门面
             $this->publishApiFacade();
             //后台门面
             $this->publishAdminFacade();
             //手机门面
             $this->publishPhoneFacade();
-            //通用公共门面
-            $this->publishCommonFacade();
+            //模版
+            $this->publishFacade();
         } else {
         }
     }
@@ -45,28 +49,6 @@ class FacadeServiceProvider extends ServiceProvider
     public function boot()
     {
     }
-
-    /**
-     * 通用公共门面
-     */
-    protected function publishCommonFacade()
-    {
-        //分库分表工具门面
-        $this->app->bind('ShardHelperFacade', \App\Services\Facade\Common\V1\Shard\ShardHelperFacadeService::class);
-        $this->app->bind('ShardMapHelperFacade', \App\Services\Facade\Common\V1\Shard\Map\ShardMapHelperFacadeService::class);
-        // API验签鉴权
-        $this->app->bind('ApiAuthFacade', \App\Services\Facade\Common\V1\Api\Auth\ApiAuthFacadeService::class);
-
-        //通用的登录门面
-        $this->app->bind('CommonUserFacade', \App\Services\Facade\Common\V1\User\User\CommonUserFacadeService::class);
-        //通用的用户门面
-        $this->app->bind('CommonLoginFacade', \App\Services\Facade\Common\V1\Login\CommonLoginFacadeService::class);
-        //公共统计
-        $this->app->bind('TotalAllDataFacade', \App\Services\Facade\Common\V1\Total\TotalAllDataFacadeService::class);
-        //用户之间计算距离
-        $this->app->bind('CalculateUserDistanceFacade', \App\Services\Facade\Common\V1\Location\CalculateUserDistanceFacadeService::class);
-    }
-
 
     /**
      * 公共的门面 第三方跟业务无关
@@ -132,6 +114,26 @@ class FacadeServiceProvider extends ServiceProvider
     {
     }
 
+    /**
+     * 通用公共门面
+     */
+    protected function publishCommonFacade()
+    {
+        //分库分表工具门面
+        $this->app->bind('ShardHelperFacade', \App\Services\Facade\Common\V1\Shard\ShardHelperFacadeService::class);
+        $this->app->bind('ShardMapHelperFacade', \App\Services\Facade\Common\V1\Shard\Map\ShardMapHelperFacadeService::class);
+        // API验签鉴权
+        $this->app->bind('ApiAuthFacade', \App\Services\Facade\Common\V1\Api\Auth\ApiAuthFacadeService::class);
+
+        //通用的登录门面
+        $this->app->bind('CommonUserFacade', \App\Services\Facade\Common\V1\User\User\CommonUserFacadeService::class);
+        //通用的用户门面
+        $this->app->bind('CommonLoginFacade', \App\Services\Facade\Common\V1\Login\CommonLoginFacadeService::class);
+        //公共统计
+        $this->app->bind('TotalAllDataFacade', \App\Services\Facade\Common\V1\Total\TotalAllDataFacadeService::class);
+        //用户之间计算距离
+        $this->app->bind('CalculateUserDistanceFacade', \App\Services\Facade\Common\V1\Location\CalculateUserDistanceFacadeService::class);
+    }
 
     /**
      * Api门面
@@ -413,7 +415,7 @@ class FacadeServiceProvider extends ServiceProvider
     public function publishFacade()
     {
         //模板替换
-        $this->app->bind('Replace', \App\Services\Facade\ReplaceService::class);
+        //$this->app->bind('Replace', \App\Services\Facade\ReplaceService::class);
     }
 
 

@@ -6,7 +6,7 @@
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2024-02-13 16:10:12
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-02-26 12:39:23
+ * @LastEditTime: 2026-02-28 11:50:48
  * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\App\Providers\LaravelFastApiServiceProvider.php
  */
 
@@ -16,7 +16,6 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Events\QueryExecuted;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 use App\Models\LaravelFastApi\V1\System\SystemConfig;
@@ -46,6 +45,39 @@ class LaravelFastApiServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(255);
 
+        //记录sql日志
+        $this->logSql();
+
+        // 全局初始化ShardFacade配置（只执行一次，所有地方复用）
+        ShardFacade::setMultiConfig('youhujun', [
+            'db_count' => Config::get('youhujun.shard.db_count', 1),
+            'table_count' => Config::get('youhujun.shard.table_count', 1),
+            'db_prefix' => Config::get('youhujun.shard.db_prefix', 'ds_'),
+            'default_db' => Config::get('youhujun.shard.default_db', 'ds_0'),
+        ]);
+
+        if (config('youhujun.publish')) {
+            //执行运行数据库迁移文件
+            $this->loadRun();
+        }
+
+        //运行时动态修改配置文件
+        if (config('youhujun.runing')) {
+            //启动自定义命令
+            $this->registerCommand();
+
+            $this->makeConfig();
+        }
+
+        //添加到中间件分组api中 !!!!注意这里只能在这里生效,注册的时候虽然能添加上,但是不生效
+        $this->addMiddlewareGroup('api', \App\Http\Middleware\LaravelFastApi\V1\TimeVerifyMiddleware::class);
+    }
+
+    /**
+     * 记录sql日志
+     */
+    protected function logSql()
+    {
         //监听sql
         DB::listen(function (QueryExecuted $query) {
             $sql = $query->sql;
@@ -76,34 +108,8 @@ class LaravelFastApiServiceProvider extends ServiceProvider
                 'time' => $query->time
             ];
 
-            Log::channel('sql')->debug(['sql' => $data]);
+            plog(['sqldata' => $data], 'sql', 'sqllog');
         });
-
-
-        // 全局初始化ShardFacade配置（只执行一次，所有地方复用）
-        ShardFacade::setMultiConfig('youhujun', [
-            'db_count' => Config::get('youhujun.shard.db_count', 1),
-            'table_count' => Config::get('youhujun.shard.table_count', 1),
-            'db_prefix' => Config::get('youhujun.shard.db_prefix', 'ds_'),
-            'default_db' => Config::get('youhujun.shard.default_db', 'ds_0'),
-        ]);
-
-        if (config('youhujun.publish')) {
-            //执行运行数据库迁移文件
-            $this->loadRun();
-        }
-
-
-        //运行时动态修改配置文件
-        if (config('youhujun.runing')) {
-            //启动自定义命令
-            $this->registerCommand();
-
-            $this->makeConfig();
-        }
-
-        //添加到中间件分组api中 !!!!注意这里只能在这里生效,注册的时候虽然能添加上,但是不生效
-        $this->addMiddlewareGroup('api', \App\Http\Middleware\LaravelFastApi\V1\TimeVerifyMiddleware::class);
     }
 
     /**
@@ -182,22 +188,6 @@ class LaravelFastApiServiceProvider extends ServiceProvider
             'common'
         );
 
-        //api请求url
-        $this->mergeConfigFrom(
-            config_path('custom/common/api/youhu.php'),
-            'youhu_api_url'
-        );
-
-        $this->mergeConfigFrom(
-            config_path('custom/common/api/youhushop.php'),
-            'youhushop_api_url'
-        );
-
-        $this->mergeConfigFrom(
-            config_path('custom/common/api/youhubase.php'),
-            'youhubase_api_url'
-        );
-
         //错误码
         $this->mergeConfigFrom(
             config_path('custom/common/code/common_code.php'),
@@ -238,6 +228,37 @@ class LaravelFastApiServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             config_path('custom/laravel-fast-api/public/rule/rule_code.php'),
             'rule_code'
+        );
+
+        //api的url
+        $this->mergeCommonApiConfig();
+    }
+
+    /**
+     * 自定义微服务apiurl
+     */
+    protected function mergeCommonApiConfig()
+    {
+        $this->mergeConfigFrom(
+            config_path('custom/common/api/youhubase.php'),
+            'youhubase_api_url'
+        );
+
+
+        $this->mergeConfigFrom(
+            config_path('custom/common/api/shardmap.php'),
+            'shardmap_api_url'
+        );
+
+
+        $this->mergeConfigFrom(
+            config_path('custom/common/api/youhu.php'),
+            'youhu_api_url'
+        );
+
+        $this->mergeConfigFrom(
+            config_path('custom/common/api/youhushop.php'),
+            'youhushop_api_url'
         );
     }
 
@@ -389,7 +410,37 @@ class LaravelFastApiServiceProvider extends ServiceProvider
         //运行数据库迁移
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
 
+        //系统公共
+        $this->loadRunCommon();
+        //用户模块
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/User');
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/User/Info');
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/User/Log');
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/User/Platform');
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/User/Union');
 
+        //用户管理--管理员管理
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Admin');
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Admin/Log');
+
+        //文章管理
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Article');
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Article/Info');
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Article/Union');
+
+        //图片空间
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Picture');
+        //任务
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Job');
+        //支付
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Pay');
+    }
+
+    /**
+     *自定义运行公共的
+     */
+    protected function loadRunCommon()
+    {
         //鉴权模块
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Api');
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Api/Auth');
@@ -416,29 +467,6 @@ class LaravelFastApiServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Role');
         //系统-关联
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/System/Union');
-
-        //用户模块
-        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/User');
-        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/User/Info');
-        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/User/Log');
-        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/User/Platform');
-        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/User/Union');
-
-        //用户管理--管理员管理
-        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Admin');
-        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Admin/Log');
-
-        //文章管理
-        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Article');
-        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Article/Info');
-        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Article/Union');
-
-        //图片空间
-        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Picture');
-        //任务
-        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Job');
-        //支付
-        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Pay');
     }
 
     /**
