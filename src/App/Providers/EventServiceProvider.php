@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-02-22 20:13:07
+ * @LastEditTime: 2026-03-01 22:30:37
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -30,6 +30,8 @@ class EventServiceProvider extends ServiceProvider
     ];
 
 
+    //api
+    protected $publishApiListener;
     //通用
     protected $publishCommonListener;
 
@@ -55,6 +57,8 @@ class EventServiceProvider extends ServiceProvider
     {
         if (config('youhujun.runing')) {
             //先设置
+            //API专用
+            $this->setApiPublish();
             //通用设置
             $this->setCommonPublish();
             //后台发布
@@ -63,6 +67,9 @@ class EventServiceProvider extends ServiceProvider
             $this->setPhonePublish();
 
             $this->runPublish();
+
+            //设置APi
+            $this->runApiPublish();
 
             $this->runCommonPublish();
             //后台发布
@@ -125,6 +132,25 @@ class EventServiceProvider extends ServiceProvider
     }
 
     /**
+     * 注册API监听事件
+     */
+    protected function runApiPublish()
+    {
+        $events = $this->publishApiListener;
+
+
+        foreach ($events as $event => $listeners) {
+            foreach (array_unique($listeners) as $listener) {
+                Event::listen($event, $listener);
+            }
+        }
+
+        foreach ($this->publishSubscribe as $subscriber) {
+            Event::subscribe($subscriber);
+        }
+    }
+
+    /**
      * 注册通用监听事件
      */
     protected function runCommonPublish()
@@ -166,27 +192,51 @@ class EventServiceProvider extends ServiceProvider
         }
     }
 
+    /**\
+     * 设置Api发布
+     */
+    protected function setApiPublish()
+    {
+        $publishApiListener = [
+            //通用Api事件
+            \App\Events\Api\CommonEvent::class => [
+                \App\Listeners\Api\CommonEvent\CommonEventListener::class
+            ],
+        ];
+
+        $this->publishApiListener = $publishApiListener;
+    }
+
 
     /**
      * 设置通用发布
      */
     protected function setCommonPublish()
     {
+        // 基础监听器数组
+        $appListener = [
+            \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserInfoListener::class,
+            \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserAlbumListener::class,
+            \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserAvatarListener::class,
+            \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserRoleListener::class,
+            \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserAmountListener::class,
+            \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserQrcodeListener::class,
+            \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserSourceListener::class,
+            //\App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddApiUserAuthListener::class
+            \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\MS\AddApiUserAuthListener::class
+        ];
+
+        // 按环境追加不同的监听器
+        // if (!config('youhujun.is_ms')) {
+        //     $appListener[] = \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddApiUserAuthListener::class;
+        // } else {
+        //     $appListener[] = \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\MS\AddApiUserAuthListener::class;
+        // }
+
+
         $publishCommonListener = [
-            //通用Api事件
-            \App\Events\Api\CommonEvent::class => [
-                \App\Listeners\Api\CommonEvent\CommonEventListener::class
-            ],
             //通用的用户注册(添加用户)
-            \App\Events\Common\V1\User\User\CommonUserRegisterEvent::class => [
-                \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserInfoListener::class,
-                \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserAlbumListener::class,
-                \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserAvatarListener::class,
-                \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserRoleListener::class,
-                \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserAmountListener::class,
-                \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserQrcodeListener::class,
-                \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserSourceListener::class
-            ],
+            \App\Events\Common\V1\User\User\CommonUserRegisterEvent::class => $appListener
         ];
 
         $this->publishCommonListener = $publishCommonListener;

@@ -260,6 +260,11 @@ class LaravelFastApiServiceProvider extends ServiceProvider
             config_path('custom/common/api/youhushop.php'),
             'youhushop_api_url'
         );
+
+        $this->mergeConfigFrom(
+            config_path('custom/common/api/xuehu.php'),
+            'xuehu_api_url'
+        );
     }
 
     /**
