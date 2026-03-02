@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-01 22:30:37
+ * @LastEditTime: 2026-03-02 23:36:35
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;

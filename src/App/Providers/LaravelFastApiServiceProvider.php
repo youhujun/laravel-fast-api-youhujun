@@ -6,7 +6,7 @@
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2024-02-13 16:10:12
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-02-28 11:50:48
+ * @LastEditTime: 2026-03-03 00:12:00
  * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\App\Providers\LaravelFastApiServiceProvider.php
  */
 
@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
-use App\Models\LaravelFastApi\V1\System\SystemConfig;
 use YouHuJun\Tool\App\Facades\V1\Utils\Shard\ShardFacade;
 use Illuminate\Support\Facades\Config;
 
@@ -66,7 +65,8 @@ class LaravelFastApiServiceProvider extends ServiceProvider
             //启动自定义命令
             $this->registerCommand();
 
-            $this->makeConfig();
+            //处理系统配置
+            makeSystemConfig();
         }
 
         //添加到中间件分组api中 !!!!注意这里只能在这里生效,注册的时候虽然能添加上,但是不生效
@@ -111,43 +111,6 @@ class LaravelFastApiServiceProvider extends ServiceProvider
             plog(['sqldata' => $data], 'sql', 'sqllog');
         });
     }
-
-    /**
-     * 运行时动态修改配置文件
-     *
-     * @return void
-     */
-    protected function makeConfig()
-    {
-        $systemConfigRedis = Redis::hget('system:config', 'listSystemConfig');
-
-        if ($systemConfigRedis) {
-            $systemConfigList = unserialize($systemConfigRedis);
-        } else {
-            $systemConfigList = SystemConfig::all();
-
-            //p($systemConfigList);die;
-
-            Redis::hset('system:config', 'listSystemConfig', serialize($systemConfigList));
-        }
-
-        if ($systemConfigList->count()) {
-            $isSetSystemConfig = Redis::hget('system:config', 'isSetSystemConfig');
-
-            if (!$isSetSystemConfig) {
-                foreach ($systemConfigList as $key => $item) {
-                    $value = [10 => $item->item_label,20 => $item->item_value,30 => $item->item_price,40 => $item->item_path,50 => $item->item_path];
-
-                    if ($value[$item->item_type]) {
-                        $result = Cache::put($item->item_label, $value[$item->item_type]);
-                    }
-                }
-
-                Redis::hset('system:config', 'isSetSystemConfig', 1);
-            }
-        }
-    }
-
 
     /**
      * 自定义配置文件

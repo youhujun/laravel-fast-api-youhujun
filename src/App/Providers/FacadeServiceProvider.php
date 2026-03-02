@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-02-28 16:03:23
+ * @LastEditTime: 2026-03-03 05:08:46
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -140,7 +140,27 @@ class FacadeServiceProvider extends ServiceProvider
      */
     public function publishApiFacade()
     {
-        //后台登录辅助门面
+        //操作youhuauth门面
+        //$this->app->bind('YouHuAuthFacade', \App\Services\Facade\Common\V1\Api\YouHuAuthService\YouHuAuthFacadeService::class);
+
+
+        //辅助测试用 操作youhuauth门面
+        //$this->app->bind('YouHuAuthFacade', \App\Services\Facade\Common\V1\Api\YouHuAuthService\MS\LaravelShardMap\YouHuAuthFacadeService::class);
+
+
+        //辅助测试用 操作youhuauth门面
+        //$this->app->bind('YouHuAuthFacade', \App\Services\Facade\Common\V1\Api\YouHuAuthService\MS\YouHu\YouHuAuthFacadeService::class);
+
+
+        //辅助测试用 操作youhuauth门面
+        //$this->app->bind('YouHuAuthFacade', \App\Services\Facade\Common\V1\Api\YouHuAuthService\MS\YouHuShop\YouHuAuthFacadeService::class);
+
+
+        //辅助测试用 操作youhuauth门面
+        //$this->app->bind('YouHuAuthFacade', \App\Services\Facade\Common\V1\Api\YouHuAuthService\MS\XueHu\YouHuAuthFacadeService::class);
+
+
+        //基础租件包操作youhuauth辅助门面,开发阶段为了测试避免和YouHuAuthFacade冲突
         $this->app->bind('YouHuBaseAuthFacade', \App\Services\Facade\LaravelFastApi\V1\Api\YouHuAuthService\YouHuBaseAuthFacadeService::class);
 
         //api记录日志
