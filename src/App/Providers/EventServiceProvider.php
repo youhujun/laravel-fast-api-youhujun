@@ -222,16 +222,17 @@ class EventServiceProvider extends ServiceProvider
             \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserAmountListener::class,
             \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserQrcodeListener::class,
             \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserSourceListener::class,
+            //调试测试使用
             //\App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddApiUserAuthListener::class
-            \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\MS\AddApiUserAuthListener::class
+            //\App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\MS\AddApiUserAuthListener::class
         ];
 
         // 按环境追加不同的监听器
-        // if (!config('youhujun.is_ms')) {
-        //     $appListener[] = \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddApiUserAuthListener::class;
-        // } else {
-        //     $appListener[] = \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\MS\AddApiUserAuthListener::class;
-        // }
+        if (!config('youhujun.is_ms')) {
+            $appListener[] = \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddApiUserAuthListener::class;
+        } else {
+            $appListener[] = \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\MS\AddApiUserAuthListener::class;
+        }
 
 
         $publishCommonListener = [
