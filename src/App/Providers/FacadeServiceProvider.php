@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-03 05:08:46
+ * @LastEditTime: 2026-03-04 03:15:06
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -124,6 +124,8 @@ class FacadeServiceProvider extends ServiceProvider
         $this->app->bind('ShardMapHelperFacade', \App\Services\Facade\Common\V1\Shard\Map\ShardMapHelperFacadeService::class);
         // API验签鉴权
         $this->app->bind('ApiAuthFacade', \App\Services\Facade\Common\V1\Api\Auth\ApiAuthFacadeService::class);
+        //API请求处理
+        $this->app->bind('ApiRequestFacade', \App\Services\Facade\Common\V1\Api\Request\ApiRequestFacadeService::class);
 
         //通用的登录门面
         $this->app->bind('CommonUserFacade', \App\Services\Facade\Common\V1\User\User\CommonUserFacadeService::class);
