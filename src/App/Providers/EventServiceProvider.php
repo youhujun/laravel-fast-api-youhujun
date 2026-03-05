@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-02 23:36:35
+ * @LastEditTime: 2026-03-04 20:29:04
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -225,13 +225,17 @@ class EventServiceProvider extends ServiceProvider
             //调试测试使用
             //\App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddApiUserAuthListener::class
             //\App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\MS\AddApiUserAuthListener::class
+            //\App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddSyncUserMapListener::class
+            //\App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\MS\AddSyncUserMapListener::class
         ];
 
         // 按环境追加不同的监听器
         if (!config('youhujun.is_ms')) {
             $appListener[] = \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddApiUserAuthListener::class;
+            \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddSyncUserMapListener::class;
         } else {
             $appListener[] = \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\MS\AddApiUserAuthListener::class;
+            \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\MS\AddSyncUserMapListener::class;
         }
 
 

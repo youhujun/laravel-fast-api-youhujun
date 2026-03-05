@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-04 03:15:06
+ * @LastEditTime: 2026-03-05 02:30:30
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -122,6 +122,7 @@ class FacadeServiceProvider extends ServiceProvider
         //分库分表工具门面
         $this->app->bind('ShardHelperFacade', \App\Services\Facade\Common\V1\Shard\ShardHelperFacadeService::class);
         $this->app->bind('ShardMapHelperFacade', \App\Services\Facade\Common\V1\Shard\Map\ShardMapHelperFacadeService::class);
+        $this->app->bind('ModelMapRouterFacade', \App\Services\Facade\Common\V1\Shard\ModelMapRouterFacadeService::class);
         // API验签鉴权
         $this->app->bind('ApiAuthFacade', \App\Services\Facade\Common\V1\Api\Auth\ApiAuthFacadeService::class);
         //API请求处理
@@ -143,7 +144,7 @@ class FacadeServiceProvider extends ServiceProvider
     public function publishApiFacade()
     {
         //操作youhuauth门面
-        //$this->app->bind('YouHuAuthFacade', \App\Services\Facade\Common\V1\Api\YouHuAuthService\YouHuAuthFacadeService::class);
+        $this->app->bind('YouHuAuthFacade', \App\Services\Facade\Common\V1\Api\YouHuAuthService\YouHuAuthFacadeService::class);
 
 
         //辅助测试用 操作youhuauth门面
