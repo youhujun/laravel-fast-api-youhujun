@@ -28,7 +28,7 @@ if (!function_exists('getAdminRoles')) {
         }
 
         // 获取Redis缓存
-        $redisRoles = Redis::hget($redisKey, $admin->biz_id);
+        $redisRoles = Redis::hget("{$redisKey}:{$redisKey}", $admin->biz_id);
         if ($redisRoles) {
             // 4. 处理json_decode失败场景，确保返回数组类型
             $rolesArray = json_decode($redisRoles, true);
@@ -63,7 +63,7 @@ if (!function_exists('getAdminRoles')) {
 
                 // 缓存到Redis（仅当角色数组非空时）
                 if (!empty($rolesArray)) {
-                    $result = Redis::hset($redisKey, $admin->biz_id, json_encode($rolesArray));
+                    $result = Redis::hset("{$redisKey}:{$redisKey}", $admin->biz_id, json_encode($rolesArray));
                     // 8. 修正Redis缓存失败判断：仅当返回false时才是真正失败
                     if ($result === false) {
                         plog(['RedisSaveAdminRolesError' => '缓存管理员角色失败'], 'AdminSystem', 'RedisSaveAdminRolesError');
@@ -95,7 +95,7 @@ if (!function_exists('getUserRoles')) {
             return $rolesArray;
         }
 
-        $redisRoles = Redis::hget($redisKey, $user->biz_id);
+        $redisRoles = Redis::hget("{$redisKey}:{$redisKey}", $user->biz_id);
 
         if ($redisRoles) {
             // 处理json_decode失败的情况
@@ -130,7 +130,7 @@ if (!function_exists('getUserRoles')) {
 
                 // 缓存到Redis（仅当角色数组非空时）
                 if (!empty($rolesArray)) {
-                    $result = Redis::hset($redisKey, $user->id, json_encode($rolesArray));
+                    $result = Redis::hset("{$redisKey}:{$redisKey}", $user->biz_id, json_encode($rolesArray));
                     // 修正Redis缓存结果判断：result为false时才是真正失败（hset返回0/1均为成功）
                     if ($result === false) {
                         plog(['RedisSaveAdminRolesError' => '缓存用户角色失败'], 'UserSystem', 'RedisSaveUserRolesError');
