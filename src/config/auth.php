@@ -5,6 +5,7 @@ use App\Models\LaravelFastApi\V1\Admin\Admin;
 use App\Models\LaravelFastApi\V1\User\User;
 use App\Models\LaravelFastApi\V1\User\Union\UserRoleUnion;
 use App\Models\LaravelFastApi\V1\System\Role\Role;
+use App\Facades\Common\V1\Shard\ShardHelperFacade;
 
 if (!function_exists('getAdminRoles')) {
     /**
@@ -37,11 +38,7 @@ if (!function_exists('getAdminRoles')) {
         } else {
             // 查询管理员与角色的关联关系
 
-            $adminRoleUnionCollection = UserRoleUnion::query()
-                ->forUserUid($admin->user_uid) // 模型专属宏，底层绑定分片
-                ->where('user_uid', $admin->user_uid)
-                ->get();
-
+            $adminRoleUnionCollection = ShardHelperFacade::queryByShardWithCache(UserRoleUnion::class, $admin->user_uid);
 
             $roleIdArray = [];
             // 5. 移除不必要的引用传递，避免变量污染
@@ -93,7 +90,12 @@ if (!function_exists('getUserRoles')) {
         // 统一变量名：roles（带e），避免拼写错误
         $rolesArray = [];
         $redisKey = "user_roles"; // 简化冗余的Redis键
-        $redisRoles = Redis::hget($redisKey, $user->id);
+
+        if (empty($user->user_uid) || empty($user->biz_id)) {
+            return $rolesArray;
+        }
+
+        $redisRoles = Redis::hget($redisKey, $user->biz_id);
 
         if ($redisRoles) {
             // 处理json_decode失败的情况
@@ -104,7 +106,7 @@ if (!function_exists('getUserRoles')) {
             }
         } else {
             // 查询管理员的用户角色关联
-            $userRoleUnionCollection = UserRoleUnion::where('user_id', $user->id)->get();
+            $userRoleUnionCollection = ShardHelperFacade::queryByShardWithCache(UserRoleUnion::class, $user->biz_id);
 
             $roleIdArray = [];
             foreach ($userRoleUnionCollection as $key => $userRoleUnionItem) {
