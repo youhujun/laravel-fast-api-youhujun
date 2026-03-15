@@ -28,7 +28,9 @@
     "autoload": {
         "files": [
             "src/config/helper.php",
-            "src/config/auth.php",
+            "src/config/curl_helper.php",
+            "src/config/auth_helper.php",
+            "src/config/system_helper.php",
             "src/config/container_helper.php"
         ],
         "psr-4": {
