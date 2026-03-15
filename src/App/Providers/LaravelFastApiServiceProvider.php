@@ -6,7 +6,7 @@
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2024-02-13 16:10:12
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-03 00:12:00
+ * @LastEditTime: 2026-03-14 09:00:30
  * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\App\Providers\LaravelFastApiServiceProvider.php
  */
 
@@ -18,8 +18,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
-use YouHuJun\Tool\App\Facades\V1\Utils\Shard\ShardFacade;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
+use YouHuJun\Tool\App\Facades\V1\Utils\Shard\ShardFacade;
 
 class LaravelFastApiServiceProvider extends ServiceProvider
 {
@@ -42,6 +44,11 @@ class LaravelFastApiServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        // 全局设置时间序列化格式为 Y-m-d H:i:s
+        Date::serializeUsing(function ($date) {
+            return $date->format('Y-m-d H:i:s');
+        });
+
         Schema::defaultStringLength(255);
 
         //记录sql日志

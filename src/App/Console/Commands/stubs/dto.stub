@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Validator;
 use App\Exceptions\Common\RuleException; 
 use App\Rules\Pub\Required;
 use App\Rules\Pub\Numeric;
+use App\Rules\Pub\CheckUnique;
 use App\Rules\Pub\CheckString;
 use App\Rules\Pub\CheckBetween;
 use App\Rules\Pub\CheckArray;
 use App\Rules\Pub\FormatTime;
-use App\Rules\Pub\CheckUnique;
 use App\Rules\Pub\ChineseCodeNumberLine;
 
 class DummyClass
