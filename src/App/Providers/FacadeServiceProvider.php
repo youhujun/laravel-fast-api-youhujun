@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-05 02:30:30
+ * @LastEditTime: 2026-03-18 15:41:17
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -119,6 +119,8 @@ class FacadeServiceProvider extends ServiceProvider
      */
     protected function publishCommonFacade()
     {
+        //ES查询
+        $this->app->bind('EsQueryFacade', \App\Services\Facade\Common\V1\Es\EsQueryFacadeService::class);
         //分库分表工具门面
         $this->app->bind('ShardHelperFacade', \App\Services\Facade\Common\V1\Shard\ShardHelperFacadeService::class);
         $this->app->bind('ShardMapHelperFacade', \App\Services\Facade\Common\V1\Shard\Map\ShardMapHelperFacadeService::class);
