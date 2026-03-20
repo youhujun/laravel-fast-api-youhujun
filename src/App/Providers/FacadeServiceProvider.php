@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-18 15:41:17
+ * @LastEditTime: 2026-03-20 14:19:57
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -31,6 +31,8 @@ class FacadeServiceProvider extends ServiceProvider
 
             //Api门面
             $this->publishApiFacade();
+            //Es门面
+            $this->publishEsFacade();
             //后台门面
             $this->publishAdminFacade();
             //手机门面
@@ -121,6 +123,10 @@ class FacadeServiceProvider extends ServiceProvider
     {
         //ES查询
         $this->app->bind('EsQueryFacade', \App\Services\Facade\Common\V1\Es\EsQueryFacadeService::class);
+        //es创建索引
+        $this->app->bind('EsCreateIndexFacade', \App\Services\Facade\Common\V1\Es\Console\EsCreateIndexFacadeService::class);
+        //es批量同步数据
+        $this->app->bind('EsSyncDataFacade', \App\Services\Facade\Common\V1\Es\Console\EsSyncDataFacadeService::class);
         //分库分表工具门面
         $this->app->bind('ShardHelperFacade', \App\Services\Facade\Common\V1\Shard\ShardHelperFacadeService::class);
         $this->app->bind('ShardMapHelperFacade', \App\Services\Facade\Common\V1\Shard\Map\ShardMapHelperFacadeService::class);
@@ -170,6 +176,19 @@ class FacadeServiceProvider extends ServiceProvider
 
         //api记录日志
         $this->app->bind('ApiLogEventFacade', \App\Services\Facade\LaravelFastApi\V1\Log\ApiLogEventFacadeService::class);
+    }
+
+    /**
+     * Es门面
+     */
+    public function publishEsFacade()
+    {
+        //User门面
+        $this->app->bind('EsSyncUserFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Sync\EsSyncUserFacadeService::class);
+        //SystemConfig门面
+        $this->app->bind('EsSyncSystemConfigFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Sync\EsSyncSystemConfigFacadeService::class);
+        //YouhuAuthService门面
+        $this->app->bind('EsSyncYouhuAuthServiceFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Sync\EsSyncYouhuAuthServiceFacadeService::class);
     }
 
 
