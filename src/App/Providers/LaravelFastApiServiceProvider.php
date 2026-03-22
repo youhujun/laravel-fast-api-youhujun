@@ -73,7 +73,7 @@ class LaravelFastApiServiceProvider extends ServiceProvider
             $this->registerCommand();
 
             //处理系统配置
-            makeSystemConfig();
+            make_system_config();
         }
 
         //添加到中间件分组api中 !!!!注意这里只能在这里生效,注册的时候虽然能添加上,但是不生效

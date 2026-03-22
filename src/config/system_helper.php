@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 use App\Models\LaravelFastApi\V1\System\SystemConfig;
 
-if (!function_exists('makeSystemConfig')) {
+if (!function_exists('make_system_config')) {
     /**
      * 初始化系统配置缓存
      *
@@ -24,7 +24,7 @@ if (!function_exists('makeSystemConfig')) {
      *   - 'isSetSystemConfig': 配置是否已初始化的标记(0/1)
      * - Cache中按item_label存储各项配置值
      */
-    function makeSystemConfig()
+    function make_system_config()
     {
         $systemConfigRedis = Redis::hget('system:config', 'listSystemConfig');
 
@@ -57,7 +57,7 @@ if (!function_exists('makeSystemConfig')) {
 }
 
 
-if (!function_exists('cleanSystemConfig')) {
+if (!function_exists('clean_system_config')) {
     /**
      * 清理系统配置缓存
      *
@@ -65,7 +65,7 @@ if (!function_exists('cleanSystemConfig')) {
      *
      * @return void
      */
-    function cleanSystemConfig()
+    function clean_system_config()
     {
         Redis::hset('system:config', 'isSetSystemConfig', 0);
         Redis::hset('system:config', 'listSystemConfig', null);

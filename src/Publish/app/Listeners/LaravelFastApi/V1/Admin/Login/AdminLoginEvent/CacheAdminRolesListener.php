@@ -1,6 +1,7 @@
 <?php
+
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @version: v1
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2025-01-13 11:54:37
@@ -10,16 +11,12 @@
  * Copyright (C) 2025 youhujun. All rights reserved.
  */
 
-
 namespace App\Listeners\LaravelFastApi\V1\Admin\Login\AdminLoginEvent;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
-
 use App\Exceptions\Admin\CommonException;
-
 use Illuminate\Support\Facades\Redis;
-
 
 /**
  * @see \App\Events\LaravelFastApi\V1\Admin\Login\AdminLoginEvent
@@ -41,30 +38,24 @@ class CacheAdminRolesListener
     public function handle(object $event): void
     {
         $admin = $event->admin;
-        $validated= $event->validated;
+        $validated = $event->validated;
 
-        $rolesArray = getAdminRoles($admin);
+        $rolesArray = get_admin_roles($admin);
 
         $error = 0;
 
-        $hasResult = Redis::hget("admin_roles:admin_roles",$admin->id);
+        $hasResult = Redis::hget("admin_roles:admin_roles", $admin->id);
 
-        if($hasResult)
-        {
+        if ($hasResult) {
             $error = 1;
-        }
-        else
-        {
-            if(count($rolesArray))
-            {
-                $error =  Redis::hset("admin_roles:admin_roles",$admin->id,json_encode($rolesArray));
+        } else {
+            if (count($rolesArray)) {
+                $error =  Redis::hset("admin_roles:admin_roles", $admin->id, json_encode($rolesArray));
             }
         }
 
-        if(!$error)
-        {
+        if (!$error) {
             throw new Commonexception('CacheAdminRolesError');
         }
-
     }
 }

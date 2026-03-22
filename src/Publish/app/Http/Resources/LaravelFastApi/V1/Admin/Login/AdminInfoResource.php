@@ -1,6 +1,7 @@
 <?php
+
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @version: v1
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2025-01-13 16:53:26
@@ -16,12 +17,10 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
-
-
-use  App\Models\LaravelFastApi\V1\User\Info\UserInfo;
-use  App\Models\LaravelFastApi\V1\User\Info\UserAvatar;
-use  App\Models\LaravelFastApi\V1\Picture\AlbumPicture;
-use  App\Models\LaravelFastApi\V1\Picture\Album;
+use App\Models\LaravelFastApi\V1\User\Info\UserInfo;
+use App\Models\LaravelFastApi\V1\User\Info\UserAvatar;
+use App\Models\LaravelFastApi\V1\Picture\AlbumPicture;
+use App\Models\LaravelFastApi\V1\Picture\Album;
 
 class AdminInfoResource extends JsonResource
 {
@@ -32,14 +31,14 @@ class AdminInfoResource extends JsonResource
      */
     public $preserveKeys = true;
 
-	public $codeArray;
-	/**
+    public $codeArray;
+    /**
      * Create a new resource instance.
      *
      * @param  mixed  $resource
      * @return void
      */
-    public function __construct($resource,$codeArray)
+    public function __construct($resource, $codeArray)
     {
         parent::__construct($resource);
 
@@ -55,77 +54,72 @@ class AdminInfoResource extends JsonResource
     public function toArray($request)
     {
         // return parent::toArray($request);
-		//p($this->resource);die;
-		
-		$responseData = [
-			'userId'=>$this->resource->userId,
-			'user_id'=>$this->resource->user_id,
-			'admin_id'=>$this->resource->id,
-			'username'=>'',
-			'nickname'=>'',
-			//'introduction'=>'',
-			'roles'=>getAdminRoles($this->resource),
-			'avatar'=>'',
-			'phone'=>$this->resource->phone?$this->resource->phone:'',
-			'perms'=>[]
-		];
+        //p($this->resource);die;
 
-		//先检测redis 缓存有没有数据 如果有redis缓存数据
-		$redisData = Redis::hget("admin_info:admin_info",$this->resource->id);
+        $responseData = [
+            'userId' => $this->resource->userId,
+            'user_id' => $this->resource->user_id,
+            'admin_id' => $this->resource->id,
+            'username' => '',
+            'nickname' => '',
+            //'introduction'=>'',
+            'roles' => get_admin_roles($this->resource),
+            'avatar' => '',
+            'phone' => $this->resource->phone ? $this->resource->phone : '',
+            'perms' => []
+        ];
 
-		if(isset($redisData) && !empty($redisData))
-		{
-			$adminInfoData = \json_decode($redisData,true);
+        //先检测redis 缓存有没有数据 如果有redis缓存数据
+        $redisData = Redis::hget("admin_info:admin_info", $this->resource->id);
 
-			$responseData = $adminInfoData;
-		} 
+        if (isset($redisData) && !empty($redisData)) {
+            $adminInfoData = \json_decode($redisData, true);
 
-		//走到这里说明没redis缓存中没有
-		if (!isset($adminInfoData) || empty($adminInfoData))
-		{
-			$user_id = $this->resource->user_id;
+            $responseData = $adminInfoData;
+        }
 
-			$userInfoObject = UserInfo::where('user_id',$user_id)->first();
+        //走到这里说明没redis缓存中没有
+        if (!isset($adminInfoData) || empty($adminInfoData)) {
+            $user_id = $this->resource->user_id;
 
-			if($userInfoObject)
-			{
-				$responseData['username'] = $userInfoObject->nick_name;
-				$responseData['nickname'] = $userInfoObject->nick_name;
-				//$responseData['introduction'] = $userInfoObject->introduction;
-			}
+            $userInfoObject = UserInfo::where('user_id', $user_id)->first();
 
-			$avatar = $this->getAdminAvatar($user_id);
+            if ($userInfoObject) {
+                $responseData['username'] = $userInfoObject->nick_name;
+                $responseData['nickname'] = $userInfoObject->nick_name;
+                //$responseData['introduction'] = $userInfoObject->introduction;
+            }
 
-			if($avatar)
-			{
-				$responseData['avatar'] = $avatar;
-			}
+            $avatar = $this->getAdminAvatar($user_id);
 
-			//处理相册id
-			$responseData['album_id'] = 1;
+            if ($avatar) {
+                $responseData['avatar'] = $avatar;
+            }
 
-			$admin_id = $this->resource->id;
+            //处理相册id
+            $responseData['album_id'] = 1;
 
-			$albumObject = Album::where('admin_id',$admin_id)->first();
+            $admin_id = $this->resource->id;
 
-			if($albumObject){
-				$responseData['album_id'] = $albumObject->id;
-			}
+            $albumObject = Album::where('admin_id', $admin_id)->first();
 
-			$redisResult = Redis::hset("admin_info:admin_info",$this->resource->id,json_encode($responseData));
+            if ($albumObject) {
+                $responseData['album_id'] = $albumObject->id;
+            }
 
-			if(!$redisResult)
-			{
-				Log::debug(['SaveRedisAdminInfoError'=>"redis存储管理员信息失败:{$admin->id}"]);
-			}
-		}
+            $redisResult = Redis::hset("admin_info:admin_info", $this->resource->id, json_encode($responseData));
 
-		$response = code($this->codeArray,['data'=>$responseData]);
+            if (!$redisResult) {
+                Log::debug(['SaveRedisAdminInfoError' => "redis存储管理员信息失败:{$admin->id}"]);
+            }
+        }
+
+        $response = code($this->codeArray, ['data' => $responseData]);
 
         return $response;
     }
 
-	
+
 
     /**
      * 获取管理员头像
@@ -138,61 +132,51 @@ class AdminInfoResource extends JsonResource
         //远程连接
         $avatar = null;
 
-		$adminAvatarObject = UserAvatar::where('user_id',$user_id)->where('is_default',1)->first();
+        $adminAvatarObject = UserAvatar::where('user_id', $user_id)->where('is_default', 1)->first();
 
 
-        if($adminAvatarObject)
-        {
-			$albumPictureObject = AlbumPicture::find($adminAvatarObject->album_picture_id);
+        if ($adminAvatarObject) {
+            $albumPictureObject = AlbumPicture::find($adminAvatarObject->album_picture_id);
 
-			//有图片就用管理员头像
-            if($albumPictureObject)
-            {
-				//默认先用存储再服务器头像
+            //有图片就用管理员头像
+            if ($albumPictureObject) {
+                //默认先用存储再服务器头像
                 $avatar = asset('storage' . $albumPictureObject->picture_path .DIRECTORY_SEPARATOR. $albumPictureObject->picture_file);
 
                 //存储方式是存储桶就换成存储桶
-                if($albumPictureObject->picture_type == 20)
-                {
+                if ($albumPictureObject->picture_type == 20) {
                     $avatar = $albumPictureObject->picture_url;
                 }
-
             }
         }
 
         //如果没有头像,就是使用默认头像
-        if (!$avatar)
-        {
+        if (!$avatar) {
             $avatar = $this->getAllUserAvatar();
         }
 
         return  $avatar;
     }
 
-	/**
+    /**
      * 获取所有用户的默认头像 1
      *
      * @return void
      */
     private function getAllUserAvatar()
     {
-
         $avatar = null;
 
         $albumPictureObject = AlbumPicture::find(2);
 
-        if($albumPictureObject)
-        {
+        if ($albumPictureObject) {
             $avatar = asset('storage' . $albumPictureObject->picture_path .DIRECTORY_SEPARATOR. $albumPictureObject->picture_file);
 
-            if($albumPictureObject->picture_type == 20 )
-            {
+            if ($albumPictureObject->picture_type == 20) {
                 $avatar = $albumPictureObject->picture_url;
             }
         }
 
         return $avatar;
     }
-
-
 }

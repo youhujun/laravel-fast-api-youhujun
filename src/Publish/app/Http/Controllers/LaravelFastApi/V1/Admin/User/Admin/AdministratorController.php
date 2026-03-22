@@ -218,8 +218,8 @@ class AdministratorController extends Controller
                 $request->all(),
                 [
                     'id'=>[new Required,new Numeric],
-                    'user_id'=>[new Required,new Numeric,new CheckUnique('admin','user_id',checkId($id))],
-					'phone' => ['bail', new Required, new CheckString, new Phone, new CheckUnique('admin', 'phone',checkId($id))],
+                    'user_id'=>[new Required,new Numeric,new CheckUnique('admin','user_id',check_id($id))],
+					'phone' => ['bail', new Required, new CheckString, new Phone, new CheckUnique('admin', 'phone',check_id($id))],
                     'role'=>['bail','nullable',new CheckArray]
                 ],
                 []

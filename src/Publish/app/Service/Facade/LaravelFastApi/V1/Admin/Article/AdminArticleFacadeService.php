@@ -1,6 +1,7 @@
 <?php
+
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @version: v1
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2025-01-12 08:42:37
@@ -18,20 +19,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-
 use App\Services\Facade\Traits\V1\QueryService;
-
 use App\Exceptions\Admin\CommonException;
 use App\Events\Admin\CommonEvent;
-
 use App\Events\LaravelFastApi\V1\Admin\Article\AddArticleEvent;
 use App\Events\LaravelFastApi\V1\Admin\Article\UpdateArticleEvent;
-
 use App\Jobs\LaravelFastApi\V1\Admin\Article\AddArticleJob;
-
 use App\Models\LaravelFastApi\V1\Article\Article;
 use App\Models\LaravelFastApi\V1\Admin\Admin;
-
 use App\Http\Resources\LaravelFastApi\V1\Admin\Article\ArticleResource;
 use App\Http\Resources\LaravelFastApi\V1\Admin\Article\ArticleCollection;
 
@@ -40,18 +35,17 @@ use App\Http\Resources\LaravelFastApi\V1\Admin\Article\ArticleCollection;
  */
 class AdminArticleFacadeService
 {
-   public function test()
-   {
-       echo "AdminArticleFacadeService test";
-   }
-
-   use QueryService;
+    use QueryService;
+    public function test()
+    {
+        echo "AdminArticleFacadeService test";
+    }
 
     protected static $sort = [
-      '4'=>['created_time','desc'],
-      '3'=>['created_time','asc'],
-      '2'=>['published_time','desc'],
-      '1'=>['published_time','asc']
+        '4' => ['created_time','desc'],
+        '3' => ['created_time','asc'],
+        '2' => ['published_time','desc'],
+        '1' => ['published_time','asc']
     ];
 
     /**
@@ -61,99 +55,87 @@ class AdminArticleFacadeService
      * @param [type] $admin
      * @return void
      */
-    public function getArticle($validated,$admin)
+    public function getArticle($validated, $admin)
     {
         $result = code(config('admin_code.GetArticleError'));
 
         $this->setQueryOptions($validated);
 
         $this->withWhere = ['articleInfo','admin','user','admin.user.userInfo','user.userInfo','category','label'
-           ];
+        ];
 
         $query = Article::with($this->withWhere);
 
-        if(isset($validated['categoryArray']) && count($validated['categoryArray']))
-        {
-            $query->whereHas('category',function(Builder $withQuery)use($validated){
-                    $withQuery->whereIn('category_id',$validated['categoryArray']);
-                   });
-
+        if (isset($validated['categoryArray']) && count($validated['categoryArray'])) {
+            $query->whereHas('category', function (Builder $withQuery) use ($validated) {
+                $withQuery->whereIn('category_id', $validated['categoryArray']);
+            });
         }
 
-         if(isset($validated['LabelArray']) && count($validated['LabelArray']))
-        {
-            $query->whereHas('label',function(Builder $withQuery)use($validated){
-                    $withQuery->whereIn('label_id',$validated['labelArray']);
-                   });
+        if (isset($validated['LabelArray']) && count($validated['LabelArray'])) {
+            $query->whereHas('label', function (Builder $withQuery) use ($validated) {
+                $withQuery->whereIn('label_id', $validated['labelArray']);
+            });
         }
 
 
         //普通管理员查询自己的文章
 
-        if(isDevelop($admin) && !isSuper($admin) && !isArticleAdmin($admin))
-        {
+        if (is_develop($admin) && !isSuper($admin) && !is_article_admin($admin)) {
             $this->where[] = ['admin_id','=',$admin->id];
         }
 
         //置顶
-        if(isset($validated['is_top']))
-        {
+        if (isset($validated['is_top'])) {
             $this->where[] = ['is_top','=',$validated['is_top']];
         }
 
         //发布状态
-        if(isset($validated['status']))
-        {
+        if (isset($validated['status'])) {
             $this->where[] = ['status','=',$validated['status']];
         }
 
         //标题查找
-        if(isset($validated['find']))
-        {
+        if (isset($validated['find'])) {
             $this->where[] = ['title','like',"%{$validated['find']}%"];
         }
 
         $query->where($this->where);
 
         //发布时间
-        if(isset($validated['timeRangePublish']) && \count($validated['timeRangePublish']))
-        {
-             $this->whereBetween[0][] = strtotime($validated['timeRangePublish'][0]);
-             $this->whereBetween[0][] = strtotime($validated['timeRangePublish'][1]);
+        if (isset($validated['timeRangePublish']) && \count($validated['timeRangePublish'])) {
+            $this->whereBetween[0][] = strtotime($validated['timeRangePublish'][0]);
+            $this->whereBetween[0][] = strtotime($validated['timeRangePublish'][1]);
 
-             $query->whereBetween('published_time' ,$this->whereBetween[0]);
+            $query->whereBetween('published_time', $this->whereBetween[0]);
         }
 
         //创建时间
-        if(isset($validated['timeRangeCreate']) && \count($validated['timeRangeCreate']))
-        {
-             $this->whereBetween[1][]  = strtotime($validated['timeRangeCreate'][0]);
-             $this->whereBetween[1][]  = strtotime($validated['timeRangeCreate'][1]);
+        if (isset($validated['timeRangeCreate']) && \count($validated['timeRangeCreate'])) {
+            $this->whereBetween[1][]  = strtotime($validated['timeRangeCreate'][0]);
+            $this->whereBetween[1][]  = strtotime($validated['timeRangeCreate'][1]);
 
-             $query->whereBetween('created_time', $this->whereBetween[1]);
+            $query->whereBetween('created_time', $this->whereBetween[1]);
         }
 
         //排序
-        if(isset($validated['sortType']))
-        {
-             $sortType = $validated['sortType'];
+        if (isset($validated['sortType'])) {
+            $sortType = $validated['sortType'];
 
-             $query->orderBy(self::$sort[$sortType][0],self::$sort[$sortType][1]);
+            $query->orderBy(self::$sort[$sortType][0], self::$sort[$sortType][1]);
         }
 
-        $articleList = $query->paginate($this->perPage,$this->columns,$this->pageName,$this->page);
+        $articleList = $query->paginate($this->perPage, $this->columns, $this->pageName, $this->page);
 
-		//p($articleList);die;
+        //p($articleList);die;
 
-        if(!optional($articleList))
-        {
-           throw new CommonException('GetArticleError');
+        if (!optional($articleList)) {
+            throw new CommonException('GetArticleError');
         }
 
-        $result= new ArticleCollection($articleList,['code'=>0,'msg'=>'获取文章列表成功']);
+        $result = new ArticleCollection($articleList, ['code' => 0,'msg' => '获取文章列表成功']);
 
         return $result;
-
     }
     /**
      * 添加文章
@@ -162,7 +144,7 @@ class AdminArticleFacadeService
      * @param [type] $admin 当前操作的用户
      * @return void
      */
-    public function addArticle($validated,$admin)
+    public function addArticle($validated, $admin)
     {
         $result = code(config('admin_code.AddArticleError'));
 
@@ -185,8 +167,7 @@ class AdminArticleFacadeService
 
         $article->category_id = json_encode($validated['category_id']);
 
-        if(isset($validated['label_id']))
-        {
+        if (isset($validated['label_id'])) {
             $article->label_id = json_encode($validated['label_id']);
         }
 
@@ -197,32 +178,29 @@ class AdminArticleFacadeService
 
         $article->published_time = time();
 
-        if(isset($validated['published_time']) && !empty($validated['published_time']))
-        {
+        if (isset($validated['published_time']) && !empty($validated['published_time'])) {
             $article->published_at = \strtotime($validated['published_time']);
             $article->published_time = \strtotime($validated['published_time']);
 
-            if($article->published_time > time())
-            {
+            if ($article->published_time > time()) {
                 //如果发布时间 大于 现在时间 发布状态改为0 未发布
-                 $article->status = 0;
+                $article->status = 0;
             }
         }
 
         $articleResult = $article->save();
 
-        if(!$articleResult)
-        {
-           throw new CommonException('AddArticleError');
+        if (!$articleResult) {
+            throw new CommonException('AddArticleError');
         }
 
-        AddArticleEvent::dispatch($admin,$article,$validated);
+        AddArticleEvent::dispatch($admin, $article, $validated);
 
-        CommonEvent::dispatch($admin,$validated,'AddArticle');
+        CommonEvent::dispatch($admin, $validated, 'AddArticle');
 
-        AddArticleJob::dispatchIf($article->status === 0,$admin,$article)->delay(now()->addSeconds($article->published_time - time()));
+        AddArticleJob::dispatchIf($article->status === 0, $admin, $article)->delay(now()->addSeconds($article->published_time - time()));
 
-        $result = code(['code'=>0,'msg'=>'文章添加成功!']);
+        $result = code(['code' => 0,'msg' => '文章添加成功!']);
 
         return $result;
     }
@@ -235,7 +213,7 @@ class AdminArticleFacadeService
      * @param [type] $admin
      * @return void
      */
-    public function updateArticle($validated,$admin)
+    public function updateArticle($validated, $admin)
     {
         $result = code(config('admin_code.UpdateArticleError'));
 
@@ -243,60 +221,55 @@ class AdminArticleFacadeService
 
         $article = Article::find($articleId);
 
-        if(!$article)
-        {
+        if (!$article) {
             throw new CommonException('ThisDataNotExistsError');
         }
 
 
         $revision = $article->revision;
 
-        $updateWhere = ['id'=>$articleId,'revision'=>$revision];
+        $updateWhere = ['id' => $articleId,'revision' => $revision];
 
         $update = [
-            'title'=>$validated['title'],
-            'sort'=>$validated['sort'],
-            'type'=>$validated['type'],
-            'is_top'=>$validated['is_top'],
-            'category_id'=>json_encode($validated['category_id']),
-            'updated_at'=>date('Y-m-d H:i:s',time()),
-            'updated_time'=>time(),
+            'title' => $validated['title'],
+            'sort' => $validated['sort'],
+            'type' => $validated['type'],
+            'is_top' => $validated['is_top'],
+            'category_id' => json_encode($validated['category_id']),
+            'updated_at' => date('Y-m-d H:i:s', time()),
+            'updated_time' => time(),
             'revision' => $revision + 1
         ];
 
-        if(isset($validated['label_id']))
-        {
+        if (isset($validated['label_id'])) {
             $update['label_id'] = json_encode($validated['label_id']);
         }
 
-        if(isset($validated['published_time']) && !empty($validated['published_time']))
-        {
+        if (isset($validated['published_time']) && !empty($validated['published_time'])) {
             $update['published_at'] = $validated['published_time'];
             $update['published_time'] = \strtotime($validated['published_time']);
 
-            if($article->published_time > time())
-            {
+            if ($article->published_time > time()) {
                 //如果发布时间 大于 现在时间 发布状态改为0 未发布
-                 $update['status'] = 0;
+                $update['status'] = 0;
             }
         }
 
 
-        $articleResult = Article::where($updateWhere)->update( $update);
+        $articleResult = Article::where($updateWhere)->update($update);
 
-        if(!$articleResult)
-        {
+        if (!$articleResult) {
             throw new CommonException('UpdateArticleError');
         }
 
-        UpdateArticleEvent::dispatch($admin,$article,$validated);
+        UpdateArticleEvent::dispatch($admin, $article, $validated);
 
-        CommonEvent::dispatch($admin,$validated,'UpdateArticle');
+        CommonEvent::dispatch($admin, $validated, 'UpdateArticle');
 
-        AddArticleJob::dispatchIf($article->status === 0,$admin,$article)->delay(now()->addSeconds($article->published_time - time()));
+        AddArticleJob::dispatchIf($article->status === 0, $admin, $article)->delay(now()->addSeconds($article->published_time - time()));
 
 
-        $result = code(['code'=>0,'msg'=>'文章更新成功!']);
+        $result = code(['code' => 0,'msg' => '文章更新成功!']);
 
         return $result;
     }
@@ -309,41 +282,39 @@ class AdminArticleFacadeService
      * @param [type] $admin
      * @return void
      */
-    public function toTopArticle($validated,$admin)
+    public function toTopArticle($validated, $admin)
     {
         $result = code(config('admin_code.TopArticleError'));
 
         $article = Article::find($validated['id']);
 
-        if(!$article)
-        {
+        if (!$article) {
             throw new CommonException('ThisDataNotExistsError');
         }
 
         $revision = $article->revision;
 
         $updateData = [
-            'is_top'=>1,
-            'revision'=>$revision + 1,
-            'updated_at'=>date('Y-m-d H:i:s',time()),
-            'updated_time'=>time()
+            'is_top' => 1,
+            'revision' => $revision + 1,
+            'updated_at' => date('Y-m-d H:i:s', time()),
+            'updated_time' => time()
         ];
 
         $updateWhere = [
-            'id'=>$validated['id'],
-            'revision'=>$revision
+            'id' => $validated['id'],
+            'revision' => $revision
         ];
 
-        $updateReuslt = Article::where($updateWhere)->update( $updateData);
+        $updateReuslt = Article::where($updateWhere)->update($updateData);
 
-        if(!$updateReuslt)
-        {
+        if (!$updateReuslt) {
             throw new CommonException('TopArticleError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'ToTopArticle');
+        CommonEvent::dispatch($admin, $validated, 'ToTopArticle');
 
-        $result = code(['code'=>0,'msg'=>'置顶文章成功!']);
+        $result = code(['code' => 0,'msg' => '置顶文章成功!']);
 
         return $result;
     }
@@ -355,22 +326,21 @@ class AdminArticleFacadeService
      * @param [type] $admin
      * @return void
      */
-    public function multipleToTopArticle($validated,$admin)
+    public function multipleToTopArticle($validated, $admin)
     {
         $result = code(config('admin_code.MultipleTopArticleError'));
 
-        $updateData = ['is_top'=> 1];
+        $updateData = ['is_top' => 1];
 
-        $updateResult = Article::whereIn('id',$validated['selectId'])->update( $updateData );
+        $updateResult = Article::whereIn('id', $validated['selectId'])->update($updateData);
 
-        if(!$updateResult)
-        {
+        if (!$updateResult) {
             throw new CommonException('MultipleTopArticleError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'MultipleTopArticle');
+        CommonEvent::dispatch($admin, $validated, 'MultipleTopArticle');
 
-        $result = code(['code'=>0,'msg'=>'批量置顶文章成功!']);
+        $result = code(['code' => 0,'msg' => '批量置顶文章成功!']);
 
         return $result;
     }
@@ -382,22 +352,21 @@ class AdminArticleFacadeService
      * @param [type] $admin
      * @return void
      */
-    public function multipleUnTopArticle($validated,$admin)
+    public function multipleUnTopArticle($validated, $admin)
     {
         $result = code(config('admin_code.MultipleUnTopArticleError'));
 
-        $updateData = ['is_top'=> 0];
+        $updateData = ['is_top' => 0];
 
-        $updateResult = Article::whereIn('id',$validated['selectId'])->update($updateData );
+        $updateResult = Article::whereIn('id', $validated['selectId'])->update($updateData);
 
-        if(!$updateResult)
-        {
+        if (!$updateResult) {
             throw new CommonException('MultipleUnTopArticleError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'MultipleUnTopArticle');
+        CommonEvent::dispatch($admin, $validated, 'MultipleUnTopArticle');
 
-        $result = code(['code'=>0,'msg'=>'批量取消置顶文章成功!']);
+        $result = code(['code' => 0,'msg' => '批量取消置顶文章成功!']);
 
         return $result;
     }
@@ -409,29 +378,27 @@ class AdminArticleFacadeService
      * @param [type] $admin
      * @return void
      */
-    public function deleteArticle($validated,$admin)
+    public function deleteArticle($validated, $admin)
     {
         $result = code(config('admin_code.DeleteArticleError'));
 
         $article = Article::find($validated['id']);
 
-        if(!$article)
-        {
+        if (!$article) {
             throw new CommonException('ThisDataNotExistsError');
         }
 
-        $article->deleted_at = date('Y-m-d H:i:s',time());
+        $article->deleted_at = date('Y-m-d H:i:s', time());
 
         $deleteReuslt = $article->save();
 
-        if(! $deleteReuslt)
-        {
+        if (! $deleteReuslt) {
             throw new CommonException('DeleteArticleError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'DeleteArticle');
+        CommonEvent::dispatch($admin, $validated, 'DeleteArticle');
 
-        $result = code(['code'=>0,'msg'=>'删除文章成功!']);
+        $result = code(['code' => 0,'msg' => '删除文章成功!']);
 
         return $result;
     }
@@ -443,20 +410,19 @@ class AdminArticleFacadeService
      * @param [type] $admin
      * @return void
      */
-    public function multipleDeleteArticle($validated,$admin)
+    public function multipleDeleteArticle($validated, $admin)
     {
         $result = code(config('admin_code.MultipleDeleteArticleError'));
 
-        $deleteResult = Article::whereIn('id',$validated['selectId'])->delete();
+        $deleteResult = Article::whereIn('id', $validated['selectId'])->delete();
 
-        if(!$deleteResult)
-        {
+        if (!$deleteResult) {
             throw new CommonException('MultipleDeleteArticleError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'MultipleDeleteArticle');
+        CommonEvent::dispatch($admin, $validated, 'MultipleDeleteArticle');
 
-        $result = code(['code'=>0,'msg'=>'批量删除文章成功!']);
+        $result = code(['code' => 0,'msg' => '批量删除文章成功!']);
 
         return $result;
     }

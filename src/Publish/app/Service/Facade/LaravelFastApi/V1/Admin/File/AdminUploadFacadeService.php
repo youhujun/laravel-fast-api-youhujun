@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @Descripttion:
  * @version: v1
@@ -18,64 +19,59 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
-
 use App\Exceptions\Admin\CommonException;
-
 use App\Events\Admin\CommonEvent;
-
 use App\Events\LaravelFastApi\V1\Admin\File\UploadFileEvent;
-
 //模型
 use App\Models\LaravelFastApi\V1\Picture\Album;
 use App\Models\LaravelFastApi\V1\Picture\AlbumPicture;
 use App\Models\LaravelFastApi\V1\User\Info\UserAvatar;
-
 use App\Facades\Pub\V1\Store\QiNiuFacade;
-
 //响应
 use App\Http\Resources\LaravelFastApi\V1\Admin\System\Picture\AlbumPictureResource;
+
 /**
  * @see \App\Facades\LaravelFastApi\V1\Admin\File\AdminUploadFacade
  */
 class AdminUploadFacadeService
 {
-   public function test()
-   {
-       echo "AdminUploadFacadeService test";
-   }
+    public function test()
+    {
+        echo "AdminUploadFacadeService test";
+    }
 
-   protected $adminId = 0;
+    protected $adminId = 0;
 
-   //根据前端 $validate['use_type] 来决定配置还是管理员配置还是用户\
-   protected static $adminTypeDirectory = [
+    //根据前端 $validate['use_type] 来决定配置还是管理员配置还是用户\
+    protected static $adminTypeDirectory = [
         //系统配置
-        '10'=>DIRECTORY_SEPARATOR.'config'. DIRECTORY_SEPARATOR.'file'. DIRECTORY_SEPARATOR,
+        '10' => DIRECTORY_SEPARATOR.'config'. DIRECTORY_SEPARATOR.'file'. DIRECTORY_SEPARATOR,
         // 后台管理员
-        '20'=>DIRECTORY_SEPARATOR.'admin'. DIRECTORY_SEPARATOR.'file'. DIRECTORY_SEPARATOR,
+        '20' => DIRECTORY_SEPARATOR.'admin'. DIRECTORY_SEPARATOR.'file'. DIRECTORY_SEPARATOR,
         //用户
-        '30'=>DIRECTORY_SEPARATOR.'user'. DIRECTORY_SEPARATOR.'file'. DIRECTORY_SEPARATOR
-   ];
+        '30' => DIRECTORY_SEPARATOR.'user'. DIRECTORY_SEPARATOR.'file'. DIRECTORY_SEPARATOR
+    ];
 
-   //文件存储路径
-   protected $filePath;
+    //文件存储路径
+    protected $filePath;
 
-   //动作类型 配置文件导入,例如银行导入 Bank
-   protected $actionType;
+    //动作类型 配置文件导入,例如银行导入 Bank
+    protected $actionType;
 
-   /**
-    * 处理文件存储路径
-    *
-    * @param [type] $validated
-    * @return void
-    */
-   protected function makeSavePath($validated,$admin,$file)
-   {
+    /**
+     * 处理文件存储路径
+     *
+     * @param [type] $validated
+     * @return void
+     */
+    protected function makeSavePath($validated, $admin, $file)
+    {
         //文件使用性质类型
-        $useType = isset($validated['use_type'])? $validated['use_type'] : null;
+        $useType = isset($validated['use_type']) ? $validated['use_type'] : null;
         //文件格式类型
-        $fileType = isset($validated['file_type'])?$validated['file_type'] : null;
+        $fileType = isset($validated['file_type']) ? $validated['file_type'] : null;
         //文件存储目录
-        $savePath = isset($validated['save_path'])?$validated['save_path'] :null;
+        $savePath = isset($validated['save_path']) ? $validated['save_path'] : null;
 
         //后缀名 xlsx
         $file_extension = $file->getClientOriginalExtension();
@@ -84,14 +80,12 @@ class AdminUploadFacadeService
         $joinPath = $file_extension;
 
         //如果设置了文件格式类型 二级优先采用 文件格式目录
-        if(isset($fileType) && !empty($fileType))
-        {
+        if (isset($fileType) && !empty($fileType)) {
             $joinPath = $fileType;
         }
 
         //如果设置了存储目录  一级优先采用文件存储目录
-        if(isset($savePath) && !empty($savePath))
-        {
+        if (isset($savePath) && !empty($savePath)) {
             $joinPath = $savePath;
         }
 
@@ -99,140 +93,135 @@ class AdminUploadFacadeService
         $this->filePath = self::$adminTypeDirectory[$useType].$joinPath;
 
         //如果不是平台配置 需要加上用户id
-        if($useType != 10)
-        {
+        if ($useType != 10) {
             $this->filePath = self::$adminTypeDirectory[$useType].$admin->id.DIRECTORY_SEPARATOR.$joinPath;
         }
-   }
+    }
 
-   /**
-    * 后台上传配置文件
-    *
-    * @param [type] $validated  [use_type,]
-    * @param [type] $admin
-    * @param [type] $file
-    * @return void
-    */
-   public function uploadConfigFile($validated,$admin,$file)
-   {
+    /**
+     * 后台上传配置文件
+     *
+     * @param [type] $validated  [use_type,]
+     * @param [type] $admin
+     * @param [type] $file
+     * @return void
+     */
+    public function uploadConfigFile($validated, $admin, $file)
+    {
         $result = code(config('admin_code.UploadConfigFileError'));
 
-        if(!$file->isValid())
-        {
+        if (!$file->isValid()) {
             throw new CommonException('uploadConfigFileAllowError');
         }
 
         //处理保存路径
-        $this->makeSavePath($validated,$admin,$file);
+        $this->makeSavePath($validated, $admin, $file);
 
         //后缀名
         $fileType = $file->getClientOriginalExtension();
         //文件名带后缀 template.xlsx
-        $file_file =$file->getClientOriginalName();
+        $file_file = $file->getClientOriginalName();
 
         //全路径  storage/app/public下
         // config/file/pem/apiclient_key.pem
         // admin/file/4/pem//apiclient_key.pem
-        $path =$file->storeAs($this->filePath,$file_file,'public');
+        $path = $file->storeAs($this->filePath, $file_file, 'public');
 
         //保存玩以后再检测
         $exists = Storage::disk('public')->exists($path);
 
-        if(!$exists)
-        {
+        if (!$exists) {
             throw new CommonException('UploadConfigFileSaveError');
         }
 
-        $this->actionType = isset($validated['type'])?$validated['type']:'';
+        $this->actionType = isset($validated['type']) ? $validated['type'] : '';
 
         //上传文件数据容器
         $uploadFileLogData = [];
         //文件名 template
         $uploadFileLogData['admin_id'] = $admin->id;
         $uploadFileLogData['use_type'] = $validated['use_type'];
-        $uploadFileLogData['file_path'] =$this->filePath;
+        $uploadFileLogData['file_path'] = $this->filePath;
         $uploadFileLogData['file_extension'] = $fileType;
-        $uploadFileLogData['file_name'] = pathinfo($path,\PATHINFO_FILENAME);
+        $uploadFileLogData['file_name'] = pathinfo($path, \PATHINFO_FILENAME);
         $uploadFileLogData['file'] = $file_file;
 
         //记录事件日志
-        CommonEvent::dispatch($admin,$uploadFileLogData,'UploadConfigFile');
+        CommonEvent::dispatch($admin, $uploadFileLogData, 'UploadConfigFile');
 
         /**
          * $path 文件位置
          * $this->$actionType 操作类型 例如 bank配合后端导入数据
          * $fileType 后缀名
          */
-        UploadFileEvent::dispatch($admin, $uploadFileLogData,$path, $fileType,$this->actionType);
+        UploadFileEvent::dispatch($admin, $uploadFileLogData, $path, $fileType, $this->actionType);
 
-        $result = code(['code'=>0,'msg'=>'上传配置文件成功!'],['data'=>$path]);
+        $result = code(['code' => 0,'msg' => '上传配置文件成功!'], ['data' => $path]);
 
         return $result;
-   }
+    }
 
-   /**
-    * 上传文件
-    *
-    * @param [type] $validated
-    * @param [type] $admin
-    * @param [type] $file
-    * @return void
-    */
-   public function uploadFile($validated ,$admin, $file)
-   {
-       $result = code(config('admin_code.UploadFileError'));
+    /**
+     * 上传文件
+     *
+     * @param [type] $validated
+     * @param [type] $admin
+     * @param [type] $file
+     * @return void
+     */
+    public function uploadFile($validated, $admin, $file)
+    {
+        $result = code(config('admin_code.UploadFileError'));
 
-        if(!$file->isValid())
-        {
+        if (!$file->isValid()) {
             throw new CommonException('UploadFileAllowError');
         }
 
         //处理保存路径
-        $this->makeSavePath($validated,$admin,$file);
+        $this->makeSavePath($validated, $admin, $file);
 
         //后缀名
         $fileType = $file->getClientOriginalExtension();
         //文件名带后缀 template.xlsx
-        $file_file =$file->getClientOriginalName();
+        $file_file = $file->getClientOriginalName();
 
         //全路径  storage/app/public下
         // config/file/pem/apiclient_key.pem
         // admin/file/4/pem//apiclient_key.pem
-        $path =$file->storeAs($this->filePath,$file_file,'public');
+        $path = $file->storeAs($this->filePath, $file_file, 'public');
 
         //保存玩以后再检测
         $exists = Storage::disk('public')->exists($path);
 
-        if(!$exists)
-        {
+        if (!$exists) {
             throw new CommonException('UploadFileSaveError');
         }
 
-        $this->actionType = isset($validated['type'])?$validated['type']:'';
+        $this->actionType = isset($validated['type']) ? $validated['type'] : '';
 
         //上传文件数据容器
         $uploadFileLogData = [];
         //文件名 template
         $uploadFileLogData['admin_id'] = $admin->id;
         $uploadFileLogData['use_type'] = $validated['use_type'];
-        $uploadFileLogData['file_path'] =$this->filePath;
+        $uploadFileLogData['file_path'] = $this->filePath;
         $uploadFileLogData['file_extension'] = $fileType;
-        $uploadFileLogData['file_name'] = pathinfo($path,\PATHINFO_FILENAME);
+        $uploadFileLogData['file_name'] = pathinfo($path, \PATHINFO_FILENAME);
         $uploadFileLogData['file'] = $file_file;
 
         //记录事件日志
-        CommonEvent::dispatch($admin,$uploadFileLogData,'UploadFile');
+        CommonEvent::dispatch($admin, $uploadFileLogData, 'UploadFile');
         /**
          * $path 文件位置
          * $this->$actionType 操作类型 例如 bank配合后端导入数据
          * $fileType 后缀名
          */
-        UploadFileEvent::dispatch($admin, $uploadFileLogData,$path, $fileType,$this->actionType);
+        UploadFileEvent::dispatch($admin, $uploadFileLogData, $path, $fileType, $this->actionType);
 
-        $result = code(['code'=>0,'msg'=>'上传文件成功!'],['data'=>asset('storage/'.$path)]);
+        $result = code(['code' => 0,'msg' => '上传文件成功!'], ['data' => asset('storage/'.$path)]);
 
         return $result;
-   }
+    }
 
     /**
      * 单图上传
@@ -242,23 +231,22 @@ class AdminUploadFacadeService
      * @param [type] $pictures
      * @return void
      */
-    public function UploadSinglePicture( $validated ,$admin, $picture)
+    public function UploadSinglePicture($validated, $admin, $picture)
     {
         $result = code(config('admin_code.UploadSinglePictureError'));
 
         $album_id = $validated['album_id'];
 
-        $album_id = $this->findAdminDefaultAlbum($album_id,$admin);
+        $album_id = $this->findAdminDefaultAlbum($album_id, $admin);
 
         $admin_id = $admin->id;
 
-        if(!$picture->isValid())
-        {
+        if (!$picture->isValid()) {
             throw new CommonException('UploadSinglePictureAllowError');
         }
 
         //处理保存路径
-        $this->makeSavePath($validated,$admin,$picture);
+        $this->makeSavePath($validated, $admin, $picture);
         //后缀名
         $fileType = $picture->getClientOriginalExtension();
         //文件名带后缀 template.xlsx
@@ -266,50 +254,46 @@ class AdminUploadFacadeService
         //全路径  storage/app/public下
         // config/file/pem/apiclient_key.pem
         // admin/file/4/pem//apiclient_key.pem
-       $path =$picture->storeAs($this->filePath,$file_file,'public');
+        $path = $picture->storeAs($this->filePath, $file_file, 'public');
         //保存以后再检测
         $exists = Storage::disk('public')->exists($path);
 
-        if(!$exists)
-        {
+        if (!$exists) {
             throw new CommonException('UploadSinglePictureSaveError');
         }
 
         $cloudStore = Cache::get('cloud.store');
 
-        if($cloudStore == 'qiniu')
-        {
-            QiNiuFacade::uploadFile(public_path('storage/'.$path),'storage'.$this->filePath.$file_file);
+        if ($cloudStore == 'qiniu') {
+            QiNiuFacade::uploadFile(public_path('storage/'.$path), 'storage'.$this->filePath.$file_file);
         }
 
         $picture_info = getimagesize(storage_path('app/public/').$path);
-        $picture_name= \pathinfo($path,\PATHINFO_FILENAME);
+        $picture_name = \pathinfo($path, \PATHINFO_FILENAME);
 
-        $picture_size = round(filesize(storage_path('app/public/').$path)/1024,0);
+        $picture_size = round(filesize(storage_path('app/public/').$path) / 1024, 0);
         $picture_spec = "{$picture_info[0]}×{$picture_info[1]}";
 
         //声明数据容器
         $insertData = [];
 
         $insertData = [
-            'admin_id' =>$admin_id,
-            'album_id'=>$album_id,
+            'admin_id' => $admin_id,
+            'album_id' => $album_id,
             'picture_name' => $picture_name,
             'picture_file' => $file_file,
             'picture_path' => $this->filePath,
             'picture_size' => $picture_size,
             'picture_spec' => $picture_spec,
             'picture_type' => 10,
-            'created_at' => date('Y-m-d H:i:s',time()),
+            'created_at' => date('Y-m-d H:i:s', time()),
             'created_time' => time(),
         ];
 
-         if($cloudStore == 'qiniu')
-        {
+        if ($cloudStore == 'qiniu') {
             $cdnUrl = trim(Cache::get('qiniu.cdn_url'));
 
-            if(!$cdnUrl)
-            {
+            if (!$cdnUrl) {
                 throw new CommonException('QiNiuCdnUrlError');
             }
 
@@ -320,35 +304,34 @@ class AdminUploadFacadeService
 
         $insertId = AlbumPicture::insertGetId($insertData);
 
-        if(!$insertId)
-        {
+        if (!$insertId) {
             throw new CommonException('UploadSinglePictureSqlSaveError');
         }
 
         $albumPictrue = AlbumPicture::find($insertId);
 
-        $this->actionType = isset($validated['type'])?$validated['type']:'';
+        $this->actionType = isset($validated['type']) ? $validated['type'] : '';
 
         //上传文件数据容器
         $uploadFileLogData = [];
         //文件名 template
         $uploadFileLogData['admin_id'] = $admin->id;
         $uploadFileLogData['use_type'] = $validated['use_type'];
-        $uploadFileLogData['file_path'] =$this->filePath;
+        $uploadFileLogData['file_path'] = $this->filePath;
         $uploadFileLogData['file_extension'] = $fileType;
-        $uploadFileLogData['file_name'] = pathinfo($path,\PATHINFO_FILENAME);
+        $uploadFileLogData['file_name'] = pathinfo($path, \PATHINFO_FILENAME);
         $uploadFileLogData['file'] = $file_file;
 
-        CommonEvent::dispatch($admin, $insertData,'UploadSinglePicture');
+        CommonEvent::dispatch($admin, $insertData, 'UploadSinglePicture');
 
         /**
          * $path 文件位置
          * $this->$actionType 操作类型 例如 bank配合后端导入数据
          * $fileType 后缀名
          */
-        UploadFileEvent::dispatch($admin, $uploadFileLogData,$path, $fileType,$this->actionType);
+        UploadFileEvent::dispatch($admin, $uploadFileLogData, $path, $fileType, $this->actionType);
 
-        $result = code(['code'=>0,'msg'=>'上传单图片成功!'],['data'=>new AlbumPictureResource($albumPictrue)]);
+        $result = code(['code' => 0,'msg' => '上传单图片成功!'], ['data' => new AlbumPictureResource($albumPictrue)]);
 
         return $result;
     }
@@ -361,32 +344,30 @@ class AdminUploadFacadeService
      * @param [type] $pictures
      * @return void
      */
-    public function uploadMultiplePicture( $validated ,$admin, $pictures)
+    public function uploadMultiplePicture($validated, $admin, $pictures)
     {
         $result = code(config('admin_code.UploadMultiplePictureError'));
 
         $album_id = $validated['album_id'];
 
-        $album_id = $this->findAdminDefaultAlbum($album_id,$admin);
+        $album_id = $this->findAdminDefaultAlbum($album_id, $admin);
 
 
         $admin_id = $admin->id;
 
         //声明图片容器
-        $insertData = [];	
+        $insertData = [];
 
-         //上传文件数据容器
+        //上传文件数据容器
         $uploadFileLogData = [];
 
-        foreach($pictures as $k => $picture)
-        {
-            if(!$picture->isValid())
-            {
+        foreach ($pictures as $k => $picture) {
+            if (!$picture->isValid()) {
                 throw new CommonException('UploadMultiplePictureAllowError');
             }
 
             //处理保存路径
-            $this->makeSavePath($validated,$admin,$picture);
+            $this->makeSavePath($validated, $admin, $picture);
             //后缀名
             $fileType = $picture->getClientOriginalExtension();
             //文件名带后缀 template.xlsx
@@ -394,47 +375,43 @@ class AdminUploadFacadeService
             //全路径  storage/app/public下
             // config/file/pem/apiclient_key.pem
             // admin/file/4/pem//apiclient_key.pem
-            $path =$picture->storeAs($this->filePath,$file_file,'public');
+            $path = $picture->storeAs($this->filePath, $file_file, 'public');
             //保存以后再检测
             $exists = Storage::disk('public')->exists($path);
 
-            if(!$exists)
-            {
+            if (!$exists) {
                 throw new CommonException('UploadMultiplePictureSaveError');
             }
 
             $cloudStore = Cache::get('cloud.store');
 
-            if($cloudStore == 'qiniu')
-            {
-                QiNiuFacade::uploadFile(public_path('storage/'.$path),'storage'.$this->filePath.$file_file);
+            if ($cloudStore == 'qiniu') {
+                QiNiuFacade::uploadFile(public_path('storage/'.$path), 'storage'.$this->filePath.$file_file);
             }
 
             $picture_info = getimagesize(storage_path('app/public/').$path);
-            $picture_name= \pathinfo($path,\PATHINFO_FILENAME);
+            $picture_name = \pathinfo($path, \PATHINFO_FILENAME);
 
-            $picture_size = round(filesize(storage_path('app/public/').$path)/1024,0);
+            $picture_size = round(filesize(storage_path('app/public/').$path) / 1024, 0);
             $picture_spec = "{$picture_info[0]}×{$picture_info[1]}";
 
             $insertData[$k] = [
-                'admin_id' =>$admin_id,
-                'album_id'=>$album_id,
+                'admin_id' => $admin_id,
+                'album_id' => $album_id,
                 'picture_name' => $picture_name,
                 'picture_file' => $file_file,
                 'picture_path' => $this->filePath,
                 'picture_size' => $picture_size,
                 'picture_spec' => $picture_spec,
                 'picture_type' => 10,
-                'created_at' => date('Y-m-d H:i:s',time()),
+                'created_at' => date('Y-m-d H:i:s', time()),
                 'created_time' => time(),
             ];
 
-            if($cloudStore == 'qiniu')
-            {
+            if ($cloudStore == 'qiniu') {
                 $cdnUrl = trim(Cache::get('qiniu.cdn_url'));
 
-                if(!$cdnUrl)
-                {
+                if (!$cdnUrl) {
                     throw new CommonException('QiNiuCdnUrlError');
                 }
 
@@ -445,39 +422,37 @@ class AdminUploadFacadeService
             //文件名 template
             $uploadFileLogData[$k]['admin_id'] = $admin->id;
             $uploadFileLogData[$k]['use_type'] = $validated['use_type'];
-            $uploadFileLogData[$k]['file_path'] =$this->filePath;
+            $uploadFileLogData[$k]['file_path'] = $this->filePath;
             $uploadFileLogData[$k]['file_extension'] = $fileType;
-            $uploadFileLogData[$k]['file_name'] = pathinfo($path,\PATHINFO_FILENAME);
+            $uploadFileLogData[$k]['file_name'] = pathinfo($path, \PATHINFO_FILENAME);
             $uploadFileLogData[$k]['file'] = $file_file;
-
         }
 
         $insertResult = AlbumPicture::insert($insertData);
 
-        if(!$insertResult)
-        {
+        if (!$insertResult) {
             throw new CommonException('UploadMultiplePictureSqlSaveError');
         }
 
-        $this->actionType = isset($validated['type'])?$validated['type']:'';
+        $this->actionType = isset($validated['type']) ? $validated['type'] : '';
 
-        CommonEvent::dispatch($admin, $insertData,'UploadMultiplePicture');
+        CommonEvent::dispatch($admin, $insertData, 'UploadMultiplePicture');
 
         /**
          * $path 文件位置
          * $this->$actionType 操作类型 例如 bank配合后端导入数据
          * $fileType 后缀名
          */
-        UploadFileEvent::dispatch($admin, $uploadFileLogData,$path, $fileType,$this->actionType,20);
+        UploadFileEvent::dispatch($admin, $uploadFileLogData, $path, $fileType, $this->actionType, 20);
 
         //这里要再把刚刚添加的图片查询出来
         $where = [];
         $where[] = ['admin_id','=',$admin_id];
         $where[] = ['album_id','=',$album_id];
 
-        $insertPictureList =  AlbumPicture::where($where)->orderBy('created_time','desc')->limit(count($insertData))->get();
+        $insertPictureList =  AlbumPicture::where($where)->orderBy('created_time', 'desc')->limit(count($insertData))->get();
 
-        $result = code(['code'=>0,'msg'=>'上传多图成功!'],['data'=>AlbumPictureResource::collection($insertPictureList)]);
+        $result = code(['code' => 0,'msg' => '上传多图成功!'], ['data' => AlbumPictureResource::collection($insertPictureList)]);
 
         return $result;
     }
@@ -491,23 +466,21 @@ class AdminUploadFacadeService
      * @param [type] $picture
      * @return void
      */
-    public function uploadUserAvatar($validated ,$admin, $picture)
+    public function uploadUserAvatar($validated, $admin, $picture)
     {
         $result = code(config('admin_code.UploadUserAvatarError'));
 
         $album_id = $validated['album_id'];
 
         //如果没有相册id 就把图片存入到默用户认相册下
-        if($album_id == 0 || !isset($album_id))
-        {
+        if ($album_id == 0 || !isset($album_id)) {
             $where = [];
             $where[] = ['album_type','=',20];
             $where[] = ['user_id','=',$validated['user_id']];
             $where[] = ['is_default','=',1];
             $album = Album::where($where)->first();
 
-            if(!$album)
-            {
+            if (!$album) {
                 throw new CommonException('ThisUserHasNoDefaultAlbumError');
             }
 
@@ -518,13 +491,12 @@ class AdminUploadFacadeService
 
         $user_id = $validated['user_id'];
 
-        if(!$picture->isValid())
-        {
+        if (!$picture->isValid()) {
             throw new CommonException('UploadSinglePictureAllowError');
         }
 
         //处理保存路径
-        $this->makeSavePath($validated,$admin,$picture);
+        $this->makeSavePath($validated, $admin, $picture);
         //后缀名
         $fileType = $picture->getClientOriginalExtension();
         //文件名带后缀 template.xlsx
@@ -532,51 +504,47 @@ class AdminUploadFacadeService
         //全路径  storage/app/public下
         // config/file/pem/apiclient_key.pem
         // admin/file/4/pem//apiclient_key.pem
-        $path =$picture->storeAs($this->filePath,$file_file,'public');
+        $path = $picture->storeAs($this->filePath, $file_file, 'public');
         //保存以后再检测
         $exists = Storage::disk('public')->exists($path);
 
-        if(!$exists)
-        {
+        if (!$exists) {
             throw new CommonException('UploadSinglePictureSaveError');
         }
 
         $cloudStore = Cache::get('cloud.store');
 
-        if($cloudStore == 'qiniu')
-        {
-            QiNiuFacade::uploadFile(public_path('storage/'.$path),'storage'.$this->filePath.$file_file);
+        if ($cloudStore == 'qiniu') {
+            QiNiuFacade::uploadFile(public_path('storage/'.$path), 'storage'.$this->filePath.$file_file);
         }
 
         $picture_info = getimagesize(storage_path('app/public/').$path);
-        $picture_name= \pathinfo($path,\PATHINFO_FILENAME);
+        $picture_name = \pathinfo($path, \PATHINFO_FILENAME);
 
-        $picture_size = round(filesize(storage_path('app/public/').$path)/1024,0);
+        $picture_size = round(filesize(storage_path('app/public/').$path) / 1024, 0);
         $picture_spec = "{$picture_info[0]}×{$picture_info[1]}";
 
         //声明数据容器
         $insertData = [];
 
         $insertData = [
-            'admin_id' =>0,
-            'user_id'=>$user_id,
-            'album_id'=>$album_id,
+            'admin_id' => 0,
+            'user_id' => $user_id,
+            'album_id' => $album_id,
             'picture_name' => $picture_name,
             'picture_file' => $file_file,
             'picture_path' => $this->filePath,
             'picture_size' => $picture_size,
             'picture_spec' => $picture_spec,
             'picture_type' => 10,
-            'created_at' => date('Y-m-d H:i:s',time()),
+            'created_at' => date('Y-m-d H:i:s', time()),
             'created_time' => time(),
         ];
 
-        if($cloudStore == 'qiniu')
-        {
+        if ($cloudStore == 'qiniu') {
             $cdnUrl = trim(Cache::get('qiniu.cdn_url'));
 
-            if(!$cdnUrl)
-            {
+            if (!$cdnUrl) {
                 throw new CommonException('QiNiuCdnUrlError');
             }
 
@@ -586,22 +554,20 @@ class AdminUploadFacadeService
 
         $insertId = AlbumPicture::insertGetId($insertData);
 
-        if(!$insertId)
-        {
+        if (!$insertId) {
             throw new CommonException('UploadSinglePictureSqlSaveError');
         }
 
         $albumPictrue = AlbumPicture::find($insertId);
 
-        $oldDefaultAvatar = UserAvatar::where('user_id',$user_id)->where('is_default',1)->first();
+        $oldDefaultAvatar = UserAvatar::where('user_id', $user_id)->where('is_default', 1)->first();
 
-        if($oldDefaultAvatar)
-        {
+        if ($oldDefaultAvatar) {
             $oldDefaultAvatar->is_default = 0;
             $oldDefaultAvatar->save();
         }
 
-        $userAvatar = new UserAvatar;
+        $userAvatar = new UserAvatar();
 
         $userAvatar->user_id = $validated['user_id'];
         $userAvatar->album_picture_id = $insertId;
@@ -611,36 +577,34 @@ class AdminUploadFacadeService
 
         $userAvatarResult = $userAvatar->save();
 
-        if(!$userAvatarResult)
-        {
+        if (!$userAvatarResult) {
             throw new CommonException('UploadUserAvatarSaveError');
         }
 
-        $this->actionType = isset($validated['type'])?$validated['type']:'';
+        $this->actionType = isset($validated['type']) ? $validated['type'] : '';
 
         //上传文件数据容器
         $uploadFileLogData = [];
         //文件名 template
         $uploadFileLogData['admin_id'] = $admin->id;
         $uploadFileLogData['use_type'] = $validated['use_type'];
-        $uploadFileLogData['file_path'] =$this->filePath;
+        $uploadFileLogData['file_path'] = $this->filePath;
         $uploadFileLogData['file_extension'] = $fileType;
-        $uploadFileLogData['file_name'] = pathinfo($path,\PATHINFO_FILENAME);
+        $uploadFileLogData['file_name'] = pathinfo($path, \PATHINFO_FILENAME);
         $uploadFileLogData['file'] = $file_file;
 
-        CommonEvent::dispatch($admin, $insertData,'UploadUserAvatar');
+        CommonEvent::dispatch($admin, $insertData, 'UploadUserAvatar');
 
         /**
          * $path 文件位置
          * $this->$actionType 操作类型 例如 bank配合后端导入数据
          * $fileType 后缀名
          */
-        UploadFileEvent::dispatch($admin, $uploadFileLogData,$path, $fileType,$this->actionType);
+        UploadFileEvent::dispatch($admin, $uploadFileLogData, $path, $fileType, $this->actionType);
 
-        $result = code(['code'=>0,'msg'=>'上传头像成功!'],['data'=>new AlbumPictureResource($albumPictrue)]);
+        $result = code(['code' => 0,'msg' => '上传头像成功!'], ['data' => new AlbumPictureResource($albumPictrue)]);
 
         return $result;
-
     }
 
     /**
@@ -651,22 +615,20 @@ class AdminUploadFacadeService
      * @param [type] $pictures
      * @return void
      */
-    public function uploadResetPicture( $validated ,$admin, $picture)
+    public function uploadResetPicture($validated, $admin, $picture)
     {
         $result = code(config('admin_code.UploadResetPictureError'));
 
         $album_id = $validated['album_id'];
 
         //如果没有相册id 就把图片存入到默认相册下
-        if($album_id == 0 || !isset($album_id))
-        {
+        if ($album_id == 0 || !isset($album_id)) {
             $where = [];
             $where[] = ['album','=',0];
             $where[] = ['is_default','=',1];
             $album = Album::where($where)->first();
 
-            if(!$album)
-            {
+            if (!$album) {
                 throw new CommonException('ThisUserHasNoDefaultAlbumError');
             }
 
@@ -675,13 +637,12 @@ class AdminUploadFacadeService
 
         $admin_id = $admin->id;
 
-        if(!$picture->isValid())
-        {
+        if (!$picture->isValid()) {
             throw new CommonException('UploadSinglePictureAllowError');
         }
 
         //处理保存路径
-        $this->makeSavePath($validated,$admin,$picture);
+        $this->makeSavePath($validated, $admin, $picture);
         //后缀名
         $fileType = $picture->getClientOriginalExtension();
         //文件名带后缀 template.xlsx
@@ -689,26 +650,24 @@ class AdminUploadFacadeService
         //全路径  storage/app/public下
         // config/file/pem/apiclient_key.pem
         // admin/file/4/pem//apiclient_key.pem
-        $path =$picture->storeAs($this->filePath,$file_file,'public');
+        $path = $picture->storeAs($this->filePath, $file_file, 'public');
         //保存以后再检测
         $exists = Storage::disk('public')->exists($path);
 
-        if(!$exists)
-        {
+        if (!$exists) {
             throw new CommonException('UploadSinglePictureSaveError');
         }
 
         $cloudStore = Cache::get('cloud.store');
 
-        if($cloudStore == 'qiniu')
-        {
-            QiNiuFacade::uploadFile(public_path('storage/'.$path),'storage'.$this->filePath.$file_file);
+        if ($cloudStore == 'qiniu') {
+            QiNiuFacade::uploadFile(public_path('storage/'.$path), 'storage'.$this->filePath.$file_file);
         }
 
         $picture_info = getimagesize(storage_path('app/public/').$path);
-        $picture_name= \pathinfo($path,\PATHINFO_FILENAME);
+        $picture_name = \pathinfo($path, \PATHINFO_FILENAME);
 
-        $picture_size = round(filesize(storage_path('app/public/').$path)/1024,0);
+        $picture_size = round(filesize(storage_path('app/public/').$path) / 1024, 0);
         $picture_spec = "{$picture_info[0]}×{$picture_info[1]}";
 
 
@@ -723,9 +682,9 @@ class AdminUploadFacadeService
         $updateWhere = [['id','=',$picture_id],['revision','=',$revision]];
 
         $updateData = [
-            'revision'=>$revision + 1,
-            'updated_time'=>time(),
-            'updated_at'=> date('Y-m-d H:i:s',time()),
+            'revision' => $revision + 1,
+            'updated_time' => time(),
+            'updated_at' => date('Y-m-d H:i:s', time()),
             'picture_file' => $file_file,
             'picture_path' => $this->filePath,
             'picture_size' => $picture_size,
@@ -733,12 +692,10 @@ class AdminUploadFacadeService
             'picture_type' => 10,
         ];
 
-        if($cloudStore == 'qiniu')
-        {
+        if ($cloudStore == 'qiniu') {
             $cdnUrl = trim(Cache::get('qiniu.cdn_url'));
 
-            if(!$cdnUrl)
-            {
+            if (!$cdnUrl) {
                 throw new CommonException('QiNiuCdnUrlError');
             }
 
@@ -748,109 +705,98 @@ class AdminUploadFacadeService
 
         $updateResult = AlbumPicture::where($updateWhere)->update($updateData);
 
-        if(!$updateResult)
-        {
+        if (!$updateResult) {
             throw new CommonException('UploadResetPictureSqlError');
         }
 
         $albumPictrue = AlbumPicture::find($picture_id);
 
-        $this->actionType = isset($validated['type'])?$validated['type']:'';
+        $this->actionType = isset($validated['type']) ? $validated['type'] : '';
 
         //上传文件数据容器
         $uploadFileLogData = [];
         //文件名 template
         $uploadFileLogData['admin_id'] = $admin->id;
         $uploadFileLogData['use_type'] = $validated['use_type'];
-        $uploadFileLogData['file_path'] =$this->filePath;
+        $uploadFileLogData['file_path'] = $this->filePath;
         $uploadFileLogData['file_extension'] = $fileType;
-        $uploadFileLogData['file_name'] = pathinfo($path,\PATHINFO_FILENAME);
+        $uploadFileLogData['file_name'] = pathinfo($path, \PATHINFO_FILENAME);
         $uploadFileLogData['file'] = $file_file;
 
-        CommonEvent::dispatch($admin,['picture_id'=>$picture_id,'data'=>$updateData],'UploadResetPicture');
+        CommonEvent::dispatch($admin, ['picture_id' => $picture_id,'data' => $updateData], 'UploadResetPicture');
 
         /**
          * $path 文件位置
          * $this->$actionType 操作类型 例如 bank配合后端导入数据
          * $fileType 后缀名
          */
-        UploadFileEvent::dispatch($admin, $uploadFileLogData,$path, $fileType,$this->actionType);
+        UploadFileEvent::dispatch($admin, $uploadFileLogData, $path, $fileType, $this->actionType);
 
-        $result = code(['code'=>0,'msg'=>'图片替换上传成功!'],['data'=>new AlbumPictureResource($albumPictrue)]);
+        $result = code(['code' => 0,'msg' => '图片替换上传成功!'], ['data' => new AlbumPictureResource($albumPictrue)]);
 
         return $result;
     }
 
 
-	/**
-	 * 检测用户的相册id是否合法,不合法就替换为用户的默认相册
-	 *
-	 * @param  [type] $album_id
-	 * @param  [type] $admin
-	 */
-	private function findAdminDefaultAlbum($album_id,$admin)
-	{
-		$admin_id = $admin->id;
-		 //如果没有相册id 就把图片存入到该用户默认相册下
-        if($album_id == 0 || !isset($album_id)){
+    /**
+     * 检测用户的相册id是否合法,不合法就替换为用户的默认相册
+     *
+     * @param  [type] $album_id
+     * @param  [type] $admin
+     */
+    private function findAdminDefaultAlbum($album_id, $admin)
+    {
+        $admin_id = $admin->id;
+        //如果没有相册id 就把图片存入到该用户默认相册下
+        if ($album_id == 0 || !isset($album_id)) {
             $where = [];
             $where[] = ['album_type','=',10];
             $where[] = ['is_default','=',1];
             $where[] = ['admin_id','=',$admin_id];
             $album = Album::where($where)->first();
-			
-           	if(!$album)
-            {
+
+            if (!$album) {
                 throw new CommonException('ThisUserHasNoDefaultAlbumError');
             }
 
             $album_id = $album->id;
+        } elseif ($album_id == 1) {
+            //如果相册id为1 是config系统相册
+            //判断用户是否是相册管理员,不是的话就要修改相册id
+            if (!is_album_admin($admin)) {
+                $where = [];
+                $where[] = ['album_type','=',10];
+                $where[] = ['is_default','=',1];
+                $where[] = ['admin_id','=',$admin_id];
+                $album = Album::where($where)->first();
+                if (!$album) {
+                    throw new CommonException('ThisUserHasNoDefaultAlbumError');
+                }
+
+                $album_id = $album->id;
+            }
+        } else {
+            //先判断是否是相册管理员,不是相册管理员再行判断
+            if (!is_album_admin($admin)) {
+                $originAlbum = Album::find($album_id);
+
+                //如果admin_id不等于用户id,就需要查找默认相册
+                if ($originAlbum->admin_id !== $admin->id) {
+                    $where = [];
+                    $where[] = ['album_type','=',10];
+                    $where[] = ['is_default','=',1];
+                    $where[] = ['admin_id','=',$admin_id];
+                    $album = Album::where($where)->first();
+
+                    if (!$album) {
+                        throw new CommonException('ThisUserHasNoDefaultAlbumError');
+                    }
+
+                    $album_id = $album->id;
+                }
+            }
         }
-		else if($album_id == 1){
-			//如果相册id为1 是config系统相册
-			//判断用户是否是相册管理员,不是的话就要修改相册id
-			if(!isAlbumAdmin($admin))
-			{
-				$where = [];
-				$where[] = ['album_type','=',10];
-				$where[] = ['is_default','=',1];
-				$where[] = ['admin_id','=',$admin_id];
-				$album = Album::where($where)->first();
-				if(!$album)
-				{
-					throw new CommonException('ThisUserHasNoDefaultAlbumError');
-				}
 
-            	$album_id = $album->id;
-			}	
-		}
-		else
-		{
-			//先判断是否是相册管理员,不是相册管理员再行判断
-			if(!isAlbumAdmin($admin))
-			{
-				$originAlbum = Album::find($album_id);
-
-				//如果admin_id不等于用户id,就需要查找默认相册
-				if($originAlbum->admin_id !== $admin->id)
-				{
-					$where = [];
-					$where[] = ['album_type','=',10];
-					$where[] = ['is_default','=',1];
-					$where[] = ['admin_id','=',$admin_id];
-					$album = Album::where($where)->first();
-
-					if(!$album)
-					{
-						throw new CommonException('ThisUserHasNoDefaultAlbumError');
-					}
-
-					$album_id = $album->id;
-				}
-			}
-
-		}
-
-		return $album_id;
-	}
+        return $album_id;
+    }
 }

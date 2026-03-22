@@ -291,7 +291,7 @@ class PhoneLoginFacadeService
 
          // Log::debug(['url'=>$loginUrl]);
 
-         $loginResult = httpGet($loginUrl);
+         $loginResult = http_get($loginUrl);
 
          // Log::debug(['$loginResult'=>$loginResult]);
 

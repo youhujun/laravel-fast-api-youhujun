@@ -7,7 +7,7 @@ use App\Models\LaravelFastApi\V1\User\Union\UserRoleUnion;
 use App\Models\LaravelFastApi\V1\System\Role\Role;
 use App\Facades\Common\V1\Shard\ShardHelperFacade;
 
-if (!function_exists('getAdminRoles')) {
+if (!function_exists('get_admin_roles')) {
     /**
      * 获取管理员角色列表
      *
@@ -16,7 +16,7 @@ if (!function_exists('getAdminRoles')) {
      * @param Admin $admin 管理员对象
      * @return array 返回管理员角色逻辑名称数组
      */
-    function getAdminRoles(Admin $admin)
+    function get_admin_roles(Admin $admin)
     {
         // 1. 统一变量名（带e），消除拼写差异
         $rolesArray = [];
@@ -76,7 +76,7 @@ if (!function_exists('getAdminRoles')) {
     }
 }
 
-if (!function_exists('getUserRoles')) {
+if (!function_exists('get_user_roles')) {
     /**
      * 获取管理员角色列表
      *
@@ -85,7 +85,7 @@ if (!function_exists('getUserRoles')) {
      * @param User $user 用户对象（修正注释与实际参数一致）
      * @return array 返回管理员角色逻辑名称数组
      */
-    function getUserRoles(User $user)
+    function get_user_roles(User $user)
     {
         // 统一变量名：roles（带e），避免拼写错误
         $rolesArray = [];
@@ -143,15 +143,15 @@ if (!function_exists('getUserRoles')) {
     }
 }
 
-if (!function_exists('isDevelop')) {
+if (!function_exists('is_develop')) {
     /**
      * 是否是开发者
      *
      * @return boolean
      */
-    function isDevelop(Admin $admin)
+    function is_develop(Admin $admin)
     {
-        $rolesArray = getAdminRoles($admin);
+        $rolesArray = get_admin_roles($admin);
 
         $result = 0;
 
@@ -161,15 +161,15 @@ if (!function_exists('isDevelop')) {
     }
 }
 
-if (!function_exists('isSuper')) {
+if (!function_exists('is_super')) {
     /**
      * 是否是超级管理员
      *
      * @return boolean
      */
-    function isSuper(Admin $admin)
+    function is_super(Admin $admin)
     {
-        $rolesArray = getAdminRoles($admin);
+        $rolesArray = get_admin_roles($admin);
 
         $result = 0;
         $developResult = \in_array('develop', $rolesArray);
@@ -184,15 +184,15 @@ if (!function_exists('isSuper')) {
 }
 
 
-if (!function_exists('isAdmin')) {
+if (!function_exists('is_admin')) {
     /**
      * 是否是管理员
      *
      * @return boolean
      */
-    function isAdmin(Admin $admin)
+    function is_admin(Admin $admin)
     {
-        $rolesArray = getAdminRoles($admin);
+        $rolesArray = get_admin_roles($admin);
 
         $result = 0;
 
@@ -208,15 +208,15 @@ if (!function_exists('isAdmin')) {
     }
 }
 
-if (!function_exists('isAConfigAdmin')) {
+if (!function_exists('is_config_admin')) {
     /**
      * 是否是配置管理员
      *
      * @return boolean
      */
-    function isAConfigAdmin(Admin $admin)
+    function is_config_admin(Admin $admin)
     {
-        $rolesArray = getAdminRoles($admin);
+        $rolesArray = get_admin_roles($admin);
 
         $result = 0;
 
@@ -232,15 +232,15 @@ if (!function_exists('isAConfigAdmin')) {
     }
 }
 
-if (!function_exists('isAlbumAdmin')) {
+if (!function_exists('is_album_admin')) {
     /**
      * 是否是相册管理员
      *
      * @return boolean
      */
-    function isAlbumAdmin(Admin $admin)
+    function is_album_admin(Admin $admin)
     {
-        $rolesArray = getAdminRoles($admin);
+        $rolesArray = get_admin_roles($admin);
 
         $result = 0;
 
@@ -256,15 +256,15 @@ if (!function_exists('isAlbumAdmin')) {
     }
 }
 
-if (!function_exists('isOrderAdmin')) {
+if (!function_exists('is_order_admin')) {
     /**
      * 是否是相册管理员
      *
      * @return boolean
      */
-    function isOrderAdmin(Admin $admin)
+    function is_order_admin(Admin $admin)
     {
-        $rolesArray = getAdminRoles($admin);
+        $rolesArray = get_admin_roles($admin);
 
         $result = 0;
 
@@ -280,15 +280,15 @@ if (!function_exists('isOrderAdmin')) {
     }
 }
 
-if (!function_exists('isArticleAdmin')) {
+if (!function_exists('is_article_admin')) {
     /**
      * 是否是文章管理员
      *
      * @return boolean
      */
-    function isArticleAdmin(Admin $admin)
+    function is_article_admin(Admin $admin)
     {
-        $rolesArray = getAdminRoles($admin);
+        $rolesArray = get_admin_roles($admin);
 
         $result = 0;
 
@@ -305,15 +305,15 @@ if (!function_exists('isArticleAdmin')) {
 }
 
 
-if (!function_exists('isUser')) {
+if (!function_exists('is_user')) {
     /**
      * 是否是用户
      *
      * @return boolean
      */
-    function isUser(Admin $admin)
+    function is_user(Admin $admin)
     {
-        $rolesArray = getAdminRoles($admin);
+        $rolesArray = get_admin_roles($admin);
 
         $result = 0;
 
@@ -330,15 +330,15 @@ if (!function_exists('isUser')) {
     }
 }
 
-if (!function_exists('isPhoneUser')) {
+if (!function_exists('is_phone_user')) {
     /**
      * 是否是用户
      *
      * @return boolean
      */
-    function isPhoneUser(User $user)
+    function is_phone_user(User $user)
     {
-        $rolesArray = getUserRoles($user);
+        $rolesArray = get_user_roles($user);
 
         //p($rolesArray);
 

@@ -149,7 +149,7 @@ class UserAddressController extends Controller
 
         $result = code(\config('phone_code.PhoneAuthError'));
 
-        $id = checkId($request->input('id'));
+        $id = check_id($request->input('id'));
 
         if(Gate::forUser($user)->allows('phone-user-role'))
         {

@@ -121,7 +121,7 @@ class GoodsClassController extends Controller
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $id = checkId($request->input('id'));
+        $id = check_id($request->input('id'));
 
         if(Gate::forUser($admin)->allows('admin-role'))
         {

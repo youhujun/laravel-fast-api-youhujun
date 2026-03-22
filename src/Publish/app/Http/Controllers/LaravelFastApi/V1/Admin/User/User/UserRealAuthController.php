@@ -137,7 +137,7 @@ class UserRealAuthController extends Controller
 
         $admin = Auth::guard('admin_token')->user();
 
-        $id = checkId($request->input('id'));
+        $id = check_id($request->input('id'));
 
         if(Gate::forUser($admin)->allows('admin-role'))
         {
