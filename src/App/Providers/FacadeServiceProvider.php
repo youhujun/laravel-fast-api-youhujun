@@ -23,6 +23,8 @@ class FacadeServiceProvider extends ServiceProvider
     public function register()
     {
         if (\config('youhujun.runing')) {
+            //测试门面
+            $this->publishTestFacade();
             //公共第三方门面
             $this->publishPubFacade();
 
@@ -50,6 +52,15 @@ class FacadeServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+    }
+
+    /**
+     * 专门用于测试,保留测试代码方便复制
+     */
+    protected function publishTestFacade()
+    {
+        //测试用户
+        $this->app->bind('UserTestFacade', \App\Services\Facade\Test\V1\User\UserTestFacadeService::class);
     }
 
     /**
