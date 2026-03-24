@@ -16,19 +16,19 @@ if (!function_exists('get_admin_roles')) {
      * @param Admin $admin 管理员对象
      * @return array 返回管理员角色逻辑名称数组
      */
-    function get_admin_roles(Admin $admin)
+    function get_admin_roles(Admin $adminObject): array
     {
         // 1. 统一变量名（带e），消除拼写差异
         $rolesArray = [];
         // 2. 简化冗余Redis键，提高可读性
         $redisKey = "admin_roles";
         // 3. 先判断admin->user_uid是否为空，避免无效查询
-        if (empty($admin->user_uid) || empty($admin->biz_id)) {
+        if (empty($adminObject->user_uid) || empty($adminObject->biz_id)) {
             return $rolesArray;
         }
 
         // 获取Redis缓存
-        $redisRoles = Redis::hget("{$redisKey}:{$redisKey}", $admin->biz_id);
+        $redisRoles = Redis::hget("{$redisKey}:{$redisKey}", $adminObject->biz_id);
         if ($redisRoles) {
             // 4. 处理json_decode失败场景，确保返回数组类型
             $rolesArray = json_decode($redisRoles, true);
@@ -38,12 +38,12 @@ if (!function_exists('get_admin_roles')) {
         } else {
             // 查询管理员与角色的关联关系
 
-            $adminRoleUnionCollection = ShardHelperFacade::queryByShardWithCache(UserRoleUnion::class, $admin->user_uid);
+            $adminRoleUnionCollection = ShardHelperFacade::queryByShardWithCache(UserRoleUnion::class, $adminObject->user_uid);
 
             $roleIdArray = [];
             // 5. 移除不必要的引用传递，避免变量污染
-            foreach ($adminRoleUnionCollection as $key => $adminRoleUnionItem) {
-                array_push($roleIdArray, $adminRoleUnionItem->role_id);
+            foreach ($adminRoleUnionCollection as $key => $adminRoleUnionObject) {
+                array_push($roleIdArray, $adminRoleUnionObject->role_id);
             }
 
             // 6. 正确使用array_unique，接收返回值实现去重
@@ -55,15 +55,15 @@ if (!function_exists('get_admin_roles')) {
                 $roleCollection = Role::whereIn('id', $roleIdArray)->get();
 
                 $roleLogicNameArray = [];
-                foreach ($roleCollection as $key => $roleItem) {
-                    array_push($roleLogicNameArray, $roleItem->logic_name);
+                foreach ($roleCollection as $key => $roleObject) {
+                    array_push($roleLogicNameArray, $roleObject->logic_name);
                 }
 
                 $rolesArray = $roleLogicNameArray;
 
                 // 缓存到Redis（仅当角色数组非空时）
                 if (!empty($rolesArray)) {
-                    $result = Redis::hset("{$redisKey}:{$redisKey}", $admin->biz_id, json_encode($rolesArray));
+                    $result = Redis::hset("{$redisKey}:{$redisKey}", $adminObject->biz_id, json_encode($rolesArray));
                     // 8. 修正Redis缓存失败判断：仅当返回false时才是真正失败
                     if ($result === false) {
                         plog(['RedisSaveAdminRolesError' => '缓存管理员角色失败'], 'AdminSystem', 'RedisSaveAdminRolesError');
@@ -85,17 +85,17 @@ if (!function_exists('get_user_roles')) {
      * @param User $user 用户对象（修正注释与实际参数一致）
      * @return array 返回管理员角色逻辑名称数组
      */
-    function get_user_roles(User $user)
+    function get_user_roles(User $userObject): array
     {
         // 统一变量名：roles（带e），避免拼写错误
         $rolesArray = [];
         $redisKey = "user_roles"; // 简化冗余的Redis键
 
-        if (empty($user->user_uid) || empty($user->biz_id)) {
+        if (empty($userObject->biz_id) || empty($userObject->biz_id)) {
             return $rolesArray;
         }
 
-        $redisRoles = Redis::hget("{$redisKey}:{$redisKey}", $user->biz_id);
+        $redisRoles = Redis::hget("{$redisKey}:{$redisKey}", $userObject->biz_id);
 
         if ($redisRoles) {
             // 处理json_decode失败的情况
@@ -109,9 +109,9 @@ if (!function_exists('get_user_roles')) {
             $userRoleUnionCollection = ShardHelperFacade::queryByShardWithCache(UserRoleUnion::class, $user->biz_id);
 
             $roleIdArray = [];
-            foreach ($userRoleUnionCollection as $key => $userRoleUnionItem) {
+            foreach ($userRoleUnionCollection as $key => $userRoleUnionObject) {
                 // 移除不必要的引用传递，避免变量污染
-                array_push($roleIdArray, $userRoleUnionItem->role_id);
+                array_push($roleIdArray, $userRoleUnionObject->role_id);
             }
 
             // 正确使用array_unique：接收返回值实现去重
@@ -122,15 +122,15 @@ if (!function_exists('get_user_roles')) {
                 $roleCollection = Role::whereIn('id', $roleIdArray)->get();
 
                 $roleLogicNameArray = [];
-                foreach ($roleCollection as $key => $roleItem) {
-                    array_push($roleLogicNameArray, $roleItem->logic_name);
+                foreach ($roleCollection as $key => $roleObject) {
+                    array_push($roleLogicNameArray, $roleObject->logic_name);
                 }
 
                 $rolesArray = $roleLogicNameArray;
 
                 // 缓存到Redis（仅当角色数组非空时）
                 if (!empty($rolesArray)) {
-                    $result = Redis::hset("{$redisKey}:{$redisKey}", $user->biz_id, json_encode($rolesArray));
+                    $result = Redis::hset("{$redisKey}:{$redisKey}", $userObject->biz_id, json_encode($rolesArray));
                     // 修正Redis缓存结果判断：result为false时才是真正失败（hset返回0/1均为成功）
                     if ($result === false) {
                         plog(['RedisSaveAdminRolesError' => '缓存用户角色失败'], 'UserSystem', 'RedisSaveUserRolesError');
@@ -149,9 +149,9 @@ if (!function_exists('is_develop')) {
      *
      * @return boolean
      */
-    function is_develop(Admin $admin)
+    function is_develop(Admin $adminObject): bool
     {
-        $rolesArray = get_admin_roles($admin);
+        $rolesArray = get_admin_roles($adminObject);
 
         $result = 0;
 
@@ -167,9 +167,9 @@ if (!function_exists('is_super')) {
      *
      * @return boolean
      */
-    function is_super(Admin $admin)
+    function is_super(Admin $adminObject): bool
     {
-        $rolesArray = get_admin_roles($admin);
+        $rolesArray = get_admin_roles($adminObject);
 
         $result = 0;
         $developResult = \in_array('develop', $rolesArray);
@@ -190,9 +190,9 @@ if (!function_exists('is_admin')) {
      *
      * @return boolean
      */
-    function is_admin(Admin $admin)
+    function is_admin(Admin $adminObject): bool
     {
-        $rolesArray = get_admin_roles($admin);
+        $rolesArray = get_admin_roles($adminObject);
 
         $result = 0;
 
@@ -214,9 +214,9 @@ if (!function_exists('is_config_admin')) {
      *
      * @return boolean
      */
-    function is_config_admin(Admin $admin)
+    function is_config_admin(Admin $adminObject): bool
     {
-        $rolesArray = get_admin_roles($admin);
+        $rolesArray = get_admin_roles($adminObject);
 
         $result = 0;
 
@@ -238,9 +238,9 @@ if (!function_exists('is_album_admin')) {
      *
      * @return boolean
      */
-    function is_album_admin(Admin $admin)
+    function is_album_admin(Admin $adminObject): bool
     {
-        $rolesArray = get_admin_roles($admin);
+        $rolesArray = get_admin_roles($adminObject);
 
         $result = 0;
 
@@ -262,9 +262,9 @@ if (!function_exists('is_order_admin')) {
      *
      * @return boolean
      */
-    function is_order_admin(Admin $admin)
+    function is_order_admin(Admin $adminObject): bool
     {
-        $rolesArray = get_admin_roles($admin);
+        $rolesArray = get_admin_roles($adminObject);
 
         $result = 0;
 
@@ -286,9 +286,9 @@ if (!function_exists('is_article_admin')) {
      *
      * @return boolean
      */
-    function is_article_admin(Admin $admin)
+    function is_article_admin(Admin $adminObject): bool
     {
-        $rolesArray = get_admin_roles($admin);
+        $rolesArray = get_admin_roles($adminObject);
 
         $result = 0;
 
@@ -311,9 +311,9 @@ if (!function_exists('is_user')) {
      *
      * @return boolean
      */
-    function is_user(Admin $admin)
+    function is_user(Admin $adminObject): bool
     {
-        $rolesArray = get_admin_roles($admin);
+        $rolesArray = get_admin_roles($adminObject);
 
         $result = 0;
 
@@ -336,9 +336,9 @@ if (!function_exists('is_phone_user')) {
      *
      * @return boolean
      */
-    function is_phone_user(User $user)
+    function is_phone_user(User $adminObject): bool
     {
-        $rolesArray = get_user_roles($user);
+        $rolesArray = get_user_roles($adminObject);
 
         //p($rolesArray);
 

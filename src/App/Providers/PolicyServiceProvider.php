@@ -5,9 +5,9 @@
  * @version: v1
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2024-02-01 09:19:06
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2025-12-21 11:38:52
- * @FilePath: d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api\src\App\Providers\PolicyServiceProvider.php
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-03-24 22:29:24
+ * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\App\Providers\PolicyServiceProvider.php
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -15,7 +15,6 @@ namespace YouHuJun\LaravelFastApi\App\Providers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Models\LaravelFastApi\V1\Admin\Admin;
@@ -123,12 +122,12 @@ class PolicyServiceProvider extends ServiceProvider
 
         //是否是开发者或者超级管理员
         Gate::define('super-role', function (Admin $admin) {
-            return isSuper($admin);
+            return is_super($admin);
         });
 
         //是否是后台管理员
         Gate::define('admin-role', function (Admin $admin) {
-            return isAdmin($admin);
+            return is_admin($admin);
         });
 
         //是否是用户
