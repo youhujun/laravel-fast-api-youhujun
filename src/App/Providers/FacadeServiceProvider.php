@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-20 14:19:57
+ * @LastEditTime: 2026-03-24 15:21:03
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -59,6 +59,8 @@ class FacadeServiceProvider extends ServiceProvider
      */
     protected function publishTestFacade()
     {
+        //系统配置测试
+        $this->app->bind('SystemConfigTestFacade', \App\Services\Facade\Test\V1\System\SystemConfigTestFacadeService::class);
         //测试用户
         $this->app->bind('UserTestFacade', \App\Services\Facade\Test\V1\User\UserTestFacadeService::class);
     }
