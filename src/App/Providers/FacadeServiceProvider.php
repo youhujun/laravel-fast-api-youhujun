@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-24 15:21:03
+ * @LastEditTime: 2026-03-25 04:01:59
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -196,6 +196,13 @@ class FacadeServiceProvider extends ServiceProvider
      */
     public function publishEsFacade()
     {
+        //用户索引
+        $this->app->bind('EsCreateUserIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\EsCreateUserIndexFacadeService::class);
+        //系统配置索引
+        $this->app->bind('EsCreateSystemConfigIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\EsCreateSystemConfigIndexFacadeService::class);
+        //youhuauthservice索引
+        $this->app->bind('EsCreateYouhuAuthServiceIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\EsCreateYouhuAuthServiceIndexFacadeService::class);
+
         //User门面
         $this->app->bind('EsSyncUserFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Sync\EsSyncUserFacadeService::class);
         //SystemConfig门面
