@@ -265,6 +265,7 @@ class EventServiceProvider extends ServiceProvider
             \App\Events\LaravelFastApi\V1\Admin\Login\AdminLoginEvent::class => [
                 \App\Listeners\LaravelFastApi\V1\Admin\Login\AdminLoginEvent\AdminLoginLogListener::class,
                 \App\Listeners\LaravelFastApi\V1\Admin\Login\AdminLoginEvent\CacheAdminRolesListener::class,
+                \App\Listeners\LaravelFastApi\V1\Admin\Login\AdminLoginEvent\EsSyncAdminListener::class,
             ],
             //管理员退出
             \App\Events\LaravelFastApi\V1\Admin\Login\AdminLogoutEvent::class => [

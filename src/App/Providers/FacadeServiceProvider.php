@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-25 05:56:21
+ * @LastEditTime: 2026-03-25 15:36:45
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -63,6 +63,8 @@ class FacadeServiceProvider extends ServiceProvider
         $this->app->bind('SystemConfigTestFacade', \App\Services\Facade\Test\V1\System\SystemConfigTestFacadeService::class);
         //测试用户
         $this->app->bind('UserTestFacade', \App\Services\Facade\Test\V1\User\UserTestFacadeService::class);
+        //测试es门面
+        $this->app->bind('EsTestFacade', \App\Services\Facade\Test\V1\Es\EsTestFacadeService::class);
     }
 
     /**
