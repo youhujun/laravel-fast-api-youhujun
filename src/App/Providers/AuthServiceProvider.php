@@ -1,26 +1,26 @@
 <?php
+
 /*
  * @Descripttion:
  * @version:
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
- * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2025-01-13 16:13:46
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-03-25 02:19:32
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
 
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Redis;
-
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use App\Models\LaravelFastApi\V1\Admin\Admin;
+use App\Models\LaravelFastApi\V1\User\User;
+use App\Facades\Common\V1\Shard\ShardHelperFacade;
 
 class AuthServiceProvider extends ServiceProvider
 {
-
     /**
      * Register services.
      *
@@ -29,10 +29,9 @@ class AuthServiceProvider extends ServiceProvider
     public function register()
     {
         //dd($this->app['config']);die;
-     
-        $this->app->make('config')->set('auth.providers.user.model','\App\Models\LaravelFastApi\V1\User\User');
-        $this->app->make('config')->set('auth.providers.admin.model','\App\Models\LaravelFastApi\V1\Admin\Admin');
-      
+
+        $this->app->make('config')->set('auth.providers.user.model', User::class);
+        $this->app->make('config')->set('auth.providers.admin.model', Admin::class);
     }
 
     /**
@@ -42,129 +41,119 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(Request $request)
     {
-        //自定义闭包guard 对应 api_token 后台 
-        Auth::viaRequest('Admin-Token', function ($request) 
-		{
-
+        //自定义闭包guard 对应 api_token 后台
+        Auth::viaRequest('Admin-Token', function ($request) {
             $api_token = $request->header('X-Token');
 
-            $admin = null;
+            $adminObject = null;
 
-            if($api_token)
-            {
-                //先从redis 缓存获取 用户
-                $admin = $this->getAdminUserByToken($api_token);
+            if ($api_token) {
+                //先从redis 缓存获取
+                $adminObject = $this->getAdminUserByToken($api_token);
 
-                if(empty( $admin) || !isset($admin))
-                {
+                if (empty($adminObject) || !isset($adminObject)) {
                     //如果缓存不存在 表示用户已经退出了,重新从数据库获取
-                    $admin =  \App\Models\LaravelFastApi\V1\Admin\Admin::where('remember_token', $api_token)->first();
-
+                    $adminObject = ShardHelperFacade::queryAllShards(
+                        Admin::class,
+                        function ($query) {
+                            $query->where('remember_token', $api_token);
+                        },
+                        'remember_token',
+                        [$api_token]
+                    )->first();
                 }
             }
-            
-            return $admin;
+
+            return $adminObject;
         });
 
-		//自定义闭包guard  phone_token 手机端
-        Auth::viaRequest('Phone-Token', function ($request) 
-		{
-
+        //自定义闭包guard  phone_token 手机端
+        Auth::viaRequest('Phone-Token', function ($request) {
             $api_token = $request->header('X-Token');
 
-            $user = null;
+            $userObject = null;
 
-            if($api_token)
-            {
+            if ($api_token) {
                 //先从redis 缓存获取 用户
-                $user = $this->getPhoneUserByToken($api_token);
+                $userObject = $this->getPhoneUserByToken($api_token);
 
-                if(empty( $user) || !isset($user))
-                {
+                if (empty($userObject) || !isset($userObject)) {
                     //如果缓存不存在 表示用户已经退出了,重新从数据库获取
-                  
-                    $user = \App\Models\LaravelFastApi\V1\User\User::where('remember_token', $api_token)->first();
+                    $userObject = ShardHelperFacade::queryAllShards(
+                        User::class,
+                        function ($query) {
+                            $query->where('remember_token', $api_token);
+                        },
+                        'remember_token',
+                        [$api_token]
+                    )->first();
                 }
             }
-            
-            return $user;
-        });
 
+            return $userObject;
+        });
     }
 
-	/**
+    /**
      * 通过token 获取redis后台用户
      *
      * @param [type] $remember_token
      * @return void
      */
-    public function getAdminUserByToken($remember_token)
+    public function getAdminUserByToken($remember_token): ?Admin
     {
-        $result = null;
+        $adminObject = null;
 
-        $existsResult = Redis::exists("admin_token:{$remember_token}");
+        $redisAdminTokenKey = config('common_redis.admin_token.key');
+        $redisAdminKey = config('common_redis.admin.key');
+        $redisAdminField = config('common_redis.admin.field');
 
-        if($existsResult)
-        {
-            $adminId = Redis::get("admin_token:{$remember_token}");
+        $existsResult = Redis::exists($redisAdminTokenKey.$remember_token);
 
-            if ($adminId  && \is_numeric($adminId))
-            {
-                $redisAdmin = Redis::hget("admin:admin",$adminId);
+        if ($existsResult) {
+            $admin_uid = Redis::get($redisAdminTokenKey.$remember_token);
 
-                if (isset($redisAdmin) && !empty($redisAdmin))
-                {
-                    $admin = null;
+            if ($admin_uid  && \is_numeric($admin_uid)) {
+                $redisAdminJsonString = Redis::hget($redisAdminKey, $redisAdminField.$admin_uid);
 
-					$admin = \unserialize($redisAdmin);
-					
-                    $result =  $admin;
+                if (isset($redisAdminJsonString) && !empty($redisAdminJsonString)) {
+                    $adminObject = \unserialize($redisAdminJsonString);
                 }
             }
         }
 
-        return $result;
+        return $adminObject;
     }
 
-	/**
+    /**
      * 通过token 获取redis手机用户
      *
      * @param [type] $remember_token
      * @return void
      */
-    public function getPhoneUserByToken($remember_token)
+    public function getPhoneUserByToken($remember_token): ?User
     {
-        $result = null;
+        $userObject = null;
 
-        $existsResult = Redis::exists("phone_user_token:{$remember_token}");
+        $redisUserTokenKey = config('common_redis.user_token.key');
+        $redisUserKey = config('common_redis.user.key');
+        $redisUserField = config('common_redis.user.field');
 
-        if($existsResult)
-        {
 
-            $userId = Redis::get("phone_user_token:{$remember_token}");
+        $existsResult = Redis::exists($redisUserTokenKey.$remember_token);
 
-            if ($userId  && \is_numeric($userId))
-            {
-                $redisUser = Redis::hget("phone_user:phone_user",$userId);
+        if ($existsResult) {
+            $user_uid = Redis::get($redisUserTokenKey.$remember_token);
 
-                if (isset($redisUser) && !empty($redisUser))
-                {
-                    $user = null;
+            if ($user_uid  && \is_numeric($user_uid)) {
+                $redisUserJsonString = Redis::hget($redisUserKey, $redisUserField.$user_uid);
 
-                    if (\is_serialized($redisUser))
-                    {
-                        $user = \unserialize($redisUser);
-                    } else {
-                        $user = \json_decode($redisUser);
-                    }
-                    $result =  $user;
+                if (isset($redisUserJsonString) && !empty($redisUserJsonString)) {
+                    $userObject = \unserialize($redisUserJsonString);
                 }
             }
         }
 
-        return $result;
+        return $userObject;
     }
-
-	
-
 }
