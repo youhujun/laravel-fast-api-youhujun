@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-26 01:20:58
+ * @LastEditTime: 2026-03-26 16:56:10
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -136,9 +136,7 @@ class AuthServiceProvider extends ServiceProvider
 
         $result = EsFacade::searchDoc($indexName, $queryArray);
 
-        //p($result);
-
-        if (isset($result) && $result['code'] == 0) {
+        if (isset($result) && $result['code'] == 0 &&  isset($result['data']['hits']['total']['value']) && $result['data']['hits']['total']['value'] > 0) {
             $adminArray = $result['data']['hits']['hits'][0]['_source'];
             //p($adminArray);
             $adminModelArray = [
@@ -254,7 +252,7 @@ class AuthServiceProvider extends ServiceProvider
 
         //p($result);
 
-        if (isset($result) && $result['code'] == 0) {
+        if (isset($result) && $result['code'] == 0 &&  isset($result['data']['hits']['total']['value']) && $result['data']['hits']['total']['value'] > 0) {
             $userArray = $result['data']['hits']['hits'][0]['_source'];
             //p($adminArray);
             $userModelArray = [
