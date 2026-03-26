@@ -3,13 +3,13 @@
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
-use App\Models\LaravelFastApi\V1\System\SystemConfig;
+use App\Facades\Common\V1\Es\CommonEsFacade;
 
 if (!function_exists('make_system_config')) {
     /**
      * 初始化系统配置缓存
      *
-     * 从Redis获取系统配置列表，若不存在则从数据库加载并缓存到Redis。
+     * 从Redis获取系统配置列表，若不存在则从Es加载并缓存到Redis。
      * 同时检查系统配置是否已设置，未设置则将各项配置按类型存入缓存。
      *
      * 流程：
@@ -29,20 +29,20 @@ if (!function_exists('make_system_config')) {
         $systemConfigRedis = Redis::hget('system:config', 'listSystemConfig');
 
         if ($systemConfigRedis) {
-            $systemConfigList = unserialize($systemConfigRedis);
+            $systemConfigCollection = unserialize($systemConfigRedis);
         } else {
-            $systemConfigList = SystemConfig::all();
+            $systemConfigCollection = CommonEsFacade::getEsSystemConfig();
 
             //p($systemConfigList);die;
 
-            Redis::hset('system:config', 'listSystemConfig', serialize($systemConfigList));
+            Redis::hset('system:config', 'listSystemConfig', serialize($systemConfigCollection));
         }
 
-        if ($systemConfigList->count()) {
+        if ($systemConfigCollection->count()) {
             $isSetSystemConfig = Redis::hget('system:config', 'isSetSystemConfig');
 
             if (!$isSetSystemConfig) {
-                foreach ($systemConfigList as $key => $item) {
+                foreach ($systemConfigCollection as $key => $item) {
                     $value = [10 => $item->item_label,20 => $item->item_value,30 => $item->item_price,40 => $item->item_path,50 => $item->item_path];
 
                     if ($value[$item->item_type]) {

@@ -136,6 +136,8 @@ class FacadeServiceProvider extends ServiceProvider
      */
     protected function publishCommonFacade()
     {
+        //通用es门面
+        $this->app->bind('CommonEsFacade', \App\Services\Facade\Common\V1\Es\CommonEsFacadeService::class);
         //ES查询
         $this->app->bind('EsQueryFacade', \App\Services\Facade\Common\V1\Es\EsQueryFacadeService::class);
         //es创建索引
