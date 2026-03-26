@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-04 20:29:04
+ * @LastEditTime: 2026-03-26 08:31:41
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -265,12 +265,11 @@ class EventServiceProvider extends ServiceProvider
             \App\Events\LaravelFastApi\V1\Admin\Login\AdminLoginEvent::class => [
                 \App\Listeners\LaravelFastApi\V1\Admin\Login\AdminLoginEvent\AdminLoginLogListener::class,
                 \App\Listeners\LaravelFastApi\V1\Admin\Login\AdminLoginEvent\CacheAdminRolesListener::class,
-                \App\Listeners\LaravelFastApi\V1\Admin\Login\AdminLoginEvent\EsSyncAdminListener::class,
             ],
             //管理员退出
             \App\Events\LaravelFastApi\V1\Admin\Login\AdminLogoutEvent::class => [
                 \App\Listeners\LaravelFastApi\V1\Admin\Login\AdminLogoutEvent\AdminLogoutLogLitener::class,
-                \App\Listeners\LaravelFastApi\V1\Admin\Login\AdminLogoutEvent\ClearAdminCacheListener::class
+                \App\Listeners\LaravelFastApi\V1\Admin\Login\AdminLogoutEvent\ClearAdminCacheListener::class,
             ],
 
             //添加开发者
