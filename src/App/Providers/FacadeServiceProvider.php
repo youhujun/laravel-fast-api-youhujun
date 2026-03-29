@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-25 15:36:45
+ * @LastEditTime: 2026-03-30 00:20:08
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -65,6 +65,10 @@ class FacadeServiceProvider extends ServiceProvider
         $this->app->bind('UserTestFacade', \App\Services\Facade\Test\V1\User\UserTestFacadeService::class);
         //测试es门面
         $this->app->bind('EsTestFacade', \App\Services\Facade\Test\V1\Es\EsTestFacadeService::class);
+        //测试微服务
+        $this->app->bind('MsTestFacade', \App\Services\Facade\Test\V1\Ms\MsTestFacadeService::class);
+        //雪鹄城堡测试
+        $this->app->bind('XueHuTestFacade', \App\Services\Facade\Test\V1\XueHu\XueHuTestFacadeService::class);
     }
 
     /**
@@ -183,7 +187,7 @@ class FacadeServiceProvider extends ServiceProvider
         //$this->app->bind('YouHuAuthFacade', \App\Services\Facade\Common\V1\Api\YouHuAuthService\MS\XueHu\YouHuAuthFacadeService::class);
 
 
-        
+
 
         //api记录日志
         $this->app->bind('ApiLogEventFacade', \App\Services\Facade\LaravelFastApi\V1\Log\ApiLogEventFacadeService::class);
