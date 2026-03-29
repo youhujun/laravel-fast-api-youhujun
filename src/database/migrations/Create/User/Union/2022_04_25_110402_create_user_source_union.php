@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2022-04-25 11:04:02
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-02-11 04:25:01
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-03-28 16:02:18
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'user_source_unions';
     protected $hasSnowflake = true;
-		// 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
-	protected $shardKeyAnchor = 'user_uid';
+    // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+    protected $shardKeyAnchor = 'user_uid';
     protected $tableComment = '用户父关联表';
 
     /**
@@ -42,8 +42,8 @@ return new class () extends Migration {
                     $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
 
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
-                    $table->unsignedBigInteger('first_id')->default(0)->comment('一级id');
-                    $table->unsignedBigInteger('second_id')->default(0)->comment('二级id');
+                    $table->unsignedBigInteger('first_uid')->default(0)->comment('一级uid');
+                    $table->unsignedBigInteger('second_Uid')->default(0)->comment('二级uid');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                     $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 

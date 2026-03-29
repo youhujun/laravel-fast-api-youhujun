@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-26 08:31:41
+ * @LastEditTime: 2026-03-29 01:03:02
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -222,22 +222,8 @@ class EventServiceProvider extends ServiceProvider
             \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserAmountListener::class,
             \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserQrcodeListener::class,
             \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserSourceListener::class,
-            //调试测试使用
-            //\App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddApiUserAuthListener::class
-            //\App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\MS\AddApiUserAuthListener::class
-            //\App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddSyncUserMapListener::class
-            //\App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\MS\AddSyncUserMapListener::class
+            \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddApiUserAuthListener::class
         ];
-
-        // 按环境追加不同的监听器
-        if (!config('youhujun.is_ms')) {
-            $appListener[] = \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddApiUserAuthListener::class;
-            \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddSyncUserMapListener::class;
-        } else {
-            $appListener[] = \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\MS\AddApiUserAuthListener::class;
-            \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\MS\AddSyncUserMapListener::class;
-        }
-
 
         $publishCommonListener = [
             //通用的用户注册(添加用户)

@@ -5,8 +5,8 @@
  * @version: 1.0
  * @Author: YouHuJun
  * @Date: 2021-05-23 15:35:15
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-02-12 17:37:28
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-03-28 10:15:14
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Config;
 
 return new class () extends Migration {
     /**
-     * 
+     *
      */
     protected $baseTable = 'users';
     protected $hasSnowflake = true;

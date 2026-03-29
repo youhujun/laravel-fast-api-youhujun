@@ -226,13 +226,6 @@ class LaravelFastApiServiceProvider extends ServiceProvider
             'youhubase_api_url'
         );
 
-
-        $this->mergeConfigFrom(
-            config_path('custom/common/api/shardmap.php'),
-            'shardmap_api_url'
-        );
-
-
         $this->mergeConfigFrom(
             config_path('custom/common/api/youhu.php'),
             'youhu_api_url'

@@ -171,11 +171,6 @@ class FacadeServiceProvider extends ServiceProvider
         //操作youhuauth门面
         $this->app->bind('YouHuAuthFacade', \App\Services\Facade\Common\V1\Api\YouHuAuthService\YouHuAuthFacadeService::class);
 
-
-        //辅助测试用 操作youhuauth门面
-        //$this->app->bind('YouHuAuthFacade', \App\Services\Facade\Common\V1\Api\YouHuAuthService\MS\LaravelShardMap\YouHuAuthFacadeService::class);
-
-
         //辅助测试用 操作youhuauth门面
         //$this->app->bind('YouHuAuthFacade', \App\Services\Facade\Common\V1\Api\YouHuAuthService\MS\YouHu\YouHuAuthFacadeService::class);
 
@@ -188,8 +183,7 @@ class FacadeServiceProvider extends ServiceProvider
         //$this->app->bind('YouHuAuthFacade', \App\Services\Facade\Common\V1\Api\YouHuAuthService\MS\XueHu\YouHuAuthFacadeService::class);
 
 
-        //基础租件包操作youhuauth辅助门面,开发阶段为了测试避免和YouHuAuthFacade冲突
-        $this->app->bind('YouHuBaseAuthFacade', \App\Services\Facade\LaravelFastApi\V1\Api\YouHuAuthService\YouHuBaseAuthFacadeService::class);
+        
 
         //api记录日志
         $this->app->bind('ApiLogEventFacade', \App\Services\Facade\LaravelFastApi\V1\Log\ApiLogEventFacadeService::class);
