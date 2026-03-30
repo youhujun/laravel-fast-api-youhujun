@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-30 00:20:08
+ * @LastEditTime: 2026-03-30 16:38:13
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -172,25 +172,6 @@ class FacadeServiceProvider extends ServiceProvider
      */
     public function publishApiFacade()
     {
-        //操作youhuauth门面
-        $this->app->bind('YouHuAuthFacade', \App\Services\Facade\Common\V1\Api\YouHuAuthService\YouHuAuthFacadeService::class);
-
-        //辅助测试用 操作youhuauth门面
-        //$this->app->bind('YouHuAuthFacade', \App\Services\Facade\Common\V1\Api\YouHuAuthService\MS\YouHu\YouHuAuthFacadeService::class);
-
-
-        //辅助测试用 操作youhuauth门面
-        //$this->app->bind('YouHuAuthFacade', \App\Services\Facade\Common\V1\Api\YouHuAuthService\MS\YouHuShop\YouHuAuthFacadeService::class);
-
-
-        //辅助测试用 操作youhuauth门面
-        //$this->app->bind('YouHuAuthFacade', \App\Services\Facade\Common\V1\Api\YouHuAuthService\MS\XueHu\YouHuAuthFacadeService::class);
-
-
-
-
-        //api记录日志
-        $this->app->bind('ApiLogEventFacade', \App\Services\Facade\LaravelFastApi\V1\Log\ApiLogEventFacadeService::class);
     }
 
     /**
@@ -206,6 +187,9 @@ class FacadeServiceProvider extends ServiceProvider
         $this->app->bind('EsCreateSystemConfigIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\EsCreateSystemConfigIndexFacadeService::class);
         //youhuauthservice索引
         $this->app->bind('EsCreateYouhuAuthServiceIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\EsCreateYouhuAuthServiceIndexFacadeService::class);
+        //日志索引
+        $this->app->bind('EsCreateApiEventLogIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\EsCreateApiEventLogIndexFacadeService::class);
+
 
         //Admin门面
         $this->app->bind('EsSyncAdminFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Sync\EsSyncAdminFacadeService::class);

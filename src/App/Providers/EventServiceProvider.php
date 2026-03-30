@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-29 01:03:02
+ * @LastEditTime: 2026-03-30 09:02:48
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -198,10 +198,7 @@ class EventServiceProvider extends ServiceProvider
     protected function setApiPublish()
     {
         $publishApiListener = [
-            //通用Api事件
-            \App\Events\Api\CommonEvent::class => [
-                \App\Listeners\Api\CommonEvent\CommonEventListener::class
-            ],
+
         ];
 
         $this->publishApiListener = $publishApiListener;

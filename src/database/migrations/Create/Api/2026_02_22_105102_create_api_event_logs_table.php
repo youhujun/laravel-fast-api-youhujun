@@ -6,8 +6,8 @@
  * @Author: youhujun youhu8888@163.com & xueer
  * @Date: 2026-02-22 10:51:02
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-02-22 16:33:56
- * @FilePath: \youhu-laravel-api-12\database\migrations\2026_02_22_105102_create_api_event_logs_table.php
+ * @LastEditTime: 2026-03-30 16:50:59
+ * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\database\migrations\Create\Api\2026_02_22_105102_create_api_event_logs_table.php
  * Copyright (C) 2026 youhujun & xueer. All rights reserved.
  */
 
@@ -61,9 +61,9 @@ return new class () extends Migration {
 
                     $table->string('service_code', 64)->default('')->comment('所属服务编码（youhu-base/youhu/youhushop）');
                     $table->string('request_id', 64)->default('')->comment('请求链路ID（全链路追踪）');
-                    $table->unsignedTinyInteger('operator_type')->default(0)->comment('操作人类型：1-用户 2-系统 3-管理员 4-第三方');
+                    $table->unsignedTinyInteger('operator_type')->default(0)->comment('操作人类型：10-系统 2-管理员 30-用户 40-第三方');
                     $table->unsignedBigInteger('operator_uid')->default(0)->comment('操作人UID（用户/管理员UID，系统则为0）');
-                    $table->unsignedTinyInteger('status')->default(0)->comment('事件状态：0-待处理 1-成功 2-失败 3-重试中');
+                    $table->unsignedTinyInteger('evnet_status')->default(0)->comment('事件状态：0-待处理 10-成功 20-失败 30-重试中');
                     $table->text('ext_json')->nullable()->comment('扩展字段（JSON格式，存储个性化数据）');
 
 
