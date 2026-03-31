@@ -29,7 +29,7 @@ class UserLoginEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
+    public $userObject;
     // 是否开启事务
     public $isTransation;
     /**
@@ -37,10 +37,10 @@ class UserLoginEvent
      *
      * @return void
      */
-    public function __construct(User $user,$isTransation = 0)
+    public function __construct(User $userObject,$isTransation = 0)
     {
         //
-        $this->user = $user;
+        $this->user = $userObject;
         $this->isTransation = $isTransation;
     }
 

@@ -156,10 +156,10 @@ class AdminRoleFacadeService
      * 添加角色
      *
      * @param [type] $validated
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function addRole($validated,$admin)
+    public function addRole($validated,$adminObject)
     {
         $result = code(config('admin_code.AddRoleError'));
 
@@ -185,7 +185,7 @@ class AdminRoleFacadeService
             throw new CommonException('AddRoleError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'AddRole');
+        CommonEvent::dispatch($adminObject,$validated,'AddRole');
 
         Redis::hdel('system:config','treeRoles');
 		// 因为重置了角色权限,所以需要清空缓存
@@ -201,10 +201,10 @@ class AdminRoleFacadeService
      * 更新角色
      *
      * @param [type] $validated
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function updateRole($validated,$admin)
+    public function updateRole($validated,$adminObject)
     {
 
         $result = code(config('admin_code.UpdateRoleError'));
@@ -249,7 +249,7 @@ class AdminRoleFacadeService
             throw new CommonException('UpdateRoleError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'UpdateRole');
+        CommonEvent::dispatch($adminObject,$validated,'UpdateRole');
 
         Redis::hdel('system:config','treeRoles');
 		// 因为重置了角色权限,所以需要清空缓存
@@ -265,10 +265,10 @@ class AdminRoleFacadeService
      * 更新
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function moveRole($validated,$admin)
+    public function moveRole($validated,$adminObject)
     {
         $result = code(config('admin_code.MoveRoleError'));
 
@@ -332,7 +332,7 @@ class AdminRoleFacadeService
             throw new CommonException('MoveRoleError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'MoveRole');
+        CommonEvent::dispatch($adminObject,$validated,'MoveRole');
 
         //修改子级deep
         $deepNumber = $parentDeep - $oldDeep;
@@ -356,10 +356,10 @@ class AdminRoleFacadeService
      * 删除角色
      *
      * @param [type] $id
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function deleteRole($validated,$admin)
+    public function deleteRole($validated,$adminObject)
     {
         $result = code(config('admin_code.DeleteRoleError'));
 
@@ -410,7 +410,7 @@ class AdminRoleFacadeService
             throw new CommonException('DeleteNoUserRoleError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'DeleteRole');
+        CommonEvent::dispatch($adminObject,$validated,'DeleteRole');
 
         //清空redis的缓存数据
         Redis::hdel('system:config','treeRoles');
@@ -427,10 +427,10 @@ class AdminRoleFacadeService
      * 重置更新权限
      *
      * @param [type] $validated
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function resetRolePermission($validated ,$admin)
+    public function resetRolePermission($validated ,$adminObject)
     {
         $result = code(config('admin_code.ResetRolePermissionError'));
 
@@ -476,7 +476,7 @@ class AdminRoleFacadeService
 
         $logData = ['role_id'=>$role_id,'$beforePermissin'=>$beforePermissin,'$afterPermissin' =>$afterPermissin];
 
-        CommonEvent::dispatch($admin,$logData,'ResetRolePermission');
+        CommonEvent::dispatch($adminObject,$logData,'ResetRolePermission');
 
         Redis::hdel('system:config','treeRoles');
 

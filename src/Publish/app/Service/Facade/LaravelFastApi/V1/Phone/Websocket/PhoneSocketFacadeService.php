@@ -288,10 +288,10 @@ class PhoneSocketFacadeService
 		}
 
 		//过滤完成,开始处理业务逻辑
-		['type'=>$type,'token'=>$token,'user_id'=>$user_id] = $data+ [];
+		['type'=>$type,'token'=>$token,'user_id'=>$user_uid] = $data+ [];
 
 		// 检查是否已有登录
-		$oldFd = Redis::hget('socket:socket', $user_id);
+		$oldFd = Redis::hget('socket:socket', $user_uid);
 
 		// 确保 $oldFd 是整数，并且不是当前的连接
 		if ($oldFd && (int)$oldFd !== $frame->fd) {
@@ -309,7 +309,7 @@ class PhoneSocketFacadeService
 				]));
 
 				// 2. 稍作延迟后再关闭连接，确保消息能成功发送
-				swoole_timer_after(100, function() use ($oldFd, $user_id) {
+				swoole_timer_after(100, function() use ($oldFd, $user_uid) {
 					if ($this->server->exist($oldFd)) { // 再次检查，以防万一
 						$this->server->close($oldFd);
 						echo "已强制关闭旧连接 fd={$oldFd}\n";
@@ -321,7 +321,7 @@ class PhoneSocketFacadeService
 			}
 
 			// 3. 无论旧连接是否存在，都清理 Redis 和本地的旧映射
-			Redis::hdel('socket:user_fds', $user_id);
+			Redis::hdel('socket:user_fds', $user_uid);
 			if (isset($this->fdToUserId[$oldFd])) {
 				unset($this->fdToUserId[$oldFd]);
 			}
@@ -329,20 +329,20 @@ class PhoneSocketFacadeService
 				unset($this->onlineFds[$oldFd]);
 			}
 		}
-		$response = ['code'=>60030,'msg'=>"user_id-{$user_id}:socket用户登录失败",'type'=>'error','error'=>'socketUserLoginError'];
+		$response = ['code'=>60030,'msg'=>"user_id-{$user_uid}:socket用户登录失败",'type'=>'error','error'=>'socketUserLoginError'];
 
-		$checkResult = PhoneSocketUserFacade::checkSocketUserIsLogin($user_id,$token);
+		$checkResult = PhoneSocketUserFacade::checkSocketUserIsLogin($user_uid,$token);
 
 		if($checkResult)
 		{
-			$saveResult =  PhoneSocketUserFacade::saveSocketUser($user_id,$frame->fd);
+			$saveResult =  PhoneSocketUserFacade::saveSocketUser($user_uid,$frame->fd);
 
 			if($saveResult)
 			{
-				Redis::hset('socket:user_fds', $user_id, $frame->fd);
-				$this->fdToUserId[$frame->fd] = $user_id;
+				Redis::hset('socket:user_fds', $user_uid, $frame->fd);
+				$this->fdToUserId[$frame->fd] = $user_uid;
 				$this->onlineFds[$frame->fd] = true;
-				$response = ['code'=>0,'type'=>'login','msg'=>"user_id-{$user_id}:socket用户登录成功"];
+				$response = ['code'=>0,'type'=>'login','msg'=>"user_id-{$user_uid}:socket用户登录成功"];
 			}
 		}
 
@@ -369,7 +369,7 @@ class PhoneSocketFacadeService
 		}
 
 		//过滤完成,开始处理业务逻辑
-		['type'=>$type,'token'=>$token,'user_id'=>$user_id,'content'=>$content] = $data+ [];
+		['type'=>$type,'token'=>$token,'user_id'=>$user_uid,'content'=>$content] = $data+ [];
 
 		$response = [
 			'code'=>0,
@@ -393,7 +393,7 @@ class PhoneSocketFacadeService
 
 
 		//过滤完成,开始处理业务逻辑
-		['type'=>$type,'token'=>$token,'user_id'=>$user_id] = $data+ [];
+		['type'=>$type,'token'=>$token,'user_id'=>$user_uid] = $data+ [];
 
 		$response = [
 			'code'=>0,
@@ -409,7 +409,7 @@ class PhoneSocketFacadeService
     *
     * @param  [type] $data
 		$data = [];
-		$data['user_id'] = $user->id;
+		$data['user_id'] = $userObject->id;
 		//10 所有人 20只对某一个用户 30 对某一些用户
 		$data['send_type'] = 10;
 		$data['code'] = 0;

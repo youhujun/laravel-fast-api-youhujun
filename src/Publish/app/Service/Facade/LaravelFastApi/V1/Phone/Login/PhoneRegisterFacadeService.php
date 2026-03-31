@@ -97,45 +97,45 @@ class PhoneRegisterFacadeService
 
 		DB::beginTransaction();
 
-		$user = new User;
+		$userObject = new User;
 
-		$user->phone = $validated['phone'];
+		$userObject->phone = $validated['phone'];
 
-		$user->password = Hash::make(trim($validated['password']));
+		$userObject->password = Hash::make(trim($validated['password']));
 
-		$user->userId = Str::uuid()->toString();
+		$userObject->userId = Str::uuid()->toString();
 
 		//用户级别最低
-		$user->level_id = 1;
+		$userObject->level_id = 1;
 
 		//用户未实名认证
-		$user->real_auth_status = 10;
+		$userObject->real_auth_status = 10;
 
-		$user->switch = 1;
+		$userObject->switch = 1;
 
-		$user->created_at = time();
+		$userObject->created_at = time();
 
-		$user->created_time = time();
+		$userObject->created_time = time();
 
-		$user->account_name = \bin2hex(\random_bytes(4));
+		$userObject->account_name = \bin2hex(\random_bytes(4));
 
-		$user->auth_token = Str::random(20);
+		$userObject->auth_token = Str::random(20);
 
-		$userResult = $user->save();
+		$userResult = $userObject->save();
 
 		// 邀请码
-		$user_id = $user->id;
+		$user_uid = $userObject->id;
 
-		if(mb_strlen($user_id) < 4)
+		if(mb_strlen($user_uid) < 4)
 		{
-			$user->invite_code = str_pad($user_id,4,'0',STR_PAD_LEFT);
+			$userObject->invite_code = str_pad($user_uid,4,'0',STR_PAD_LEFT);
 		}
 		else
 		{
-			$user->invite_code = $user_id;
+			$userObject->invite_code = $user_uid;
 		}
 
-		$userResult = $user->save();
+		$userResult = $userObject->save();
 
 		if(!$userResult)
 		{
@@ -143,9 +143,9 @@ class PhoneRegisterFacadeService
 			throw new CommonException('AddUserError');
 		}
 
-		CommonUserFacade::registerUser($validated,$user);
+		CommonUserFacade::registerUser($validated,$userObject);
 
-		CommonEvent::dispatch($user,$validated,'AddUser',1);
+		CommonEvent::dispatch($userObject,$validated,'AddUser',1);
 
 		//提交
 		DB::commit();

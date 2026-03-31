@@ -77,11 +77,11 @@ class LoginController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
-            $result = AdminLoginFacade::logout($admin);
+            $result = AdminLoginFacade::logout($adminObject);
         }
         return $result;
     }

@@ -37,9 +37,9 @@ class BankController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
            $result =  AdminBankFacade::defaultBank();
         }
@@ -55,9 +55,9 @@ class BankController extends Controller
      */
     public function findBank(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -84,9 +84,9 @@ class BankController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -125,11 +125,11 @@ class BankController extends Controller
      */
     public function addBank(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -157,7 +157,7 @@ class BankController extends Controller
                 throw new RuleException('RuleRequiredError', 'sort');
             }
 
-            $result = AdminBankFacade::addBank(f($validated),$admin);
+            $result = AdminBankFacade::addBank(f($validated),$adminObject);
 
 
         }
@@ -173,13 +173,13 @@ class BankController extends Controller
      */
     public function updateBank(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
         $id = check_id($request->input('id'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -211,7 +211,7 @@ class BankController extends Controller
                 throw new RuleException('RuleRequiredError', 'sort');
             }
 
-            $result = AdminBankFacade::updateBank(f($validated),$admin);
+            $result = AdminBankFacade::updateBank(f($validated),$adminObject);
         }
 
         return $result;
@@ -226,11 +226,11 @@ class BankController extends Controller
      */
     public function deleteBank(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -246,7 +246,7 @@ class BankController extends Controller
                 throw new RuleException('RuleRequiredError', 'id');
             }
 
-            $result = AdminBankFacade::deleteBank(f($validated),$admin);
+            $result = AdminBankFacade::deleteBank(f($validated),$adminObject);
         }
 
         return $result;
@@ -260,11 +260,11 @@ class BankController extends Controller
      */
     public function multipleDeleteBank(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -280,7 +280,7 @@ class BankController extends Controller
                 throw new RuleException('RuleRequiredError', 'selectId');
             }
 
-            $result = AdminBankFacade::multipleDeleteBank(f($validated),$admin);
+            $result = AdminBankFacade::multipleDeleteBank(f($validated),$adminObject);
         }
 
         return $result;

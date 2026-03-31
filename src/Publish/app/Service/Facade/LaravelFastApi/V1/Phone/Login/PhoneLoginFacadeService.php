@@ -71,9 +71,9 @@ class PhoneLoginFacadeService
             throw new CommonException('LoginByUserError');
         }
 
-        $user = Auth::user();
+        $userObject = Auth::user();
 
-        $result = $this->commonLoginByPhone($dataPhone['phone'], $user);
+        $result = $this->commonLoginByPhone($dataPhone['phone'], $userObject);
 
         return $result;
     }
@@ -132,14 +132,14 @@ class PhoneLoginFacadeService
         $phone = $validated['phone'];
 
         //验证手机号 是否有手机用户
-        $user = User::where([['phone','=',$phone],['switch','=',1]])->first();
+        $userObject = User::where([['phone','=',$phone],['switch','=',1]])->first();
 
-        if (!$user) {
+        if (!$userObject) {
             throw new CommonException('PhoneUserError');
         }
 
         //登录
-        $result = $this->commonLoginByPhone($phone, $user);
+        $result = $this->commonLoginByPhone($phone, $userObject);
 
         return $result;
     }
@@ -163,23 +163,23 @@ class PhoneLoginFacadeService
             }
         }
 
-        $user = User::where('phone', $validated['phone'])->first();
+        $userObject = User::where('phone', $validated['phone'])->first();
 
-        if (!$user) {
+        if (!$userObject) {
             throw new CommonException('RestPasswordPoneIsNullError');
         }
 
         $password = $validated['password'];
 
-        $user->password = Hash::make($password);
+        $userObject->password = Hash::make($password);
 
-        $userResult = $user->save();
+        $userResult = $userObject->save();
 
         if (!$userResult) {
             throw new CommonException('RestPasswordByPhoneError');
         }
 
-        CommonEvent::dispatch($user, $validated, 'RestPasswordByPhone');
+        CommonEvent::dispatch($userObject, $validated, 'RestPasswordByPhone');
 
         $result = ['code' => 0 ,'msg' => '重置密码成功!'];
 
@@ -194,15 +194,15 @@ class PhoneLoginFacadeService
      * @param string $password
      * @return void
      */
-    protected function commonLoginByPhone($phone, $user = null)
+    protected function commonLoginByPhone($phone, $userObject = null)
     {
         Auth::setDefaultDriver('phone');
 
         $remember = true;//生成 remmber_token
 
-        if (optional($user)->phone) {
+        if (optional($userObject)->phone) {
             //如果有手机号 直接登录
-            Auth::login($user, $remember);
+            Auth::login($userObject, $remember);
         } else {
             //注册登录
             //验证手机号
@@ -216,22 +216,22 @@ class PhoneLoginFacadeService
                 throw new CommonException('LoginPhoneError');
             }
 
-            $user = Auth::user();
+            $userObject = Auth::user();
         }
 
         //验证现在这个用户是否是登录状态
-        CommonLoginFacade::checkResetLogin($user);
+        CommonLoginFacade::checkResetLogin($userObject);
 
         $data['data'] = [];
 
-        if (!empty($user) && isset($user->remember_token)) {
-            $data['data']['token'] = $user->remember_token;
-            $data['data']['userid'] = $user->id;
-            $data['data']['openid'] = CommonUserFacade::getUserOpenid($user);
+        if (!empty($userObject) && isset($userObject->remember_token)) {
+            $data['data']['token'] = $userObject->remember_token;
+            $data['data']['userid'] = $userObject->id;
+            $data['data']['openid'] = CommonUserFacade::getUserOpenid($userObject);
         }
 
         // 20是 用户登录 source
-        UserLoginEvent::dispatch($user);
+        UserLoginEvent::dispatch($userObject);
 
         $result = code(['code' => 0,'msg' => '用户登录成功!'], $data);
 
@@ -310,14 +310,14 @@ class PhoneLoginFacadeService
              //获取到手机号以后,有两种情况 一种是注册 再登录 一种是直接登录
 
              //先判断手机号是否在数据库中
-             $user = User::withTrashed()->where('phone',$phone)->first();
+             $userObject = User::withTrashed()->where('phone',$phone)->first();
 
-             if($user)
+             if($userObject)
              {
-                 if($user->switch == 1 && $user->deleted_at == null)
+                 if($userObject->switch == 1 && $userObject->deleted_at == null)
                  {
                      //登录
-                     $result = $this->commonLoginByPhone($phone,$ip,$user);
+                     $result = $this->commonLoginByPhone($phone,$ip,$userObject);
                  }
                  else
                  {
@@ -330,43 +330,43 @@ class PhoneLoginFacadeService
                  //注册
                  DB::beginTransaction();
 
-                 $user = new User;
+                 $userObject = new User;
 
-                 $user->phone = $validated['phone'];
+                 $userObject->phone = $validated['phone'];
 
-                 $user->password = Hash::make('abc123');
+                 $userObject->password = Hash::make('abc123');
 
                  //用户级别最低
-                 $user->level_id = 1;
+                 $userObject->level_id = 1;
 
                  //用户未实名认证
-                 $user->real_auth_status = 10;
+                 $userObject->real_auth_status = 10;
 
-                 $user->switch = 1;
+                 $userObject->switch = 1;
 
-                 $user->created_at = time();
+                 $userObject->created_at = time();
 
-                 $user->created_time = time();
+                 $userObject->created_time = time();
 
-                 $user->account_name = \bin2hex(\random_bytes(4));
+                 $userObject->account_name = \bin2hex(\random_bytes(4));
 
-                 $user->auth_token = Str::random(20);
+                 $userObject->auth_token = Str::random(20);
 
-                 $userResult = $user->save();
+                 $userResult = $userObject->save();
 
                  // 邀请码
-                 $user_id = $user->id;
+                 $user_uid = $userObject->id;
 
-                 if(mb_strlen($user_id) < 4)
+                 if(mb_strlen($user_uid) < 4)
                  {
-                     $user->invite_code = str_pad($user_id,4,'0',STR_PAD_LEFT);
+                     $userObject->invite_code = str_pad($user_uid,4,'0',STR_PAD_LEFT);
                  }
                  else
                  {
-                     $user->invite_code = $user_id;
+                     $userObject->invite_code = $user_uid;
                  }
 
-                 $userResult = $user->save();
+                 $userResult = $userObject->save();
 
                  if(!$userResult)
                  {
@@ -374,11 +374,11 @@ class PhoneLoginFacadeService
                      throw new CommonException('AddUserByUniverifyError');
                  }
 
-                 UserRegisterEvent::dispatch($user,$validated,1);
+                 UserRegisterEvent::dispatch($userObject,$validated,1);
 
-                 SystemDistributeUserEvent::dispatch($user,$validated,1);
+                 SystemDistributeUserEvent::dispatch($userObject,$validated,1);
 
-                 CommonEvent::dispatch($user,$validated,'AddUserByUniverify',1);
+                 CommonEvent::dispatch($userObject,$validated,'AddUserByUniverify',1);
 
                  //提交
                  DB::commit();
@@ -408,9 +408,9 @@ class PhoneLoginFacadeService
             throw new CommonException('LoginByUserIdError');
         }
 
-        $user = User::find($validated['user_id']);
+        $userObject = User::find($validated['user_id']);
 
-        if (!$user) {
+        if (!$userObject) {
             throw new CommonException('LoginByUserIdError');
         }
 
@@ -418,16 +418,16 @@ class PhoneLoginFacadeService
 
         $remember = true;
 
-        Auth::login($user, $remember);
+        Auth::login($userObject, $remember);
 
         //验证现在这个用户是否是登录状态
-        CommonLoginFacade::checkResetLogin($user);
+        CommonLoginFacade::checkResetLogin($userObject);
 
-        UserLoginEvent::dispatch($user);
+        UserLoginEvent::dispatch($userObject);
 
-        $data['data']['token'] = $user->remember_token;
-        $data['data']['userid'] = $user->id;
-        $data['data']['openid'] = CommonUserFacade::getUserOpenid($user);
+        $data['data']['token'] = $userObject->remember_token;
+        $data['data']['userid'] = $userObject->id;
+        $data['data']['openid'] = CommonUserFacade::getUserOpenid($userObject);
 
         $result = code(['code' => 0,'msg' => '用户登录成功!'], $data);
 
@@ -439,7 +439,7 @@ class PhoneLoginFacadeService
      *
      * @return void
      */
-    public function getUserInfo($validated, $user)
+    public function getUserInfo($validated, $userObject)
     {
         $result = code(config('phone_code.GetUserInfoError'));
 
@@ -458,7 +458,7 @@ class PhoneLoginFacadeService
         $userInfoData = null;
 
         //先检测redis 缓存有没有数据 如果有redis缓存数据
-        $redisData = Redis::hget("phone_user_info:user_info", $user->id);
+        $redisData = Redis::hget("phone_user_info:user_info", $userObject->id);
 
 
         if (isset($redisData) && !empty($redisData)) {
@@ -468,7 +468,7 @@ class PhoneLoginFacadeService
 
         //走到这里说明没redis缓存中没有
         if (!isset($userInfoData) || empty($userInfoData)) {
-            $userInfo = UserInfo::where('user_id', $user->id)->first();
+            $userInfo = UserInfo::where('user_id', $userObject->id)->first();
 
             if (!$userInfo) {
                 throw new CommonException('GetUserInfoError');
@@ -482,21 +482,21 @@ class PhoneLoginFacadeService
                 $data['introduction'] = $userInfo->introduction;
             }
 
-            $data['userid'] = $user->id;
+            $data['userid'] = $userObject->id;
 
-            $data['avatar'] = CommonUserFacade::getUserAvatar($user);
+            $data['avatar'] = CommonUserFacade::getUserAvatar($userObject);
 
-            $data['roles'] = getUserRoles($user);
+            $data['roles'] = getUserRoles($userObject);
 
-            $data['phone'] = $user->phone;
+            $data['phone'] = $userObject->phone;
 
-            $data['created_at'] = $user->created_at;
+            $data['created_at'] = $userObject->created_at;
 
-            $data['real_auth_status'] = $user->real_auth_status;
+            $data['real_auth_status'] = $userObject->real_auth_status;
 
             $openid_type = $validated['openid_type'];
 
-            $data['openid'] = CommonUserFacade::getUserOpenid($user, $openid_type);
+            $data['openid'] = CommonUserFacade::getUserOpenid($userObject, $openid_type);
 
 
 
@@ -504,7 +504,7 @@ class PhoneLoginFacadeService
                 $data['sex'] = $userInfo->sex;
             }
 
-            Redis::hset("phone_user_info:user_info", $user->id, json_encode($data));
+            Redis::hset("phone_user_info:user_info", $userObject->id, json_encode($data));
         }
 
         $result = code(['code' => 0,'msg' => '获取用户信息成功'], ['data' => $data]);
@@ -516,9 +516,9 @@ class PhoneLoginFacadeService
      * 微信登录后绑定手机
      *
      * @param  [type] $validated
-     * @param  [type] $user
+     * @param  [type] $userObject
      */
-    public function bindPhone($validated, $user)
+    public function bindPhone($validated, $userObject)
     {
         $result = code(config('phone_code.UserBindPhoneError'));
 
@@ -538,17 +538,17 @@ class PhoneLoginFacadeService
 
         //绑定手机和密码
 
-        $user->phone = $phone;
+        $userObject->phone = $phone;
 
-        $user->password = Hash::make($password);
+        $userObject->password = Hash::make($password);
 
-        $userResult = $user->save();
+        $userResult = $userObject->save();
 
         if (!$userResult) {
             throw new CommonException('UserBindPhoneError');
         }
 
-        CommonEvent::dispatch($user, $validated, 'UserBindPhone');
+        CommonEvent::dispatch($userObject, $validated, 'UserBindPhone');
 
         $data = [];
         $data['phone'] = $phone;
@@ -563,22 +563,22 @@ class PhoneLoginFacadeService
      *
      * @return void
      */
-    public function logout($user)
+    public function logout($userObject)
     {
         $result = code(config('phone_code.LogoutError'));
 
-        $token = $user->remember_token;
+        $token = $userObject->remember_token;
 
-        $user->remember_token = null;
+        $userObject->remember_token = null;
 
         //UserUpdateToken
-        $logoutResult = $user->save();
+        $logoutResult = $userObject->save();
 
         if (!$logoutResult) {
             throw new CommonException('LogoutError');
         }
 
-        UserLogoutEvent::dispatch($user, $token);
+        UserLogoutEvent::dispatch($userObject, $token);
 
         $result = code(['code' => 0 ,'msg' => '用户退出成功!']);
 

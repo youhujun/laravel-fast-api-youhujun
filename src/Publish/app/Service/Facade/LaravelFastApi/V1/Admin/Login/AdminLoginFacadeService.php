@@ -110,28 +110,28 @@ class AdminLoginFacadeService
 		}
 
 		
-		$admin = Auth::user();
+		$adminObject = Auth::user();
 
-		//p($admin);die;
+		//p($adminObject);die;
 
 		//无论如何 在redis缓存中执行一边重新再的登录
-		AdminBackgroundLoginFacade::checkResetLogin($admin);
+		AdminBackgroundLoginFacade::checkResetLogin($adminObject);
 
 		$data['data'] = [];
 
-		if (empty($admin) || !isset($admin->remember_token))
+		if (empty($adminObject) || !isset($adminObject->remember_token))
 		{
 			throw new CommonException('GetLoginAdminError');
 		}
 
-		$data['data']['token'] = $admin->remember_token;
+		$data['data']['token'] = $adminObject->remember_token;
 
-		//adminLogin::dispatch($admin, $ip);
-		AdminLoginEvent::dispatch($admin,$validated);
+		//adminLogin::dispatch($adminObject, $ip);
+		AdminLoginEvent::dispatch($adminObject,$validated);
 
 		//登录成功以后 12个小时以后数据库自动退出
-		//AdminLogoutJob::dispatchIf($admin->remember_token, $admin)->delay(now()->addSeconds(3600 * 12));
-		AdminLogoutJob::dispatchIf($admin->remember_token, $admin)->delay(now()->addSeconds(3600 * 12));
+		//AdminLogoutJob::dispatchIf($adminObject->remember_token, $adminObject)->delay(now()->addSeconds(3600 * 12));
+		AdminLogoutJob::dispatchIf($adminObject->remember_token, $adminObject)->delay(now()->addSeconds(3600 * 12));
 
 		$result = code(['code'=>0,'msg'=>'登录成功!'], $data);
 		
@@ -143,23 +143,23 @@ class AdminLoginFacadeService
      *
      * @return void
     */
-    public function logout($admin)
+    public function logout($adminObject)
     {
         $result = [];
 
-        $token = $admin->remember_token;
+        $token = $adminObject->remember_token;
 
-        $admin->remember_token = null;
+        $adminObject->remember_token = null;
 
         //UserUpdateToken
-        $logoutResult = $admin->save();
+        $logoutResult = $adminObject->save();
 
         if (!$logoutResult)
         {
             throw new CommonException('AdminLogoutError');
         }
 
-        AdminLogoutEvent::dispatch($admin,$token);
+        AdminLogoutEvent::dispatch($adminObject,$token);
 
 
         $result = code(['code'=>0,'msg'=>'管理员退出成功!']);
@@ -170,12 +170,12 @@ class AdminLoginFacadeService
     /**
      * 获取管理员信息
      *
-     * @param   $admin
+     * @param   $adminObject
      */
-    public function getAdminInfo($admin)
+    public function getAdminInfo($adminObject)
     {
 
-		$result = new AdminInfoResource($admin,['code'=>0,'msg'=>'获取管理员信息成功']);
+		$result = new AdminInfoResource($adminObject,['code'=>0,'msg'=>'获取管理员信息成功']);
 
 		return $result;
     }

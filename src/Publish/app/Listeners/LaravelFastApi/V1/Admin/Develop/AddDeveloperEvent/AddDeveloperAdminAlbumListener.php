@@ -40,18 +40,18 @@ class AddDeveloperAdminAlbumListener
      */
     public function handle(object $event): void
     {
-        $admin = $event->admin;
-        $user = $event->user;
+        $adminObject = $event->admin;
+        $userObject = $event->user;
         $validated = $event->validated;
 
         $albumData = [];
 
         $albumData[] = [
-            'admin_id'=>$admin->id,
+            'admin_id'=>$adminObject->id,
             'user_id'=> 0,
             'is_default'=>1,
-            'album_name'=>'admin_'.$user->account_name,
-            'album_description'=>$user->account_name,
+            'album_name'=>'admin_'.$userObject->account_name,
+            'album_description'=>$userObject->account_name,
             'sort'=>100,
             'cover_album_picture_id'=>1,
             'album_type'=> 10,
@@ -61,10 +61,10 @@ class AddDeveloperAdminAlbumListener
 
         $albumData[] = [
             'admin_id'=>0,
-            'user_id'=> $user->id,
+            'user_id'=> $userObject->id,
             'is_default'=>1,
-            'album_name'=>'user_'.$user->account_name,
-            'album_description'=>$user->account_name,
+            'album_name'=>'user_'.$userObject->account_name,
+            'album_description'=>$userObject->account_name,
             'sort'=>100,
             'cover_album_picture_id'=>1,
             'album_type'=> 20,

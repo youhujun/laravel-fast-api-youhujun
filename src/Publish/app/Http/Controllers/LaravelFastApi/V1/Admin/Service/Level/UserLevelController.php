@@ -39,9 +39,9 @@ class UserLevelController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($user)->allows('admin-role'))
+        if(Gate::forUser($userObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -67,9 +67,9 @@ class UserLevelController extends Controller
      */
     public function findUserLevel(Request $request)
     {
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($user)->allows('admin-role'))
+        if(Gate::forUser($userObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -100,9 +100,9 @@ class UserLevelController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-       $user = Auth::guard('admin_token')->user();
+       $userObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($user)->allows('admin-role'))
+        if(Gate::forUser($userObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -140,9 +140,9 @@ class UserLevelController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($user)->allows('admin-role'))
+        if(Gate::forUser($userObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -171,7 +171,7 @@ class UserLevelController extends Controller
                 throw new RuleException('RuleRequiredError', 'level_code');
             }
 
-            $result = AdminUserLevelFacade::addUserLevel(f($validated),$user);
+            $result = AdminUserLevelFacade::addUserLevel(f($validated),$userObject);
         }
 
         return $result;
@@ -185,13 +185,13 @@ class UserLevelController extends Controller
      */
     public function updateUserLevel(Request $request)
     {
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
         $id = check_id($request->input('id'));
 
-        if(Gate::forUser($user)->allows('admin-role'))
+        if(Gate::forUser($userObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -225,7 +225,7 @@ class UserLevelController extends Controller
                throw new RuleException('RuleRequiredError', 'level_code');
            }
 
-           $result =AdminUserLevelFacade::updateUserLevel(f($validated),$user);
+           $result =AdminUserLevelFacade::updateUserLevel(f($validated),$userObject);
         }
 
         return $result;
@@ -239,11 +239,11 @@ class UserLevelController extends Controller
      */
     public function deleteUserLevel(Request $request)
     {
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($user)->allows('admin-role'))
+        if(Gate::forUser($userObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -260,7 +260,7 @@ class UserLevelController extends Controller
                 throw new RuleException('RuleRequiredError', 'id');
             }
 
-            $result = AdminUserLevelFacade::deleteUserLevel($validated,$user);
+            $result = AdminUserLevelFacade::deleteUserLevel($validated,$userObject);
         }
 
         return $result;
@@ -274,11 +274,11 @@ class UserLevelController extends Controller
      */
     public function multipleDeleteUserLevel(Request $request)
     {
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($user)->allows('admin-role'))
+        if(Gate::forUser($userObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -295,7 +295,7 @@ class UserLevelController extends Controller
                 throw new RuleException('RuleRequiredError', 'selectId');
             }
 
-            $result = AdminUserLevelFacade::multipleDeleteUserLevel(f($validated),$user);
+            $result = AdminUserLevelFacade::multipleDeleteUserLevel(f($validated),$userObject);
         }
 
         return $result;
@@ -312,9 +312,9 @@ class UserLevelController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($user)->allows('admin-role'))
+        if(Gate::forUser($userObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -336,7 +336,7 @@ class UserLevelController extends Controller
                 unset($validated['id']);
             }
 
-            $result = AdminUserLevelFacade::addUserLevelItemUnion(f($validated),$user);
+            $result = AdminUserLevelFacade::addUserLevelItemUnion(f($validated),$userObject);
         }
 
         return $result;
@@ -350,11 +350,11 @@ class UserLevelController extends Controller
      */
     public function updateUserLevelItemUnion(Request $request)
     {
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($user)->allows('admin-role'))
+        if(Gate::forUser($userObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -372,7 +372,7 @@ class UserLevelController extends Controller
 
            $validated = $validator->validated();
 
-           $result =AdminUserLevelFacade::updateUserLevelItemUnion(f($validated),$user);
+           $result =AdminUserLevelFacade::updateUserLevelItemUnion(f($validated),$userObject);
         }
 
         return $result;
@@ -386,11 +386,11 @@ class UserLevelController extends Controller
      */
     public function deleteUserLevelItemUnion(Request $request)
     {
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($user)->allows('admin-role'))
+        if(Gate::forUser($userObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -403,7 +403,7 @@ class UserLevelController extends Controller
 
             $validated = $validator->validated();
 
-            $result = AdminUserLevelFacade::deleteUserLevelItemUnion($validated,$user);
+            $result = AdminUserLevelFacade::deleteUserLevelItemUnion($validated,$userObject);
         }
 
         return $result;

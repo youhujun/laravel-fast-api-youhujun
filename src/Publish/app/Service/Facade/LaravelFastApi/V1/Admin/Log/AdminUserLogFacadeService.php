@@ -51,10 +51,10 @@ class AdminUserLogFacadeService
      *
      *获取登录日志
      * @param [type] $validated
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function getUserLoginLog($validated,$admin)
+    public function getUserLoginLog($validated,$adminObject)
     {
         $result = code(config('admin_code.GetUserLoginLogError'));
 
@@ -111,10 +111,10 @@ class AdminUserLogFacadeService
      * 删除日志
      *
      * @param [type] $validated
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function deleteUserLoginLog($validated,$admin)
+    public function deleteUserLoginLog($validated,$adminObject)
     {
         $result = code(config('admin_code.DeleteUserLoginLogError'));
 
@@ -125,7 +125,7 @@ class AdminUserLogFacadeService
             throw new CommonException('DeleteUserLoginLogError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'DeleteUserLoginLog');
+        CommonEvent::dispatch($adminObject,$validated,'DeleteUserLoginLog');
 
         $result = code(['code'=>0,'msg'=>'删除用户登录日志成功!']);
 
@@ -136,10 +136,10 @@ class AdminUserLogFacadeService
      * 多选删除
      *
      * @param [type] $validated
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function multipleDeleteUserLoginLog($validated,$user)
+    public function multipleDeleteUserLoginLog($validated,$userObject)
     {
         $result = code(config('admin_code.MultipleDeleteUserLoginLogError'));
 
@@ -152,7 +152,7 @@ class AdminUserLogFacadeService
                 throw new CommonException('MultipleDeleteUserLoginLogError');
             }
 
-            CommonEvent::dispatch($user,$validated,'MultipleDeleteUserLoginLog');
+            CommonEvent::dispatch($userObject,$validated,'MultipleDeleteUserLoginLog');
 
             $result = code(['code'=>0,'msg'=>'批量删除用户登录日志成功!']);
         }
@@ -164,10 +164,10 @@ class AdminUserLogFacadeService
      * 获取事件日志
      *
      * @param [type] $validated
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function getUserEventLog($validated,$user)
+    public function getUserEventLog($validated,$userObject)
     {
         $result = code(config('admin_code.GetEventLogError'));
 
@@ -222,10 +222,10 @@ class AdminUserLogFacadeService
      * 删除事件日志
      *
      * @param [type] $validated
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function deleteUserEventLog($validated,$user)
+    public function deleteUserEventLog($validated,$userObject)
     {
         $result = code(config('admin_code.DeleteEventLogError'));
 
@@ -248,10 +248,10 @@ class AdminUserLogFacadeService
      * 多选删除
      *
      * @param [type] $validated
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function multipleDeleteUserEventLog($validated,$user)
+    public function multipleDeleteUserEventLog($validated,$userObject)
     {
         $result = code(config('admin_code.MultipleDeleteEventLogError'));
 

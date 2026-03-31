@@ -31,7 +31,7 @@ class UserLogoutEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
+    public $userObject;
     public $token;
     // 是否开启事务
     public $isTransation;
@@ -40,10 +40,10 @@ class UserLogoutEvent
      *
      * @return void
      */
-    public function __construct($user,$token,$isTransation = 0)
+    public function __construct($userObject,$token,$isTransation = 0)
     {
         //
-        $this->user = $user;
+        $this->user = $userObject;
         $this->token = $token;
         $this->isTransation = $isTransation;
     }

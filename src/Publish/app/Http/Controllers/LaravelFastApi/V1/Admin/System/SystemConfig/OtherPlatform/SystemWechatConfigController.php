@@ -40,9 +40,9 @@ class SystemWechatConfigController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
              $validator = Validator::make(
@@ -71,7 +71,7 @@ class SystemWechatConfigController extends Controller
 
 			if(count($validated))
 			{
-				$result = SystemWechatConfigFacade::getSystemWechatConfig(f($validated),$admin);
+				$result = SystemWechatConfigFacade::getSystemWechatConfig(f($validated),$adminObject);
 			}
         }
 
@@ -86,11 +86,11 @@ class SystemWechatConfigController extends Controller
      */
     public function addSystemWechatConfig(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -125,7 +125,7 @@ class SystemWechatConfigController extends Controller
 
             if(count($validated))
 			{
-				$result = SystemWechatConfigFacade::addSystemWechatConfig(f($validated),$admin);
+				$result = SystemWechatConfigFacade::addSystemWechatConfig(f($validated),$adminObject);
 			}
             
         }
@@ -141,13 +141,13 @@ class SystemWechatConfigController extends Controller
      */
     public function updateSystemWechatConfig(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
         $id = check_id($request->input('id'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
          
           $validator = Validator::make(
@@ -187,7 +187,7 @@ class SystemWechatConfigController extends Controller
 
 		   if(count($validated))
 			{
-				$result = SystemWechatConfigFacade::updateSystemWechatConfig(f($validated),$admin);
+				$result = SystemWechatConfigFacade::updateSystemWechatConfig(f($validated),$adminObject);
 			}
 
           
@@ -204,11 +204,11 @@ class SystemWechatConfigController extends Controller
      */
     public function deleteSystemWechatConfig(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -232,7 +232,7 @@ class SystemWechatConfigController extends Controller
 
 			if(count($validated))
 			{
-				 $result = SystemWechatConfigFacade::deleteSystemWechatConfig(f($validated),$admin);
+				 $result = SystemWechatConfigFacade::deleteSystemWechatConfig(f($validated),$adminObject);
 			}
         }
 
@@ -247,11 +247,11 @@ class SystemWechatConfigController extends Controller
      */
     public function multipleDeleteSystemWechatConfig(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -275,7 +275,7 @@ class SystemWechatConfigController extends Controller
 
 			if(count($validated))
 			{
-				 $result = SystemWechatConfigFacade::multipleDeleteSystemWechatConfig(f($validated),$admin);
+				 $result = SystemWechatConfigFacade::multipleDeleteSystemWechatConfig(f($validated),$adminObject);
 			}
         }
 

@@ -40,7 +40,7 @@ class AddAdministratorRoleListener
      */
     public function handle(object $event): void
     {
-        $admin = $event->admin;
+        $adminObject = $event->admin;
         $addAdmin = $event->addAdmin;
         $validated = $event->validated;
 

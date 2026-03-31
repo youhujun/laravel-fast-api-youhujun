@@ -28,7 +28,7 @@ class UpdateAdministratorEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $admin;
+    public $adminObject;
     public $updateAdmin;
     public $validated;
     /**
@@ -36,9 +36,9 @@ class UpdateAdministratorEvent
      *
      * @return void
      */
-    public function __construct(Admin $admin,Admin $updateAdmin, $validated)
+    public function __construct(Admin $adminObject,Admin $updateAdmin, $validated)
     {
-        $this->admin = $admin;
+        $this->admin = $adminObject;
         $this->updateAdmin = $updateAdmin;
         $this->validated = $validated;
     }

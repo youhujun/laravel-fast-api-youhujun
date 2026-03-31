@@ -38,13 +38,13 @@ class AddPhoneUserLogListener
      */
     public function handle(object $event): void
     {
-        $user = $event->user;
+        $userObject = $event->user;
         $ip = $event->ip;
         $isTransation = $event->isTransation;
 
         $userLoginLog = new UserLoginLog;
 
-        $userLoginLog->user_id = $user->id;
+        $userLoginLog->user_id = $userObject->id;
         $userLoginLog->status = 10;
         $userLoginLog->ip = $ip;
         $userLoginLog->instruction = '用户登录';

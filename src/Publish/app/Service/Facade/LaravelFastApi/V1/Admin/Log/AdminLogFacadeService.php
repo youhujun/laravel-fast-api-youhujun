@@ -50,10 +50,10 @@ class AdminLogFacadeService
    /**
      *获取登录日志
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function getAdminLoginLog($validated,$admin)
+    public function getAdminLoginLog($validated,$adminObject)
     {
         $result = code(config('admin_code.GetAdminLoginError'));
 
@@ -110,10 +110,10 @@ class AdminLogFacadeService
      * 删除日志
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function deleteAdminLoginLog($validated,$admin)
+    public function deleteAdminLoginLog($validated,$adminObject)
     {
         $result = code(config('admin_code.DeleteAdminLoginLogError'));
 
@@ -124,7 +124,7 @@ class AdminLogFacadeService
             throw new CommonException('DeleteAdminLoginLogError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'DeleteAdminLoginLog');
+        CommonEvent::dispatch($adminObject,$validated,'DeleteAdminLoginLog');
 
         $result = code(['code'=>0,'msg'=>'删除登录日志成功!']);
 
@@ -135,10 +135,10 @@ class AdminLogFacadeService
      * 多选删除
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function multipleDeleteAdminLoginLog($validated,$admin)
+    public function multipleDeleteAdminLoginLog($validated,$adminObject)
     {
         $result = code(config('admin_code.MultipleDeleteAdminLoginLogError'));
 
@@ -151,7 +151,7 @@ class AdminLogFacadeService
                 throw new CommonException('MultipleDeleteAdminLoginLogError');
             }
 
-            CommonEvent::dispatch($admin,$validated,'MultipleDeleteAdminLoginLog');
+            CommonEvent::dispatch($adminObject,$validated,'MultipleDeleteAdminLoginLog');
 
             $result = code(['code'=>0,'msg'=>'批量删除登录日志成功!']);
         }
@@ -163,10 +163,10 @@ class AdminLogFacadeService
      * 获取事件日志
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function getAdminEventLog($validated,$admin)
+    public function getAdminEventLog($validated,$adminObject)
     {
         $result = code(config('admin_code.GetEventLogError'));
 
@@ -221,10 +221,10 @@ class AdminLogFacadeService
      * 删除事件日志
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function deleteAdminEventLog($validated,$admin)
+    public function deleteAdminEventLog($validated,$adminObject)
     {
         $result = code(config('admin_code.DeleteEventLogError'));
 
@@ -247,10 +247,10 @@ class AdminLogFacadeService
      * 多选删除
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function multipleDeleteAdminEventLog($validated,$admin)
+    public function multipleDeleteAdminEventLog($validated,$adminObject)
     {
         $result = code(config('admin_code.MultipleDeleteEventLogError'));
 

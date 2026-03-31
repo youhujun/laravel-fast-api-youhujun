@@ -56,11 +56,11 @@ class AdminResource extends JsonResource
 
 		if($this->resource->relationLoaded('user') && !is_null($this->resource->user))
 		{
-			$user = $this->resource->user;
+			$userObject = $this->resource->user;
 
-			if($user->relationLoaded('userInfo') && !is_null($user->userInfo))
+			if($userObject->relationLoaded('userInfo') && !is_null($userObject->userInfo))
 			{
-				$userInfo = $user->userInfo;
+				$userInfo = $userObject->userInfo;
 
 				$response['nick_name'] = $userInfo->nick_name ?? '';
 				$response['real_name'] = $userInfo->real_name ?? '';
@@ -71,9 +71,9 @@ class AdminResource extends JsonResource
 				$response['introduction'] = $userInfo->introduction ?? '';
 			}
 
-			if($user->relationLoaded('userAvatar') && !is_null($user->userAvatar))
+			if($userObject->relationLoaded('userAvatar') && !is_null($userObject->userAvatar))
 			{
-				$userAvatar = $user->userAvatar->firstWhere('is_default',1);
+				$userAvatar = $userObject->userAvatar->firstWhere('is_default',1);
 
 				// 4. 校验默认头像是否存在
 				if(!is_null($userAvatar) && $userAvatar->relationLoaded('albumPicture'))
@@ -93,9 +93,9 @@ class AdminResource extends JsonResource
 			}
 
 			// 6. 校验role关联是否加载且存在
-			if($user->relationLoaded('role') && !is_null($user->role))
+			if($userObject->relationLoaded('role') && !is_null($userObject->role))
 			{
-				$response['role'] = RoleResource::collection($user->role);
+				$response['role'] = RoleResource::collection($userObject->role);
 			} else {
 				$response['role'] = []; // 无角色时返回空数组
 			}

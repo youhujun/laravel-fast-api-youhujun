@@ -44,9 +44,9 @@ class CacheConfigController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $result = AdminCacheConfigFacade::cleanConfigCache();
         }
@@ -64,9 +64,9 @@ class CacheConfigController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $result = AdminCacheConfigFacade::cleanRegionCache();
         }
@@ -84,9 +84,9 @@ class CacheConfigController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $result = AdminCacheConfigFacade::cleanRoleCache();
         }
@@ -104,9 +104,9 @@ class CacheConfigController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $result = AdminCacheConfigFacade::cleanGoodsClassCache();
         }
@@ -123,9 +123,9 @@ class CacheConfigController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $result = AdminCacheConfigFacade::cleanCategoryCache();
         }
@@ -143,9 +143,9 @@ class CacheConfigController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $result = AdminCacheConfigFacade::cleanLabelCache();
         }
@@ -163,9 +163,9 @@ class CacheConfigController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $result = AdminCacheConfigFacade::cleanSystemConfigCache();
         }
@@ -183,9 +183,9 @@ class CacheConfigController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $result = AdminCacheConfigFacade::cleanPermissionCache();
         }
@@ -202,11 +202,11 @@ class CacheConfigController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
-            $result = AdminCacheConfigFacade::cleanLoginUserInfoCache($admin);
+            $result = AdminCacheConfigFacade::cleanLoginUserInfoCache($adminObject);
         }
 
         return $result;

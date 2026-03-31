@@ -29,7 +29,7 @@ class UserLocationLogEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
+    public $userObject;
 
     public $validated;
 
@@ -41,10 +41,10 @@ class UserLocationLogEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($user,$validated,$address,$isTransation = 0)
+    public function __construct($userObject,$validated,$address,$isTransation = 0)
     {
         //
-        $this->user = $user;
+        $this->user = $userObject;
         $this->validated = $validated;
 		$this->address = $address;
         $this->isTransation = $isTransation;

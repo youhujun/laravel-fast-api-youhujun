@@ -39,14 +39,14 @@ class AddUserAlbumListener
      */
     public function handle(object $event): void
     {
-        $user = $event->user;
+        $userObject = $event->user;
         $validated = $event->validated;
         $isTransation = $event->isTransation;
 
         //用户相册
         $album = new Album;
 
-        $album ->user_id = $user->id;
+        $album ->user_id = $userObject->id;
 
         $album->created_at = time();
 
@@ -54,9 +54,9 @@ class AddUserAlbumListener
 
         $album->is_default = 1;
 
-        $album->album_name = $user->account_name;
+        $album->album_name = $userObject->account_name;
 
-        $album->album_description = $user->account_name;
+        $album->album_description = $userObject->account_name;
 
         $album->sort = 100;
 

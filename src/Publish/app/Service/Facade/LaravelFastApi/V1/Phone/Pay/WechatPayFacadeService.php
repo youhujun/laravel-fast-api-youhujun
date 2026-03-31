@@ -42,7 +42,7 @@ class WechatPayFacadeService
     * @param [type] $orderData
     * @return void
     */
-   public function payOrderByJsExample($order_id,$order_real_pay_amount,$user)
+   public function payOrderByJsExample($order_id,$order_real_pay_amount,$userObject)
    {
         $result = code(config('phone_code.WechatPayOrderByJsError'));
 
@@ -50,7 +50,7 @@ class WechatPayFacadeService
         $openid = '';
 
         $where = [];
-        $where[] = ['user_id','=',$user->id];
+        $where[] = ['user_id','=',$userObject->id];
         $where[] = ['type','=',30];
         //openid
         $userWechatObject = UserSystemWechatConfigUnion::where($where)->first();
@@ -87,7 +87,7 @@ class WechatPayFacadeService
         $goodsIdArray = [1,2,3];
 
         //用户id
-        $user_id = $user->id;
+        $user_uid = $userObject->id;
 
         //备注
         $bakData = [
@@ -97,7 +97,7 @@ class WechatPayFacadeService
                 'order_sn'=>$order_sn,
             ],
             'goods'=>$goodsIdArray,
-            'user'=>$user_id
+            'user'=>$user_uid
         ];
 
         //==========================提交数据===============================

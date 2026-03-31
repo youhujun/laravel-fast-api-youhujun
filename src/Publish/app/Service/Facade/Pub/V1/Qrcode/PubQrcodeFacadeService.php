@@ -48,9 +48,9 @@ class PubQrcodeFacadeService
     // 1 保存二维码 2直接输出 3生成img标签url
     protected $mode;
 
-    public function init(User $user)
+    public function init(User $userObject)
     {
-        $shareString = $user->invite_code;
+        $shareString = $userObject->invite_code;
 
         $configUrl = Cache::get('qrcode.redirectUrl');
 
@@ -80,20 +80,20 @@ class PubQrcodeFacadeService
         }
 
         //确保该目录可以存在
-        Storage::disk('public')->makeDirectory("/user/album/{$user->id}");
+        Storage::disk('public')->makeDirectory("/user/album/{$userObject->id}");
 
-        $this->qrcodePath = storage_path()."/app/public/user/album/{$user->id}/{$user->id}_qrcode.png";
+        $this->qrcodePath = storage_path()."/app/public/user/album/{$userObject->id}/{$userObject->id}_qrcode.png";
     }
 
     /**
      * 生成用户二维码
      */
-    public function makeQrcdoeWithUser(User $user, $mode = 1)
+    public function makeQrcdoeWithUser(User $userObject, $mode = 1)
     {
-        $this->init($user);
+        $this->init($userObject);
 
-        $userId = $user->id;
-        $inviteCode = $user->invite_code;
+        $userId = $userObject->id;
+        $inviteCode = $userObject->invite_code;
         $shareUrl =  $this->redirectUrl;
 
         $config = [

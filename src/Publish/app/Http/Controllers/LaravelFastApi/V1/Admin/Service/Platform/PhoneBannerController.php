@@ -44,9 +44,9 @@ class PhoneBannerController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
              $validator = Validator::make(
@@ -67,7 +67,7 @@ class PhoneBannerController extends Controller
 
             //p($validated);die;
 
-            $result = AdminPhoneBannerFacade::getPhoneBanner(f($validated),$admin);
+            $result = AdminPhoneBannerFacade::getPhoneBanner(f($validated),$adminObject);
         }
 
         return $result;
@@ -81,11 +81,11 @@ class PhoneBannerController extends Controller
      */
     public function addPhoneBanner(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -111,7 +111,7 @@ class PhoneBannerController extends Controller
 
             //p($validated);die;
 
-            $result = AdminPhoneBannerFacade::addPhoneBanner(f($validated),$admin);
+            $result = AdminPhoneBannerFacade::addPhoneBanner(f($validated),$adminObject);
         }
 
         return $result;
@@ -124,13 +124,13 @@ class PhoneBannerController extends Controller
      */
     public function updatePhoneBanner(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
         $id = check_id($request->input('id'));
 
-        if (Gate::forUser($admin)->allows('admin-role'))
+        if (Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -159,7 +159,7 @@ class PhoneBannerController extends Controller
                 throw new RuleException('RuleRequiredError', 'sort');
             }
 
-            $result = AdminPhoneBannerFacade::updatePhoneBanner(f($validated), $admin);
+            $result = AdminPhoneBannerFacade::updatePhoneBanner(f($validated), $adminObject);
         }
 
         return $result;
@@ -174,11 +174,11 @@ class PhoneBannerController extends Controller
      */
     public function deletePhoneBanner(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role'))
+        if (Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -200,7 +200,7 @@ class PhoneBannerController extends Controller
                 throw new RuleException('RuleRequiredError', 'is_delete');
             }
 
-            $result = AdminPhoneBannerFacade::deletePhoneBanner(f($validated), $admin);
+            $result = AdminPhoneBannerFacade::deletePhoneBanner(f($validated), $adminObject);
         }
 
         return $result;
@@ -211,11 +211,11 @@ class PhoneBannerController extends Controller
 	 */
 	public function multipleDeletePhoneBanner(Request $request)
 	{
-		$admin = Auth::guard('admin_token')->user();
+		$adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role'))
+        if (Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -237,7 +237,7 @@ class PhoneBannerController extends Controller
                 throw new RuleException('RuleRequiredError', 'is_delete');
             }
 
-            $result = AdminPhoneBannerFacade::multipleDeletePhoneBanner(f($validated), $admin);
+            $result = AdminPhoneBannerFacade::multipleDeletePhoneBanner(f($validated), $adminObject);
         }
 
         return $result;

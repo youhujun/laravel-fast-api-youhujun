@@ -26,18 +26,18 @@ class SetUserIdCardEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
-    public $admin;
+    public $userObject;
+    public $adminObject;
     public $validated;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($admin,$validated)
+    public function __construct($adminObject,$validated)
     {
         //
-        $this->admin = $admin;
+        $this->admin = $adminObject;
         $this->validated = $validated;
     }
 

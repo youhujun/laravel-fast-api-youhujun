@@ -36,19 +36,19 @@ class PicturePlolicy
     /**
      * 替换照片
      *
-     * @param Admin $admin
+     * @param Admin $adminObject
      * @param [type] $id
      * @return void
      */
-    public function resetUpload($admin,$id)
+    public function resetUpload($adminObject,$id)
     {
         $picture = AlbumPicture::find($id);
 
-        return $admin->id === $picture->admin_id;
+        return $adminObject->id === $picture->admin_id;
     }
 
     //设置相册封面
-    public function setCover($admin,$id)
+    public function setCover($adminObject,$id)
     {
         $picture = AlbumPicture::find($id);
 
@@ -56,11 +56,11 @@ class PicturePlolicy
 
         $album = Album::find($album_id);
 
-        return $admin->id === $album->admin_id;
+        return $adminObject->id === $album->admin_id;
     }
 
     //转移相册
-    public function moveAlbum($admin, $album_id,$picture_id)
+    public function moveAlbum($adminObject, $album_id,$picture_id)
     {
         $result = false;
 
@@ -68,14 +68,14 @@ class PicturePlolicy
 
         $pictureResult = false;
 
-        if($picture->admin_id === $admin->id)
+        if($picture->admin_id === $adminObject->id)
         {
             $pictureResult = true;
         }
 
         $album = Album::find($album_id);
 
-        if($admin->id === $album->admin_id && $pictureResult)
+        if($adminObject->id === $album->admin_id && $pictureResult)
         {
             $result = true;
         }
@@ -84,7 +84,7 @@ class PicturePlolicy
     }
 
     //批量转移相册
-    public function moveMultipleAlbum($admin, $album_id,$pictureId)
+    public function moveMultipleAlbum($adminObject, $album_id,$pictureId)
     {
         $result = false;
 
@@ -94,7 +94,7 @@ class PicturePlolicy
 
         foreach ($pictures as $key => $value)
         {
-            if($value->admin_id !== $admin->id)
+            if($value->admin_id !== $adminObject->id)
             {
                 $pictureResult = false;
                 break;
@@ -103,7 +103,7 @@ class PicturePlolicy
 
         $album = Album::find($album_id);
 
-        if($admin->id === $album->admin_id && $pictureResult)
+        if($adminObject->id === $album->admin_id && $pictureResult)
         {
             $result = true;
         }
@@ -112,7 +112,7 @@ class PicturePlolicy
     }
 
     //批量删除图片
-    public function  deleteMultiplePicture($admin, $pictureId)
+    public function  deleteMultiplePicture($adminObject, $pictureId)
     {
         $result = false;
 
@@ -120,7 +120,7 @@ class PicturePlolicy
 
         foreach ($pictures as $key => $value)
         {
-            if($value->admin_id !== $admin->id)
+            if($value->admin_id !== $adminObject->id)
             {
                 $result = false;
                 break;
@@ -131,13 +131,13 @@ class PicturePlolicy
     }
 
     //删除图片
-    public function deletePicture($admin, $picture_id)
+    public function deletePicture($adminObject, $picture_id)
     {
         $result = false;
 
         $picture = AlbumPicture::find($picture_id);
 
-        if($picture->admin_id !== $admin->id)
+        if($picture->admin_id !== $adminObject->id)
         {
             $result = false;
         }
@@ -146,13 +146,13 @@ class PicturePlolicy
     }
 
     //修改图片名称
-    public function updatePictureName($admin, $picture_id)
+    public function updatePictureName($adminObject, $picture_id)
     {
         $result = false;
 
         $picture = AlbumPicture::find($picture_id);
 
-        if($picture->admin_id !== $admin->id)
+        if($picture->admin_id !== $adminObject->id)
         {
             $result = false;
         }

@@ -43,13 +43,13 @@ class LoginAfterController extends Controller
      */
     public function getAdminInfo(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
-            $result = AdminLoginFacade::getAdminInfo($admin);
+            $result = AdminLoginFacade::getAdminInfo($adminObject);
         }
 
         return $result;
@@ -62,13 +62,13 @@ class LoginAfterController extends Controller
      */
     public function getTreePermission(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
-             $result = AdminPermissionFacade::getTreePermission($admin);
+             $result = AdminPermissionFacade::getTreePermission($adminObject);
         }
 
         return $result;
@@ -79,11 +79,11 @@ class LoginAfterController extends Controller
      */
     public function getAllSystemVoiceConfig(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -97,7 +97,7 @@ class LoginAfterController extends Controller
 
             //p($validated);die;
 
-            $result = AdminVoiceConfigFacade::getAllSystemVoiceConfig(f($validated),$admin);
+            $result = AdminVoiceConfigFacade::getAllSystemVoiceConfig(f($validated),$adminObject);
         }
 
         return $result;

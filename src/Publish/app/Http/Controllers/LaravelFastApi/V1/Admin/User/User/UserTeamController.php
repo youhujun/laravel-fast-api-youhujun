@@ -41,11 +41,11 @@ class UserTeamController extends Controller
      */
     public function getUserSource(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role'))
+        if (Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -61,7 +61,7 @@ class UserTeamController extends Controller
                 throw new RuleException('RuleRequiredError', 'source_id');
             }
 
-            $result = AdminUserTeamFacade::getUserSource($validated, $admin);
+            $result = AdminUserTeamFacade::getUserSource($validated, $adminObject);
         }
 
         return $result;
@@ -72,11 +72,11 @@ class UserTeamController extends Controller
      */
     public function getUserLowerTeam(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role'))
+        if (Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -108,7 +108,7 @@ class UserTeamController extends Controller
                 throw new RuleException('RuleRequiredError', 'sortType');
             }
 
-            $result = AdminUserTeamFacade::getUserLowerTeam($validated, $admin);
+            $result = AdminUserTeamFacade::getUserLowerTeam($validated, $adminObject);
         }
 
         return $result;

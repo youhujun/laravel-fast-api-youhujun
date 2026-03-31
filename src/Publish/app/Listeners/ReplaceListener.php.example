@@ -39,8 +39,8 @@ class ReplaceListener
      */
     public function handle($event): void
     {
-        $admin = $event->admin;
-        $user = $event->user;
+        $adminObject = $event->admin;
+        $userObject = $event->user;
         $validated = $event->validated;
         $isTransation = $event->isTransation;
 

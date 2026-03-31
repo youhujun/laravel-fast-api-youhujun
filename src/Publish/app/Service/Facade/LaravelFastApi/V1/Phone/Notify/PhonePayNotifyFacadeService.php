@@ -101,7 +101,7 @@ class PhonePayNotifyFacadeService
 
             $mergedAttachArray = array_merge($defaultAttachArray, $attachArray);
 
-            ['order' => $orderArray,'goodsIdArray' => $goodsIdArray,'user' => $user_id] = $mergedAttachArray + [];
+            ['order' => $orderArray,'goodsIdArray' => $goodsIdArray,'user' => $user_uid] = $mergedAttachArray + [];
 
             //防止报错,先给默认值
             $defaultOrderArray = ['order_id' => null,'order_sn' => null];
@@ -117,7 +117,7 @@ class PhonePayNotifyFacadeService
 
             ['total' => $total,'payer_total' => $payer_total] = $mergeAmountArray + [];
 
-            $handleParam = ['order_id' => $order_id, 'transaction_id' => $transaction_id, 'user_id' => $user_id, 'payer_total' => $payer_total];
+            $handleParam = ['order_id' => $order_id, 'transaction_id' => $transaction_id, 'user_id' => $user_uid, 'payer_total' => $payer_total];
             //执行支付回调
             app(OrderPaymentHandlerContract::class)->handle($handleParam);
 

@@ -36,15 +36,15 @@ class PhoneUserConfigFacadeService
    /**
     * 清理用户缓存
     *
-    * @param  [type] $user
+    * @param  [type] $userObject
     */
-   public function clearUserCache($user)
+   public function clearUserCache($userObject)
    {
         $result = code(config('phone_code.ClearUserCacheError'));
 
-        Redis::hdel("phone_user_info:user_info",$user->id);
+        Redis::hdel("phone_user_info:user_info",$userObject->id);
 
-        CommonEvent::dispatch($user,[],'ClearUserCache');
+        CommonEvent::dispatch($userObject,[],'ClearUserCache');
 
         $result = code(['code'=> 0,'msg'=>'清理用户缓存成功!']);
 

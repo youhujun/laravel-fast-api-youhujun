@@ -46,11 +46,11 @@ class UserRealAuthController extends Controller
      */
     public function getUserRealAuthApply(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role'))
+        if (Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -75,7 +75,7 @@ class UserRealAuthController extends Controller
 
             //p($validated);die;
 
-            $result = AdminUserRealAuthFacade::getUserRealAuthApply(f($validated), $admin);
+            $result = AdminUserRealAuthFacade::getUserRealAuthApply(f($validated), $adminObject);
         }
 
         return $result;
@@ -88,11 +88,11 @@ class UserRealAuthController extends Controller
      */
     public function realAuthUser(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role'))
+        if (Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -119,7 +119,7 @@ class UserRealAuthController extends Controller
                 throw new RuleException('RuleRequiredError', 'is_real_auth');
             }
 
-            $result = AdminUserRealAuthFacade::realAuthUser(f($validated), $admin);
+            $result = AdminUserRealAuthFacade::realAuthUser(f($validated), $adminObject);
         }
 
         return $result;
@@ -135,11 +135,11 @@ class UserRealAuthController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $id = check_id($request->input('id'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -162,7 +162,7 @@ class UserRealAuthController extends Controller
 
             //p($validated);die;
 
-            $result =  AdminUserRealAuthFacade::updateUserIdNumber(f($validated),$admin);
+            $result =  AdminUserRealAuthFacade::updateUserIdNumber(f($validated),$adminObject);
         }
 
         return $result;
@@ -176,11 +176,11 @@ class UserRealAuthController extends Controller
      */
     public function getUserIdCard(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role'))
+        if (Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -196,7 +196,7 @@ class UserRealAuthController extends Controller
 				throw new RuleException('RuleRequiredError','user_id');
 			}
 
-            $result = AdminUserRealAuthFacade::getUserIdCard(f($validated), $admin);
+            $result = AdminUserRealAuthFacade::getUserIdCard(f($validated), $adminObject);
         }
 
         return $result;
@@ -210,11 +210,11 @@ class UserRealAuthController extends Controller
     */
     public function setUserIdCard(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
 
             $validator = Validator::make(
                 $request->all(),
@@ -229,7 +229,7 @@ class UserRealAuthController extends Controller
 
             $validated = $validator->validated();
 
-            $result = AdminUserRealAuthFacade::setUserIdCard(f($validated), $admin);
+            $result = AdminUserRealAuthFacade::setUserIdCard(f($validated), $adminObject);
         }
 
         return $result;

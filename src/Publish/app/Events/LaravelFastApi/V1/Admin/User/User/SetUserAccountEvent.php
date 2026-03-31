@@ -26,8 +26,8 @@ class SetUserAccountEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
-    public $admin;
+    public $userObject;
+    public $adminObject;
     public $validated;
     //是否开启事务
     public $isTransation;
@@ -36,9 +36,9 @@ class SetUserAccountEvent
      *
      * @return void
      */
-    public function __construct($admin,$validated,$isTransation = 0)
+    public function __construct($adminObject,$validated,$isTransation = 0)
     {
-        $this->admin = $admin;
+        $this->admin = $adminObject;
         $this->validated = $validated;
         $this->isTransation = $isTransation;
     }

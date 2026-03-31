@@ -41,9 +41,9 @@ class WithdrawConfigController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -57,7 +57,7 @@ class WithdrawConfigController extends Controller
 
 			//p($validated);die;
 
-            $result =  AdminWithdrawConfigFacade::getWithdrawConfig(f($validated),$admin);
+            $result =  AdminWithdrawConfigFacade::getWithdrawConfig(f($validated),$adminObject);
         }
 
         return $result;
@@ -70,9 +70,9 @@ class WithdrawConfigController extends Controller
 	{
 		$result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -96,7 +96,7 @@ class WithdrawConfigController extends Controller
 
 			//p($validated);die;
 
-            $result =  AdminWithdrawConfigFacade::updateWithdrawConfig(f($validated),$admin);
+            $result =  AdminWithdrawConfigFacade::updateWithdrawConfig(f($validated),$adminObject);
         }
 
         return $result;

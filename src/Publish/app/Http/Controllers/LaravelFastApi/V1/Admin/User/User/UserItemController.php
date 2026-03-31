@@ -42,9 +42,9 @@ class UserItemController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
-        if (Gate::forUser($user)->allows('admin-role')) {
+        if (Gate::forUser($userObject)->allows('admin-role')) {
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -62,7 +62,7 @@ class UserItemController extends Controller
 
             //p($validated);die;
 
-            $result =  AdminUserItemFacade::getDefaultUser(f($validated), $user);
+            $result =  AdminUserItemFacade::getDefaultUser(f($validated), $userObject);
         }
 
         return $result;
@@ -76,11 +76,11 @@ class UserItemController extends Controller
      */
     public function findUser(Request $request)
     {
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($user)->allows('admin-role')) {
+        if (Gate::forUser($userObject)->allows('admin-role')) {
 
             $validator = Validator::make(
                 $request->all(),
@@ -100,7 +100,7 @@ class UserItemController extends Controller
 
             //p($validated);die;
 
-            $result = AdminUserItemFacade::findUser(f($validated), $user);
+            $result = AdminUserItemFacade::findUser(f($validated), $userObject);
         }
 
         return $result;

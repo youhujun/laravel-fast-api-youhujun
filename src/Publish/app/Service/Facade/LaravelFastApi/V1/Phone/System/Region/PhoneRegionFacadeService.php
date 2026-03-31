@@ -56,9 +56,9 @@ class PhoneRegionFacadeService
 	* 获取地区id
 	*
 	* @param  [type] $validated
-	* @param  [type] $user
+	* @param  [type] $userObject
 	*/
-   public function getRegionById($validated,$user)
+   public function getRegionById($validated,$userObject)
    {
 		$result = code(config('phone_code.GetRegionByIdError'));
 
@@ -81,9 +81,9 @@ class PhoneRegionFacadeService
 	* 获取树形地区
 	*
 	* @param  [type] $validated
-	* @param  [type] $user
+	* @param  [type] $userObject
 	*/
-   public function getTreeRegions($validated,$user)
+   public function getTreeRegions($validated,$userObject)
    {
 		$result = code(config('phone_code.GetTreeRegionError'));
 

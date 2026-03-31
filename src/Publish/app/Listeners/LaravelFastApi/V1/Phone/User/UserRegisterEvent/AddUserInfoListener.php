@@ -38,7 +38,7 @@ class AddUserInfoListener
      */
     public function handle(object $event): void
     {
-        $user = $event->user;
+        $userObject = $event->user;
 
         $isTransation = $event->isTransation;
 
@@ -46,7 +46,7 @@ class AddUserInfoListener
         $userInfo = new UserInfo;
 
         //用户id
-        $userInfo->user_id = $user->id;
+        $userInfo->user_id = $userObject->id;
         $userInfo->nick_name ='';
         $userInfo->real_name ='';
         $userInfo->id_number = null;

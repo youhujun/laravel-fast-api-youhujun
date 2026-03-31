@@ -276,10 +276,10 @@ class AdminBankFacadeService
      * 添加
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function addBank($validated,$admin)
+    public function addBank($validated,$adminObject)
     {
         $result = code(config('admin_code.AddBankError'));
 
@@ -303,7 +303,7 @@ class AdminBankFacadeService
             throw new CommonException('AddBankError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'AddBank');
+        CommonEvent::dispatch($adminObject,$validated,'AddBank');
 
         $result = code(['code'=>0,'msg'=>'添加银行成功!']);
 
@@ -315,10 +315,10 @@ class AdminBankFacadeService
      * 更新
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function updateBank($validated,$admin)
+    public function updateBank($validated,$adminObject)
     {
         $result = code(config('admin_code.UpdateBankError'));
 
@@ -365,7 +365,7 @@ class AdminBankFacadeService
             throw new CommonException('UpdateBankError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'UpdateBank');
+        CommonEvent::dispatch($adminObject,$validated,'UpdateBank');
 
         $result = code(['code'=>0,'msg'=>'更新银行成功!']);
 
@@ -377,10 +377,10 @@ class AdminBankFacadeService
      * 删除
      *
      * @param [type] $id
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function deleteBank($validated,$admin)
+    public function deleteBank($validated,$adminObject)
     {
         $result = code(config('admin_code.DeleteBankError'));
 
@@ -404,7 +404,7 @@ class AdminBankFacadeService
             throw new CommonException('DeleteBankError');
         }
 
-        CommonEvent::dispatch($admin,$id,'DeleteBank');
+        CommonEvent::dispatch($adminObject,$id,'DeleteBank');
 
         $result = code(['code'=>0,'msg'=>'删除银行成功!']);
 
@@ -415,10 +415,10 @@ class AdminBankFacadeService
      * 批量删除用户
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function multipleDeleteBank($validated,$admin)
+    public function multipleDeleteBank($validated,$adminObject)
     {
         $result = code(config('admin_code.MultipleDeleteBankError'));
 
@@ -431,7 +431,7 @@ class AdminBankFacadeService
                 throw new CommonException('MultipleDeleteBankError');
             }
 
-            CommonEvent::dispatch($admin,$validated,'MultipleDeleteBank');
+            CommonEvent::dispatch($adminObject,$validated,'MultipleDeleteBank');
 
             $result = code(['code'=>0,'msg'=>'批量删除银行成功!']);
         }

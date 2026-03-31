@@ -35,12 +35,12 @@ class ClearAdminCacheListener
      */
     public function handle(object $event): void
     {
-        $admin = $event->admin;
+        $adminObject = $event->admin;
         $token = $event->token;
 
         Redis::del("admin_token:{$token}");
-        Redis::hdel("admin:admin",$admin->id);
-        Redis::hdel("admin_info:admin_info",$admin->id);
-        Redis::hdel("admin_roles:admin_roles",$admin->id);
+        Redis::hdel("admin:admin",$adminObject->id);
+        Redis::hdel("admin_info:admin_info",$adminObject->id);
+        Redis::hdel("admin_roles:admin_roles",$adminObject->id);
     }
 }

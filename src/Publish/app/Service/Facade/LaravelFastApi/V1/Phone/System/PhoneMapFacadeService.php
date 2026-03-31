@@ -37,9 +37,9 @@ class PhoneMapFacadeService
      * 通过H5获取腾讯地图
      *
      * @param  [type] $validated
-     * @param  [type] $user
+     * @param  [type] $userObject
      */
-    public function getLocationRegionByH5($validated, $user)
+    public function getLocationRegionByH5($validated, $userObject)
     {
         $result = code(config('phone_code.GetLocationRegionByH5TencentMapError'));
 
@@ -51,7 +51,7 @@ class PhoneMapFacadeService
 
 
         //事件处理
-        UserLocationLogEvent::dispatch($user, $validated, $dataResult->address);
+        UserLocationLogEvent::dispatch($userObject, $validated, $dataResult->address);
 
         $result = code(['code' => 0,'msg' => '腾讯地图获取成功!'], ['data' => $dataResult]);
 

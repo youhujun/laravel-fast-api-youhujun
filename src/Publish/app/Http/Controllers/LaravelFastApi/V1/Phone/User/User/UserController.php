@@ -43,11 +43,11 @@ class UserController extends Controller
     {
         $result = code(\config('phone_code.PhoneAuthError'));
 
-        $user = Auth::guard('phone_token')->user();
+        $userObject = Auth::guard('phone_token')->user();
 
-        $id = $user->id;
+        $id = $userObject->id;
 
-        if(Gate::forUser($user)->allows('phone-user-role'))
+        if(Gate::forUser($userObject)->allows('phone-user-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -80,7 +80,7 @@ class UserController extends Controller
 
             //p($validated);die;
 
-            $result =  PhoneUserFacade::realAuthApply(f($validated),$user);
+            $result =  PhoneUserFacade::realAuthApply(f($validated),$userObject);
         }
 
         return $result;

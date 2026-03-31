@@ -60,10 +60,10 @@ class AdminAlbumFacadeService
     * 获取默认的管理员相册
     *
     * @param [type] $validated
-    * @param [type] $admin
+    * @param [type] $adminObject
     * @return void
     */
-    public function getDefaultAlbum($validated, $admin)
+    public function getDefaultAlbum($validated, $adminObject)
     {
         $result = code(config('admin_code.GetDefaultAlbumError'));
 
@@ -76,12 +76,12 @@ class AdminAlbumFacadeService
         $query = Album::query();
 
         //如果是相册管理员就可以获取所有
-        if (is_album_admin($admin)) {
+        if (is_album_admin($adminObject)) {
             //相册管理员必定查询系统相册
             $orWhere[] = ['album_type','=',0];
         } else {
             //否则只能查询自己的相册
-            $where[] = ['admin_id','=',$admin->id];
+            $where[] = ['admin_id','=',$adminObject->id];
         }
 
         $query->where($where);
@@ -111,7 +111,7 @@ class AdminAlbumFacadeService
      * @param [type] $find
      * @return void
      */
-    public function findAlbum($validated, $admin)
+    public function findAlbum($validated, $adminObject)
     {
         $result = code(config('admin_code.FindAlbumError'));
 
@@ -126,8 +126,8 @@ class AdminAlbumFacadeService
         }
 
         //如果不是相册管理员就只能获取自己的相册
-        if (!is_album_admin($admin)) {
-            $where[] = ['admin_id','=',$admin->id];
+        if (!is_album_admin($adminObject)) {
+            $where[] = ['admin_id','=',$adminObject->id];
         } else {
             //相册管理员必定查询系统相册
             $orWhere[] = ['album_type','=',0];
@@ -160,10 +160,10 @@ class AdminAlbumFacadeService
     /**
     *
     * @param [type] $sortType
-    * @param [type] $admin
+    * @param [type] $adminObject
     * @return void
     */
-    public function getAlbum($validated, $admin)
+    public function getAlbum($validated, $adminObject)
     {
         $result = code(config('admin_admin_code.GetAlbumError'));
 
@@ -171,7 +171,7 @@ class AdminAlbumFacadeService
 
         $sortType = isset($validated['sortType']) ? $validated['sortType'] : 3;
 
-        $admin_id = $admin->id;
+        $admin_id = $adminObject->id;
 
         $where = [];
         $orWhere = [];
@@ -183,12 +183,12 @@ class AdminAlbumFacadeService
             $where[] = ['album_type','=',$validated['ablum_type']];
 
             //如果不是开发者,超级管理员和相册管理员,那么就只能查看自己的相册
-            if (!is_album_admin($admin)) {
+            if (!is_album_admin($adminObject)) {
                 $where[] = ['admin_id','=',$admin_id];
             }
         } else {
             //如果不是开发者,超级管理员和相册管理员,那么就只能查看自己的相册
-            if (!is_album_admin($admin)) {
+            if (!is_album_admin($adminObject)) {
                 //同时只能查看 相册类型是管理员的
                 $where[] = ['admin_id','=',$admin_id];
                 $where[] = ['album_type','=',10];
@@ -227,10 +227,10 @@ class AdminAlbumFacadeService
  * 添加相册
  *
  * @param [type] $validated
- * @param [type] $admin
+ * @param [type] $adminObject
  * @return void
  */
-    public function addAlbum($validated, $admin)
+    public function addAlbum($validated, $adminObject)
     {
         $result = code(config('admin_admin_code.AddAlbumError'));
 
@@ -247,7 +247,7 @@ class AdminAlbumFacadeService
                 }
 
                 if ($value == 20) {
-                    $album ->user_id = $admin->user->id;
+                    $album ->user_id = $adminObject->user->id;
                 }
             }
 
@@ -257,7 +257,7 @@ class AdminAlbumFacadeService
         //图片封面默认
         $album ->cover_album_picture_id = 1;
 
-        $album ->admin_id = $admin->id;
+        $album ->admin_id = $adminObject->id;
 
         $album->created_time = time();
         $album->created_at = time();
@@ -268,7 +268,7 @@ class AdminAlbumFacadeService
             throw new CommonException('AddAlbumError');
         }
 
-        CommonEvent::dispatch($admin, $validated, 'AddAlbum');
+        CommonEvent::dispatch($adminObject, $validated, 'AddAlbum');
 
         //控制相册是否包含图片加载
         //AlbumResource::setWithPicture(1);
@@ -284,10 +284,10 @@ class AdminAlbumFacadeService
      * 更新相册
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function updateAlbum($validated, $admin)
+    public function updateAlbum($validated, $adminObject)
     {
         $result = code(config('admin_admin_code.UpdateAlbumError'));
 
@@ -332,7 +332,7 @@ class AdminAlbumFacadeService
             throw new CommonException('UpdateAlbumError');
         }
 
-        CommonEvent::dispatch($admin, $validated, 'UpdateAlbum');
+        CommonEvent::dispatch($adminObject, $validated, 'UpdateAlbum');
 
         $album = Album::find($validated['id']);
 
@@ -347,10 +347,10 @@ class AdminAlbumFacadeService
      * 删除相册
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function deleteAlbum($validated, $admin)
+    public function deleteAlbum($validated, $adminObject)
     {
         $result = code(config('admin_admin_code.DeleteAlbumError'));
 
@@ -426,7 +426,7 @@ class AdminAlbumFacadeService
                 throw new CommonException('DeleteAlbumMovePictureError');
             }
 
-            CommonEvent::dispatch($admin, $validated, 'MoveDeleteAlbumPicture', 1);
+            CommonEvent::dispatch($adminObject, $validated, 'MoveDeleteAlbumPicture', 1);
         }
 
         $album->deleted_at = time();
@@ -440,7 +440,7 @@ class AdminAlbumFacadeService
             throw new CommonException('DeleteAlbumError');
         }
 
-        CommonEvent::dispatch($admin, $validated, 'DeleteAlbum', 1);
+        CommonEvent::dispatch($adminObject, $validated, 'DeleteAlbum', 1);
 
         DB::commit();
 
@@ -453,16 +453,16 @@ class AdminAlbumFacadeService
      * 获取相册图片
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function getAlbumPicture($validated, $admin)
+    public function getAlbumPicture($validated, $adminObject)
     {
         $result = code(config('admin_admin_code.GetAlbumPictureError'));
 
         $this->setQueryOptions($validated);
 
-        $admin_id = $admin->id;
+        $admin_id = $adminObject->id;
 
         $where = [];
         $orWhere = [];
@@ -483,7 +483,7 @@ class AdminAlbumFacadeService
         //p($album);die;
 
         //如果相册类型是管理员相册 并且登录用户只是普通管理员 那么只能查看他自己的所属图片
-        if (is_develop($admin) && isSuper($admin) && $album?->album_type == 10) {
+        if (is_develop($adminObject) && isSuper($adminObject) && $album?->album_type == 10) {
             $newWhere = [];
             $newWhere[] = ['admin_id','=',$admin_id];
             $query->where($newWhere);

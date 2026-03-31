@@ -54,10 +54,10 @@ class AdminUserTeamFacadeService
      * 获取用户的上级用户(推荐用户)
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function getUserSource($validated,$admin)
+    public function getUserSource($validated,$adminObject)
     {
         $result = code(config('admin_code.GetUserRecommendError'));
 
@@ -83,7 +83,7 @@ class AdminUserTeamFacadeService
      /**
      * 获取用户下级团队
      */
-    public function getUserLowerTeam($validated,$admin)
+    public function getUserLowerTeam($validated,$adminObject)
     {
         $result = code(config('admin_code.GetUserLowerTeamError'));
 

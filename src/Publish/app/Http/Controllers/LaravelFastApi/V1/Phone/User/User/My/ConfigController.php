@@ -42,9 +42,9 @@ class ConfigController extends Controller
         $result = code(\config('phone_code.PhoneAuthError'));
 
 
-        $user = Auth::guard('phone_token')->user();
+        $userObject = Auth::guard('phone_token')->user();
 
-        if(Gate::forUser($user)->allows('phone-user-role'))
+        if(Gate::forUser($userObject)->allows('phone-user-role'))
         {
            $validator = Validator::make(
                 $request->all(),
@@ -56,7 +56,7 @@ class ConfigController extends Controller
 
             $validated = $validator->validated();
 
-            $result =  PhoneUserConfigFacade::clearUserCache($user);
+            $result =  PhoneUserConfigFacade::clearUserCache($userObject);
         }
 
         return $result;

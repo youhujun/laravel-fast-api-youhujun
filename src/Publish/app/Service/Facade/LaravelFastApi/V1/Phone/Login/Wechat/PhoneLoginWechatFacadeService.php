@@ -104,13 +104,13 @@ class PhoneLoginWechatFacadeService
 			{
 				// 注册用户
 				$param['source'] = 40;
-				$user = CommonUserFacade::registerUser($param);
+				$userObject = CommonUserFacade::registerUser($param);
 
-				$user_id = $user->id;
+				$user_uid = $userObject->id;
 
-				$this->bindUserWechatUnionid($user_id,$unionid);
+				$this->bindUserWechatUnionid($user_uid,$unionid);
 
-				$this->bindUserWechatOpenid($user_id,$openid,$systemWechatConfigId,$propertyCollection);
+				$this->bindUserWechatOpenid($user_uid,$openid,$systemWechatConfigId,$propertyCollection);
 			}
 			else
 			{
@@ -122,9 +122,9 @@ class PhoneLoginWechatFacadeService
 				{
 					$userWechatUnionidObject = UserWechatUnionid::where('unionid',$unionid)->first();
 
-					$user_id = $userWechatUnionidObject->user_id;
+					$user_uid = $userWechatUnionidObject->user_id;
 
-					$this->bindUserWechatOpenid($user_id,$openid,$systemWechatConfigId,$propertyCollection);
+					$this->bindUserWechatOpenid($user_uid,$openid,$systemWechatConfigId,$propertyCollection);
 				}
 			}
 		}
@@ -138,21 +138,21 @@ class PhoneLoginWechatFacadeService
 			{
 				// 注册用户
 				$param['source'] = 50;
-				$user = CommonUserFacade::registerUser($param);
+				$userObject = CommonUserFacade::registerUser($param);
 
-				$user_id = $user->id;
+				$user_uid = $userObject->id;
 
-				$this->bindUserWechatOpenid($user_id,$openid,$systemWechatConfigId,$propertyCollection);
+				$this->bindUserWechatOpenid($user_uid,$openid,$systemWechatConfigId,$propertyCollection);
 			}
 			else
 			{
-				$user_id = UserSystemWechatConfigUnion::where('openid',$openid)->first()->user_id;
+				$user_uid = UserSystemWechatConfigUnion::where('openid',$openid)->first()->user_id;
 
-				$user = User::find($user_id);
+				$userObject = User::find($user_uid);
 			}
 		}
 
-		$this->bindWeChatUserInfo($user,$userInfoColection);
+		$this->bindWeChatUserInfo($userObject,$userInfoColection);
 
 		// 执行登录
 		$data = $this->loginUserByOpenid($openid,$systemWechatConfigId);
@@ -206,15 +206,15 @@ class PhoneLoginWechatFacadeService
    /**
     * 绑定用户的微信 UnionID
     *
-    * @param int $user_id 用户的 ID
+    * @param int $user_uid 用户的 ID
     * @param string $unionid 用户的微信 UnionID
     * @throws CommonException 如果绑定失败，则抛出异常
     */
-   protected function bindUserWechatUnionid($user_id,$unionid)
+   protected function bindUserWechatUnionid($user_uid,$unionid)
    {
 		$userWechatUnionidObject = new UserWechatUnionid;
 
-		$userWechatUnionidObject->user_id = $user_id;
+		$userWechatUnionidObject->user_id = $user_uid;
 		$userWechatUnionidObject->unionid = $unionid;
 		$userWechatUnionidObject->created_at = time();
 		$userWechatUnionidObject->created_time = time();
@@ -231,18 +231,18 @@ class PhoneLoginWechatFacadeService
    /**
     * 绑定用户的微信 OpenID 到系统配置中
     *
-    * @param int $user_id 用户 ID
+    * @param int $user_uid 用户 ID
     * @param string $openid 微信 OpenID
     * @param int $systemWechatConfigId 系统微信配置 ID
     * @param PropertyCollection $propertyCollection 属性集合，包含微信用户的相关信息
     * 
     * @throws CommonException 如果绑定失败，抛出异常
     */
-   protected function bindUserWechatOpenid($user_id,$openid,$systemWechatConfigId,$propertyCollection)
+   protected function bindUserWechatOpenid($user_uid,$openid,$systemWechatConfigId,$propertyCollection)
    {
 		$userSystemWechatConfigUnionObject = new UserSystemWechatConfigUnion;
 
-		$userSystemWechatConfigUnionObject->user_id = $user_id;
+		$userSystemWechatConfigUnionObject->user_id = $user_uid;
 		$userSystemWechatConfigUnionObject->openid = $openid;
 		$userSystemWechatConfigUnionObject->system_wechat_config_id = $systemWechatConfigId;
 		$userSystemWechatConfigUnionObject->verified_at = date('Y-m-d H:i:s',time());
@@ -272,25 +272,25 @@ class PhoneLoginWechatFacadeService
    /**
     * 绑定微信用户信息到系统用户。
     *
-    * @param User $user 系统用户对象。
+    * @param User $userObject 系统用户对象。
     * @param Collection $userInfoColection 微信用户信息集合。
     * 
     * @throws CommonException 如果绑定用户信息或头像失败，将抛出异常。
     */
-   protected function bindWeChatUserInfo($user,$userInfoColection)
+   protected function bindWeChatUserInfo($userObject,$userInfoColection)
    {
 		
 		if($userInfoColection && $userInfoColection->count())
 		{
 			//先处理用户详情
 			
-			$userInfoObject =  UserInfo::where('user_id',$user->id)->first();
+			$userInfoObject =  UserInfo::where('user_id',$userObject->id)->first();
 
 			if(!$userInfoObject)
 			{
 				$userInfoObject = new UserInfo;
 
-				$userInfoObject->user_id = $user->id;
+				$userInfoObject->user_id = $userObject->id;
 				$userInfoObject->nick_name = $userInfoColection->get('nickname')?$userInfoColection->get('nickname'):'';
 				$sexArray = ['0'=>0,'1'=>10,'2'=>20];
 				$userInfoObject->sex = $sexArray[$userInfoColection->get('sex')];
@@ -324,11 +324,11 @@ class PhoneLoginWechatFacadeService
 
 			//再处理用户头像
 
-			$userAlbumObject = Album::where('user_id',$user->id)->where('album_type',20)->where('is_default',1)->first();
+			$userAlbumObject = Album::where('user_id',$userObject->id)->where('album_type',20)->where('is_default',1)->first();
 
 			$albumPictureObject = new AlbumPicture;
 
-			$albumPictureObject->user_id = $user->id;
+			$albumPictureObject->user_id = $userObject->id;
 			$albumPictureObject->album_id = $userAlbumObject->id?$userAlbumObject->id:0;
 			$albumPictureObject->picture_type = 30;
 			$albumPictureObject->picture_tag = 'avatar';
@@ -347,7 +347,7 @@ class PhoneLoginWechatFacadeService
 
 			$userAvatarObject =  new UserAvatar;
 
-			$userAvatarObject->user_id = $user->id;
+			$userAvatarObject->user_id = $userObject->id;
 			$userAvatarObject->album_picture_id = $albumPictureObject->id;
 			$userAvatarObject->created_at = time();
 			$userAvatarObject->created_time = time();
@@ -376,25 +376,25 @@ class PhoneLoginWechatFacadeService
 
 		$data = null;
 
-	    $user = User::find($userId);
+	    $userObject = User::find($userId);
 
-		if($user)
+		if($userObject)
 		{
 			Auth::setDefaultDriver('phone');
 
 			$remember = true;
 
-			Auth::login($user,$remember);
+			Auth::login($userObject,$remember);
 
 			//验证现在这个用户是否是登录状态
-			CommonLoginFacade::checkResetLogin($user);
+			CommonLoginFacade::checkResetLogin($userObject);
 
-			UserLoginEvent::dispatch($user);
+			UserLoginEvent::dispatch($userObject);
 
-			$data['data']['token'] = $user->remember_token;
-			$data['data']['userid'] = $user->id;
+			$data['data']['token'] = $userObject->remember_token;
+			$data['data']['userid'] = $userObject->id;
 			$data['data']['openid'] = $openid;
-			$data['data']['phone'] = $user->phone;
+			$data['data']['phone'] = $userObject->phone;
 			
 		}
 

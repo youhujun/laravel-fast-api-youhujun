@@ -41,9 +41,9 @@ class MapController extends Controller
 
         $result = code(\config('phone_code.PhoneAuthError'));
 
-        $user = Auth::guard('phone_token')->user();
+        $userObject = Auth::guard('phone_token')->user();
 
-        if(Gate::forUser($user)->allows('phone-user-role'))
+        if(Gate::forUser($userObject)->allows('phone-user-role'))
         {
             $validated = $request->validate(
             [
@@ -60,7 +60,7 @@ class MapController extends Controller
                 throw new RuleException('RuleRequiredError', 'longitude');
             }
 
-            $result = PhoneMapFacade::getLocationRegionByH5($validated,$user);
+            $result = PhoneMapFacade::getLocationRegionByH5($validated,$userObject);
         }
 
         //p($validated);die;

@@ -64,7 +64,7 @@ class AdminUploadFacadeService
      * @param [type] $validated
      * @return void
      */
-    protected function makeSavePath($validated, $admin, $file)
+    protected function makeSavePath($validated, $adminObject, $file)
     {
         //文件使用性质类型
         $useType = isset($validated['use_type']) ? $validated['use_type'] : null;
@@ -94,7 +94,7 @@ class AdminUploadFacadeService
 
         //如果不是平台配置 需要加上用户id
         if ($useType != 10) {
-            $this->filePath = self::$adminTypeDirectory[$useType].$admin->id.DIRECTORY_SEPARATOR.$joinPath;
+            $this->filePath = self::$adminTypeDirectory[$useType].$adminObject->id.DIRECTORY_SEPARATOR.$joinPath;
         }
     }
 
@@ -102,11 +102,11 @@ class AdminUploadFacadeService
      * 后台上传配置文件
      *
      * @param [type] $validated  [use_type,]
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @param [type] $file
      * @return void
      */
-    public function uploadConfigFile($validated, $admin, $file)
+    public function uploadConfigFile($validated, $adminObject, $file)
     {
         $result = code(config('admin_code.UploadConfigFileError'));
 
@@ -115,7 +115,7 @@ class AdminUploadFacadeService
         }
 
         //处理保存路径
-        $this->makeSavePath($validated, $admin, $file);
+        $this->makeSavePath($validated, $adminObject, $file);
 
         //后缀名
         $fileType = $file->getClientOriginalExtension();
@@ -139,7 +139,7 @@ class AdminUploadFacadeService
         //上传文件数据容器
         $uploadFileLogData = [];
         //文件名 template
-        $uploadFileLogData['admin_id'] = $admin->id;
+        $uploadFileLogData['admin_id'] = $adminObject->id;
         $uploadFileLogData['use_type'] = $validated['use_type'];
         $uploadFileLogData['file_path'] = $this->filePath;
         $uploadFileLogData['file_extension'] = $fileType;
@@ -147,14 +147,14 @@ class AdminUploadFacadeService
         $uploadFileLogData['file'] = $file_file;
 
         //记录事件日志
-        CommonEvent::dispatch($admin, $uploadFileLogData, 'UploadConfigFile');
+        CommonEvent::dispatch($adminObject, $uploadFileLogData, 'UploadConfigFile');
 
         /**
          * $path 文件位置
          * $this->$actionType 操作类型 例如 bank配合后端导入数据
          * $fileType 后缀名
          */
-        UploadFileEvent::dispatch($admin, $uploadFileLogData, $path, $fileType, $this->actionType);
+        UploadFileEvent::dispatch($adminObject, $uploadFileLogData, $path, $fileType, $this->actionType);
 
         $result = code(['code' => 0,'msg' => '上传配置文件成功!'], ['data' => $path]);
 
@@ -165,11 +165,11 @@ class AdminUploadFacadeService
      * 上传文件
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @param [type] $file
      * @return void
      */
-    public function uploadFile($validated, $admin, $file)
+    public function uploadFile($validated, $adminObject, $file)
     {
         $result = code(config('admin_code.UploadFileError'));
 
@@ -178,7 +178,7 @@ class AdminUploadFacadeService
         }
 
         //处理保存路径
-        $this->makeSavePath($validated, $admin, $file);
+        $this->makeSavePath($validated, $adminObject, $file);
 
         //后缀名
         $fileType = $file->getClientOriginalExtension();
@@ -202,7 +202,7 @@ class AdminUploadFacadeService
         //上传文件数据容器
         $uploadFileLogData = [];
         //文件名 template
-        $uploadFileLogData['admin_id'] = $admin->id;
+        $uploadFileLogData['admin_id'] = $adminObject->id;
         $uploadFileLogData['use_type'] = $validated['use_type'];
         $uploadFileLogData['file_path'] = $this->filePath;
         $uploadFileLogData['file_extension'] = $fileType;
@@ -210,13 +210,13 @@ class AdminUploadFacadeService
         $uploadFileLogData['file'] = $file_file;
 
         //记录事件日志
-        CommonEvent::dispatch($admin, $uploadFileLogData, 'UploadFile');
+        CommonEvent::dispatch($adminObject, $uploadFileLogData, 'UploadFile');
         /**
          * $path 文件位置
          * $this->$actionType 操作类型 例如 bank配合后端导入数据
          * $fileType 后缀名
          */
-        UploadFileEvent::dispatch($admin, $uploadFileLogData, $path, $fileType, $this->actionType);
+        UploadFileEvent::dispatch($adminObject, $uploadFileLogData, $path, $fileType, $this->actionType);
 
         $result = code(['code' => 0,'msg' => '上传文件成功!'], ['data' => asset('storage/'.$path)]);
 
@@ -227,26 +227,26 @@ class AdminUploadFacadeService
      * 单图上传
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @param [type] $pictures
      * @return void
      */
-    public function UploadSinglePicture($validated, $admin, $picture)
+    public function UploadSinglePicture($validated, $adminObject, $picture)
     {
         $result = code(config('admin_code.UploadSinglePictureError'));
 
         $album_id = $validated['album_id'];
 
-        $album_id = $this->findAdminDefaultAlbum($album_id, $admin);
+        $album_id = $this->findAdminDefaultAlbum($album_id, $adminObject);
 
-        $admin_id = $admin->id;
+        $admin_id = $adminObject->id;
 
         if (!$picture->isValid()) {
             throw new CommonException('UploadSinglePictureAllowError');
         }
 
         //处理保存路径
-        $this->makeSavePath($validated, $admin, $picture);
+        $this->makeSavePath($validated, $adminObject, $picture);
         //后缀名
         $fileType = $picture->getClientOriginalExtension();
         //文件名带后缀 template.xlsx
@@ -315,21 +315,21 @@ class AdminUploadFacadeService
         //上传文件数据容器
         $uploadFileLogData = [];
         //文件名 template
-        $uploadFileLogData['admin_id'] = $admin->id;
+        $uploadFileLogData['admin_id'] = $adminObject->id;
         $uploadFileLogData['use_type'] = $validated['use_type'];
         $uploadFileLogData['file_path'] = $this->filePath;
         $uploadFileLogData['file_extension'] = $fileType;
         $uploadFileLogData['file_name'] = pathinfo($path, \PATHINFO_FILENAME);
         $uploadFileLogData['file'] = $file_file;
 
-        CommonEvent::dispatch($admin, $insertData, 'UploadSinglePicture');
+        CommonEvent::dispatch($adminObject, $insertData, 'UploadSinglePicture');
 
         /**
          * $path 文件位置
          * $this->$actionType 操作类型 例如 bank配合后端导入数据
          * $fileType 后缀名
          */
-        UploadFileEvent::dispatch($admin, $uploadFileLogData, $path, $fileType, $this->actionType);
+        UploadFileEvent::dispatch($adminObject, $uploadFileLogData, $path, $fileType, $this->actionType);
 
         $result = code(['code' => 0,'msg' => '上传单图片成功!'], ['data' => new AlbumPictureResource($albumPictrue)]);
 
@@ -340,20 +340,20 @@ class AdminUploadFacadeService
      * 多图上传
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @param [type] $pictures
      * @return void
      */
-    public function uploadMultiplePicture($validated, $admin, $pictures)
+    public function uploadMultiplePicture($validated, $adminObject, $pictures)
     {
         $result = code(config('admin_code.UploadMultiplePictureError'));
 
         $album_id = $validated['album_id'];
 
-        $album_id = $this->findAdminDefaultAlbum($album_id, $admin);
+        $album_id = $this->findAdminDefaultAlbum($album_id, $adminObject);
 
 
-        $admin_id = $admin->id;
+        $admin_id = $adminObject->id;
 
         //声明图片容器
         $insertData = [];
@@ -367,7 +367,7 @@ class AdminUploadFacadeService
             }
 
             //处理保存路径
-            $this->makeSavePath($validated, $admin, $picture);
+            $this->makeSavePath($validated, $adminObject, $picture);
             //后缀名
             $fileType = $picture->getClientOriginalExtension();
             //文件名带后缀 template.xlsx
@@ -420,7 +420,7 @@ class AdminUploadFacadeService
             }
 
             //文件名 template
-            $uploadFileLogData[$k]['admin_id'] = $admin->id;
+            $uploadFileLogData[$k]['admin_id'] = $adminObject->id;
             $uploadFileLogData[$k]['use_type'] = $validated['use_type'];
             $uploadFileLogData[$k]['file_path'] = $this->filePath;
             $uploadFileLogData[$k]['file_extension'] = $fileType;
@@ -436,14 +436,14 @@ class AdminUploadFacadeService
 
         $this->actionType = isset($validated['type']) ? $validated['type'] : '';
 
-        CommonEvent::dispatch($admin, $insertData, 'UploadMultiplePicture');
+        CommonEvent::dispatch($adminObject, $insertData, 'UploadMultiplePicture');
 
         /**
          * $path 文件位置
          * $this->$actionType 操作类型 例如 bank配合后端导入数据
          * $fileType 后缀名
          */
-        UploadFileEvent::dispatch($admin, $uploadFileLogData, $path, $fileType, $this->actionType, 20);
+        UploadFileEvent::dispatch($adminObject, $uploadFileLogData, $path, $fileType, $this->actionType, 20);
 
         //这里要再把刚刚添加的图片查询出来
         $where = [];
@@ -462,11 +462,11 @@ class AdminUploadFacadeService
      * 上传头像
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @param [type] $picture
      * @return void
      */
-    public function uploadUserAvatar($validated, $admin, $picture)
+    public function uploadUserAvatar($validated, $adminObject, $picture)
     {
         $result = code(config('admin_code.UploadUserAvatarError'));
 
@@ -487,16 +487,16 @@ class AdminUploadFacadeService
             $album_id = $album->id;
         }
 
-        $admin_id = $admin->id;
+        $admin_id = $adminObject->id;
 
-        $user_id = $validated['user_id'];
+        $user_uid = $validated['user_id'];
 
         if (!$picture->isValid()) {
             throw new CommonException('UploadSinglePictureAllowError');
         }
 
         //处理保存路径
-        $this->makeSavePath($validated, $admin, $picture);
+        $this->makeSavePath($validated, $adminObject, $picture);
         //后缀名
         $fileType = $picture->getClientOriginalExtension();
         //文件名带后缀 template.xlsx
@@ -529,7 +529,7 @@ class AdminUploadFacadeService
 
         $insertData = [
             'admin_id' => 0,
-            'user_id' => $user_id,
+            'user_id' => $user_uid,
             'album_id' => $album_id,
             'picture_name' => $picture_name,
             'picture_file' => $file_file,
@@ -560,7 +560,7 @@ class AdminUploadFacadeService
 
         $albumPictrue = AlbumPicture::find($insertId);
 
-        $oldDefaultAvatar = UserAvatar::where('user_id', $user_id)->where('is_default', 1)->first();
+        $oldDefaultAvatar = UserAvatar::where('user_id', $user_uid)->where('is_default', 1)->first();
 
         if ($oldDefaultAvatar) {
             $oldDefaultAvatar->is_default = 0;
@@ -586,21 +586,21 @@ class AdminUploadFacadeService
         //上传文件数据容器
         $uploadFileLogData = [];
         //文件名 template
-        $uploadFileLogData['admin_id'] = $admin->id;
+        $uploadFileLogData['admin_id'] = $adminObject->id;
         $uploadFileLogData['use_type'] = $validated['use_type'];
         $uploadFileLogData['file_path'] = $this->filePath;
         $uploadFileLogData['file_extension'] = $fileType;
         $uploadFileLogData['file_name'] = pathinfo($path, \PATHINFO_FILENAME);
         $uploadFileLogData['file'] = $file_file;
 
-        CommonEvent::dispatch($admin, $insertData, 'UploadUserAvatar');
+        CommonEvent::dispatch($adminObject, $insertData, 'UploadUserAvatar');
 
         /**
          * $path 文件位置
          * $this->$actionType 操作类型 例如 bank配合后端导入数据
          * $fileType 后缀名
          */
-        UploadFileEvent::dispatch($admin, $uploadFileLogData, $path, $fileType, $this->actionType);
+        UploadFileEvent::dispatch($adminObject, $uploadFileLogData, $path, $fileType, $this->actionType);
 
         $result = code(['code' => 0,'msg' => '上传头像成功!'], ['data' => new AlbumPictureResource($albumPictrue)]);
 
@@ -611,11 +611,11 @@ class AdminUploadFacadeService
      * 上传替换图片
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @param [type] $pictures
      * @return void
      */
-    public function uploadResetPicture($validated, $admin, $picture)
+    public function uploadResetPicture($validated, $adminObject, $picture)
     {
         $result = code(config('admin_code.UploadResetPictureError'));
 
@@ -635,14 +635,14 @@ class AdminUploadFacadeService
             $album_id = $album->id;
         }
 
-        $admin_id = $admin->id;
+        $admin_id = $adminObject->id;
 
         if (!$picture->isValid()) {
             throw new CommonException('UploadSinglePictureAllowError');
         }
 
         //处理保存路径
-        $this->makeSavePath($validated, $admin, $picture);
+        $this->makeSavePath($validated, $adminObject, $picture);
         //后缀名
         $fileType = $picture->getClientOriginalExtension();
         //文件名带后缀 template.xlsx
@@ -716,21 +716,21 @@ class AdminUploadFacadeService
         //上传文件数据容器
         $uploadFileLogData = [];
         //文件名 template
-        $uploadFileLogData['admin_id'] = $admin->id;
+        $uploadFileLogData['admin_id'] = $adminObject->id;
         $uploadFileLogData['use_type'] = $validated['use_type'];
         $uploadFileLogData['file_path'] = $this->filePath;
         $uploadFileLogData['file_extension'] = $fileType;
         $uploadFileLogData['file_name'] = pathinfo($path, \PATHINFO_FILENAME);
         $uploadFileLogData['file'] = $file_file;
 
-        CommonEvent::dispatch($admin, ['picture_id' => $picture_id,'data' => $updateData], 'UploadResetPicture');
+        CommonEvent::dispatch($adminObject, ['picture_id' => $picture_id,'data' => $updateData], 'UploadResetPicture');
 
         /**
          * $path 文件位置
          * $this->$actionType 操作类型 例如 bank配合后端导入数据
          * $fileType 后缀名
          */
-        UploadFileEvent::dispatch($admin, $uploadFileLogData, $path, $fileType, $this->actionType);
+        UploadFileEvent::dispatch($adminObject, $uploadFileLogData, $path, $fileType, $this->actionType);
 
         $result = code(['code' => 0,'msg' => '图片替换上传成功!'], ['data' => new AlbumPictureResource($albumPictrue)]);
 
@@ -742,11 +742,11 @@ class AdminUploadFacadeService
      * 检测用户的相册id是否合法,不合法就替换为用户的默认相册
      *
      * @param  [type] $album_id
-     * @param  [type] $admin
+     * @param  [type] $adminObject
      */
-    private function findAdminDefaultAlbum($album_id, $admin)
+    private function findAdminDefaultAlbum($album_id, $adminObject)
     {
-        $admin_id = $admin->id;
+        $admin_id = $adminObject->id;
         //如果没有相册id 就把图片存入到该用户默认相册下
         if ($album_id == 0 || !isset($album_id)) {
             $where = [];
@@ -763,7 +763,7 @@ class AdminUploadFacadeService
         } elseif ($album_id == 1) {
             //如果相册id为1 是config系统相册
             //判断用户是否是相册管理员,不是的话就要修改相册id
-            if (!is_album_admin($admin)) {
+            if (!is_album_admin($adminObject)) {
                 $where = [];
                 $where[] = ['album_type','=',10];
                 $where[] = ['is_default','=',1];
@@ -777,11 +777,11 @@ class AdminUploadFacadeService
             }
         } else {
             //先判断是否是相册管理员,不是相册管理员再行判断
-            if (!is_album_admin($admin)) {
+            if (!is_album_admin($adminObject)) {
                 $originAlbum = Album::find($album_id);
 
                 //如果admin_id不等于用户id,就需要查找默认相册
-                if ($originAlbum->admin_id !== $admin->id) {
+                if ($originAlbum->admin_id !== $adminObject->id) {
                     $where = [];
                     $where[] = ['album_type','=',10];
                     $where[] = ['is_default','=',1];

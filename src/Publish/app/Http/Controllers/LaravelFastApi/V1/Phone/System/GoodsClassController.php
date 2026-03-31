@@ -43,9 +43,9 @@ class GoodsClassController extends Controller
 	{
 		$result = code(\config('phone_code.PhoneAuthError'));
 
-        $user = Auth::guard('phone_token')->user();
+        $userObject = Auth::guard('phone_token')->user();
 
-        if(Gate::forUser($user)->allows('phone-user-role'))
+        if(Gate::forUser($userObject)->allows('phone-user-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -61,7 +61,7 @@ class GoodsClassController extends Controller
 
 			if(count($validated))
 			{
-				$result = PhoneGoodsClassFacade::getGoodsClassById(f($validated),$user);
+				$result = PhoneGoodsClassFacade::getGoodsClassById(f($validated),$userObject);
 			}
         }
 
@@ -80,9 +80,9 @@ class GoodsClassController extends Controller
     {
         $result = code(\config('phone_code.PhoneAuthError'));
 
-        $user = Auth::guard('phone_token')->user();
+        $userObject = Auth::guard('phone_token')->user();
 
-        if(Gate::forUser($user)->allows('phone-user-role'))
+        if(Gate::forUser($userObject)->allows('phone-user-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -99,7 +99,7 @@ class GoodsClassController extends Controller
                 throw new RuleException('RuleRequiredError', 'find');
             }
 
-            $result = PhoneGoodsClassFacade::getTreeGoodsClass(f($validated),$user);
+            $result = PhoneGoodsClassFacade::getTreeGoodsClass(f($validated),$userObject);
         }
 
         return $result;

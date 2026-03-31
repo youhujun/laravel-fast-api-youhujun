@@ -52,10 +52,10 @@ class AdminPhoneBannerFacadeService
     /**
      * 获取首页轮播图
      * @param {*} $validated
-     * @param {*} $admin
+     * @param {*} $adminObject
      * @return {*}
      */
-    public function getPhoneBanner($validated,$admin)
+    public function getPhoneBanner($validated,$adminObject)
     {
         $result = code(config('admin_code.GetPhoneBannerError'));
 
@@ -83,16 +83,16 @@ class AdminPhoneBannerFacadeService
     /**
     * @添加首页轮播图:
     * @param {*} $validated
-    * @param {*} $admin
+    * @param {*} $adminObject
     * @return {*}
     */
-   public function addPhoneBanner($validated,$admin)
+   public function addPhoneBanner($validated,$adminObject)
    {
         $result = code(config('admin_code.AddPhoneBannerError'));
 
         $phoneBanner = new PhoneBanner;
 
-        $phoneBanner->admin_id = $admin->id;
+        $phoneBanner->admin_id = $adminObject->id;
 
         foreach ( $validated as $key => $value)
         {
@@ -114,7 +114,7 @@ class AdminPhoneBannerFacadeService
             throw new CommonException('AddPhoneBannerError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'AddPhoneBanner');
+        CommonEvent::dispatch($adminObject,$validated,'AddPhoneBanner');
 
         $result = code(['code'=>0,'msg'=>'添加轮播图成功!']);
 
@@ -127,10 +127,10 @@ class AdminPhoneBannerFacadeService
      * 更新轮播图
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function updatePhoneBanner($validated,$admin)
+    public function updatePhoneBanner($validated,$adminObject)
     {
         $result = code(config('admin_code.UpdatePhoneBannerError'));
 
@@ -163,7 +163,7 @@ class AdminPhoneBannerFacadeService
             $updateData[$key] = $value;
         }
 
-        $phoneBanner->user_id = $admin->id;
+        $phoneBanner->user_id = $adminObject->id;
 
         $updateData['revision'] = $phoneBanner ->revision + 1;
 
@@ -178,7 +178,7 @@ class AdminPhoneBannerFacadeService
            throw new CommonException('UpdatePhoneBannerError');
         }
 
-        CommonEvent::dispatch($admin,$phoneBanner,'UpdatePhoneBanner');
+        CommonEvent::dispatch($adminObject,$phoneBanner,'UpdatePhoneBanner');
 
         $result = code(['code'=>0,'msg'=>'修改轮播图成功!']);
 
@@ -188,10 +188,10 @@ class AdminPhoneBannerFacadeService
     /**
      * 删除首页轮播图
      * @param {*} $validated
-     * @param {*} $admin
+     * @param {*} $adminObject
      * @return {*}
      */
-    public function deletePhoneBanner( $validated,$admin)
+    public function deletePhoneBanner( $validated,$adminObject)
     {
          //删除
          $result = code(config('admin_code.RestorePhoneBannerError'));
@@ -239,7 +239,7 @@ class AdminPhoneBannerFacadeService
              throw new CommonException('RestorePhoneBannerError');
          }
 
-         CommonEvent::dispatch($admin,$validated,$eventName);
+         CommonEvent::dispatch($adminObject,$validated,$eventName);
 
          $result = code(['code'=>0,'msg'=>'恢复轮播图成功!']);
 
@@ -255,9 +255,9 @@ class AdminPhoneBannerFacadeService
 	 * 批量删除
 	 *
 	 * @param  [type] $validated
-	 * @param  [type] $admin
+	 * @param  [type] $adminObject
 	 */
-	public function multipleDeletePhoneBanner( $validated,$admin)
+	public function multipleDeletePhoneBanner( $validated,$adminObject)
 	{
 		$result = code(config('admin_code.MultipleDeletePhoneBannerError'));
 
@@ -270,7 +270,7 @@ class AdminPhoneBannerFacadeService
                 throw new CommonException('MultipleDeletePhoneBannerError');
             }
 
-            CommonEvent::dispatch($admin,$validated,'MultipleDeletePhoneBanner');
+            CommonEvent::dispatch($adminObject,$validated,'MultipleDeletePhoneBanner');
 
             $result = code(['code'=>0,'msg'=>'批量删除轮播图成功!']);
         }

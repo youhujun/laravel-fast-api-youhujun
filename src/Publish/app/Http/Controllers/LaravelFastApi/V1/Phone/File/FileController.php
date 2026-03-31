@@ -40,9 +40,9 @@ class FileController extends Controller
     {
         $result = code(\config('phone_code.PhoneAuthError'));
 
-        $user = Auth::guard('phone_token')->user();
+        $userObject = Auth::guard('phone_token')->user();
 
-        if(Gate::forUser($user)->allows('phone-user-role'))
+        if(Gate::forUser($userObject)->allows('phone-user-role'))
         {
            $result = code(\config('phone_code.SinglePictureNoUploadError'));
 
@@ -52,7 +52,7 @@ class FileController extends Controller
 
                 // PhonePictureFacade::test(); die;
                 //p($picture);die;
-                $result = PhonePictureFacade::singleUploadPicture($user, $picture);
+                $result = PhonePictureFacade::singleUploadPicture($userObject, $picture);
             }
         }
 

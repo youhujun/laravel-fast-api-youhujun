@@ -40,7 +40,7 @@ class AddUserRealAuthApplyListener
     public function handle(object $event): void
     {
 
-        $admin = $event->admin;
+        $adminObject = $event->admin;
         $validated = $event->validated;
 
         //添加完用户银行卡以后,要添加用户实名认证申请
@@ -50,9 +50,9 @@ class AddUserRealAuthApplyListener
         //正在申请中
         $where[] = ['status','=',10];
 
-        $user = User::find($validated['user_id']);
+        $userObject = User::find($validated['user_id']);
 
-        if(!$user)
+        if(!$userObject)
         {
             throw new CommonException('ThisDataNotExistsError');
         }

@@ -41,11 +41,11 @@ class LabelController extends Controller
      */
     public function getTreeLabel()
     {
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($user)->allows('admin-role'))
+        if(Gate::forUser($userObject)->allows('admin-role'))
         {
              $result = AdminLabelFacade::getTreeLabel();
         }
@@ -61,11 +61,11 @@ class LabelController extends Controller
      */
     public function addLabel(Request $request)
     {
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($user)->allows('admin-role'))
+        if(Gate::forUser($userObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -99,7 +99,7 @@ class LabelController extends Controller
                 throw new RuleException('RuleRequiredError', 'label_name');
             }
 
-            $result =AdminLabelFacade::addLabel(f($validated),$user);
+            $result =AdminLabelFacade::addLabel(f($validated),$userObject);
         }
 
         return $result;
@@ -113,13 +113,13 @@ class LabelController extends Controller
      */
     public function updateLabel(Request $request)
     {
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
         $result = code(config('admin_code.AdminAuthError'));
 
         $id = check_id($request->input('id'));
 
-        if(Gate::forUser($user)->allows('admin-role'))
+        if(Gate::forUser($userObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -158,7 +158,7 @@ class LabelController extends Controller
                 throw new RuleException('RuleRequiredError', 'label_name');
             }
 
-            $result = AdminLabelFacade::updateLabel(f($validated),$user);
+            $result = AdminLabelFacade::updateLabel(f($validated),$userObject);
         }
         return $result;
     }
@@ -171,11 +171,11 @@ class LabelController extends Controller
      */
     public function moveLabel(Request $request)
     {
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($user)->allows('super-role'))
+        if (Gate::forUser($userObject)->allows('super-role'))
         {
 
             $validator = Validator::make(
@@ -207,7 +207,7 @@ class LabelController extends Controller
                 throw new RuleException('RuleRequiredError', 'sort');
             }
 
-            $result = AdminLabelFacade::moveLabel(f($validated), $user);
+            $result = AdminLabelFacade::moveLabel(f($validated), $userObject);
         }
 
         return $result;
@@ -221,11 +221,11 @@ class LabelController extends Controller
      */
     public function deleteLabel(Request $request)
     {
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($user)->allows('admin-role'))
+        if(Gate::forUser($userObject)->allows('admin-role'))
         {
            $validator = Validator::make(
                 $request->all(),
@@ -247,7 +247,7 @@ class LabelController extends Controller
             }
 
             //p($validated);die;
-            $result = AdminLabelFacade::deleteLabel(f($validated),$user);
+            $result = AdminLabelFacade::deleteLabel(f($validated),$userObject);
 
         }
 

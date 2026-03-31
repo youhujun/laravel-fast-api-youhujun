@@ -46,11 +46,11 @@ class DevelopController extends Controller
      */
     public function addDeveloper(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
            $result = code(\config('code.apiAuthError'));
@@ -76,7 +76,7 @@ class DevelopController extends Controller
 
             //p($validated);die;
 
-            $result =  DeveloperFacade::addDeveloper($admin,f($validated));
+            $result =  DeveloperFacade::addDeveloper($adminObject,f($validated));
         }
 
         return $result;

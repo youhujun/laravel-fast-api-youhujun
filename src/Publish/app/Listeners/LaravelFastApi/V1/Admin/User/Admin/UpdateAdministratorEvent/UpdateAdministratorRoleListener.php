@@ -40,7 +40,7 @@ class UpdateAdministratorRoleListener
     public function handle(object $event): void
     {
         $validated = $event->validated;
-        $admin = $event->admin;
+        $adminObject = $event->admin;
         $updateAdmin = $event->updateAdmin;
 
          //定义角色容器
@@ -67,16 +67,16 @@ class UpdateAdministratorRoleListener
             throw new CommonException('SelectNoUserRoleError');
         }
 
-        $user_id = $updateAdmin->user->id;
+        $user_uid = $updateAdmin->user->id;
 
         foreach ($roleArray as $key => $value)
         {
-            $data[] = ['created_at' => date('Y-m-d H:i:s',time()), 'created_time' => time(), 'user_id' => $user_id, 'role_id' => $value];
+            $data[] = ['created_at' => date('Y-m-d H:i:s',time()), 'created_time' => time(), 'user_id' => $user_uid, 'role_id' => $value];
         }
 
         //先清空用户原来的角色
         $where = [];
-        $where[] = ['user_id','=',$user_id];
+        $where[] = ['user_id','=',$user_uid];
 
         $deleteResult = UserRoleUnion::where($where)->delete();
 

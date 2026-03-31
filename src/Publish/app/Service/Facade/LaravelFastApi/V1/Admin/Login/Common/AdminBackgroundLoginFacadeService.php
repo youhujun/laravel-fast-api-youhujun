@@ -37,22 +37,22 @@ class AdminBackgroundLoginFacadeService
    /**
      * 为了单点登录,执行一边重新再登录逻辑,这样其他设备登录的会自动退出
      *
-     * @param  Admin $admin
+     * @param  Admin $adminObject
      */
-    public function checkResetLogin($admin)
+    public function checkResetLogin($adminObject)
     {
         //注意登录时的admin 是数据库admin,所以即使token跟新了,但是redis的token还是原来的token
-        $token = $admin->remember_token;
+        $token = $adminObject->remember_token;
 
         //先清除redis中的缓存
-        $this->clearAdminCache($admin, $token);
+        $this->clearAdminCache($adminObject, $token);
 
         //再更新数据库token
         $newToken = Str::random(60);
 
-        $admin->setRememberToken($newToken);
+        $adminObject->setRememberToken($newToken);
 
-        $newTokenResult = $admin->save();
+        $newTokenResult = $adminObject->save();
 
         if(!$newTokenResult)
         {
@@ -60,46 +60,46 @@ class AdminBackgroundLoginFacadeService
         }
 
         //重新将数据存入到 redis中
-        $this->loginCache($admin);
+        $this->loginCache($adminObject);
 
     }
 
     /**
      * 清除管理员缓存
      *
-     * @param  Admin  $admin
+     * @param  Admin  $adminObject
      * @param  [String] $token
      */
-    private function clearAdminCache($admin, $token)
+    private function clearAdminCache($adminObject, $token)
     {
         Redis::del("admin_token:{$token}");
-        Redis::hdel("admin:admin",$admin->id);
-        Redis::hdel("admin_info:admin_info",$admin->id);
+        Redis::hdel("admin:admin",$adminObject->id);
+        Redis::hdel("admin_info:admin_info",$adminObject->id);
     }
 
     /**
      * 登录成功 redis 存储用户相关信息
      *
-     * @param Admin $admin
+     * @param Admin $adminObject
      * @return void
      */
-    private function loginCache($admin)
+    private function loginCache($adminObject)
     {
         //用用户的rember_token 存储用户id 存储12小时
-        $tokenResult = Redis::setex("admin_token:{$admin->remember_token}", 12 * 60 * 60, $admin->id);
+        $tokenResult = Redis::setex("admin_token:{$adminObject->remember_token}", 12 * 60 * 60, $adminObject->id);
 
         //根据用户id 存储用户信息
 
         //检测是否有用户信息了
-        $hasResult = Redis::hget("admin:admin",$admin->id);
+        $hasResult = Redis::hget("admin:admin",$adminObject->id);
 
         //如果有就先删除
         if($hasResult)
         {
-            Redis::hdel("admin:admin",$admin->id);
+            Redis::hdel("admin:admin",$adminObject->id);
         }
 
-        $redisResult = Redis::hset("admin:admin",$admin->id,serialize($admin));
+        $redisResult = Redis::hset("admin:admin",$adminObject->id,serialize($adminObject));
 
         //存储成功以后 将remember_token 和 用户在 redis的id关系 存储 (因为上一个步骤需要用)
         if (!$tokenResult || !$redisResult)

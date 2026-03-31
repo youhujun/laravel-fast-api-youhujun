@@ -39,11 +39,11 @@ class PictureController extends Controller
      */
     public function setCover(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -58,11 +58,11 @@ class PictureController extends Controller
                 throw new RuleException('RuleRequiredError', 'picture_id');
             }
 
-            if (is_develop($admin) || isSuperAdmin($admin)) {
-                $result = AdminPictureFacade::setCover($validated, $admin);
+            if (is_develop($adminObject) || isSuperAdmin($adminObject)) {
+                $result = AdminPictureFacade::setCover($validated, $adminObject);
             } else {
-                if (Gate::forUser($admin)->allows('set-cover', $validated['id'])) {
-                    $result = AdminPictureFacade::setCover($validated, $admin);
+                if (Gate::forUser($adminObject)->allows('set-cover', $validated['id'])) {
+                    $result = AdminPictureFacade::setCover($validated, $adminObject);
                 }
             }
         }
@@ -77,11 +77,11 @@ class PictureController extends Controller
     */
     public function moveAlbum(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -101,11 +101,11 @@ class PictureController extends Controller
                 throw new RuleException('RuleRequiredError', 'pictureId');
             }
 
-            if (is_develop($admin) || isSuperAdmin($admin)) {
-                $result = AdminPictureFacade::moveAlbum($validated, $admin);
+            if (is_develop($adminObject) || isSuperAdmin($adminObject)) {
+                $result = AdminPictureFacade::moveAlbum($validated, $adminObject);
             } else {
-                if (Gate::forUser($admin)->allows('move-album', [$validated['album_id'],$validated['picture_id']])) {
-                    $result = AdminPictureFacade::moveAlbum($validated, $admin);
+                if (Gate::forUser($adminObject)->allows('move-album', [$validated['album_id'],$validated['picture_id']])) {
+                    $result = AdminPictureFacade::moveAlbum($validated, $adminObject);
                 }
             }
         }
@@ -120,11 +120,11 @@ class PictureController extends Controller
      */
     public function moveMultipleAlbum(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -144,11 +144,11 @@ class PictureController extends Controller
                 throw new RuleException('RuleRequiredError', 'pictureId');
             }
 
-            if (is_develop($admin) || isSuperAdmin($admin)) {
-                $result = AdminPictureFacade::moveMultipleAlbum($validated, $admin);
+            if (is_develop($adminObject) || isSuperAdmin($adminObject)) {
+                $result = AdminPictureFacade::moveMultipleAlbum($validated, $adminObject);
             } else {
-                if (Gate::forUser($admin)->allows('move-multiple-album', [$validated['album_id'],$validated['pictureId']])) {
-                    $result = AdminPictureFacade::moveMultipleAlbum($validated, $admin);
+                if (Gate::forUser($adminObject)->allows('move-multiple-album', [$validated['album_id'],$validated['pictureId']])) {
+                    $result = AdminPictureFacade::moveMultipleAlbum($validated, $adminObject);
                 }
             }
         }
@@ -165,11 +165,11 @@ class PictureController extends Controller
      */
     public function deletePicture(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -180,11 +180,11 @@ class PictureController extends Controller
 
             $validated = $validator->validated();
 
-            if (is_develop($admin) || isSuper($admin)) {
-                $result = AdminPictureFacade::deletePicture($validated, $admin);
+            if (is_develop($adminObject) || isSuper($adminObject)) {
+                $result = AdminPictureFacade::deletePicture($validated, $adminObject);
             } else {
-                if (Gate::forUser($admin)->allows('delete-picture', $validated['picture_id'])) {
-                    $result = AdminPictureFacade::deletePicture($validated, $admin);
+                if (Gate::forUser($adminObject)->allows('delete-picture', $validated['picture_id'])) {
+                    $result = AdminPictureFacade::deletePicture($validated, $adminObject);
                 }
             }
         }
@@ -201,11 +201,11 @@ class PictureController extends Controller
      */
     public function deleteMultiplePicture(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -224,11 +224,11 @@ class PictureController extends Controller
                 throw new RuleException('RuleRequiredError', 'pictureId');
             }
 
-            if (is_develop($admin) || isSuperAdmin($admin)) {
-                $result = AdminPictureFacade::deleteMultiplePicture($validated, $admin);
+            if (is_develop($adminObject) || isSuperAdmin($adminObject)) {
+                $result = AdminPictureFacade::deleteMultiplePicture($validated, $adminObject);
             } else {
-                if (Gate::forUser($admin)->allows('delete-multiple-picture', $validated['pictureId'])) {
-                    $result = AdminPictureFacade::deleteMultiplePicture($validated, $admin);
+                if (Gate::forUser($adminObject)->allows('delete-multiple-picture', $validated['pictureId'])) {
+                    $result = AdminPictureFacade::deleteMultiplePicture($validated, $adminObject);
                 }
             }
         }
@@ -244,11 +244,11 @@ class PictureController extends Controller
      */
     public function updatePictureName(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -264,11 +264,11 @@ class PictureController extends Controller
                 throw new RuleException('RuleRequiredError', 'picture_id');
             }
 
-            if (is_develop($admin) || isSuperAdmin($admin)) {
-                $result = AdminPictureFacade::updatePictureName($validated, $admin);
+            if (is_develop($adminObject) || isSuperAdmin($adminObject)) {
+                $result = AdminPictureFacade::updatePictureName($validated, $adminObject);
             } else {
-                if (Gate::forUser($admin)->allows('update-picture-name', $validated['picture_id'])) {
-                    $result = AdminPictureFacade::updatePictureName($validated, $admin);
+                if (Gate::forUser($adminObject)->allows('update-picture-name', $validated['picture_id'])) {
+                    $result = AdminPictureFacade::updatePictureName($validated, $adminObject);
                 }
             }
         }

@@ -28,8 +28,8 @@ class TestJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $admin;
-    protected $user;
+    protected $adminObject;
+    protected $userObject;
 
 	protected $testArray;
     /**

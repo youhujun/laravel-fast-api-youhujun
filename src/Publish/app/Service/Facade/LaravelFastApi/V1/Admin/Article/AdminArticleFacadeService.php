@@ -52,10 +52,10 @@ class AdminArticleFacadeService
      * 获取文章
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function getArticle($validated, $admin)
+    public function getArticle($validated, $adminObject)
     {
         $result = code(config('admin_code.GetArticleError'));
 
@@ -81,8 +81,8 @@ class AdminArticleFacadeService
 
         //普通管理员查询自己的文章
 
-        if (is_develop($admin) && !isSuper($admin) && !is_article_admin($admin)) {
-            $this->where[] = ['admin_id','=',$admin->id];
+        if (is_develop($adminObject) && !isSuper($adminObject) && !is_article_admin($adminObject)) {
+            $this->where[] = ['admin_id','=',$adminObject->id];
         }
 
         //置顶
@@ -141,10 +141,10 @@ class AdminArticleFacadeService
      * 添加文章
      *
      * @param [type] $validated 表单验证完成的参数
-     * @param [type] $admin 当前操作的用户
+     * @param [type] $adminObject 当前操作的用户
      * @return void
      */
-    public function addArticle($validated, $admin)
+    public function addArticle($validated, $adminObject)
     {
         $result = code(config('admin_code.AddArticleError'));
 
@@ -155,7 +155,7 @@ class AdminArticleFacadeService
 
         $article->created_time = \time();
 
-        $article->admin_id = $admin->id;
+        $article->admin_id = $adminObject->id;
 
         $article->title = $validated['title'];
 
@@ -194,11 +194,11 @@ class AdminArticleFacadeService
             throw new CommonException('AddArticleError');
         }
 
-        AddArticleEvent::dispatch($admin, $article, $validated);
+        AddArticleEvent::dispatch($adminObject, $article, $validated);
 
-        CommonEvent::dispatch($admin, $validated, 'AddArticle');
+        CommonEvent::dispatch($adminObject, $validated, 'AddArticle');
 
-        AddArticleJob::dispatchIf($article->status === 0, $admin, $article)->delay(now()->addSeconds($article->published_time - time()));
+        AddArticleJob::dispatchIf($article->status === 0, $adminObject, $article)->delay(now()->addSeconds($article->published_time - time()));
 
         $result = code(['code' => 0,'msg' => '文章添加成功!']);
 
@@ -210,10 +210,10 @@ class AdminArticleFacadeService
      * 更新文章
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function updateArticle($validated, $admin)
+    public function updateArticle($validated, $adminObject)
     {
         $result = code(config('admin_code.UpdateArticleError'));
 
@@ -262,11 +262,11 @@ class AdminArticleFacadeService
             throw new CommonException('UpdateArticleError');
         }
 
-        UpdateArticleEvent::dispatch($admin, $article, $validated);
+        UpdateArticleEvent::dispatch($adminObject, $article, $validated);
 
-        CommonEvent::dispatch($admin, $validated, 'UpdateArticle');
+        CommonEvent::dispatch($adminObject, $validated, 'UpdateArticle');
 
-        AddArticleJob::dispatchIf($article->status === 0, $admin, $article)->delay(now()->addSeconds($article->published_time - time()));
+        AddArticleJob::dispatchIf($article->status === 0, $adminObject, $article)->delay(now()->addSeconds($article->published_time - time()));
 
 
         $result = code(['code' => 0,'msg' => '文章更新成功!']);
@@ -279,10 +279,10 @@ class AdminArticleFacadeService
      * 置顶文章
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function toTopArticle($validated, $admin)
+    public function toTopArticle($validated, $adminObject)
     {
         $result = code(config('admin_code.TopArticleError'));
 
@@ -312,7 +312,7 @@ class AdminArticleFacadeService
             throw new CommonException('TopArticleError');
         }
 
-        CommonEvent::dispatch($admin, $validated, 'ToTopArticle');
+        CommonEvent::dispatch($adminObject, $validated, 'ToTopArticle');
 
         $result = code(['code' => 0,'msg' => '置顶文章成功!']);
 
@@ -323,10 +323,10 @@ class AdminArticleFacadeService
      * 批量置顶
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function multipleToTopArticle($validated, $admin)
+    public function multipleToTopArticle($validated, $adminObject)
     {
         $result = code(config('admin_code.MultipleTopArticleError'));
 
@@ -338,7 +338,7 @@ class AdminArticleFacadeService
             throw new CommonException('MultipleTopArticleError');
         }
 
-        CommonEvent::dispatch($admin, $validated, 'MultipleTopArticle');
+        CommonEvent::dispatch($adminObject, $validated, 'MultipleTopArticle');
 
         $result = code(['code' => 0,'msg' => '批量置顶文章成功!']);
 
@@ -349,10 +349,10 @@ class AdminArticleFacadeService
      * 批量取消置顶
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function multipleUnTopArticle($validated, $admin)
+    public function multipleUnTopArticle($validated, $adminObject)
     {
         $result = code(config('admin_code.MultipleUnTopArticleError'));
 
@@ -364,7 +364,7 @@ class AdminArticleFacadeService
             throw new CommonException('MultipleUnTopArticleError');
         }
 
-        CommonEvent::dispatch($admin, $validated, 'MultipleUnTopArticle');
+        CommonEvent::dispatch($adminObject, $validated, 'MultipleUnTopArticle');
 
         $result = code(['code' => 0,'msg' => '批量取消置顶文章成功!']);
 
@@ -375,10 +375,10 @@ class AdminArticleFacadeService
      * 删除文章
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function deleteArticle($validated, $admin)
+    public function deleteArticle($validated, $adminObject)
     {
         $result = code(config('admin_code.DeleteArticleError'));
 
@@ -396,7 +396,7 @@ class AdminArticleFacadeService
             throw new CommonException('DeleteArticleError');
         }
 
-        CommonEvent::dispatch($admin, $validated, 'DeleteArticle');
+        CommonEvent::dispatch($adminObject, $validated, 'DeleteArticle');
 
         $result = code(['code' => 0,'msg' => '删除文章成功!']);
 
@@ -407,10 +407,10 @@ class AdminArticleFacadeService
      * 批量删除
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function multipleDeleteArticle($validated, $admin)
+    public function multipleDeleteArticle($validated, $adminObject)
     {
         $result = code(config('admin_code.MultipleDeleteArticleError'));
 
@@ -420,7 +420,7 @@ class AdminArticleFacadeService
             throw new CommonException('MultipleDeleteArticleError');
         }
 
-        CommonEvent::dispatch($admin, $validated, 'MultipleDeleteArticle');
+        CommonEvent::dispatch($adminObject, $validated, 'MultipleDeleteArticle');
 
         $result = code(['code' => 0,'msg' => '批量删除文章成功!']);
 

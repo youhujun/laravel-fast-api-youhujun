@@ -62,7 +62,7 @@ class PhoneUserAddressFacadeService
      * @param [type] $validated
      * @return void
      */
-    public function getUserAddress($validated,$user)
+    public function getUserAddress($validated,$userObject)
     {
 
        $result = code(config('phone_code.GetUserAddressError'));
@@ -126,10 +126,10 @@ class PhoneUserAddressFacadeService
      * 添加
      *
      * @param [type] $validated
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function addUserAddress($validated,$user)
+    public function addUserAddress($validated,$userObject)
     {
         $result = code(config('phone_code.AddUserAddressError'));
 
@@ -153,7 +153,7 @@ class PhoneUserAddressFacadeService
             }
         }
 
-		$userAddressObject->user_id = $user->id;
+		$userAddressObject->user_id = $userObject->id;
 
 		$userAddressObject->province_id = $validated['region_id_array'][0];
 		$userAddressObject->region_id = $validated['region_id_array'][1];
@@ -169,7 +169,7 @@ class PhoneUserAddressFacadeService
              throw new CommonException('AddUserAddressError');
         }
 
-        CommonEvent::dispatch($user,$validated,'AddUserAddress');
+        CommonEvent::dispatch($userObject,$validated,'AddUserAddress');
 
         $result = code(['code'=>0,'msg'=>'添加用户地址成功']);
 
@@ -181,10 +181,10 @@ class PhoneUserAddressFacadeService
      * 更新
      *
      * @param [type] $validated
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function updateUserAddress($validated,$user)
+    public function updateUserAddress($validated,$userObject)
     {
         $result = code(config('phone_code.UpdateUserAddressError'));
 
@@ -205,7 +205,7 @@ class PhoneUserAddressFacadeService
         $updateData = [];
 
         $where[] = ['revision','=',$userAddressObject ->revision];
-		$where[] = ['user_id','=',$user->id];
+		$where[] = ['user_id','=',$userObject->id];
 
         foreach ( $validated as $key => $value)
         {
@@ -243,7 +243,7 @@ class PhoneUserAddressFacadeService
            throw new CommonException('UpdateUserAddressError');
         }
 
-        CommonEvent::dispatch($user,$validated,'UpdateUserAddress');
+        CommonEvent::dispatch($userObject,$validated,'UpdateUserAddress');
 
         $result = code(['code'=>0,'msg'=>'更新用户地址成功']);
 
@@ -255,10 +255,10 @@ class PhoneUserAddressFacadeService
      * 删除
      *
      * @param [type] $id
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function deleteUserAddress($validated,$user)
+    public function deleteUserAddress($validated,$userObject)
     {
         //删除
         $result = code(config('phone_code.UnSetDefaultUserAddressError'));
@@ -274,7 +274,7 @@ class PhoneUserAddressFacadeService
 
         if($validated['is_delete'])
         {
-            $userAddressObject = UserAddress::where('id',$validated['id'])->where('user_id','=',$user->id)->first();
+            $userAddressObject = UserAddress::where('id',$validated['id'])->where('user_id','=',$userObject->id)->first();
 
             if(!$userAddressObject)
             {
@@ -308,7 +308,7 @@ class PhoneUserAddressFacadeService
 
         }
 
-        CommonEvent::dispatch($user,$validated,$eventName);
+        CommonEvent::dispatch($userObject,$validated,$eventName);
 
         $result = code(['code'=>0,'msg'=>'恢复用户地址成功']);
 
@@ -324,10 +324,10 @@ class PhoneUserAddressFacadeService
      * 设为默认地址
      *
      * @param [type] $id
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function setDefaultUserAddress($validated,$user)
+    public function setDefaultUserAddress($validated,$userObject)
     {
         
         $result = code(config('phone_code.UnSetDefaultUserAddressError'));
@@ -346,7 +346,7 @@ class PhoneUserAddressFacadeService
 
 			$where = [];
 			$where[] = ['is_default','=',1];
-			$where[] = ['user_id','=',$user->id];
+			$where[] = ['user_id','=',$userObject->id];
 			$updateData = [];
 			$updateData['is_default'] = 0;
 			$updateOtherResult = UserAddress::where($where)->update($updateData);
@@ -390,7 +390,7 @@ class PhoneUserAddressFacadeService
 
         }
 
-        CommonEvent::dispatch($user,$validated,$eventName);
+        CommonEvent::dispatch($userObject,$validated,$eventName);
 
         $result = code(['code'=>0,'msg'=>'取消默认用户地址成功']);
 
@@ -406,10 +406,10 @@ class PhoneUserAddressFacadeService
      * 设为置顶
      *
      * @param [type] $id
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function setTopUserAddress($validated,$user)
+    public function setTopUserAddress($validated,$userObject)
     {
         
         $result = code(config('phone_code.UnSetTopUserAddressError'));
@@ -426,7 +426,7 @@ class PhoneUserAddressFacadeService
         if($validated['is_top'])
         {
 		
-            $userAddressObject = UserAddress::where('id',$validated['id'])->where('user_id',$user->id)->first();
+            $userAddressObject = UserAddress::where('id',$validated['id'])->where('user_id',$userObject->id)->first();
 
             if(!$userAddressObject)
             {
@@ -465,7 +465,7 @@ class PhoneUserAddressFacadeService
 
         }
 
-        CommonEvent::dispatch($user,$validated,$eventName);
+        CommonEvent::dispatch($userObject,$validated,$eventName);
 
         $result = code(['code'=>0,'msg'=>'取消置顶用户地址成功']);
 
@@ -481,13 +481,13 @@ class PhoneUserAddressFacadeService
 	 * 获取用户默认地址
 	 *
 	 * @param  [type] $validated
-	 * @param  [type] $user
+	 * @param  [type] $userObject
 	 */
-	public function getUserDefaultAddress($validated,$user)
+	public function getUserDefaultAddress($validated,$userObject)
 	{
 		$result = code(config('phone_codeGetUserDefaultAddressError'));
 
-		$userDefaultAddress = UserAddress::where('user_id',$user->id)->where('is_default',1)->first();
+		$userDefaultAddress = UserAddress::where('user_id',$userObject->id)->where('is_default',1)->first();
 
 		//p($userDefaultAddress);die;
 

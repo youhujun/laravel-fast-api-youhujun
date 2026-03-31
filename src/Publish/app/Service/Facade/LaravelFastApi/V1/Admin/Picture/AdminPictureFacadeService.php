@@ -44,10 +44,10 @@ class AdminPictureFacadeService
      * 设置封面
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function setCover($validated ,$admin)
+    public function setCover($validated ,$adminObject)
     {
         $result = code(config('admin_code.SetCoverError'));
 
@@ -87,7 +87,7 @@ class AdminPictureFacadeService
             throw new CommonException('SetCoverError');
         }
 
-        CommonEvent::dispatch($admin,['picture_id'=>$picture_id,'data'=>$updateData],'SetCover');
+        CommonEvent::dispatch($adminObject,['picture_id'=>$picture_id,'data'=>$updateData],'SetCover');
 
         $result = code(['code'=>0,'msg'=>'设置封面成功']);
 
@@ -98,10 +98,10 @@ class AdminPictureFacadeService
      * 单图片移动相册
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function moveAlbum($validated ,$admin)
+    public function moveAlbum($validated ,$adminObject)
     {
         $result = code(config('admin_code.MoveAlbumError'));
 
@@ -130,7 +130,7 @@ class AdminPictureFacadeService
             throw new CommonException('MoveAlbumError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'MoveAlbum');
+        CommonEvent::dispatch($adminObject,$validated,'MoveAlbum');
 
         $result = code(['code'=>0,'msg'=>'移动相册成功!']);
 
@@ -141,10 +141,10 @@ class AdminPictureFacadeService
      * 相册
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function moveMultipleAlbum($validated ,$admin)
+    public function moveMultipleAlbum($validated ,$adminObject)
     {
         $result = code(config('admin_code.MoveMultipleAlbumError'));
 
@@ -174,7 +174,7 @@ class AdminPictureFacadeService
             throw new CommonException('MoveMultipleAlbumError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'MoveMultipleAlbum',1);
+        CommonEvent::dispatch($adminObject,$validated,'MoveMultipleAlbum',1);
 
         DB::commit();
 
@@ -188,10 +188,10 @@ class AdminPictureFacadeService
      * 删除图片
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function deletePicture($validated ,$admin)
+    public function deletePicture($validated ,$adminObject)
     {
         $result = code(config('admin_code.DeletePictureError'));
 
@@ -215,7 +215,7 @@ class AdminPictureFacadeService
             throw new CommonException('DeletePictureError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'DeletePicture');
+        CommonEvent::dispatch($adminObject,$validated,'DeletePicture');
 
         $result = code(['code'=>0,'msg'=>'删除图片成功!']);
 
@@ -226,10 +226,10 @@ class AdminPictureFacadeService
      * 批量删除图片
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function deleteMultiplePicture($validated ,$admin)
+    public function deleteMultiplePicture($validated ,$adminObject)
     {
         $result = code(config('admin_code.DeleteMultiplePictureError'));
 
@@ -250,7 +250,7 @@ class AdminPictureFacadeService
             throw new CommonException('DeleteMultiplePictureError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'DeleteMultiplePicture');
+        CommonEvent::dispatch($adminObject,$validated,'DeleteMultiplePicture');
 
         $result = code(['code'=>0,'msg'=>'批量删除图片成功!']);
 
@@ -263,10 +263,10 @@ class AdminPictureFacadeService
      * 修改图片名称
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function updatePictureName($validated ,$admin)
+    public function updatePictureName($validated ,$adminObject)
     {
         $result = code(config('admin_code.UpdatePictureNameError'));
 
@@ -294,7 +294,7 @@ class AdminPictureFacadeService
             throw new CommonException('UpdatePictureNameError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'UpdatePictureName');
+        CommonEvent::dispatch($adminObject,$validated,'UpdatePictureName');
 
         $result = code(['code'=>0,'msg'=>'更新图片成功!']);
 

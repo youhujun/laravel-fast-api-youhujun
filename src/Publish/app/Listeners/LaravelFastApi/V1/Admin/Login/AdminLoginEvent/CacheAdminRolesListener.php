@@ -37,20 +37,20 @@ class CacheAdminRolesListener
      */
     public function handle(object $event): void
     {
-        $admin = $event->admin;
+        $adminObject = $event->admin;
         $validated = $event->validated;
 
-        $rolesArray = get_admin_roles($admin);
+        $rolesArray = get_admin_roles($adminObject);
 
         $error = 0;
 
-        $hasResult = Redis::hget("admin_roles:admin_roles", $admin->id);
+        $hasResult = Redis::hget("admin_roles:admin_roles", $adminObject->id);
 
         if ($hasResult) {
             $error = 1;
         } else {
             if (count($rolesArray)) {
-                $error =  Redis::hset("admin_roles:admin_roles", $admin->id, json_encode($rolesArray));
+                $error =  Redis::hset("admin_roles:admin_roles", $adminObject->id, json_encode($rolesArray));
             }
         }
 

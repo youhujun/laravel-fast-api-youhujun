@@ -36,8 +36,8 @@ class CommonUserRegisterEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
-    public $admin;
+    public $userObject;
+    public $adminObject;
     public $validated;
     // 是否开启事务
     public $isTransation;

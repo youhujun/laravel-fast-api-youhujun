@@ -37,12 +37,12 @@ class AddUserIdCardListener
      */
     public function handle(object $event): void
     {
-        $user = $event->user;
+        $userObject = $event->user;
         $validated = $event->validated;
 
         $isTransation = $event->isTransation;
 
-        $userIdCard = UserIdCard::where('user_id',$user->id)->first();
+        $userIdCard = UserIdCard::where('user_id',$userObject->id)->first();
 
 		if(!$userIdCard)
 		{
@@ -52,7 +52,7 @@ class AddUserIdCardListener
 		$userIdCard->created_at = time();
 		$userIdCard->created_time = time();
 		$userIdCard->sort = 100;
-        $userIdCard->user_id = $user->id;
+        $userIdCard->user_id = $userObject->id;
 		$userIdCard->id_card_front_id = $validated['id_card_front_id'];
 		$userIdCard->id_card_back_id = $validated['id_card_back_id'];
 

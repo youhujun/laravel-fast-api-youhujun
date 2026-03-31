@@ -40,14 +40,14 @@ class AddUserAvatarListener
      */
     public function handle(object $event): void
     {
-        $user = $event->user;
+        $userObject = $event->user;
         $params = $event->params;
         $isTransation = $event->isTransation;
 
         //用户相册
         $where = [];
 
-        $where[] = ['user_id','=',$user->id];
+        $where[] = ['user_id','=',$userObject->id];
         $where[] = ['album_type','=',20];
 
         $album = Album::where($where)->first();
@@ -64,7 +64,7 @@ class AddUserAvatarListener
         //头像图片
         $albumPicture = new AlbumPicture;
 
-        $albumPicture->user_id = $user->id;
+        $albumPicture->user_id = $userObject->id;
         $albumPicture->album_id = $album->id;
 
         $user_avatar_url = '';
@@ -96,7 +96,7 @@ class AddUserAvatarListener
         //用户头像
         $userAvatar = new UserAvatar;
 
-        $userAvatar->user_id = $user->id;
+        $userAvatar->user_id = $userObject->id;
 
         $userAvatar->is_default = 1;
 

@@ -28,7 +28,7 @@ class CommonEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
+    public $userObject;
     public $logData;
     public $eventCode;
     // 是否开启事务
@@ -38,10 +38,10 @@ class CommonEvent
      *
      * @return void
      */
-    public function __construct($user,$logData,$eventCode,$isTransation = 0)
+    public function __construct($userObject,$logData,$eventCode,$isTransation = 0)
     {
         //
-        $this->user = $user;
+        $this->user = $userObject;
         $this->logData = $logData;
         $this->eventCode = $eventCode;
         $this->isTransation = $isTransation;

@@ -39,14 +39,14 @@ class AddDeveloperUserAddressListener
      */
     public function handle(object $event): void
     {
-        $admin = $event->admin;
-        $user = $event->user;
+        $adminObject = $event->admin;
+        $userObject = $event->user;
         $validated = $event->validated;
 
          //用户地址
         $userAddress = new UserAddress;
 
-        $userAddress->user_id = $user->id;
+        $userAddress->user_id = $userObject->id;
         $userAddress->created_at = time();
         $userAddress->created_time = time();
         $userAddress->is_default = 1;

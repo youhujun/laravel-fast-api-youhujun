@@ -74,11 +74,11 @@ class UserLoginLogResource extends JsonResource
 
             if($this->resource->relationLoaded('user'))
             {
-                $user = null;
+                $userObject = null;
 
-                $user = $this->user;
+                $userObject = $this->user;
 
-                if($user)
+                if($userObject)
                 {
                     $response['phone'] = null;
                     $response['account_name'] = null;
@@ -86,19 +86,19 @@ class UserLoginLogResource extends JsonResource
 
 
 
-                    if(isset($user->phone))
+                    if(isset($userObject->phone))
                     {
-                        $response['phone'] = $user->phone;
+                        $response['phone'] = $userObject->phone;
                     }
 
-                    if(isset($user->account_name))
+                    if(isset($userObject->account_name))
                     {
-                        $response['account_name'] = $user->account_name;
+                        $response['account_name'] = $userObject->account_name;
                     }
 
-                    if(isset($user->userInfo))
+                    if(isset($userObject->userInfo))
                     {
-                        $user_info = $user->userInfo;
+                        $user_info = $userObject->userInfo;
                         $response['nick_name'] = $user_info->nick_name;
                     }
                 }

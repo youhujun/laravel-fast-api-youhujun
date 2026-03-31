@@ -36,13 +36,13 @@ class AlbumPolicy
     /**
      * 更新相册
      *
-     * @param Admin $admin
+     * @param Admin $adminObject
      * @param Album $album
      * @return void
      */
-    public function update($admin,$valdiated)
+    public function update($adminObject,$valdiated)
     {
-       $result = $this->common($admin,$valdiated);
+       $result = $this->common($adminObject,$valdiated);
 
         return $result;
     }
@@ -50,14 +50,14 @@ class AlbumPolicy
     /**
      * 删除相册
      *
-     * @param Admin $admin
+     * @param Admin $adminObject
      * @param [type] $id
      * @return void
      */
-    public function delete($admin,$valdiated)
+    public function delete($adminObject,$valdiated)
     {
 
-        $result = $this->common($admin,$valdiated);
+        $result = $this->common($adminObject,$valdiated);
 
         return $result;
     }
@@ -65,13 +65,13 @@ class AlbumPolicy
     /**
      * 查看相册图片
      *
-     * @param Admin $admin
+     * @param Admin $adminObject
      * @param [type] $valdiated
      * @return void
      */
-    public function getAlbumPicture($admin,$valdiated)
+    public function getAlbumPicture($adminObject,$valdiated)
     {
-        $result = $this->common($admin,$valdiated);
+        $result = $this->common($adminObject,$valdiated);
 
         return $result;
     }
@@ -80,11 +80,11 @@ class AlbumPolicy
     /**
      * 授权共同处理逻辑
      *
-     * @param Admin $admin
+     * @param Admin $adminObject
      * @param [type] $valdiated
      * @return void
      */
-    protected function common($admin,$valdiated)
+    protected function common($adminObject,$valdiated)
     {
         $result = true;
 
@@ -94,7 +94,7 @@ class AlbumPolicy
 
         $album = Album::find($album_id);
 
-        if($admin->id !== $album->admin_id)
+        if($adminObject->id !== $album->admin_id)
         {
             $result = false;
         }

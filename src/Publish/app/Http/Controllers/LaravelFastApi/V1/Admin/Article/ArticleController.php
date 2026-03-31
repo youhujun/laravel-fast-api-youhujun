@@ -40,11 +40,11 @@ class ArticleController extends Controller
     */
     public function getArticle(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -66,7 +66,7 @@ class ArticleController extends Controller
 
             //p($validated);die;
 
-            $result = AdminArticleFacade::getArticle(f($validated), $admin);
+            $result = AdminArticleFacade::getArticle(f($validated), $adminObject);
         }
 
         return $result;
@@ -80,11 +80,11 @@ class ArticleController extends Controller
      */
     public function addArticle(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -131,7 +131,7 @@ class ArticleController extends Controller
                 $validated['content'] = htmlspecialchars($validated['content']);
             }
 
-            $result = AdminArticleFacade::addArticle($validated, $admin);
+            $result = AdminArticleFacade::addArticle($validated, $adminObject);
         }
 
         return $result;
@@ -145,11 +145,11 @@ class ArticleController extends Controller
      */
     public function updateArticle(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
             $validated = $request->validate(
                 [
                     'id' => ['bail',new Required(),new Numeric()],
@@ -195,7 +195,7 @@ class ArticleController extends Controller
                 throw new RuleException('RuleRequiredError', 'content');
             }
 
-            $result = AdminArticleFacade::updateArticle($validated, $admin);
+            $result = AdminArticleFacade::updateArticle($validated, $adminObject);
         }
 
         return $result;
@@ -209,11 +209,11 @@ class ArticleController extends Controller
      */
     public function toTopArticle(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -228,7 +228,7 @@ class ArticleController extends Controller
                 throw new RuleException('RuleRequiredError', 'id');
             }
 
-            $result = AdminArticleFacade::toTopArticle($validated, $admin);
+            $result = AdminArticleFacade::toTopArticle($validated, $adminObject);
         }
 
         return $result;
@@ -242,11 +242,11 @@ class ArticleController extends Controller
      */
     public function multipleToTopArticle(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -261,7 +261,7 @@ class ArticleController extends Controller
                 throw new RuleException('RuleRequiredError', 'selectId');
             }
 
-            $result = AdminArticleFacade::multipleToTopArticle($validated, $admin);
+            $result = AdminArticleFacade::multipleToTopArticle($validated, $adminObject);
         }
 
         return $result;
@@ -275,11 +275,11 @@ class ArticleController extends Controller
      */
     public function multipleUnTopArticle(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -294,7 +294,7 @@ class ArticleController extends Controller
                 throw new RuleException('RuleRequiredError', 'selectId');
             }
 
-            $result = AdminArticleFacade::multipleUnTopArticle($validated, $admin);
+            $result = AdminArticleFacade::multipleUnTopArticle($validated, $adminObject);
         }
 
         return $result;
@@ -308,11 +308,11 @@ class ArticleController extends Controller
      */
     public function deleteArticle(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -327,7 +327,7 @@ class ArticleController extends Controller
                 throw new RuleException('RuleRequiredError', 'id');
             }
 
-            $result = AdminArticleFacade::deleteArticle($validated, $admin);
+            $result = AdminArticleFacade::deleteArticle($validated, $adminObject);
         }
 
         return $result;
@@ -341,11 +341,11 @@ class ArticleController extends Controller
      */
     public function multipleDeleteArticle(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -360,7 +360,7 @@ class ArticleController extends Controller
                 throw new RuleException('RuleRequiredError', 'selectId');
             }
 
-            $result = AdminArticleFacade::multipleDeleteArticle($validated, $admin);
+            $result = AdminArticleFacade::multipleDeleteArticle($validated, $adminObject);
         }
 
         return $result;

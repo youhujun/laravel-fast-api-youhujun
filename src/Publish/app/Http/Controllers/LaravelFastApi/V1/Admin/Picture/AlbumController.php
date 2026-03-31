@@ -46,9 +46,9 @@ class AlbumController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -69,7 +69,7 @@ class AlbumController extends Controller
             }
 
             //p($validated);die;
-            $result =  AdminAlbumFacade::getDefaultAlbum(f($validated),$admin);
+            $result =  AdminAlbumFacade::getDefaultAlbum(f($validated),$adminObject);
         }
 
         return $result;
@@ -86,9 +86,9 @@ class AlbumController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -111,7 +111,7 @@ class AlbumController extends Controller
 
             //p($validated);die;
 
-            $result =  AdminAlbumFacade::findAlbum(f($validated),$admin);
+            $result =  AdminAlbumFacade::findAlbum(f($validated),$adminObject);
         }
 
         return $result;
@@ -124,9 +124,9 @@ class AlbumController extends Controller
      */
     public function getAlbum(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if (Gate::forUser($admin)->allows('admin-role'))
+        if (Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -142,7 +142,7 @@ class AlbumController extends Controller
 
            $validated = $validator->validated();
            //p($validated);die;
-           $result = AdminAlbumFacade::getAlbum(f($validated),$admin);
+           $result = AdminAlbumFacade::getAlbum(f($validated),$adminObject);
         }
 
         return $result;
@@ -156,11 +156,11 @@ class AlbumController extends Controller
      */
     public function addAlbum(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.apiAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -187,7 +187,7 @@ class AlbumController extends Controller
                 throw new RuleException('RuleRequiredError', 'sort');
             }
 
-            $result = AdminAlbumFacade::addAlbum(f($validated),$admin);
+            $result = AdminAlbumFacade::addAlbum(f($validated),$adminObject);
         }
 
         return $result;
@@ -201,11 +201,11 @@ class AlbumController extends Controller
      */
     public function updateAlbum(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.apiAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -240,9 +240,9 @@ class AlbumController extends Controller
             /**
              * @see \App\Policies\Admin\Picture\AlbumPolicy
              */
-            if(Gate::forUser($admin)->allows('update-album',[$validated]))
+            if(Gate::forUser($adminObject)->allows('update-album',[$validated]))
             {
-                $result = AdminAlbumFacade::updateAlbum($validated,$admin);
+                $result = AdminAlbumFacade::updateAlbum($validated,$adminObject);
             }
         }
         return $result;
@@ -256,11 +256,11 @@ class AlbumController extends Controller
      */
     public function deleteAlbum(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.apiAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -285,9 +285,9 @@ class AlbumController extends Controller
             /**
              * @see \App\Policies\Admin\PictureAlbumPolicy
              */
-            if(Gate::forUser($admin)->allows('delete-album',[$validated]))
+            if(Gate::forUser($adminObject)->allows('delete-album',[$validated]))
             {
-                $result = AdminAlbumFacade::deleteAlbum($validated,$admin);
+                $result = AdminAlbumFacade::deleteAlbum($validated,$adminObject);
             }
         }
         return $result;
@@ -301,11 +301,11 @@ class AlbumController extends Controller
      */
     public function getAlbumPicture(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(config('admin_code.apiAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -333,9 +333,9 @@ class AlbumController extends Controller
             /**
              * @see \App\Policies\Admin\Picture\AlbumPolicy
              */
-            if(Gate::forUser($admin)->allows('get-album-picture',[$validated]))
+            if(Gate::forUser($adminObject)->allows('get-album-picture',[$validated]))
             {
-                $result = AdminAlbumFacade::getAlbumPicture($validated,$admin);
+                $result = AdminAlbumFacade::getAlbumPicture($validated,$adminObject);
             }
 
         }

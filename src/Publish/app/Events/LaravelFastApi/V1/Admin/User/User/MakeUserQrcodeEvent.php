@@ -27,8 +27,8 @@ class MakeUserQrcodeEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
-    public $admin;
+    public $userObject;
+    public $adminObject;
     public $validated;
     // 是否开启事务
     public $isTransation;
@@ -37,11 +37,11 @@ class MakeUserQrcodeEvent
      *
      * @return void
      */
-    public function __construct($user,$admin,$validated,$isTransation = 0)
+    public function __construct($userObject,$adminObject,$validated,$isTransation = 0)
     {
         //
-        $this->user = $user;
-        $this->admin = $admin;
+        $this->user = $userObject;
+        $this->admin = $adminObject;
         $this->validated = $validated;
         $this->isTransation = $isTransation;
     }

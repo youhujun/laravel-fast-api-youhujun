@@ -68,10 +68,10 @@ class AdminUserAccountFacadeService
      * 后台修改用户账户余额
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-   public function setUserAccount($validated,$admin)
+   public function setUserAccount($validated,$adminObject)
    {
         $result = code(\config('admin_code.SetUserAccountError'));
 
@@ -140,9 +140,9 @@ class AdminUserAccountFacadeService
             throw new CommonException('SetUserAccountError');
         }
 
-        SetUserAccountEvent::dispatch($admin,$validated);
+        SetUserAccountEvent::dispatch($adminObject,$validated);
 
-        CommonEvent::dispatch($admin,$validated,'SetUserAccount',1);
+        CommonEvent::dispatch($adminObject,$validated,'SetUserAccount',1);
 
         DB::commit();
 
@@ -155,9 +155,9 @@ class AdminUserAccountFacadeService
     * 获取用户账户日志
     *
     * @param  [type] $validated
-    * @param  [type] $admin
+    * @param  [type] $adminObject
     */
-   public function getUserAccountLog($validated,$admin)
+   public function getUserAccountLog($validated,$adminObject)
    {
        $result = code(config('admin_code.GetUserAccountLogError'));
 
@@ -218,7 +218,7 @@ class AdminUserAccountFacadeService
    /**
 	* 获取用户账户信息
     */
-   public function getUserAccountInfo($validated,$admin)
+   public function getUserAccountInfo($validated,$adminObject)
    {
 	  $result = code(config('admin_code.GetUserAccountInfoError'));
 

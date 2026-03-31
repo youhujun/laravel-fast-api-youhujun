@@ -80,9 +80,9 @@ class AdminInfoResource extends JsonResource
 
         //走到这里说明没redis缓存中没有
         if (!isset($adminInfoData) || empty($adminInfoData)) {
-            $user_id = $this->resource->user_id;
+            $user_uid = $this->resource->user_id;
 
-            $userInfoObject = UserInfo::where('user_id', $user_id)->first();
+            $userInfoObject = UserInfo::where('user_id', $user_uid)->first();
 
             if ($userInfoObject) {
                 $responseData['username'] = $userInfoObject->nick_name;
@@ -90,7 +90,7 @@ class AdminInfoResource extends JsonResource
                 //$responseData['introduction'] = $userInfoObject->introduction;
             }
 
-            $avatar = $this->getAdminAvatar($user_id);
+            $avatar = $this->getAdminAvatar($user_uid);
 
             if ($avatar) {
                 $responseData['avatar'] = $avatar;
@@ -110,7 +110,7 @@ class AdminInfoResource extends JsonResource
             $redisResult = Redis::hset("admin_info:admin_info", $this->resource->id, json_encode($responseData));
 
             if (!$redisResult) {
-                Log::debug(['SaveRedisAdminInfoError' => "redis存储管理员信息失败:{$admin->id}"]);
+                Log::debug(['SaveRedisAdminInfoError' => "redis存储管理员信息失败:{$adminObject->id}"]);
             }
         }
 
@@ -124,15 +124,15 @@ class AdminInfoResource extends JsonResource
     /**
      * 获取管理员头像
      *
-     * @param User $user
+     * @param User $userObject
      * @return void
      */
-    private function getAdminAvatar($user_id)
+    private function getAdminAvatar($user_uid)
     {
         //远程连接
         $avatar = null;
 
-        $adminAvatarObject = UserAvatar::where('user_id', $user_id)->where('is_default', 1)->first();
+        $adminAvatarObject = UserAvatar::where('user_id', $user_uid)->where('is_default', 1)->first();
 
 
         if ($adminAvatarObject) {

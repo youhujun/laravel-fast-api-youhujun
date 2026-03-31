@@ -39,9 +39,9 @@ class LevelItemController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -71,9 +71,9 @@ class LevelItemController extends Controller
      */
     public function findLevelItem(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -108,9 +108,9 @@ class LevelItemController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-       $admin = Auth::guard('admin_token')->user();
+       $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -152,9 +152,9 @@ class LevelItemController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -190,7 +190,7 @@ class LevelItemController extends Controller
                 throw new RuleException('RuleRequiredError', 'item_code');
             }
 
-            $result = AdminLevelItemFacade::addLevelItem(f($validated),$admin);
+            $result = AdminLevelItemFacade::addLevelItem(f($validated),$adminObject);
         }
 
         return $result;
@@ -204,13 +204,13 @@ class LevelItemController extends Controller
      */
     public function updateLevelItem(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
         $id = check_id($request->input('id'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -249,7 +249,7 @@ class LevelItemController extends Controller
                throw new RuleException('RuleRequiredError', 'item_code');
            }
 
-           $result =AdminLevelItemFacade::updateLevelItem(f($validated),$admin);
+           $result =AdminLevelItemFacade::updateLevelItem(f($validated),$adminObject);
         }
 
         return $result;
@@ -263,11 +263,11 @@ class LevelItemController extends Controller
      */
     public function deleteLevelItem(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -288,7 +288,7 @@ class LevelItemController extends Controller
                 throw new RuleException('RuleRequiredError', 'id');
             }
 
-            $result = AdminLevelItemFacade::deleteLevelItem($validated,$admin);
+            $result = AdminLevelItemFacade::deleteLevelItem($validated,$adminObject);
         }
 
         return $result;
@@ -302,11 +302,11 @@ class LevelItemController extends Controller
      */
     public function multipleDeleteLevelItem(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -323,7 +323,7 @@ class LevelItemController extends Controller
                 throw new RuleException('RuleRequiredError', 'selectId');
             }
 
-            $result = AdminLevelItemFacade::multipleDeleteLevelItem(f($validated),$admin);
+            $result = AdminLevelItemFacade::multipleDeleteLevelItem(f($validated),$adminObject);
         }
 
         return $result;

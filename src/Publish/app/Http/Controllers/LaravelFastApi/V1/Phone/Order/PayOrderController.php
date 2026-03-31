@@ -40,9 +40,9 @@ class PayOrderController extends Controller
     {
         $result = code(\config('phone_code.PhoneAuthError'));
 
-        $user = Auth::guard('phone_token')->user();
+        $userObject = Auth::guard('phone_token')->user();
 
-        if(Gate::forUser($user)->allows('phone-user-role'))
+        if(Gate::forUser($userObject)->allows('phone-user-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -58,7 +58,7 @@ class PayOrderController extends Controller
 
             //p($validated);die;
             //PhonePayFacade::test();die;
-            $result =  PhonePayFacade::testPayOrder(f($validated),$user);
+            $result =  PhonePayFacade::testPayOrder(f($validated),$userObject);
         }
 
         return $result;

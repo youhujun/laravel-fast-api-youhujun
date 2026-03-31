@@ -83,10 +83,10 @@ class AdminCategoryFacadeService
      *  添加地区
      *
      * @param [type] $validated
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function addCategory($validated,$admin)
+    public function addCategory($validated,$adminObject)
     {
         $result = code(config('admin_code.AddCategoryError'));
 
@@ -111,7 +111,7 @@ class AdminCategoryFacadeService
             throw new CommonException('AddCategoryError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'AddCategory');
+        CommonEvent::dispatch($adminObject,$validated,'AddCategory');
 
         Redis::hdel('system:config','treeCategory');
 
@@ -124,10 +124,10 @@ class AdminCategoryFacadeService
      * 更新地区
      *
      * @param [type] $validated
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function updateCategory($validated,$admin)
+    public function updateCategory($validated,$adminObject)
     {
         $result = code(config('admin_code.UpdateCategoryError'));
 
@@ -178,7 +178,7 @@ class AdminCategoryFacadeService
             throw new CommonException('UpdateCategoryError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'UpdateCategory');
+        CommonEvent::dispatch($adminObject,$validated,'UpdateCategory');
 
         Redis::hdel('system:config','treeCategory');
 
@@ -191,10 +191,10 @@ class AdminCategoryFacadeService
      * 更新
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function moveCategory($validated, $admin)
+    public function moveCategory($validated, $adminObject)
     {
         $result = code(config('admin_code.MoveCategoryError'));
 
@@ -258,7 +258,7 @@ class AdminCategoryFacadeService
             throw new CommonException('MoveCategoryError');
         }
 
-        CommonEvent::dispatch($admin, $validated, 'MoveCategory');
+        CommonEvent::dispatch($adminObject, $validated, 'MoveCategory');
 
         //修改子级deep
         $deepNumber = $parentDeep - $oldDeep;
@@ -277,10 +277,10 @@ class AdminCategoryFacadeService
      * 删除地区
      *
      * @param [type] $id
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function deleteCategory($validated,$admin)
+    public function deleteCategory($validated,$adminObject)
     {
         $result = code(config('admin_code.DeleteCategoryError'));
 
@@ -325,7 +325,7 @@ class AdminCategoryFacadeService
             throw new CommonException('DeleteCategoryError');
         }
 
-        CommonEvent::dispatch($admin, $validated, 'DeleteCategory');
+        CommonEvent::dispatch($adminObject, $validated, 'DeleteCategory');
 
         //清空redis的缓存数据
         $redisTreeResult = Redis::hdel('system:config', 'treeCategory');

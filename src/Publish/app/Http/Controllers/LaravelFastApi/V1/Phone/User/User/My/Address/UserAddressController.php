@@ -42,9 +42,9 @@ class UserAddressController extends Controller
     {
         $result = code(\config('phone_code.PhoneAuthError'));
 
-        $user = Auth::guard('phone_token')->user();
+        $userObject = Auth::guard('phone_token')->user();
 
-        if(Gate::forUser($user)->allows('phone-user-role'))
+        if(Gate::forUser($userObject)->allows('phone-user-role'))
         {
 
              $validator = Validator::make(
@@ -68,7 +68,7 @@ class UserAddressController extends Controller
 
 			if(count($validated))
 			{
-				$result = PhoneUserAddressFacade::getUserAddress(f($validated),$user);
+				$result = PhoneUserAddressFacade::getUserAddress(f($validated),$userObject);
 			}
 
             
@@ -85,11 +85,11 @@ class UserAddressController extends Controller
      */
     public function addUserAddress(Request $request)
     {
-        $user = Auth::guard('phone_token')->user();
+        $userObject = Auth::guard('phone_token')->user();
 
         $result = code(\config('phone_code.PhoneAuthError'));
 
-        if(Gate::forUser($user)->allows('phone-user-role'))
+        if(Gate::forUser($userObject)->allows('phone-user-role'))
         {
 
             $validator = Validator::make(
@@ -130,7 +130,7 @@ class UserAddressController extends Controller
 
             if(count($validated))
 			{
-				 $result = PhoneUserAddressFacade::addUserAddress(f($validated),$user);
+				 $result = PhoneUserAddressFacade::addUserAddress(f($validated),$userObject);
 			}
         }
 
@@ -145,13 +145,13 @@ class UserAddressController extends Controller
      */
     public function updateUserAddress(Request $request)
     {
-        $user = Auth::guard('phone_token')->user();
+        $userObject = Auth::guard('phone_token')->user();
 
         $result = code(\config('phone_code.PhoneAuthError'));
 
         $id = check_id($request->input('id'));
 
-        if(Gate::forUser($user)->allows('phone-user-role'))
+        if(Gate::forUser($userObject)->allows('phone-user-role'))
         {
            $validator = Validator::make(
                 $request->all(),
@@ -196,7 +196,7 @@ class UserAddressController extends Controller
 
 		    if(count($validated))
 			{
-				$result = PhoneUserAddressFacade::updateUserAddress(f($validated),$user);
+				$result = PhoneUserAddressFacade::updateUserAddress(f($validated),$userObject);
 			}
 
            
@@ -214,11 +214,11 @@ class UserAddressController extends Controller
      */
     public function deleteUserAddress(Request $request)
     {
-        $user = Auth::guard('phone_token')->user();
+        $userObject = Auth::guard('phone_token')->user();
 
         $result = code(\config('phone_code.PhoneAuthError'));
 
-        if(Gate::forUser($user)->allows('phone-user-role'))
+        if(Gate::forUser($userObject)->allows('phone-user-role'))
         {
 
             $validator = Validator::make(
@@ -242,7 +242,7 @@ class UserAddressController extends Controller
 
 			if(count($validated))
 			{
-				$result = PhoneUserAddressFacade::deleteUserAddress(f($validated),$user);
+				$result = PhoneUserAddressFacade::deleteUserAddress(f($validated),$userObject);
 			}
         }
 
@@ -257,11 +257,11 @@ class UserAddressController extends Controller
      */
     public function setDefaultUserAddress(Request $request)
     {
-        $user = Auth::guard('phone_token')->user();
+        $userObject = Auth::guard('phone_token')->user();
 
         $result = code(\config('phone_code.PhoneAuthError'));
 
-        if(Gate::forUser($user)->allows('phone-user-role'))
+        if(Gate::forUser($userObject)->allows('phone-user-role'))
         {
 
             $validator = Validator::make(
@@ -285,7 +285,7 @@ class UserAddressController extends Controller
 
 			if(count($validated))
 			{
-				$result = PhoneUserAddressFacade::setDefaultUserAddress(f($validated),$user);
+				$result = PhoneUserAddressFacade::setDefaultUserAddress(f($validated),$userObject);
 			}
         }
 
@@ -300,11 +300,11 @@ class UserAddressController extends Controller
      */
     public function setTopUserAddress(Request $request)
     {
-        $user = Auth::guard('phone_token')->user();
+        $userObject = Auth::guard('phone_token')->user();
 
         $result = code(\config('phone_code.PhoneAuthError'));
 
-        if(Gate::forUser($user)->allows('phone-user-role'))
+        if(Gate::forUser($userObject)->allows('phone-user-role'))
         {
 
             $validator = Validator::make(
@@ -328,7 +328,7 @@ class UserAddressController extends Controller
 
 			if(count($validated))
 			{
-				$result = PhoneUserAddressFacade::setTopUserAddress(f($validated),$user);
+				$result = PhoneUserAddressFacade::setTopUserAddress(f($validated),$userObject);
 			}
         }
 
@@ -342,9 +342,9 @@ class UserAddressController extends Controller
 	 */
 	public function getUserDefaultAddress(Request $request)
 	{
-		$user = Auth::guard('phone_token')->user();
+		$userObject = Auth::guard('phone_token')->user();
 		
-	 if(Gate::forUser($user)->allows('phone-user-role'))
+	 if(Gate::forUser($userObject)->allows('phone-user-role'))
         {
 
             $validator = Validator::make(
@@ -356,9 +356,9 @@ class UserAddressController extends Controller
 
             $validated = $validator->validated();
 
-			// p($user);die;
+			// p($userObject);die;
 
-			$result = PhoneUserAddressFacade::getUserDefaultAddress(f($validated),$user);
+			$result = PhoneUserAddressFacade::getUserDefaultAddress(f($validated),$userObject);
 			
         }
 

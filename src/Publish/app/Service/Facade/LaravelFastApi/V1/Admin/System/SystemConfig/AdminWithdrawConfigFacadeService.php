@@ -64,9 +64,9 @@ class AdminWithdrawConfigFacadeService
 	* 获取提现配置
 	*
 	* @param  [type] $validated
-	* @param  [type] $admin
+	* @param  [type] $adminObject
 	*/
-   public function getWithdrawConfig($validated,$admin)
+   public function getWithdrawConfig($validated,$adminObject)
    {
 		$result = code(config('admin_code.GetWithdrawConfigError'));
 
@@ -82,7 +82,7 @@ class AdminWithdrawConfigFacadeService
    /**
 	* 修改提现配置
     */
-   public function updateWithdrawConfig($validated,$admin)
+   public function updateWithdrawConfig($validated,$adminObject)
    {
 		$result = code(config('admin_code.UpdateWithdrawConfigError'));
 
@@ -121,7 +121,7 @@ class AdminWithdrawConfigFacadeService
 		}
 
 		
-		CommonEvent::dispatch($admin,$validated,'UpdateWithdrawConfig');
+		CommonEvent::dispatch($adminObject,$validated,'UpdateWithdrawConfig');
 
         $result = code(['code'=>0,'msg'=>'修改系统提现配置成功']);
 

@@ -176,13 +176,13 @@ class AdminCacheConfigFacadeService
    /**
     * 清理登录用户信息缓存
     *
-    * @param User $user
+    * @param User $userObject
     * @return void
     */
-   public function cleanLoginUserInfoCache($admin)
+   public function cleanLoginUserInfoCache($adminObject)
    {
 
-        Redis::hdel("admin_info:admin_info",$admin->id);
+        Redis::hdel("admin_info:admin_info",$adminObject->id);
 
         $result = code(['code'=>0,'msg'=>'清理登录用户缓存成功!']);
 

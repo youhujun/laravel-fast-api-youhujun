@@ -43,9 +43,9 @@ class SystemConfigController extends Controller
     // {
     //     $result = code(\config('admin_code.AdminAuthError'));
 
-    //     $admin = Auth::guard('phone_token')->user();
+    //     $adminObject = Auth::guard('phone_token')->user();
 
-    //     if(Gate::forUser($admin)->allows('admin-role'))
+    //     if(Gate::forUser($adminObject)->allows('admin-role'))
     //     {
     //         $validator = Validator::make(
     //             $request->all(),
@@ -74,10 +74,10 @@ class SystemConfigController extends Controller
     //     $result = code(\config('admin_code.AdminAuthError'));
     //     $result = code(\config('phone_code.PhoneAuthError'));
 
-    //     $admin = Auth::guard('phone_token')->user();
-    //     $user = Auth::guard('phone_token')->user();
+    //     $adminObject = Auth::guard('phone_token')->user();
+    //     $userObject = Auth::guard('phone_token')->user();
 
-    //     if(Gate::forUser($admin)->allows('admin-role'))
+    //     if(Gate::forUser($adminObject)->allows('admin-role'))
     //     {
     //         $validator = Validator::make(
     //             $request->all(),
@@ -104,9 +104,9 @@ class SystemConfigController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
              $validator = Validator::make(
                 $request->all(),
@@ -150,9 +150,9 @@ class SystemConfigController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -177,7 +177,7 @@ class SystemConfigController extends Controller
 
             //p($validated);die;
 
-            $result = AdminSystemConfigFacade::addSystemConfig(f($validated),$admin);
+            $result = AdminSystemConfigFacade::addSystemConfig(f($validated),$adminObject);
         }
 
         return $result;
@@ -193,9 +193,9 @@ class SystemConfigController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                     $request->all(),
@@ -224,7 +224,7 @@ class SystemConfigController extends Controller
 
            //p($validated);die;
 
-           $result =AdminSystemConfigFacade::updateSystemConfig(f($validated),$admin);
+           $result =AdminSystemConfigFacade::updateSystemConfig(f($validated),$adminObject);
         }
 
         return $result;
@@ -241,9 +241,9 @@ class SystemConfigController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -260,7 +260,7 @@ class SystemConfigController extends Controller
                 throw new RuleException('RuleRequiredError', 'id');
             }
 
-            $result = AdminSystemConfigFacade::deleteSystemConfig(f($validated),$admin);
+            $result = AdminSystemConfigFacade::deleteSystemConfig(f($validated),$adminObject);
         }
 
         return $result;
@@ -276,9 +276,9 @@ class SystemConfigController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -295,7 +295,7 @@ class SystemConfigController extends Controller
                 throw new RuleException('RuleRequiredError', 'selectId');
             }
 
-            $result = AdminSystemConfigFacade::multipleDeleteSystemConfig(f($validated),$admin);
+            $result = AdminSystemConfigFacade::multipleDeleteSystemConfig(f($validated),$adminObject);
         }
 
         return $result;

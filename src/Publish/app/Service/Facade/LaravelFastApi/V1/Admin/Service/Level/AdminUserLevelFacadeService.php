@@ -59,7 +59,7 @@ class AdminUserLevelFacadeService
     /**
      * 获取常用
      *
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
     public function defaultUserLevel()
@@ -173,10 +173,10 @@ class AdminUserLevelFacadeService
      * 添加
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function addUserLevel($validated,$admin)
+    public function addUserLevel($validated,$adminObject)
     {
 
         $result = code(config('admin_code.AddUserLevelError'));
@@ -203,7 +203,7 @@ class AdminUserLevelFacadeService
             throw new CommonException('AddUserLevelError');
         }
 
-        CommonEvent::dispatch($admin,$userLevel,'AddUserLevel');
+        CommonEvent::dispatch($adminObject,$userLevel,'AddUserLevel');
 
         $result = code(['code'=>0,'msg'=>'添加用户级别成功!']);
 
@@ -215,10 +215,10 @@ class AdminUserLevelFacadeService
      * 更新
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function updateUserLevel($validated,$admin)
+    public function updateUserLevel($validated,$adminObject)
     {
         $result = code(config('admin_code.UpdateUserLevelError'));
 
@@ -264,7 +264,7 @@ class AdminUserLevelFacadeService
            throw new CommonException('UpdateUserLevelError');
         }
 
-        CommonEvent::dispatch($admin,$userLevel,'UpdateUserLevel');
+        CommonEvent::dispatch($adminObject,$userLevel,'UpdateUserLevel');
 
 
         $result = code(['code'=>0,'msg'=>'修改用户级别成功!']);
@@ -277,10 +277,10 @@ class AdminUserLevelFacadeService
      * 删除
      *
      * @param [type] $id
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function deleteUserLevel($validated,$admin)
+    public function deleteUserLevel($validated,$adminObject)
     {
         $result = code(config('admin_code.DeleteUserLevelError'));
 
@@ -303,7 +303,7 @@ class AdminUserLevelFacadeService
             throw new CommonException('DeleteUserLevelError');
         }
 
-        CommonEvent::dispatch($admin,$validated['id'],'DeleteUserLevel');
+        CommonEvent::dispatch($adminObject,$validated['id'],'DeleteUserLevel');
 
         $result = code(['code'=>0,'msg'=>'删除用户级别成功!']);
 
@@ -314,10 +314,10 @@ class AdminUserLevelFacadeService
      * 批量删除用户
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function MultipleDeleteUserLevel($validated,$admin)
+    public function MultipleDeleteUserLevel($validated,$adminObject)
     {
         $result = code(config('admin_code.MultipleDeleteUserLevelError'));
 
@@ -330,7 +330,7 @@ class AdminUserLevelFacadeService
                 throw new CommonException('MultipleDeleteUserLevelError');
             }
 
-            CommonEvent::dispatch($admin,$validated,'MultipleDeleteUserLevel');
+            CommonEvent::dispatch($adminObject,$validated,'MultipleDeleteUserLevel');
 
             $result = code(['code'=>0,'msg'=>'批量删除用户级别成功!']);
         }
@@ -342,10 +342,10 @@ class AdminUserLevelFacadeService
      * \添加用户级别配置项
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function AddUserLevelItemUnion($validated,$admin)
+    public function AddUserLevelItemUnion($validated,$adminObject)
     {
 		$result = code(config('admin_code.AddUserLevelItemUnionError'));
 
@@ -371,7 +371,7 @@ class AdminUserLevelFacadeService
             throw new CommonException('AddUserLevelItemUnionError');
         }
 
-        CommonEvent::dispatch($admin,$userLevelItemUnion,'AddUserLevelItemUnion');
+        CommonEvent::dispatch($adminObject,$userLevelItemUnion,'AddUserLevelItemUnion');
 
         $result = code(['code'=>0,'msg'=>'添加用户级别配置项成功!']);
 
@@ -382,10 +382,10 @@ class AdminUserLevelFacadeService
      * 更新 用户级别配置项
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function updateUserLevelItemUnion($validated,$admin)
+    public function updateUserLevelItemUnion($validated,$adminObject)
     {
         $result = code(config('admin_code.UpdateUserLevelItemUnionError'));
 
@@ -431,7 +431,7 @@ class AdminUserLevelFacadeService
            throw new CommonException('UpdateUserLevelError');
         }
 
-        CommonEvent::dispatch($admin,$userLevelItemUnion,'UpdateUserLevel');
+        CommonEvent::dispatch($adminObject,$userLevelItemUnion,'UpdateUserLevel');
 
         $result = code(['code'=>0,'msg'=>'修改用户级别配置项成功!']);
 
@@ -443,10 +443,10 @@ class AdminUserLevelFacadeService
      * 删除 用户级别配置项
      *
      * @param [type] $id
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function deleteUserLevelItemUnion($validated,$admin)
+    public function deleteUserLevelItemUnion($validated,$adminObject)
     {
         $result = code(config('admin_code.DeleteUserLevelItemUnionError'));
 
@@ -468,7 +468,7 @@ class AdminUserLevelFacadeService
             throw new CommonException('DeleteUserLevelItemUnionError');
         }
 
-        CommonEvent::dispatch($admin,$validated['id'],'DeleteUserLevelItemUnion');
+        CommonEvent::dispatch($adminObject,$validated['id'],'DeleteUserLevelItemUnion');
 
         $result = code(['code'=>0,'msg'=>'删除用户级别配置项成功!']);
 

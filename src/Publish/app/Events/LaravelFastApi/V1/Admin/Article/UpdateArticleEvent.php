@@ -30,7 +30,7 @@ class UpdateArticleEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $admin;
+    public $adminObject;
     public $article;
     public $validated;
     //是否开启事务
@@ -40,9 +40,9 @@ class UpdateArticleEvent
      *
      * @return void
      */
-    public function __construct( $admin,$article,$validated,$isTransation = 0)
+    public function __construct( $adminObject,$article,$validated,$isTransation = 0)
     {
-        $this->admin = $admin;
+        $this->admin = $adminObject;
         $this->article = $article;
         $this->validated = $validated;
         $this->isTransation = $isTransation;

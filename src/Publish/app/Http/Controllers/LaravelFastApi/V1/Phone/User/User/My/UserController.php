@@ -47,9 +47,9 @@ class UserController extends Controller
     {
         $result = code(\config('phone_code.PhoneAuthError'));
 
-        $user = Auth::guard('phone_token')->user();
+        $userObject = Auth::guard('phone_token')->user();
 
-        if(Gate::forUser($user)->allows('phone-user-role'))
+        if(Gate::forUser($userObject)->allows('phone-user-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -62,7 +62,7 @@ class UserController extends Controller
 
 			//p($validated);die;
 
-            $result = PhoneUserInfoFacade::getUserInfo(f($validated),$user);
+            $result = PhoneUserInfoFacade::getUserInfo(f($validated),$userObject);
         }
 
         return $result;
@@ -75,9 +75,9 @@ class UserController extends Controller
 	{
 		$result = code(\config('phone_code.PhoneAuthError'));
 
-        $user = Auth::guard('phone_token')->user();
+        $userObject = Auth::guard('phone_token')->user();
 
-        if(Gate::forUser($user)->allows('phone-user-role'))
+        if(Gate::forUser($userObject)->allows('phone-user-role'))
         {
           
             if($request->hasFile('picture'))
@@ -86,7 +86,7 @@ class UserController extends Controller
 
                 // PhonePictureFacade::test(); die;
                 //p($picture);die;
-                $result = PhonePictureFacade::uploadUserAvatar($user, $picture);
+                $result = PhonePictureFacade::uploadUserAvatar($userObject, $picture);
             }
         }
 
@@ -102,9 +102,9 @@ class UserController extends Controller
 	{
 		$result = code(\config('phone_code.PhoneAuthError'));
 
-        $user = Auth::guard('phone_token')->user();
+        $userObject = Auth::guard('phone_token')->user();
 
-        if(Gate::forUser($user)->allows('phone-user-role'))
+        if(Gate::forUser($userObject)->allows('phone-user-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -122,7 +122,7 @@ class UserController extends Controller
 
 			//p($validated);die;
 
-            $result = PhoneUserInfoFacade::updateUserNickName(f($validated),$user);
+            $result = PhoneUserInfoFacade::updateUserNickName(f($validated),$userObject);
         }
 
         return $result;
@@ -137,14 +137,14 @@ class UserController extends Controller
 	{
 		$result = code(\config('phone_code.PhoneAuthError'));
 
-        $user = Auth::guard('phone_token')->user();
+        $userObject = Auth::guard('phone_token')->user();
 
-        if(Gate::forUser($user)->allows('phone-user-role'))
+        if(Gate::forUser($userObject)->allows('phone-user-role'))
         {
             $validator = Validator::make(
                 $request->all(),
                 [
-					'phone'=>['bail',new Required,new Phone,new CheckUnique('users','phone',$user->id)]
+					'phone'=>['bail',new Required,new Phone,new CheckUnique('users','phone',$userObject->id)]
                 ],
                 []
             );
@@ -157,7 +157,7 @@ class UserController extends Controller
 
 			//p($validated);die;
 
-            $result = PhoneUserInfoFacade::updateUserPhone(f($validated),$user);
+            $result = PhoneUserInfoFacade::updateUserPhone(f($validated),$userObject);
         }
 
         return $result;

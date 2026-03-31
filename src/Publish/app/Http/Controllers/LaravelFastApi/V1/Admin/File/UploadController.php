@@ -47,13 +47,13 @@ class UploadController extends Controller
     */
     public function uploadConfigFile(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-		//p($admin);;die;
+		//p($adminObject);;die;
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 			
             $validator = Validator::make(
@@ -83,7 +83,7 @@ class UploadController extends Controller
             {
                 $file = $request->file('file');
 				
-                $result = AdminUploadFacade::uploadConfigFile($validated , $admin , $file);
+                $result = AdminUploadFacade::uploadConfigFile($validated , $adminObject , $file);
             }
         }
         return $result;
@@ -97,11 +97,11 @@ class UploadController extends Controller
      */
     public function uploadFile(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -133,7 +133,7 @@ class UploadController extends Controller
                 {
                     $file = $request->file('file');
 
-                    $result = AdminUploadFacade::uploadFile( $validated ,$admin, $file);
+                    $result = AdminUploadFacade::uploadFile( $validated ,$adminObject, $file);
                 }
             }
         }
@@ -149,11 +149,11 @@ class UploadController extends Controller
      */
     public function uploadSinglePicture(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -182,7 +182,7 @@ class UploadController extends Controller
                 {
                     $picture = $request->file('picture');
 
-                    $result = AdminUploadFacade::uploadSinglePicture( $validated ,$admin, $picture);
+                    $result = AdminUploadFacade::uploadSinglePicture( $validated ,$adminObject, $picture);
                 }
             }
         }
@@ -198,11 +198,11 @@ class UploadController extends Controller
      */
     public function uploadMultiplePicture(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -230,7 +230,7 @@ class UploadController extends Controller
             {
                 $pictures = $request->file('picture');
 
-                $result = AdminUploadFacade::uploadMultiplePicture( $validated ,$admin, $pictures);
+                $result = AdminUploadFacade::uploadMultiplePicture( $validated ,$adminObject, $pictures);
             }
 
         }
@@ -246,11 +246,11 @@ class UploadController extends Controller
      */
     public function uploadUserAvatar(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -287,7 +287,7 @@ class UploadController extends Controller
                 {
                     $picture = $request->file('picture');
 
-                    $result = AdminUploadFacade::uploadUserAvatar( $validated ,$admin, $picture);
+                    $result = AdminUploadFacade::uploadUserAvatar( $validated ,$adminObject, $picture);
                 }
             }
         }
@@ -304,11 +304,11 @@ class UploadController extends Controller
      */
     public function uploadResetPicture(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -339,7 +339,7 @@ class UploadController extends Controller
                 {
                     $picture = $request->file('picture');
 
-                    $result = AdminUploadFacade::uploadResetPicture( $validated ,$admin, $picture);
+                    $result = AdminUploadFacade::uploadResetPicture( $validated ,$adminObject, $picture);
                 }
             }
         }

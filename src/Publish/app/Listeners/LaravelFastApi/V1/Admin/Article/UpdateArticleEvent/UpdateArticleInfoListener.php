@@ -36,7 +36,7 @@ class UpdateArticleInfoListener
      */
     public function handle(object $event): void
     {
-        $admin = $event->admin;
+        $adminObject = $event->admin;
         $validated = $event->validated;
         $article = $event->article;
         $isTransation = $event->isTransation;

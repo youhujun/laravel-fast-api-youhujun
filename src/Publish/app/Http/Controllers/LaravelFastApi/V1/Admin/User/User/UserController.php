@@ -52,11 +52,11 @@ class UserController extends Controller
     */
     public function getUser(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -107,11 +107,11 @@ class UserController extends Controller
      */
     public function addUser(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role'))
+        if (Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -141,7 +141,7 @@ class UserController extends Controller
 
            //p($validated);die;
 
-            $result = AdminUserFacade::addUser($validated,  $admin);
+            $result = AdminUserFacade::addUser($validated,  $adminObject);
         }
 
         return $result;
@@ -155,11 +155,11 @@ class UserController extends Controller
      */
     public function disableUser(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -180,7 +180,7 @@ class UserController extends Controller
                 throw new RuleException('RuleRequiredError', 'switch');
             }
 
-            $result = AdminUserFacade::disableUser($validated, $admin);
+            $result = AdminUserFacade::disableUser($validated, $adminObject);
         }
 
         return $result;
@@ -194,11 +194,11 @@ class UserController extends Controller
      */
     public function multipleDisableUser(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
 
             $validator = Validator::make(
                 $request->all(),
@@ -219,7 +219,7 @@ class UserController extends Controller
                 throw new RuleException('RuleRequiredError', 'switch');
            }
 
-            $result = AdminUserFacade::multipleDisableUser($validated, $admin);
+            $result = AdminUserFacade::multipleDisableUser($validated, $adminObject);
         }
 
         return $result;
@@ -234,11 +234,11 @@ class UserController extends Controller
     public function deleteUser(Request $request)
     {
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -253,7 +253,7 @@ class UserController extends Controller
                 throw new RuleException('RuleRequiredError', 'id');
             }
 
-            $result = AdminUserFacade::deleteUser($validated, $admin);
+            $result = AdminUserFacade::deleteUser($validated, $adminObject);
         }
 
         return $result;
@@ -267,11 +267,11 @@ class UserController extends Controller
      */
     public function multipleDeleteUser(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
 
             $validator = Validator::make(
                 $request->all(),
@@ -287,7 +287,7 @@ class UserController extends Controller
                 throw new RuleException('RuleRequiredError', 'selectId');
            }
 
-            $result = AdminUserFacade::multipleDeleteUser($validated, $admin);
+            $result = AdminUserFacade::multipleDeleteUser($validated, $adminObject);
         }
 
         return $result;

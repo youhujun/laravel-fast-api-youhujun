@@ -13,7 +13,7 @@ if (!function_exists('get_admin_roles')) {
      *
      * 先从Redis缓存中获取管理员角色，如果不存在则从数据库查询并缓存到Redis
      *
-     * @param Admin $admin 管理员对象
+     * @param Admin $adminObject 管理员对象
      * @return array 返回管理员角色逻辑名称数组
      */
     function get_admin_roles(Admin $adminObject): array
@@ -82,7 +82,7 @@ if (!function_exists('get_user_roles')) {
      *
      * 先从Redis缓存中获取管理员角色，如果不存在则从数据库查询并缓存到Redis
      *
-     * @param User $user 用户对象（修正注释与实际参数一致）
+     * @param User $userObject 用户对象（修正注释与实际参数一致）
      * @return array 返回管理员角色逻辑名称数组
      */
     function get_user_roles(User $userObject): array
@@ -106,7 +106,7 @@ if (!function_exists('get_user_roles')) {
             }
         } else {
             // 查询管理员的用户角色关联
-            $userRoleUnionCollection = ShardHelperFacade::queryByShardWithCache(UserRoleUnion::class, $user->biz_id);
+            $userRoleUnionCollection = ShardHelperFacade::queryByShardWithCache(UserRoleUnion::class, $userObject->biz_id);
 
             $roleIdArray = [];
             foreach ($userRoleUnionCollection as $key => $userRoleUnionObject) {

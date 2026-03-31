@@ -40,7 +40,7 @@ class WechatOfficialBindUserOpenidListener
      */
     public function handle(object $event): void
     {
-        $user = $event->user;
+        $userObject = $event->user;
         $params = $event->params;
         $isTransation = $event->isTransation;
 
@@ -57,7 +57,7 @@ class WechatOfficialBindUserOpenidListener
              $wechat_official_appid = $params['wechat_official_appid'];
         }
 
-        $userWechat = UserWechat::where('user_id',$user->id)->first();
+        $userWechat = UserWechat::where('user_id',$userObject->id)->first();
 
         if(!$userWechat)
         {
@@ -70,7 +70,7 @@ class WechatOfficialBindUserOpenidListener
             $userWechat->created_at = time();
             $userWechat->created_time = time();
 
-            $userWechat->user_id = $user->id;
+            $userWechat->user_id = $userObject->id;
             $userWechat->openid = $openid;
 
             $userWechat->wechat_official_appid = $wechat_official_appid;
@@ -120,6 +120,6 @@ class WechatOfficialBindUserOpenidListener
 
         }
 
-		Redis::hdel("phone_user_info:user_info",$user->id);
+		Redis::hdel("phone_user_info:user_info",$userObject->id);
     }
 }

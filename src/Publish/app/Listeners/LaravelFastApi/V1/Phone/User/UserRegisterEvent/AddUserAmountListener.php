@@ -39,14 +39,14 @@ class AddUserAmountListener
      */
     public function handle(object $event): void
     {
-        $user = $event->user;
+        $userObject = $event->user;
         $validated = $event->validated;
         $isTransation = $event->isTransation;
 
 		$userAmount = new UserAmount;
 
-		$userAmount->user_id = $user->id;
-		$userAmount->userId = $user->userId;
+		$userAmount->user_id = $userObject->id;
+		$userAmount->userId = $userObject->userId;
 		$userAmount->created_at = time();
 		$userAmount->created_time = time();
 		$userAmount->sort =100;

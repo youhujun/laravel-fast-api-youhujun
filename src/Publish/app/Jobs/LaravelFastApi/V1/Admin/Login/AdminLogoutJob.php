@@ -28,7 +28,7 @@ class AdminLogoutJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $admin;
+    protected $adminObject;
     /**
      * 任务尝试次数
      *
@@ -61,9 +61,9 @@ class AdminLogoutJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(Admin $admin)
+    public function __construct(Admin $adminObject)
     {
-         $this->admin = $admin->withoutRelations();
+         $this->admin = $adminObject->withoutRelations();
     }
 
     /**
@@ -73,21 +73,21 @@ class AdminLogoutJob implements ShouldQueue
     {
 
         //执行逻辑
-        $admin = $this->admin;
+        $adminObject = $this->admin;
 		
         try
         {
 
             //如果有说明没有执行退出
-            if ($admin->remember_token)
+            if ($adminObject->remember_token)
             {
                 $result = 0;
 
-                $this->clearAdminCache($admin, $admin->remember_token);
+                $this->clearAdminCache($adminObject, $adminObject->remember_token);
 
-                $admin->remember_token = null;
+                $adminObject->remember_token = null;
 
-                $result = $admin->save();
+                $result = $adminObject->save();
 
                 if($result)
                 {
@@ -115,13 +115,13 @@ class AdminLogoutJob implements ShouldQueue
     /**
      * 清除管理员缓存
      *
-     * @param  Admin  $admin
+     * @param  Admin  $adminObject
      * @param  [String] $token
      */
-    private function clearAdminCache($admin, $token)
+    private function clearAdminCache($adminObject, $token)
     {
         Redis::del("admin_token:{$token}");
-        Redis::hdel("admin:admin",$admin->id);
-        Redis::hdel("admin_info:admin_info",$admin->id);
+        Redis::hdel("admin:admin",$adminObject->id);
+        Redis::hdel("admin_info:admin_info",$adminObject->id);
     }
 }

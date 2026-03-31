@@ -40,13 +40,13 @@ class PermissionController extends Controller
      */
     public function getTreePermission(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
-             $result =  AdminPermissionFacade::getTreePermission($admin);
+             $result =  AdminPermissionFacade::getTreePermission($adminObject);
         }
 
         return $result;
@@ -60,7 +60,7 @@ class PermissionController extends Controller
 	public function getChildrenOptions(Request $request)
 	{
 
-		$admin = Auth::guard('admin_token')->user();
+		$adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 		
@@ -80,9 +80,9 @@ class PermissionController extends Controller
 
 		//p($validated);
 
-		if(Gate::forUser($admin)->allows('admin-role'))
+		if(Gate::forUser($adminObject)->allows('admin-role'))
         {
-             $result =  AdminPermissionFacade::getChildrenOptions($admin,$validated);
+             $result =  AdminPermissionFacade::getChildrenOptions($adminObject,$validated);
         }
 
         return $result;
@@ -97,7 +97,7 @@ class PermissionController extends Controller
 	 */
 	public function getSingleMenuForm(Request $request)
 	{
-		$admin = Auth::guard('admin_token')->user();
+		$adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 		
@@ -117,9 +117,9 @@ class PermissionController extends Controller
 
 		//p($validated);die;
 
-		if(Gate::forUser($admin)->allows('admin-role'))
+		if(Gate::forUser($adminObject)->allows('admin-role'))
         {
-             $result =  AdminPermissionFacade::getSingleMenuForm($admin,$validated);
+             $result =  AdminPermissionFacade::getSingleMenuForm($adminObject,$validated);
         }
 
         return $result;
@@ -131,13 +131,13 @@ class PermissionController extends Controller
      */
     public function getTreeMenu()
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
-             $result =  AdminPermissionFacade::getTreeMenu($admin);
+             $result =  AdminPermissionFacade::getTreeMenu($adminObject);
         }
 
         return $result;
@@ -152,11 +152,11 @@ class PermissionController extends Controller
      */
     public function addMenu(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('develop-role'))
+        if(Gate::forUser($adminObject)->allows('develop-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -199,7 +199,7 @@ class PermissionController extends Controller
 
 		//p($validated);die;
 
-            $result = AdminPermissionFacade::addMenu(f($validated),$admin);
+            $result = AdminPermissionFacade::addMenu(f($validated),$adminObject);
         }
 
         return $result;
@@ -213,11 +213,11 @@ class PermissionController extends Controller
      */
     public function updateMenu(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('develop-role'))
+        if(Gate::forUser($adminObject)->allows('develop-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -292,7 +292,7 @@ class PermissionController extends Controller
 
             //p($validated);die;
 
-            $result = AdminPermissionFacade::updateMenu(f($validated),$admin);
+            $result = AdminPermissionFacade::updateMenu(f($validated),$adminObject);
         }
 
         return $result;
@@ -306,11 +306,11 @@ class PermissionController extends Controller
      */
     public function moveMenu(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('super-role'))
+        if(Gate::forUser($adminObject)->allows('super-role'))
         {
 
             $validator = Validator::make(
@@ -342,7 +342,7 @@ class PermissionController extends Controller
                 throw new RuleException('RuleRequiredError', 'sort');
             }
 
-            $result =  AdminPermissionFacade::moveMenu(f($validated),$admin);
+            $result =  AdminPermissionFacade::moveMenu(f($validated),$adminObject);
         }
 
        return $result;
@@ -356,11 +356,11 @@ class PermissionController extends Controller
      */
     public function deleteMenu(Request $request)
     {
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($user)->allows('develop-role'))
+        if(Gate::forUser($userObject)->allows('develop-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -376,7 +376,7 @@ class PermissionController extends Controller
                 throw new RuleException('RuleRequiredError', 'id');
             }
 
-            $result = AdminPermissionFacade::deleteMenu(f($validated),$user);
+            $result = AdminPermissionFacade::deleteMenu(f($validated),$userObject);
         }
 
         return $result;
@@ -390,11 +390,11 @@ class PermissionController extends Controller
      */
     public function switchMenu(Request $request)
     {
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($user)->allows('develop-role'))
+        if(Gate::forUser($userObject)->allows('develop-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -417,7 +417,7 @@ class PermissionController extends Controller
 
 		//p($validated);die;
 
-            $result = AdminPermissionFacade::switchMenu(f($validated),$user);
+            $result = AdminPermissionFacade::switchMenu(f($validated),$userObject);
 
         }
 

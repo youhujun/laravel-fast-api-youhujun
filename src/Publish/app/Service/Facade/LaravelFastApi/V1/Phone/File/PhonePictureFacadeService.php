@@ -52,14 +52,14 @@ class PhonePictureFacadeService
    /**
     * 获取用户默认相册
     *
-    * @param [type] $user
+    * @param [type] $userObject
     * @return void
     */
-   protected function getDefaultAlbum($user)
+   protected function getDefaultAlbum($userObject)
    {
         $where = [];
 
-        $where[] = ['user_id','=',$user->id];
+        $where[] = ['user_id','=',$userObject->id];
         $where[] = ['is_default','=',1];
 
         $defaultAlbum = Album::where($where)->first();
@@ -76,15 +76,15 @@ class PhonePictureFacadeService
    /**
     * 单图上传
     *
-    * @param [type] $user
+    * @param [type] $userObject
     * @param [type] $picture
     * @return void
     */
-   public function singleUploadPicture($user, $picture)
+   public function singleUploadPicture($userObject, $picture)
    {
         $result = code(config('phone_code.SinglePictureUploadError'));
 
-        $userDefaultAlbum = $this->getDefaultAlbum($user);
+        $userDefaultAlbum = $this->getDefaultAlbum($userObject);
 
         if(!$userDefaultAlbum)
         {
@@ -93,7 +93,7 @@ class PhonePictureFacadeService
 
         $album_id = $userDefaultAlbum->id;
 
-        $user_id = $user->id;
+        $user_uid = $userObject->id;
 
         $insertData = [];
 
@@ -102,7 +102,7 @@ class PhonePictureFacadeService
         {
             $picture_file = $picture->getClientOriginalName();
 
-            $picture_path = self::$user_picture_path.$user_id.DIRECTORY_SEPARATOR;
+            $picture_path = self::$user_picture_path.$user_uid.DIRECTORY_SEPARATOR;
 
             $path = $picture->storeAs($picture_path,$picture_file,'public');
 
@@ -128,7 +128,7 @@ class PhonePictureFacadeService
             $picture_spec = "{$picture_info[0]}×{$picture_info[1]}";
 
             $insertData = [
-                'user_id' =>$user_id,
+                'user_id' =>$user_uid,
                 'album_id'=>$album_id,
                 'created_at' => date('Y-m-d H:i:s',time()),
                 'created_time' => time(),
@@ -163,7 +163,7 @@ class PhonePictureFacadeService
             throw new CommonException('SinglePictureUploadSqlError');
         }
 
-        CommonEvent::dispatch($user, $insertData,'SingleUploadPicture');
+        CommonEvent::dispatch($userObject, $insertData,'SingleUploadPicture');
 
         $result = code(['code'=>0,'msg'=>'图片上传成功!'],['data'=>$insertData,'pictureId'=> $insertResult,'picture'=>asset('storage/'.$picture_path.$picture_file)]);
 
@@ -173,15 +173,15 @@ class PhonePictureFacadeService
    /**
     * 
     *
-    * @param [type] $user
+    * @param [type] $userObject
     * @param [type] $picture
     * @return void
     */
-   public function uploadUserAvatar($user, $picture)
+   public function uploadUserAvatar($userObject, $picture)
    {
         $result = code(config('phone_code.UplaodUserAvatarError'));
 
-        $userDefaultAlbum = $this->getDefaultAlbum($user);
+        $userDefaultAlbum = $this->getDefaultAlbum($userObject);
 
         if(!$userDefaultAlbum)
         {
@@ -190,7 +190,7 @@ class PhonePictureFacadeService
 
         $album_id = $userDefaultAlbum->id;
 
-        $user_id = $user->id;
+        $user_uid = $userObject->id;
 
         $insertData = [];
 
@@ -199,7 +199,7 @@ class PhonePictureFacadeService
         {
             $picture_file = $picture->getClientOriginalName();
 
-            $picture_path = self::$user_picture_path.$user_id.DIRECTORY_SEPARATOR;
+            $picture_path = self::$user_picture_path.$user_uid.DIRECTORY_SEPARATOR;
 
             $path = $picture->storeAs($picture_path,$picture_file,'public');
 
@@ -225,7 +225,7 @@ class PhonePictureFacadeService
             $picture_spec = "{$picture_info[0]}×{$picture_info[1]}";
 
             $insertData = [
-                'user_id' =>$user_id,
+                'user_id' =>$user_uid,
                 'album_id'=>$album_id,
                 'created_at' => date('Y-m-d H:i:s',time()),
                 'created_time' => time(),
@@ -262,7 +262,7 @@ class PhonePictureFacadeService
 
 		$userAvatarObject = new UserAvatar();
 
-		$userAvatarObject->user_id = $user->id;
+		$userAvatarObject->user_id = $userObject->id;
 		$userAvatarObject->album_picture_id = $insertId;
 		$userAvatarObject->created_at = time();
 		$userAvatarObject->created_time = time();
@@ -275,7 +275,7 @@ class PhonePictureFacadeService
 		}
 
 
-        CommonEvent::dispatch($user, $insertData,'UplaodUserAvatar');
+        CommonEvent::dispatch($userObject, $insertData,'UplaodUserAvatar');
 
         $result = code(['code'=>0,'msg'=>'头像上传成功!'],['pictureId'=> $insertId,'avatar'=>asset('storage/'.$picture_path.$picture_file)]);
 

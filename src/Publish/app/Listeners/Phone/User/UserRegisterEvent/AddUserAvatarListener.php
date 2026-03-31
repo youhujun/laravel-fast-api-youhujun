@@ -35,14 +35,14 @@ class AddUserAvatarListener
      */
     public function handle(object $event): void
     {
-        $user = $event->user;
+        $userObject = $event->user;
 
         $isTransation = $event->isTransation;
 
         //用户头像
         $userAvatar = new UserAvatar;
 
-        $userAvatar->user_id = $user->id;
+        $userAvatar->user_id = $userObject->id;
 
         $userAvatar->album_picture_id = 2;
 

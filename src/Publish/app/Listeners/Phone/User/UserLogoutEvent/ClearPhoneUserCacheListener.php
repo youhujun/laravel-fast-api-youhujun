@@ -39,10 +39,10 @@ class ClearPhoneUserCacheListener
     {
 
        $token = $event->token;
-       $user = $event->user;
+       $userObject = $event->user;
 
        Redis::del("phone_user_token:{$token}");
-       Redis::hdel("phone_user:user",$user->id);
-       Redis::hdel("phone_user_info:user_info",$user->id);
+       Redis::hdel("phone_user:user",$userObject->id);
+       Redis::hdel("phone_user_info:user_info",$userObject->id);
     }
 }

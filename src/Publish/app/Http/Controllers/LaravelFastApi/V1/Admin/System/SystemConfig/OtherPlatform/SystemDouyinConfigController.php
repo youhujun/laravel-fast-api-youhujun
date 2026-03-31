@@ -40,9 +40,9 @@ class SystemDouyinConfigController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
              $validator = Validator::make(
@@ -71,7 +71,7 @@ class SystemDouyinConfigController extends Controller
 
 			if(count($validated))
 			{
-				$result = SystemDouyinConfigFacade::getSystemDouyinConfig(f($validated),$admin);
+				$result = SystemDouyinConfigFacade::getSystemDouyinConfig(f($validated),$adminObject);
 			}
         }
 
@@ -86,11 +86,11 @@ class SystemDouyinConfigController extends Controller
      */
     public function addSystemDouyinConfig(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -124,7 +124,7 @@ class SystemDouyinConfigController extends Controller
 
             if(count($validated))
 			{
-				$result = SystemDouyinConfigFacade::addSystemDouyinConfig(f($validated),$admin);
+				$result = SystemDouyinConfigFacade::addSystemDouyinConfig(f($validated),$adminObject);
 			}
             
         }
@@ -140,13 +140,13 @@ class SystemDouyinConfigController extends Controller
      */
     public function updateSystemDouyinConfig(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
         $id = check_id($request->input('id'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
          
           $validator = Validator::make(
@@ -185,7 +185,7 @@ class SystemDouyinConfigController extends Controller
 
 		   if(count($validated))
 			{
-				$result = SystemDouyinConfigFacade::updateSystemDouyinConfig(f($validated),$admin);
+				$result = SystemDouyinConfigFacade::updateSystemDouyinConfig(f($validated),$adminObject);
 			}
 
           
@@ -202,11 +202,11 @@ class SystemDouyinConfigController extends Controller
      */
     public function deleteSystemDouyinConfig(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -230,7 +230,7 @@ class SystemDouyinConfigController extends Controller
 
 			if(count($validated))
 			{
-				 $result = SystemDouyinConfigFacade::deleteSystemDouyinConfig(f($validated),$admin);
+				 $result = SystemDouyinConfigFacade::deleteSystemDouyinConfig(f($validated),$adminObject);
 			}
         }
 
@@ -245,11 +245,11 @@ class SystemDouyinConfigController extends Controller
      */
     public function multipleDeleteSystemDouyinConfig(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -273,7 +273,7 @@ class SystemDouyinConfigController extends Controller
 
 			if(count($validated))
 			{
-				 $result = SystemDouyinConfigFacade::multipleDeleteSystemDouyinConfig(f($validated),$admin);
+				 $result = SystemDouyinConfigFacade::multipleDeleteSystemDouyinConfig(f($validated),$adminObject);
 			}
         }
 

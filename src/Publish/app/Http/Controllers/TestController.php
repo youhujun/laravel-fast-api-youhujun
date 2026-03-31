@@ -129,16 +129,16 @@ class TestController extends Controller
     {
         //echo "测试事件";
 
-        $admin = Admin::find(1);
+        $adminObject = Admin::find(1);
 
-        TestEvent::dispatch($admin);
+        TestEvent::dispatch($adminObject);
 
         /* $order_id = 28;
         $transaction_id = '4200002390202410152324777768';
-        $user_id = 16;
+        $user_uid = 16;
         $payer_total = 1;
 
-         PayOrderEvent::dispatch($order_id,$transaction_id,$user_id,$payer_total);
+         PayOrderEvent::dispatch($order_id,$transaction_id,$user_uid,$payer_total);
 
         echo "测试任务"; */
 
@@ -193,13 +193,13 @@ class TestController extends Controller
 
         $validated = $validator->validated();
 
-        ['user_id' => $user_id,'send_type' => $send_type,'event' => $event] = $validated + [];
+        ['user_id' => $user_uid,'send_type' => $send_type,'event' => $event] = $validated + [];
 
         //p($validated);
 
         $data = [];
-        //$data['user_id'] = $user->id;
-        $data['user_id'] = isset($user_id) ? $user_id : 1;
+        //$data['user_id'] = $userObject->id;
+        $data['user_id'] = isset($user_uid) ? $user_uid : 1;
         //10 所有人 20只对某一个用户 30 对某一些用户
         $data['send_type'] = isset($send_type) ? $send_type : 10;
         $data['code'] = 0;

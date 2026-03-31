@@ -144,9 +144,9 @@ class LoginController extends Controller
 
         $result = code(\config('phone_code.PhoneAuthError'));
 
-		$user = Auth::guard('phone_token')->user();
+		$userObject = Auth::guard('phone_token')->user();
 
-		if(Gate::forUser($user)->allows('phone-user-role'))
+		if(Gate::forUser($userObject)->allows('phone-user-role'))
 		{
 			$validator = Validator::make(
 				$request->all(),
@@ -195,9 +195,9 @@ class LoginController extends Controller
     {
         $result = code(\config('phone_code.PhoneAuthError'));
 
-		$user = Auth::guard('phone_token')->user();
+		$userObject = Auth::guard('phone_token')->user();
 
-		if(Gate::forUser($user)->allows('phone-user-role'))
+		if(Gate::forUser($userObject)->allows('phone-user-role'))
 		{
 			$validated = $request->validate(
 			[
@@ -219,7 +219,7 @@ class LoginController extends Controller
 			//授权绑定 已经登录,只是绑定
 			if($state == 10)
 			{
-				$result = PhoneLoginWechatFacade::bindUserByOfficial($collection,$user);
+				$result = PhoneLoginWechatFacade::bindUserByOfficial($collection,$userObject);
 			}
 		}
 

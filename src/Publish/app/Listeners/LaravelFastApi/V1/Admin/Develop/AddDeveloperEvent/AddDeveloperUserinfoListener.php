@@ -39,8 +39,8 @@ class AddDeveloperUserinfoListener
      */
     public function handle(object $event): void
     {
-        $user = $event->user;
-        $admin = $event->admin;
+        $userObject = $event->user;
+        $adminObject = $event->admin;
         $validated = $event->validated;
 
         //用户详情
@@ -49,7 +49,7 @@ class AddDeveloperUserinfoListener
         $userInfo->created_at = time();
         $userInfo->created_time = time();
 
-        $userInfo->user_id = $user->id;
+        $userInfo->user_id = $userObject->id;
         $userInfo->nick_name = $validated['username'];
 
         $result = $userInfo ->save();

@@ -75,21 +75,21 @@ class AdminUserDetailsFacadeService
     * 修改用户手机号
     *
     * @param [type] $validated
-    * @param [type] $admin
+    * @param [type] $adminObject
     * @return void
     */
-   public function updateUserPhone($validated,$admin)
+   public function updateUserPhone($validated,$adminObject)
    {
         $result = code(config('admin_code.UpdateUserPhoneError'));
 
-        $user = User::find($validated['user_id']);
+        $userObject = User::find($validated['user_id']);
 
         $where = [];
         $updateData = [];
 
-        $revision = $user->revision;
+        $revision = $userObject->revision;
 
-        $where[] = ['id','=',$user->id];
+        $where[] = ['id','=',$userObject->id];
         $where[] = ['revision','=',$revision];
 
         $updateData = [
@@ -106,7 +106,7 @@ class AdminUserDetailsFacadeService
             throw new CommonException('UpdateUserPhoneError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'UpdateUserPhone');
+        CommonEvent::dispatch($adminObject,$validated,'UpdateUserPhone');
 
         $result = code(['code' => 0,'msg' => '更新用户手机号成功']);
 
@@ -119,10 +119,10 @@ class AdminUserDetailsFacadeService
     * 修改用户真实姓名
     *
     * @param [type] $validated
-    * @param [type] $admin
+    * @param [type] $adminObject
     * @return void
     */
-   public function updateUserRealName($validated,$admin)
+   public function updateUserRealName($validated,$adminObject)
    {
         $result = code(config('admin_code.UpdateUserRealNameError'));
 
@@ -150,7 +150,7 @@ class AdminUserDetailsFacadeService
             throw new CommonException('UpdateUserRealNameError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'UpdateUserRealName');
+        CommonEvent::dispatch($adminObject,$validated,'UpdateUserRealName');
 
         $result = code(['code' => 0,'msg' => '更新用户姓名成功']);
 
@@ -162,10 +162,10 @@ class AdminUserDetailsFacadeService
     * 修改用户昵称
     *
     * @param [type] $validated
-    * @param [type] $admin
+    * @param [type] $adminObject
     * @return void
     */
-    public function updateUserNickName($validated,$admin)
+    public function updateUserNickName($validated,$adminObject)
     {
          $result = code(config('admin_code.UpdateUserNickNameError'));
 
@@ -192,7 +192,7 @@ class AdminUserDetailsFacadeService
              throw new CommonException('UpdateUserNickNameError');
          }
 
-         CommonEvent::dispatch($admin,$validated,'UpdateUserNickName');
+         CommonEvent::dispatch($adminObject,$validated,'UpdateUserNickName');
 
          $result = code(['code' => 0,'msg' => '更新用户昵称成功']);
 
@@ -206,10 +206,10 @@ class AdminUserDetailsFacadeService
     * 修改用户性别
     *
     * @param [type] $validated
-    * @param [type] $admin
+    * @param [type] $adminObject
     * @return void
     */
-    public function updateUserSex($validated,$admin)
+    public function updateUserSex($validated,$adminObject)
     {
          $result = code(config('admin_code.UpdateUserSexError'));
 
@@ -237,7 +237,7 @@ class AdminUserDetailsFacadeService
             throw new CommonException('UpdateUserSexError');
          }
 
-         CommonEvent::dispatch($admin,$validated,'UpdateUserSex');
+         CommonEvent::dispatch($adminObject,$validated,'UpdateUserSex');
 
          $result = code(['code' => 0,'msg' => '更新用户性别成功']);
 
@@ -248,16 +248,16 @@ class AdminUserDetailsFacadeService
      * 更改用户级别
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function changeUserLevel($validated,$admin)
+    public function changeUserLevel($validated,$adminObject)
     {
         $result = code(config('admin_code.ChangeUserLevelError'));
 
-        $user = User::find($validated['user_id']);
+        $userObject = User::find($validated['user_id']);
 
-        $revision = $user->revision;
+        $revision = $userObject->revision;
 
         $updateData = ['level_id'=>$validated['level_id'],'updated_time'=>time(),'updated_at'=>\date('Y-m-d H:i:s',time()),'revision'=>$revision + 1];
 
@@ -268,7 +268,7 @@ class AdminUserDetailsFacadeService
             throw new CommonException('ChangeUserLevelError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'ChangeUserLevel');
+        CommonEvent::dispatch($adminObject,$validated,'ChangeUserLevel');
 
         $result = code(['code' => 0,'msg' => '更新用户级别成功']);
 
@@ -279,10 +279,10 @@ class AdminUserDetailsFacadeService
     * 修改用户性别
     *
     * @param [type] $validated
-    * @param [type] $admin
+    * @param [type] $adminObject
     * @return void
     */
-    public function updateUserBirthdayTime($validated,$admin)
+    public function updateUserBirthdayTime($validated,$adminObject)
     {
          $result = code(config('admin_code.UpdateUserBirthdayTimeError'));
 
@@ -318,7 +318,7 @@ class AdminUserDetailsFacadeService
              throw new CommonException('UpdateUserBirthdayTimeError');
          }
 
-         CommonEvent::dispatch($admin,$validated,'UpdateUserBirthdayTime');
+         CommonEvent::dispatch($adminObject,$validated,'UpdateUserBirthdayTime');
 
          $result = code(['code' => 0,'msg' => '更新用户出生日期成功']);
 
@@ -329,16 +329,16 @@ class AdminUserDetailsFacadeService
     * 重置用户密码
     *
     * @param [type] $validated
-    * @param [type] $admin
+    * @param [type] $adminObject
     * @return void
     */
-    public function resetUserPassword($validated,$admin)
+    public function resetUserPassword($validated,$adminObject)
     {
         $result = code(config('admin_code.ResetUserPasswordError'));
 
-        $user = User::find($validated['user_id']);
+        $userObject = User::find($validated['user_id']);
 
-        if(!$user)
+        if(!$userObject)
         {
             throw new CommonException('ThisDataNotExistsError');
         }
@@ -346,9 +346,9 @@ class AdminUserDetailsFacadeService
         $where = [];
         $updateData = [];
 
-        $revision = $user->revision;
+        $revision = $userObject->revision;
 
-        $where[] = ['id','=',$user->id];
+        $where[] = ['id','=',$userObject->id];
         $where[] = ['revision','=',$revision];
 
         $updateData = [
@@ -365,7 +365,7 @@ class AdminUserDetailsFacadeService
         throw new CommonException('ResetUserPasswordError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'ResetUserPassword');
+        CommonEvent::dispatch($adminObject,$validated,'ResetUserPassword');
 
         $result = code(['code' => 0,'msg' => '重置用户密码成功']);
 
@@ -376,7 +376,7 @@ class AdminUserDetailsFacadeService
     /**
      * 获取用户二维码
      */
-    public function getUserQrcode($validated,$admin)
+    public function getUserQrcode($validated,$adminObject)
     {
         $result = code(config('admin_code.GetUserQrcodeError'));
 
@@ -405,15 +405,15 @@ class AdminUserDetailsFacadeService
 	/**
 	 * 生成用户二维码
 	 */
-	public function makeUserQrcode($validated,$admin)
+	public function makeUserQrcode($validated,$adminObject)
 	{
 		$result = code(config('admin_code.MakeUserQrcodeError'));
 		
-		$user = User::find($validated['user_id']);
+		$userObject = User::find($validated['user_id']);
 
-		MakeUserQrcodeEvent::dispatch($user,$admin,$validated);
+		MakeUserQrcodeEvent::dispatch($userObject,$adminObject,$validated);
 
-		CommonEvent::dispatch($admin,$validated,'MakeUserQrcode');
+		CommonEvent::dispatch($adminObject,$validated,'MakeUserQrcode');
 
         $result = code(['code' => 0,'msg' => '用户二维码生成成功']);
 

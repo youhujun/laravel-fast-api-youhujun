@@ -55,9 +55,9 @@ class PhoneGoodsClassFacadeService
 	* 获取地区id
 	*
 	* @param  [type] $validated
-	* @param  [type] $user
+	* @param  [type] $userObject
 	*/
-   public function getGoodsClassById($validated,$user)
+   public function getGoodsClassById($validated,$userObject)
    {
 		$result = code(config('phone_code.GetGoodsClassByIdError'));
 
@@ -80,9 +80,9 @@ class PhoneGoodsClassFacadeService
 	* 获取树形地区
 	*
 	* @param  [type] $validated
-	* @param  [type] $user
+	* @param  [type] $userObject
 	*/
-   public function getTreeGoodsClass($validated,$user)
+   public function getTreeGoodsClass($validated,$userObject)
    {
 		$result = code(config('phone_code.GetGoodsClassError'));
 

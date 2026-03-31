@@ -36,7 +36,7 @@ class AddUserLocationLogListener
      */
     public function handle(object $event): void
     {
-        $user = $event->user;
+        $userObject = $event->user;
         $validated = $event->validated;
 		$address = $event->address;
         $isTransation = $event->isTransation;
@@ -45,7 +45,7 @@ class AddUserLocationLogListener
 
 		$userLocationLog = new UserLocationLog;
 
-		$userLocationLog->user_id = $user->id;
+		$userLocationLog->user_id = $userObject->id;
 		$userLocationLog->latitude = $latitude;
 		$userLocationLog->longitude = $longitude;
 		$userLocationLog->created_at = time();

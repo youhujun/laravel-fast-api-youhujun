@@ -39,7 +39,7 @@ class UpdateUserRealAuthApplyListener
      */
     public function handle(object $event): void
     {
-        $admin = $event->admin;
+        $adminObject = $event->admin;
         $validated = $event->validated;
 
         $userApplayRealAuth = UserRealAuthLog::find($validated['id']);

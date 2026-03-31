@@ -84,10 +84,10 @@ class PhoneLoginDouYinFacadeService
 			{
 				//注册用户
 				$param['source'] = 30;
-				$user_id = CommonUserFacade::registerUser($param);
+				$user_uid = CommonUserFacade::registerUser($param);
 
-				$this->bindUserDouyinUnionid($user_id,$unionid);
-				$this->bindUserDouyinOpenid($user_id,$openid,$systemDouyinConfigId,$session_key);
+				$this->bindUserDouyinUnionid($user_uid,$unionid);
+				$this->bindUserDouyinOpenid($user_uid,$openid,$systemDouyinConfigId,$session_key);
 			}
 			else
 			{
@@ -99,9 +99,9 @@ class PhoneLoginDouYinFacadeService
 					//如果没有就需要先绑定一下
 					$userDouyinUnionidObject = UserDouyinUnionid::where('unionid',$unionid)->first();
 
-					$user_id = $userDouyinUnionidObject->user_id;
+					$user_uid = $userDouyinUnionidObject->user_id;
 
-					$this->bindUserDouyinOpenid($user_id,$openid,$systemDouyinConfigId,$session_key);
+					$this->bindUserDouyinOpenid($user_uid,$openid,$systemDouyinConfigId,$session_key);
 				}
 			}
 		}
@@ -114,9 +114,9 @@ class PhoneLoginDouYinFacadeService
 			{
 				//注册用户
 				$param['source'] = 30;
-				$user_id = CommonUserFacade::registerUser($param);
+				$user_uid = CommonUserFacade::registerUser($param);
 
-				$this->bindUserDouyinOpenid($user_id,$openid,$systemDouyinConfigId,$session_key);
+				$this->bindUserDouyinOpenid($user_uid,$openid,$systemDouyinConfigId,$session_key);
 			}
 		}
 
@@ -161,10 +161,10 @@ class PhoneLoginDouYinFacadeService
 			{
 				//注册用户
 				$param['source'] = 20;
-				$user_id = CommonUserFacade::registerUser($param);
+				$user_uid = CommonUserFacade::registerUser($param);
 
-				$this->bindUserDouyinUnionid($user_id,$unionid);
-				$this->bindUserDouyinOpenid($user_id,$openid,$systemDouyinConfigId,$session_key);
+				$this->bindUserDouyinUnionid($user_uid,$unionid);
+				$this->bindUserDouyinOpenid($user_uid,$openid,$systemDouyinConfigId,$session_key);
 			}
 			else
 			{
@@ -176,9 +176,9 @@ class PhoneLoginDouYinFacadeService
 					//如果没有就需要先绑定一下
 					$userDouyinUnionidObject = UserDouyinUnionid::where('unionid',$unionid)->first();
 
-					$user_id = $userDouyinUnionidObject->user_id;
+					$user_uid = $userDouyinUnionidObject->user_id;
 
-					$this->bindUserDouyinOpenid($user_id,$openid,$systemDouyinConfigId,$session_key);
+					$this->bindUserDouyinOpenid($user_uid,$openid,$systemDouyinConfigId,$session_key);
 				}
 			}
 		}
@@ -191,9 +191,9 @@ class PhoneLoginDouYinFacadeService
 			{
 				//注册用户
 				$param['source'] = 20;
-				$user_id = CommonUserFacade::registerUser($param);
+				$user_uid = CommonUserFacade::registerUser($param);
 
-				$this->bindUserDouyinOpenid($user_id,$openid,$systemDouyinConfigId,$session_key);
+				$this->bindUserDouyinOpenid($user_uid,$openid,$systemDouyinConfigId,$session_key);
 			}
 		}
 
@@ -251,11 +251,11 @@ class PhoneLoginDouYinFacadeService
     /**
 	* 绑定用户和微信Unionid
 	*/
-   protected function bindUserDouyinUnionid($user_id,$unionid)
+   protected function bindUserDouyinUnionid($user_uid,$unionid)
    {
 		$userDouyinUnionidObject = new UserDouyinUnionid;
 
-		$userDouyinUnionidObject->user_id = $user_id;
+		$userDouyinUnionidObject->user_id = $user_uid;
 		$userDouyinUnionidObject->unionid = $unionid;
 		$userDouyinUnionidObject->created_at = time();
 		$userDouyinUnionidObject->created_time = time();
@@ -271,11 +271,11 @@ class PhoneLoginDouYinFacadeService
     /**
 	* 绑定用户和微信Openid
     */
-   protected function bindUserDouyinOpenid($user_id,$openid,$systemDouyinConfigId,$session_key)
+   protected function bindUserDouyinOpenid($user_uid,$openid,$systemDouyinConfigId,$session_key)
    {
 		$userSystemDouyinConfigUnionObject = new UserSystemDouyinConfigUnion;
 
-		$userSystemDouyinConfigUnionObject->user_id = $user_id;
+		$userSystemDouyinConfigUnionObject->user_id = $user_uid;
 		$userSystemDouyinConfigUnionObject->openid = $openid;
 		$userSystemDouyinConfigUnionObject->session_key = $session_key;
 		$userSystemDouyinConfigUnionObject->system_douyin_config_id = $systemDouyinConfigId;
@@ -306,23 +306,23 @@ class PhoneLoginDouYinFacadeService
 
 		$data = null;
 
-	    $user = User::find($userId);
+	    $userObject = User::find($userId);
 
-		if($user)
+		if($userObject)
 		{
 			Auth::setDefaultDriver('phone');
 
 			$remember = true;
 
-			Auth::login($user,$remember);
+			Auth::login($userObject,$remember);
 
 			//验证现在这个用户是否是登录状态
-			CommonLoginFacade::checkResetLogin($user);
+			CommonLoginFacade::checkResetLogin($userObject);
 
-			UserLoginEvent::dispatch($user);
+			UserLoginEvent::dispatch($userObject);
 
-			$data['data']['token'] = $user->remember_token;
-			$data['data']['user_id'] = $user->id;
+			$data['data']['token'] = $userObject->remember_token;
+			$data['data']['user_id'] = $userObject->id;
 			$data['data']['open_id'] = $openid;
 		}
 

@@ -250,10 +250,10 @@ class AdminUserFacadeService
      * 添加用户
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function addUser($validated, $admin)
+    public function addUser($validated, $adminObject)
     {
         $result = code(config('admin_code.AddUserError'));
 
@@ -261,27 +261,27 @@ class AdminUserFacadeService
 
         DB::beginTransaction();
 
-        $user = new User();
+        $userObject = new User();
 
-        $user->phone = $phone;
+        $userObject->phone = $phone;
 
-        $user->password = Hash::make($password);
+        $userObject->password = Hash::make($password);
 
         //用户级别 默认最低
-        $user->level_id = 1;
+        $userObject->level_id = 1;
         //用户默认未认证
-        $user->real_auth_status = 10;
+        $userObject->real_auth_status = 10;
         //用户默认是可用的
-        $user->switch = 1;
+        $userObject->switch = 1;
         //创建张账户
-        $user->account_name = \bin2hex(\random_bytes(4));
+        $userObject->account_name = \bin2hex(\random_bytes(4));
         //创建认证token
-        $user->auth_token = Str::random(20);
+        $userObject->auth_token = Str::random(20);
 
         //绑定用户推荐id
-        $user->source_user_id = $source_user_id;
+        $userObject->source_user_id = $source_user_id;
 
-        $user->userId = Str::uuid()->toString();
+        $userObject->userId = Str::uuid()->toString();
 
         //如果有上级就查找
         if ($source_user_id) {
@@ -292,39 +292,39 @@ class AdminUserFacadeService
                 throw new CommonException('ThisParentDataNotExistsError');
             }
 
-            $user->source_userId = $sourceUser->userId;
+            $userObject->source_userId = $sourceUser->userId;
         }
 
-        $user->created_at = time();
-        $user->created_time = time();
+        $userObject->created_at = time();
+        $userObject->created_time = time();
 
         //保存用户
-        $userResult = $user->save();
+        $userResult = $userObject->save();
 
         // 邀请码
-        $user_id = $user->id;
+        $user_uid = $userObject->id;
 
-        if (mb_strlen($user_id) < 4) {
-            $user->invite_code = str_pad($user_id, 4, '0', STR_PAD_LEFT);
+        if (mb_strlen($user_uid) < 4) {
+            $userObject->invite_code = str_pad($user_uid, 4, '0', STR_PAD_LEFT);
         } else {
-            $user->invite_code = $user_id;
+            $userObject->invite_code = $user_uid;
         }
 
-        $userResult = $user->save();
+        $userResult = $userObject->save();
 
         if (!$userResult) {
             throw new CommonException('AddUserError');
         }
 
         //分别传递用户,管理员,数据,是否开启事务,是否开启推荐分销
-        CommonUserRegisterEvent::dispatch(['user' => $user,'admin' => $admin,'validated' => $validated,'isTransation' => 1,'isUserSource' => 1]);
+        CommonUserRegisterEvent::dispatch(['user' => $userObject,'admin' => $adminObject,'validated' => $validated,'isTransation' => 1,'isUserSource' => 1]);
 
         //契约业务
-        $handleParam = ['user' => $user,'admin' => $admin,'validated' => $validated];
+        $handleParam = ['user' => $userObject,'admin' => $adminObject,'validated' => $validated];
 
         app(AddUserHandlerContract::class)->handle($handleParam);
 
-        $eventResult = CommonEvent::dispatch($admin, $validated, 'AddUser');
+        $eventResult = CommonEvent::dispatch($adminObject, $validated, 'AddUser');
 
         DB::commit();
 
@@ -337,10 +337,10 @@ class AdminUserFacadeService
      * 禁用用户
      *
      * @param [type] $id
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function disableUser($validated, $admin)
+    public function disableUser($validated, $adminObject)
     {
         $result = code(config('admin_code.DisableUserError'));
 
@@ -350,9 +350,9 @@ class AdminUserFacadeService
             throw new CommonException('DisableSystemUserError');
         }
 
-        $user = User::find($validated['id']);
+        $userObject = User::find($validated['id']);
 
-        $revision = $user->revision;
+        $revision = $userObject->revision;
 
         $updateData = ['switch' => $validated['switch'],'updated_time' => time(),'updated_at' => \date('Y-m-d H:i:s', time()),'revision' => $revision + 1];
 
@@ -362,7 +362,7 @@ class AdminUserFacadeService
             throw new CommonException('DisableUserError');
         }
 
-        CommonEvent::dispatch($admin, $validated, 'DisableUser');
+        CommonEvent::dispatch($adminObject, $validated, 'DisableUser');
 
         $result = code(['code' => 0,'msg' => '禁用用户成功!']);
 
@@ -375,10 +375,10 @@ class AdminUserFacadeService
      * 批量禁用用户
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function multipleDisableUser($validated, $admin)
+    public function multipleDisableUser($validated, $adminObject)
     {
         $result = code(config('admin_code.MultipleDisableUserError'));
 
@@ -397,7 +397,7 @@ class AdminUserFacadeService
                 throw new CommonException('MultipleDisableUserError');
             }
 
-            CommonEvent::dispatch($admin, $validated, 'MultipleDisableUser');
+            CommonEvent::dispatch($adminObject, $validated, 'MultipleDisableUser');
 
             $result = code(['code' => 0,'msg' => '批量禁用用户成功!']);
         }
@@ -409,10 +409,10 @@ class AdminUserFacadeService
      * 删除用户
      *
      * @param [type] $id
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function deleteUser($validated, $admin)
+    public function deleteUser($validated, $adminObject)
     {
         $result = code(config('admin_code.DeleteUserError'));
 
@@ -422,17 +422,17 @@ class AdminUserFacadeService
             throw new CommonException('DeleteSystemUserError');
         }
 
-        $user = User::find($validated['id']);
+        $userObject = User::find($validated['id']);
 
-        $user->deleted_at = date('Y-m-d H:i:s', time());
+        $userObject->deleted_at = date('Y-m-d H:i:s', time());
 
-        $userResult = $user->save();
+        $userResult = $userObject->save();
 
         if (!$userResult) {
             throw new CommonException('DeleteUserError');
         }
 
-        CommonEvent::dispatch($admin, $validated, 'DeleteUser');
+        CommonEvent::dispatch($adminObject, $validated, 'DeleteUser');
 
         $result = code(['code' => 0,'msg' => '删除用户成功!']);
 
@@ -443,10 +443,10 @@ class AdminUserFacadeService
      * 批量删除用户
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function multipleDeleteUser($validated, $admin)
+    public function multipleDeleteUser($validated, $adminObject)
     {
         $result = code(config('admin_code.MultipleDeleteUserError'));
 
@@ -463,7 +463,7 @@ class AdminUserFacadeService
                 throw new CommonException('MultipleDeleteUserError');
             }
 
-            CommonEvent::dispatch($admin, $validated, 'MultipleDeleteUser');
+            CommonEvent::dispatch($adminObject, $validated, 'MultipleDeleteUser');
 
             $result = code(['code' => 0,'msg' => '批量删除用户成功!']);
         }
@@ -474,13 +474,13 @@ class AdminUserFacadeService
     /**
      * 通过用户id检测是否是系统用户
      *
-     * @param  [type] $user_id
+     * @param  [type] $user_uid
      */
-    protected function checkIsSystemUserByUserId($user_id = 0)
+    protected function checkIsSystemUserByUserId($user_uid = 0)
     {
         $checkResult = 0;
 
-        if ($user_id == 1 || $user_id == 2 || $user_id == 3 || $user_id == 4) {
+        if ($user_uid == 1 || $user_uid == 2 || $user_uid == 3 || $user_uid == 4) {
             $checkResult = 1;
         }
 

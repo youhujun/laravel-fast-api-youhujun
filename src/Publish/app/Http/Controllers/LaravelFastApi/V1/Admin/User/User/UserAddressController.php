@@ -46,9 +46,9 @@ class UserAddressController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -84,7 +84,7 @@ class UserAddressController extends Controller
 
             // p($validated);die;
 
-            $result =  AdminUserAddressFacade::addUserAddress(f($validated),$admin);
+            $result =  AdminUserAddressFacade::addUserAddress(f($validated),$adminObject);
         }
 
         return $result;
@@ -100,9 +100,9 @@ class UserAddressController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -130,7 +130,7 @@ class UserAddressController extends Controller
 
             //p($validated);die;
 
-            $result =  AdminUserAddressFacade::getUserAddress(f($validated),$admin);
+            $result =  AdminUserAddressFacade::getUserAddress(f($validated),$adminObject);
         }
 
         return $result;
@@ -146,9 +146,9 @@ class UserAddressController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -162,7 +162,7 @@ class UserAddressController extends Controller
 
             //p($validated);die;
 
-            $result =  AdminUserAddressFacade::deleteUserAddress(f($validated),$admin);
+            $result =  AdminUserAddressFacade::deleteUserAddress(f($validated),$adminObject);
         }
 
         return $result;
@@ -178,9 +178,9 @@ class UserAddressController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -195,7 +195,7 @@ class UserAddressController extends Controller
 
             //p($validated);die;
 
-            $result =  AdminUserAddressFacade::setDefaultUserAddress(f($validated),$admin);
+            $result =  AdminUserAddressFacade::setDefaultUserAddress(f($validated),$adminObject);
         }
 
         return $result;

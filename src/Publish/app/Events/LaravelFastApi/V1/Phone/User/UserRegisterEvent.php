@@ -36,7 +36,7 @@ class UserRegisterEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
+    public $userObject;
 	//传递过来的数组数据
     public $validated;
     // 是否开启事务
@@ -48,10 +48,10 @@ class UserRegisterEvent
      *
      * @return void
      */
-    public function __construct(User $user,$validated,$isTransation = 0,$isOpenQrcode = 1)
+    public function __construct(User $userObject,$validated,$isTransation = 0,$isOpenQrcode = 1)
     {
         //
-        $this->user = $user;
+        $this->user = $userObject;
         $this->validated = $validated;
         $this->isTransation = $isTransation;
 		$this->isOpenQrcode = $isOpenQrcode;

@@ -35,19 +35,19 @@ class UpdateUserRealAuthStatusListener
      */
     public function handle(object $event): void
     {
-        $user = $event->user;
+        $userObject = $event->user;
         $validated = $event->validated;
 
         $isTransation = $event->isTransation;
 
         //将用户认证状态 改为认证中
-        $user->real_auth_status = 20;
+        $userObject->real_auth_status = 20;
 
-        $user->updated_at = time();
+        $userObject->updated_at = time();
 
-        $user->updated_time = time();
+        $userObject->updated_time = time();
 
-        $userResult = $user->save();
+        $userResult = $userObject->save();
 
         if(!$userResult)
         {

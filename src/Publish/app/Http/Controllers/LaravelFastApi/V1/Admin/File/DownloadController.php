@@ -60,13 +60,13 @@ class DownloadController extends Controller
      */
     public function downloadBank()
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
         $download = '';
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $result = code(config('admin_code.DownLoadError'));
 

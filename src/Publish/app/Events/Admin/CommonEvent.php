@@ -26,7 +26,7 @@ class CommonEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $admin;
+    public $adminObject;
     public $logData;
     public $eventCode;
 
@@ -37,9 +37,9 @@ class CommonEvent
      *
      * @return void
      */
-    public function __construct($admin,$logData,$eventCode,$isTransation = 0)
+    public function __construct($adminObject,$logData,$eventCode,$isTransation = 0)
     {
-        $this->admin = $admin;
+        $this->admin = $adminObject;
         $this->logData = $logData;
         $this->eventCode = $eventCode;
         $this->isTransation = $isTransation;

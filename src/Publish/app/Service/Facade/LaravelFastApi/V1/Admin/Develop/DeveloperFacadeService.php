@@ -45,7 +45,7 @@ class DeveloperFacadeService
     * @param [type] $validated
     * @return void
     */
-   public function addDeveloper($admin,$validated)
+   public function addDeveloper($adminObject,$validated)
    {
        /*  Array
         (
@@ -55,33 +55,33 @@ class DeveloperFacadeService
 
         $result = code(config('admin_code.AddDeveloperError'));
 
-        $user = new User;
+        $userObject = new User;
 
-		$user->userId = Str::uuid()->toString();
+		$userObject->userId = Str::uuid()->toString();
 
-        $user->account_name = $validated['username'];
+        $userObject->account_name = $validated['username'];
 
-        $user->password = Hash::make($validated['password']);
+        $userObject->password = Hash::make($validated['password']);
 
         //用户级别 默认最低
-        $user->level_id = 1;
+        $userObject->level_id = 1;
 
         //用户默认未认证
-        $user->real_auth_status = 10;
+        $userObject->real_auth_status = 10;
         //用户默认是可用的
-        $user->switch = 1;
+        $userObject->switch = 1;
         //创建认证token
-        $user->auth_token = Str::random(20);
+        $userObject->auth_token = Str::random(20);
 
-        $user->created_at = time();
-        $user->created_time = time();
+        $userObject->created_at = time();
+        $userObject->created_time = time();
 
         //保存用户
-        $userResult = $user->save();
+        $userResult = $userObject->save();
 
-        $user_id = $user->id;
+        $user_uid = $userObject->id;
 
-        $invite_code = $user_id;
+        $invite_code = $user_uid;
 
         $length =  mb_strlen($invite_code);
 
@@ -90,18 +90,18 @@ class DeveloperFacadeService
             $invite_code = str_pad($invite_code,4,'0',STR_PAD_LEFT);
         }
 
-        $user->invite_code = $invite_code;
+        $userObject->invite_code = $invite_code;
 
-        $userResult = $user->save();
+        $userResult = $userObject->save();
 
         if(!$userResult)
         {
             throw new CommonException('AddDeveloperError');
         }
 
-        AddDeveloperEvent::dispatch($admin,$user,$validated);
+        AddDeveloperEvent::dispatch($adminObject,$userObject,$validated);
 
-        CommonEvent::dispatch($admin,$validated,'AddDeveloper');
+        CommonEvent::dispatch($adminObject,$validated,'AddDeveloper');
 
         $result = code(['code'=>0,'msg'=>'添加开发者成功!']);
 

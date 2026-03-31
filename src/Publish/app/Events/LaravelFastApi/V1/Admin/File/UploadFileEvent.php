@@ -32,7 +32,7 @@ class UploadFileEvent
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
    //管理员
-    public $admin;
+    public $adminObject;
 
     //上传文件日志数据
     public $uploadFileLogData;
@@ -53,9 +53,9 @@ class UploadFileEvent
      *
      * @return void
      */
-    public function __construct($admin,$uploadFileLogData,$path,$fileType,$actionType,$logDataType = 10)
+    public function __construct($adminObject,$uploadFileLogData,$path,$fileType,$actionType,$logDataType = 10)
     {
-        $this->admin = $admin;
+        $this->admin = $adminObject;
         $this->uploadFileLogData = $uploadFileLogData;
         $this->path = $path;
         //根据文件类型 和 $actionType来采取动作

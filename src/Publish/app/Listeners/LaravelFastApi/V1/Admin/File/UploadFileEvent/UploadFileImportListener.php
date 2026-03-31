@@ -41,7 +41,7 @@ class UploadFileImportListener
     public function handle(object $event): void
     {
 
-        $admin = $event->admin;
+        $adminObject = $event->admin;
         // 根据文件类型 和 action 来采取动作
         $fileType = $event->fileType;
 

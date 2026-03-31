@@ -139,7 +139,7 @@ class SystemDouyinConfigFacadeService
      * @param [type] $validated
      * @return void
      */
-    public function getSystemDouyinConfig($validated,$admin)
+    public function getSystemDouyinConfig($validated,$adminObject)
     {
 
        $result = code(config('admin_code.GetSystemDouyinConfigError'));
@@ -241,10 +241,10 @@ class SystemDouyinConfigFacadeService
      * 添加
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function addSystemDouyinConfig($validated,$admin)
+    public function addSystemDouyinConfig($validated,$adminObject)
     {
         $result = code(config('admin_code.AddSystemDouyinConfigError'));
 
@@ -276,7 +276,7 @@ class SystemDouyinConfigFacadeService
             throw new CommonException('AddSystemDouyinConfigError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'AddSystemDouyinConfig');
+        CommonEvent::dispatch($adminObject,$validated,'AddSystemDouyinConfig');
 
         $result = code(['code'=>0,'msg'=>'添加系统抖音配置成功']);
 
@@ -288,10 +288,10 @@ class SystemDouyinConfigFacadeService
      * 更新
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function updateSystemDouyinConfig($validated,$admin)
+    public function updateSystemDouyinConfig($validated,$adminObject)
     {
         $result = code(config('admin_code.UpdateSystemDouyinConfigError'));
 
@@ -340,7 +340,7 @@ class SystemDouyinConfigFacadeService
            throw new CommonException('UpdateSystemDouyinConfigError');
         }
 
-        CommonEvent::dispatch($admin,$systemDouyinConfigObject,'UpdateSystemDouyinConfig');
+        CommonEvent::dispatch($adminObject,$systemDouyinConfigObject,'UpdateSystemDouyinConfig');
 
         $result = code(['code'=>0,'msg'=>'更新系统抖音配置成功']);
 
@@ -352,10 +352,10 @@ class SystemDouyinConfigFacadeService
      * 删除
      *
      * @param [type] $id
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function deleteSystemDouyinConfig($validated,$admin)
+    public function deleteSystemDouyinConfig($validated,$adminObject)
     {
         //删除
         $result = code(config('admin_code.RestoreSystemDouyinConfigError'));
@@ -405,7 +405,7 @@ class SystemDouyinConfigFacadeService
 
         }
 
-        CommonEvent::dispatch($admin,$validated['id'],$eventName);
+        CommonEvent::dispatch($adminObject,$validated['id'],$eventName);
 
         $result = code(['code'=>0,'msg'=>'恢复系统抖音配置成功']);
 
@@ -421,10 +421,10 @@ class SystemDouyinConfigFacadeService
      * 批量删除用户
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function multipleDeleteSystemDouyinConfig($validated,$admin)
+    public function multipleDeleteSystemDouyinConfig($validated,$adminObject)
     {
 
         if(isset($validated['selectId']) && count($validated['selectId']))
@@ -460,7 +460,7 @@ class SystemDouyinConfigFacadeService
                 throw new CommonException('MultipleRestoreSystemDouyinConfigError');
             }
 
-            CommonEvent::dispatch($admin,$validated,$eventName);
+            CommonEvent::dispatch($adminObject,$validated,$eventName);
 
             $result = code(['code'=>0,'msg'=>'批量恢复系统抖音配置成功']);
 

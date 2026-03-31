@@ -25,7 +25,7 @@ class GoodsInfoCollectResource extends JsonResource
      */
     public $preserveKeys = true;
 
-	public $user_id = 0;
+	public $user_uid = 0;
 
 	public $goods_id = 0;
 
@@ -38,9 +38,9 @@ class GoodsInfoCollectResource extends JsonResource
         self::$replaceType = $replaceType;
     }
 
-	public function __construct($user_id,$goods_id,$shop_id)
+	public function __construct($user_uid,$goods_id,$shop_id)
 	{
-		$this->user_id = $user_id;
+		$this->user_id = $user_uid;
 		$this->goods_id = $goods_id;
 		$this->shop_id = $shop_id;
 	}

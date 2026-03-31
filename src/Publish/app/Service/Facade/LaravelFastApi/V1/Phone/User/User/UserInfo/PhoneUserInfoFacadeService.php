@@ -45,13 +45,13 @@ class PhoneUserInfoFacadeService
 	* 获取用户信息
 	*
 	* @param  [type] $validated
-	* @param  [type] $user
+	* @param  [type] $userObject
 	*/
-   public function getUserInfo($validated,$user)
+   public function getUserInfo($validated,$userObject)
    {
 		$result = code(config('phone_code.GetUserInfoError'));
 
-		$result = ['code'=>0,'msg'=>'获取用户信息成功','data'=>new UserInfoResource($user)];
+		$result = ['code'=>0,'msg'=>'获取用户信息成功','data'=>new UserInfoResource($userObject)];
 
 		return $result;
    }
@@ -60,11 +60,11 @@ class PhoneUserInfoFacadeService
 	 * 更新用户昵称
 	 *
 	 */
-	public function updateUserNickName($validated,$user)
+	public function updateUserNickName($validated,$userObject)
 	{
 		$result = code(config('phone_code.UpdateUserNickNameError'));
 
-		$userInfoObject = UserInfo::where('user_id',$user->id)->first();
+		$userInfoObject = UserInfo::where('user_id',$userObject->id)->first();
 
 		if(!$userInfoObject)
 		{
@@ -88,7 +88,7 @@ class PhoneUserInfoFacadeService
 			throw new CommonException('UpdateUserNickNameError');
 		}
 
-		CommonEvent::dispatch($user,$validated,'UpdateUserNickName');
+		CommonEvent::dispatch($userObject,$validated,'UpdateUserNickName');
 
 		$result = code(['code'=>0,'msg'=>'更新用户昵称成功']);
 
@@ -100,17 +100,17 @@ class PhoneUserInfoFacadeService
 	 * 更新用户手机号
 	 *
 	 */
-	public function updateUserPhone($validated,$user)
+	public function updateUserPhone($validated,$userObject)
 	{
 		$result = code(config('phone_code.UpdateUserPhoneError'));
 
 		$where= [];
-		$where[] = ['id','=',$user->id];
-		$where[] = ['revision','=',$user->revision];
+		$where[] = ['id','=',$userObject->id];
+		$where[] = ['revision','=',$userObject->revision];
 
 		$updateData = [];
 		$updateData['phone'] = $validated['phone'];
-		$updateData['revision'] = $user->revision + 1;
+		$updateData['revision'] = $userObject->revision + 1;
 
 		$updateResult = User::where($where)->update($updateData);
 
@@ -119,7 +119,7 @@ class PhoneUserInfoFacadeService
 			throw new CommonException('UpdateUserPhoneError');
 		}
 
-		CommonEvent::dispatch($user,$validated,'UpdateUserPhone');
+		CommonEvent::dispatch($userObject,$validated,'UpdateUserPhone');
 
 		$result = code(['code'=>0,'msg'=>'更新用户手机号成功']);
 

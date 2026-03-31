@@ -134,10 +134,10 @@ class AdminSystemConfigFacadeService
      * 添加
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function addSystemConfig($validated,$admin)
+    public function addSystemConfig($validated,$adminObject)
     {
         $result = code(config('admin_cdoe.AddSystemConfigError'));
 
@@ -161,7 +161,7 @@ class AdminSystemConfigFacadeService
              throw new CommonException('AddSystemConfigError');
         }
 
-        $eventResult = CommonEvent::dispatch($admin,$systemConfig,'AddSystemConfig');
+        $eventResult = CommonEvent::dispatch($adminObject,$systemConfig,'AddSystemConfig');
 
         Redis::hdel('system:config','listSystemConfig');
         Redis::hdel('system:config','isSetSystemConfig');
@@ -177,10 +177,10 @@ class AdminSystemConfigFacadeService
      * 更新
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function updateSystemConfig($validated,$admin)
+    public function updateSystemConfig($validated,$adminObject)
     {
         $result = code(config('admin_cdoe.UpdateSystemConfigError'));
 
@@ -224,7 +224,7 @@ class AdminSystemConfigFacadeService
            throw new CommonException('UpdateSystemConfigError');
         }
 
-        $eventResult = CommonEvent::dispatch($admin,$systemConfig,'UpdateSystemConfig');
+        $eventResult = CommonEvent::dispatch($adminObject,$systemConfig,'UpdateSystemConfig');
 
         Redis::hdel('system:config','listSystemConfig');
         Redis::hdel('system:config','isSetSystemConfig');
@@ -240,10 +240,10 @@ class AdminSystemConfigFacadeService
      * 删除
      *
      * @param [type] $id
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function deleteSystemConfig($validated,$admin)
+    public function deleteSystemConfig($validated,$adminObject)
     {
         //删除
         $result = code(config('admin_cdoe.DeleteSystemConfigError'));
@@ -264,7 +264,7 @@ class AdminSystemConfigFacadeService
             throw new CommonException('DeleteSystemConfigError');
         }
 
-        $eventResult = CommonEvent::dispatch($admin,$validated['id'],$eventName);
+        $eventResult = CommonEvent::dispatch($adminObject,$validated['id'],$eventName);
 
         Redis::hdel('system:config','listSystemConfig');
         Redis::hdel('system:config','isSetSystemConfig');
@@ -279,10 +279,10 @@ class AdminSystemConfigFacadeService
      * 批量删除用户
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function multipleDeleteSystemConfig($validated,$admin)
+    public function multipleDeleteSystemConfig($validated,$adminObject)
     {
 
         $result = code(config('admin_cdoe.MultipleDeleteSystemConfigError'));
@@ -296,7 +296,7 @@ class AdminSystemConfigFacadeService
             throw new CommonException('MultipleRestoreSystemConfigError');
         }
 
-        $eventResult = CommonEvent::dispatch($admin,$validated,$eventName);
+        $eventResult = CommonEvent::dispatch($adminObject,$validated,$eventName);
 
         Redis::hdel('system:config','listSystemConfig');
         Redis::hdel('system:config','isSetSystemConfig');

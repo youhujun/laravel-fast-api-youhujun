@@ -88,10 +88,10 @@ class AdminGoodsClassFacadeService
      *  添加地区
      *
      * @param [type] $validated
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function addGoodsClass($validated,$admin)
+    public function addGoodsClass($validated,$adminObject)
     {
         $result = code(config('admin_code.AddGoodsClassError'));
 
@@ -116,7 +116,7 @@ class AdminGoodsClassFacadeService
            throw new CommonException('AddGoodsClassError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'AddGoodsClass');
+        CommonEvent::dispatch($adminObject,$validated,'AddGoodsClass');
 
         Redis::hdel('system:config','treeGoodsClass');
 
@@ -129,10 +129,10 @@ class AdminGoodsClassFacadeService
      * 更新地区
      *
      * @param [type] $validated
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function updateGoodsClass($validated,$admin)
+    public function updateGoodsClass($validated,$adminObject)
     {
         $result = code(config('admin_code.UpdateGoodsClassError'));
 
@@ -182,7 +182,7 @@ class AdminGoodsClassFacadeService
            throw new CommonException('UpdateGoodsClassError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'UpdateGoodsClass');
+        CommonEvent::dispatch($adminObject,$validated,'UpdateGoodsClass');
 
         Redis::hdel('system:config','treeGoodsClass');
 
@@ -195,10 +195,10 @@ class AdminGoodsClassFacadeService
      * 更新
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function moveGoodsClass($validated, $admin)
+    public function moveGoodsClass($validated, $adminObject)
     {
         $result = code(config('admin_code.MoveClassError'));
 
@@ -269,7 +269,7 @@ class AdminGoodsClassFacadeService
             throw new CommonException('MoveGoodsClassError');
         }
 
-        CommonEvent::dispatch($admin, $validated, 'MoveGoodsClass');
+        CommonEvent::dispatch($adminObject, $validated, 'MoveGoodsClass');
 
         //修改子级deep
         $deepNumber = $parentDeep - $oldDeep;
@@ -288,10 +288,10 @@ class AdminGoodsClassFacadeService
      * 删除地区
      *
      * @param [type] $id
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function deleteGoodsClass($validated,$admin)
+    public function deleteGoodsClass($validated,$adminObject)
     {
         $result = code(config('admin_code.DeleteGoodsClassError'));
 
@@ -333,7 +333,7 @@ class AdminGoodsClassFacadeService
             throw new CommonException('DeleteGoodsClassError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'DeleteGoodsClass');
+        CommonEvent::dispatch($adminObject,$validated,'DeleteGoodsClass');
 
         Redis::hdel('system:config','treeGoodsClass');
 
@@ -346,13 +346,13 @@ class AdminGoodsClassFacadeService
 	 * 获取单个商品分类信息
 	 * 
 	 * @param array $validated 验证后的请求参数
-	 * @param object $admin 管理员信息
+	 * @param object $adminObject 管理员信息
 	 * @return array 返回处理结果
 	 *              成功返回 ['code'=>0, 'msg'=>'获取分类成功', 'data'=>商品分类对象]
 	 *              失败返回 配置中的错误码
 	 * @throws CommonException 当商品分类不存在时抛出异常
 	 */
-	public function getSingleGoodsClass($validated,$admin)
+	public function getSingleGoodsClass($validated,$adminObject)
 	{
 		$result = code(config('admin_code.GetSingleGoodsClassError'));
 

@@ -35,10 +35,10 @@ class PhoneUserSourceFacadeService
    /**
     * 获取需要添加用户的UserSourceUnion的id数组
     *
-    * @param  User    $user
+    * @param  User    $userObject
     * @param  integer $number 表示几级分销
     */
-   public function getInsertUserSourceUnionId(User $user,$number)
+   public function getInsertUserSourceUnionId(User $userObject,$number)
    {
        $userSourceUnionIdArray = [];
 
@@ -50,7 +50,7 @@ class PhoneUserSourceFacadeService
        {
             if($i === 0)
             {
-                $sourceUser = $user;
+                $sourceUser = $userObject;
             }
             else
             {
@@ -80,15 +80,15 @@ class PhoneUserSourceFacadeService
    /**
     * 获取需要添加的关联数据
     *
-    * @param  User    $user
+    * @param  User    $userObject
     * @param  integer $number
     */
-   public function getInsertUserSourceUnionData(User $user)
+   public function getInsertUserSourceUnionData(User $userObject)
    {
 	   $number = count($this->userUnionProperty);
 	   
 	   //获取需要插入的id
-       $userSourceUnionIdArray =  $this-> getInsertUserSourceUnionId($user,$number);
+       $userSourceUnionIdArray =  $this-> getInsertUserSourceUnionId($userObject,$number);
 
        $UserSourceUnionData = [];
 

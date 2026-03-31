@@ -51,62 +51,62 @@ class CommonUserFacadeService
 	* 注册用户
 	*
 	* @param  [array] $param 传递的参数
-	* @param  [object] $user 可选参数用户对象,可以从外部注册用户,然后传递过来,如果不传递,就在这里注册用户
-	* @return [object] $user 返回注册成功的用户对象
+	* @param  [object] $userObject 可选参数用户对象,可以从外部注册用户,然后传递过来,如果不传递,就在这里注册用户
+	* @return [object] $userObject 返回注册成功的用户对象
 	*/
-   public function registerUser($param = [],$user = null)
+   public function registerUser($param = [],$userObject = null)
    {
 		//执行注册
 		DB::beginTransaction();
 
 		//如果没有从外面传入用户,就最简注册
-		if(!isset($user) || empty($user))
+		if(!isset($userObject) || empty($userObject))
 		{
-			$user = new User;
+			$userObject = new User;
 
 			//默认密码
-			$user->password = Hash::make('abc123');
+			$userObject->password = Hash::make('abc123');
 
-			$user->userId = Str::uuid()->toString();
+			$userObject->userId = Str::uuid()->toString();
 
 			//用户级别最低
-			$user->level_id = 1;
+			$userObject->level_id = 1;
 
 			//用户未实名认证
-			$user->real_auth_status = 10;
+			$userObject->real_auth_status = 10;
 
-			$user->switch = 1;
+			$userObject->switch = 1;
 
-			$user->created_at = time();
+			$userObject->created_at = time();
 
-			$user->created_time = time();
+			$userObject->created_time = time();
 
-			$user->account_name = \bin2hex(\random_bytes(4));
+			$userObject->account_name = \bin2hex(\random_bytes(4));
 
-			$user->auth_token = Str::random(20);
+			$userObject->auth_token = Str::random(20);
 
 			if(isset($param['source']))
 			{
 				['source'=>$source] = $param;
 				//10 H5 20 抖音小程序 30抖音小游戏 40微信公众号 50微信小程序 60微信小游戏
-				$user->source =  $source;
+				$userObject->source =  $source;
 			}
 
-			$userResult = $user->save();
+			$userResult = $userObject->save();
 
 			// 邀请码
-			$user_id = $user->id;
+			$user_uid = $userObject->id;
 
-			if(mb_strlen($user_id) < 4)
+			if(mb_strlen($user_uid) < 4)
 			{
-				$user->invite_code = str_pad($user_id,4,'0',STR_PAD_LEFT);
+				$userObject->invite_code = str_pad($user_uid,4,'0',STR_PAD_LEFT);
 			}
 			else
 			{
-				$user->invite_code = $user_id;
+				$userObject->invite_code = $user_uid;
 			}
 
-			$userResult = $user->save();
+			$userResult = $userObject->save();
 
 			if(!$userResult)
 			{
@@ -117,14 +117,14 @@ class CommonUserFacadeService
 
 		//这里用来控制系统配置暂时写死,后续可以完善
 		
-		$param = ['user'=>$user,'validated'=>$param,'isTransation'=>1];
+		$param = ['user'=>$userObject,'validated'=>$param,'isTransation'=>1];
 
 		CommonUserRegisterEvent::dispatch($param);
 
         //提交
         DB::commit();
 
-		return $user;
+		return $userObject;
    }
 
    /**
@@ -134,12 +134,12 @@ class CommonUserFacadeService
     * 否则返回系统默认头像。头像的获取顺序为：首先查找用户头像记录，
     * 然后根据相册图片 ID 查找相册图片，最后根据图片类型决定返回的头像 URL。
     *
-    * @param object $user 用户对象，包含用户 ID。
+    * @param object $userObject 用户对象，包含用户 ID。
     * @return string|null 返回用户头像的 URL，若未找到则返回 null。
     */
-   public function getUserAvatar($user)
+   public function getUserAvatar($userObject)
    {
-		$userAvatarObject = UserAvatar::where('user_id',$user->id)->orderBy('created_time','desc')->first();
+		$userAvatarObject = UserAvatar::where('user_id',$userObject->id)->orderBy('created_time','desc')->first();
 
 		$albumPictureObject = null;
 
@@ -205,10 +205,10 @@ class CommonUserFacadeService
    /**
     * 获取用户的 OpenID
     *
-    * @param object $user 用户对象，包含用户的基本信息
+    * @param object $userObject 用户对象，包含用户的基本信息
     * @return string|null 返回用户的 OpenID，如果未找到则返回 null
     */
-   public function getUserOpenid($user,$openid_type = 10)
+   public function getUserOpenid($userObject,$openid_type = 10)
    {
 		$openid = null;
 
@@ -219,7 +219,7 @@ class CommonUserFacadeService
 		//微信
 		if(in_array($openid_type,[10,20,30]))
 		{
-			$query = UserSystemWechatConfigUnion::where('user_id',$user->id);
+			$query = UserSystemWechatConfigUnion::where('user_id',$userObject->id);
 
 			//微信公众号
 			if($openid_type == 10)
@@ -243,12 +243,12 @@ class CommonUserFacadeService
    /**
     * 获取用户角色ID数组
     *
-    * @param object $user 用户对象，包含用户的ID
+    * @param object $userObject 用户对象，包含用户的ID
     * @return array 返回与用户关联的角色ID数组
     */
-   public function getUserRoleIdArray($user)
+   public function getUserRoleIdArray($userObject)
    {
-		$userRoleColection = UserRoleUnion::where('user_id',$user->id)->get();
+		$userRoleColection = UserRoleUnion::where('user_id',$userObject->id)->get();
 
 	    $roleIdArray = [];
 

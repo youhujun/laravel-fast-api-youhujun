@@ -41,11 +41,11 @@ class PhoneBannerDetailsController extends Controller
      */
     public function updatePhoneBannerPicture(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -69,7 +69,7 @@ class PhoneBannerDetailsController extends Controller
 
            //p($validated);die;
 
-           $result = AdminPhoneBannerDetailsFacade::updatePhoneBannerPicture(f($validated),$admin);
+           $result = AdminPhoneBannerDetailsFacade::updatePhoneBannerPicture(f($validated),$adminObject);
         }
 
         return $result;
@@ -83,13 +83,13 @@ class PhoneBannerDetailsController extends Controller
      */
     public function updatePhoneBannerUrl(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
         $id = check_id($request->input('id'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -113,7 +113,7 @@ class PhoneBannerDetailsController extends Controller
 
            //p($validated);die;
 
-           $result = AdminPhoneBannerDetailsFacade::updatePhoneBannerUrl(f($validated),$admin);
+           $result = AdminPhoneBannerDetailsFacade::updatePhoneBannerUrl(f($validated),$adminObject);
         }
 
         return $result;
@@ -127,13 +127,13 @@ class PhoneBannerDetailsController extends Controller
      */
     public function updatePhoneBannerSort(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
         $id = check_id($request->input('id'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -157,7 +157,7 @@ class PhoneBannerDetailsController extends Controller
 
            //p($validated);die;
 
-           $result = AdminPhoneBannerDetailsFacade::updatePhoneBannerSort(f($validated),$admin);
+           $result = AdminPhoneBannerDetailsFacade::updatePhoneBannerSort(f($validated),$adminObject);
         }
 
         return $result;
@@ -171,13 +171,13 @@ class PhoneBannerDetailsController extends Controller
      */
     public function updatePhoneBannerBakInfo(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
         $id = check_id($request->input('id'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -201,7 +201,7 @@ class PhoneBannerDetailsController extends Controller
 
            //p($validated);die;
 
-           $result = AdminPhoneBannerDetailsFacade::updatePhoneBannerBakInfo(f($validated),$admin);
+           $result = AdminPhoneBannerDetailsFacade::updatePhoneBannerBakInfo(f($validated),$adminObject);
         }
 
         return $result;

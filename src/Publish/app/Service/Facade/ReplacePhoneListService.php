@@ -128,10 +128,10 @@ class ReplacePhoneListService
     /**
      * 获取常用
      *
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function defaultReplace($validated,$admin)
+    public function defaultReplace($validated,$adminObject)
     {
         $result = code(config('phone_code.DefaultReplaceError'));
 
@@ -169,7 +169,7 @@ class ReplacePhoneListService
      * @param [type] $find
      * @return void
      */
-    public function findReplace($validated,$admin)
+    public function findReplace($validated,$adminObject)
     {
        $replaceCollection = [];
 
@@ -216,7 +216,7 @@ class ReplacePhoneListService
      * @param [type] $validated
      * @return void
      */
-    public function getReplace($validated,$admin)
+    public function getReplace($validated,$adminObject)
     {
 
        $result = code(config('phone_code.GetReplaceError'));
@@ -318,10 +318,10 @@ class ReplacePhoneListService
      * 添加
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function addReplace($validated,$admin)
+    public function addReplace($validated,$adminObject)
     {
         $result = code(config('phone_code.AddReplaceError'));
 
@@ -364,7 +364,7 @@ class ReplacePhoneListService
              throw new CommonException('AddReplaceError');
         }
 
-        CommonEvent::dispatch($admin,$replace,'AddReplace');
+        CommonEvent::dispatch($adminObject,$replace,'AddReplace');
 
         $result = code(['code'=>0,'msg'=>'成功']);
 
@@ -376,10 +376,10 @@ class ReplacePhoneListService
      * 更新
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function updateReplace($validated,$admin)
+    public function updateReplace($validated,$adminObject)
     {
         $result = code(config('phone_code.UpdateReplaceError'));
 
@@ -440,7 +440,7 @@ class ReplacePhoneListService
            throw new CommonException('UpdateReplaceError');
         }
 
-        CommonEvent::dispatch($admin,$replace,'UpdateReplace');
+        CommonEvent::dispatch($adminObject,$replace,'UpdateReplace');
 
         $result = code(['code'=>0,'msg'=>'成功']);
 
@@ -452,10 +452,10 @@ class ReplacePhoneListService
      * 删除
      *
      * @param [type] $id
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function deleteReplace($validated,$admin)
+    public function deleteReplace($validated,$adminObject)
     {
         //删除
         $result = code(config('phone_code.RestoreReplaceError'));
@@ -505,7 +505,7 @@ class ReplacePhoneListService
 
         }
 
-        CommonEvent::dispatch($admin,$validated['id'],$eventName);
+        CommonEvent::dispatch($adminObject,$validated['id'],$eventName);
 
         $result = code(['code'=>0,'msg'=>'成功']);
 
@@ -521,10 +521,10 @@ class ReplacePhoneListService
      * 批量删除用户
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function multipleDeleteReplace($validated,$admin)
+    public function multipleDeleteReplace($validated,$adminObject)
     {
 
         if(isset($validated['selectId']) && count($validated['selectId']))
@@ -560,7 +560,7 @@ class ReplacePhoneListService
                 throw new CommonException('MultipleRestoreReplaceError');
             }
 
-            CommonEvent::dispatch($admin,$validated,$eventName);
+            CommonEvent::dispatch($adminObject,$validated,$eventName);
 
             $result = code(['code'=>0,'msg'=>'成功']);
 
@@ -578,10 +578,10 @@ class ReplacePhoneListService
      * 更新单个属性
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function updateReplaceProperty($validated,$admin)
+    public function updateReplaceProperty($validated,$adminObject)
     {
         $result = code(config('phone_code.UpdateReplacePropertyError'));
 
@@ -632,7 +632,7 @@ class ReplacePhoneListService
            throw new CommonException('UpdateReplacePropertyError');
         }
 
-        CommonEvent::dispatch($admin,$replace,'UpdateReplaceProperty');
+        CommonEvent::dispatch($adminObject,$replace,'UpdateReplaceProperty');
 
         $result = code(['code'=>0,'msg'=>'成功']);
 
@@ -643,10 +643,10 @@ class ReplacePhoneListService
      * 禁用
      *
      * @param [type] $id
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function disableReplace($validated,$admin)
+    public function disableReplace($validated,$adminObject)
     {
 
         $result = code(config('phone_code.AbleReplaceError'));
@@ -687,7 +687,7 @@ class ReplacePhoneListService
             throw new CommonException('AbleReplaceError');
         }
 
-        CommonEvent::dispatch($admin,$validated,$eventName);
+        CommonEvent::dispatch($adminObject,$validated,$eventName);
 
         $result = code(['code'=>0,'msg'=>'成功']);
 
@@ -703,10 +703,10 @@ class ReplacePhoneListService
      * 批量禁用
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function multipleDisableReplace($validated,$admin)
+    public function multipleDisableReplace($validated,$adminObject)
     {
 
         if(isset($validated['selectId']) && count($validated['selectId']))
@@ -741,7 +741,7 @@ class ReplacePhoneListService
                 throw new CommonException('MultipleAbleReplaceError');
             }
 
-            CommonEvent::dispatch($admin,$validated,$eventName);
+            CommonEvent::dispatch($adminObject,$validated,$eventName);
 
             $result = code(['code'=>0,'msg'=>'成功']);
 
@@ -758,10 +758,10 @@ class ReplacePhoneListService
      * 获取绑定关联地区
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function getReplaceUnionRegion($validated,$admin)
+    public function getReplaceUnionRegion($validated,$adminObject)
     {
           $result = code(config('phone_code.ReplaceUnionRegionError'));
 
@@ -781,10 +781,10 @@ class ReplacePhoneListService
      *更新绑定关联地区
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function updateReplaceUnionRegion($validated,$admin)
+    public function updateReplaceUnionRegion($validated,$adminObject)
     {
          $result = code(config('phone_code.UpdateReplaceUnionRegionError'));
 
@@ -817,7 +817,7 @@ class ReplacePhoneListService
                 throw new CommonException('UpdateReplaceUnionRegionError');
              }
 
-            CommonEvent::dispatch($admin,$validated,'UpdateReplaceUnionRegion');
+            CommonEvent::dispatch($adminObject,$validated,'UpdateReplaceUnionRegion');
 
             $result = code(['code'=>0,'msg'=>'成功']);
 

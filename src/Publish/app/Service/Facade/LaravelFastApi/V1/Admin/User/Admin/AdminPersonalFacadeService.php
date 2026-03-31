@@ -40,9 +40,9 @@ class AdminPersonalFacadeService
    /**
 	* 确认修改头像
     */
-   public function updateAvatar($validated,$admin)
+   public function updateAvatar($validated,$adminObject)
    {
-		Redis::hdel("admin_info:admin_info",$admin->id);
+		Redis::hdel("admin_info:admin_info",$adminObject->id);
 
         $result = code(['code'=>0,'msg'=>'修改头像成功!']);
 
@@ -52,11 +52,11 @@ class AdminPersonalFacadeService
    /**
 	* 修改手机号
     */
-   public function updatePhone($validated,$admin)
+   public function updatePhone($validated,$adminObject)
    {
 		$result = ['code'=>10000,'msg'=>'修改手机号失败'];
 
-		$adminObject = Admin::find($admin->id);
+		$adminObject = Admin::find($adminObject->id);
 
 		$where = [];
 		$where[] = ['revision','=',$adminObject ->revision];
@@ -79,7 +79,7 @@ class AdminPersonalFacadeService
            throw new CommonException('UpdateAdminPhoneError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'UpdateAdminPhone');
+        CommonEvent::dispatch($adminObject,$validated,'UpdateAdminPhone');
 
         $result = code(['code'=>0,'msg'=>'修改手机号成功']);
 
@@ -91,13 +91,13 @@ class AdminPersonalFacadeService
 	* 修改密码
 	*
 	* @param  [type] $validated
-	* @param  [type] $admin
+	* @param  [type] $adminObject
 	*/
-   public function updatePassword($validated,$admin)
+   public function updatePassword($validated,$adminObject)
    {
 		$result = ['code'=>10000,'msg'=>'修改密码失败'];
 
-		$adminObject = Admin::find($admin->id);
+		$adminObject = Admin::find($adminObject->id);
 
 		$where = [];
 		$where[] = ['revision','=',$adminObject ->revision];
@@ -126,7 +126,7 @@ class AdminPersonalFacadeService
            throw new CommonException('UpdateAdminPasswordError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'UpdateAdminPassword');
+        CommonEvent::dispatch($adminObject,$validated,'UpdateAdminPassword');
 
         $result = code(['code'=>0,'msg'=>'修改手机号成功']);
 

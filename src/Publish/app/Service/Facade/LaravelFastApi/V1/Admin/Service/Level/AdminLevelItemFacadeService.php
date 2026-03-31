@@ -59,7 +59,7 @@ class AdminLevelItemFacadeService
     /**
      * 获取常用
      *
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
     public function defaultLevelItem()
@@ -173,10 +173,10 @@ class AdminLevelItemFacadeService
      * 添加
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function addLevelItem($validated,$admin)
+    public function addLevelItem($validated,$adminObject)
     {
 
         $result = code(config('admin_code.AddLevelItemError'));
@@ -203,7 +203,7 @@ class AdminLevelItemFacadeService
             throw new CommonException('AddLevelItemError');
         }
 
-        CommonEvent::dispatch($admin,$levelItem,'AddLevelItem');
+        CommonEvent::dispatch($adminObject,$levelItem,'AddLevelItem');
 
         $result = code(['code'=>0,'msg'=>'添加级别配置项成功!']);
 
@@ -215,10 +215,10 @@ class AdminLevelItemFacadeService
      * 更新
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function updateLevelItem($validated,$admin)
+    public function updateLevelItem($validated,$adminObject)
     {
         $result = code(config('admin_code.UpdateLevelItemError'));
 
@@ -264,7 +264,7 @@ class AdminLevelItemFacadeService
            throw new CommonException('UpdateLevelItemError');
         }
 
-        CommonEvent::dispatch($admin,$levelItem,'UpdateLevelItem');
+        CommonEvent::dispatch($adminObject,$levelItem,'UpdateLevelItem');
 
         $result = code(['code'=>0,'msg'=>'更改级别配置项成功!']);
 
@@ -276,10 +276,10 @@ class AdminLevelItemFacadeService
      * 删除
      *
      * @param [type] $id
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function deleteLevelItem($validated,$admin)
+    public function deleteLevelItem($validated,$adminObject)
     {
         $result = code(config('admin_code.DeleteLevelItemError'));
 
@@ -296,7 +296,7 @@ class AdminLevelItemFacadeService
             throw new CommonException('DeleteLevelItemError');
         }
 
-        CommonEvent::dispatch($admin,$validated['id'],'DeleteLevelItem');
+        CommonEvent::dispatch($adminObject,$validated['id'],'DeleteLevelItem');
 
         $result = code(['code'=>0,'msg'=>'删除级别配置项成功!']);
 
@@ -307,10 +307,10 @@ class AdminLevelItemFacadeService
      * 批量删除用户
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function multipleDeleteLevelItem($validated,$admin)
+    public function multipleDeleteLevelItem($validated,$adminObject)
     {
         $result = code(config('admin_code.MultipleDeleteLevelItemError'));
 
@@ -324,7 +324,7 @@ class AdminLevelItemFacadeService
                 throw new CommonException('MultipleDeleteLevelItemError');
             }
 
-            CommonEvent::dispatch($admin,$validated,'MultipleDeleteLevelItem');
+            CommonEvent::dispatch($adminObject,$validated,'MultipleDeleteLevelItem');
 
             $result = code(['code'=>0,'msg'=>'批量删除级别配置项成功!']);
         }

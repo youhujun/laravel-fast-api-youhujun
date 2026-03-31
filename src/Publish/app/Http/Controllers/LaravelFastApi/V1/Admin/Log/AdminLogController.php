@@ -43,11 +43,11 @@ class AdminLogController extends Controller
      */
     public function getAdminLoginLog(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -66,7 +66,7 @@ class AdminLogController extends Controller
 
            //p($validated);die;
 
-           $result = AdminLogFacade::getAdminLoginLog($validated,$admin);
+           $result = AdminLogFacade::getAdminLoginLog($validated,$adminObject);
 
         }
 
@@ -81,11 +81,11 @@ class AdminLogController extends Controller
      */
     public function deleteAdminLoginLog(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -101,7 +101,7 @@ class AdminLogController extends Controller
                throw new RuleException('RuleRequiredError', 'id');
            }
 
-           $result = AdminLogFacade::deleteAdminLoginLog($validated,$admin);
+           $result = AdminLogFacade::deleteAdminLoginLog($validated,$adminObject);
         }
 
         return $result;
@@ -115,11 +115,11 @@ class AdminLogController extends Controller
      */
     public function multipleDeleteAdminLoginLog(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -136,7 +136,7 @@ class AdminLogController extends Controller
                throw new RuleException('RuleRequiredError', 'selectId');
            }
 
-            $result = AdminLogFacade::multipleDeleteAdminLoginLog($validated,$admin);
+            $result = AdminLogFacade::multipleDeleteAdminLoginLog($validated,$adminObject);
         }
 
         return $result;
@@ -149,11 +149,11 @@ class AdminLogController extends Controller
      */
     public function getAdminEventLog(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -171,7 +171,7 @@ class AdminLogController extends Controller
 
            $validated = $validator->validated();
 
-            $result = AdminLogFacade::getAdminEventLog($validated,$admin);
+            $result = AdminLogFacade::getAdminEventLog($validated,$adminObject);
         }
 
         return $result;
@@ -185,11 +185,11 @@ class AdminLogController extends Controller
      */
     public function deleteAdminEventLog(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('super-role'))
+        if(Gate::forUser($adminObject)->allows('super-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -205,7 +205,7 @@ class AdminLogController extends Controller
                throw new RuleException('RuleRequiredError', 'id');
            }
 
-            $result = AdminLogFacade::deleteAdminEventLog($validated,$admin);
+            $result = AdminLogFacade::deleteAdminEventLog($validated,$adminObject);
         }
 
         return $result;
@@ -219,11 +219,11 @@ class AdminLogController extends Controller
      */
     public function multipleDeleteAdminEventLog(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('super-role'))
+        if(Gate::forUser($adminObject)->allows('super-role'))
         {
 
             $validator = Validator::make(
@@ -240,7 +240,7 @@ class AdminLogController extends Controller
                throw new RuleException('RuleRequiredError', 'selectId');
            }
 
-            $result = AdminLogFacade::multipleDeleteAdminEventLog($validated,$admin);
+            $result = AdminLogFacade::multipleDeleteAdminEventLog($validated,$adminObject);
         }
 
         return $result;

@@ -45,11 +45,11 @@ class AdministratorController extends Controller
      */
     public function getDefaultAdmin(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $result = AdministratorFacade::getDefaultAdmin();
         }
@@ -65,11 +65,11 @@ class AdministratorController extends Controller
      */
     public function findAdmin(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
              $validator = Validator::make(
                 $request->all(),
@@ -95,7 +95,7 @@ class AdministratorController extends Controller
 
             //p($validated);die;
 
-            $result = AdministratorFacade::findAdmin($validated,$admin);
+            $result = AdministratorFacade::findAdmin($validated,$adminObject);
         }
 
         return $result;
@@ -108,9 +108,9 @@ class AdministratorController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('super-role'))
+        if(Gate::forUser($adminObject)->allows('super-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -159,11 +159,11 @@ class AdministratorController extends Controller
      */
     public function addAdmin(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('super-role'))
+        if(Gate::forUser($adminObject)->allows('super-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -191,7 +191,7 @@ class AdministratorController extends Controller
 
             //p($validated);die;
 
-            $result = AdministratorFacade::addAdmin(f($validated),$admin);
+            $result = AdministratorFacade::addAdmin(f($validated),$adminObject);
 
         }
 
@@ -206,13 +206,13 @@ class AdministratorController extends Controller
      */
     public function updateAdmin(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
         $id = $request->input('id');
 
-        if(Gate::forUser($admin)->allows('super-role'))
+        if(Gate::forUser($adminObject)->allows('super-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -241,7 +241,7 @@ class AdministratorController extends Controller
 
             //p($validated);die;
 
-            $result = AdministratorFacade::updateAdmin(f($validated),$admin);
+            $result = AdministratorFacade::updateAdmin(f($validated),$adminObject);
 
         }
 
@@ -257,11 +257,11 @@ class AdministratorController extends Controller
     public function disableAdmin(Request $request)
     {
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('super-role'))
+        if(Gate::forUser($adminObject)->allows('super-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -284,7 +284,7 @@ class AdministratorController extends Controller
 
             // p($validated);die;
 
-            $result = AdministratorFacade::disableAdmin($validated,$admin);
+            $result = AdministratorFacade::disableAdmin($validated,$adminObject);
         }
 
         return $result;
@@ -298,11 +298,11 @@ class AdministratorController extends Controller
      */
     public function multipleDisableAdmin(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('super-role'))
+        if(Gate::forUser($adminObject)->allows('super-role'))
         {
 
             $validator = Validator::make(
@@ -319,7 +319,7 @@ class AdministratorController extends Controller
                 throw new RuleException('RuleRequiredError', 'selectId');
             }
 
-            $result = AdministratorFacade::multipleDisableAdmin($validated,$admin);
+            $result = AdministratorFacade::multipleDisableAdmin($validated,$adminObject);
         }
 
         return $result;
@@ -334,11 +334,11 @@ class AdministratorController extends Controller
     public function deleteAdmin(Request $request)
     {
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('super-role'))
+        if(Gate::forUser($adminObject)->allows('super-role'))
         {
              $validator = Validator::make(
                 $request->all(),
@@ -360,7 +360,7 @@ class AdministratorController extends Controller
 
             // p($validated);die;
 
-            $result = AdministratorFacade::deleteAdmin($validated,$admin);
+            $result = AdministratorFacade::deleteAdmin($validated,$adminObject);
         }
 
         return $result;
@@ -374,11 +374,11 @@ class AdministratorController extends Controller
      */
     public function multipleDeleteAdmin(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('super-role'))
+        if(Gate::forUser($adminObject)->allows('super-role'))
         {
 
             $validator = Validator::make(
@@ -395,7 +395,7 @@ class AdministratorController extends Controller
                throw new RuleException('RuleRequiredError', 'selectId');
            }
 
-            $result = AdministratorFacade::multipleDeleteAdmin($validated,$admin);
+            $result = AdministratorFacade::multipleDeleteAdmin($validated,$adminObject);
         }
 
         return $result;

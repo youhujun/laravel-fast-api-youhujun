@@ -35,25 +35,25 @@ class PhoneSocketUserFacadeService
    /**
     * 检测socket 用户是否登录
     *
-    * @param  [type] $user_id
+    * @param  [type] $user_uid
     * @param  [type] $token
     */
-   public function checkSocketUserIsLogin($user_id,$token)
+   public function checkSocketUserIsLogin($user_uid,$token)
    {
         $checkResult = 0;
 
-        //Log::debug(['$user_id'=>$user_id,'token'=>$token]);
+        //Log::debug(['$user_uid'=>$user_uid,'token'=>$token]);
 
-        if(isset($user_id))
+        if(isset($user_uid))
         {
-            $user = User::find($user_id);
+            $userObject = User::find($user_uid);
 
-            // Log::debug(['$user'=>$user]);
+            // Log::debug(['$userObject'=>$userObject]);
 
-            if($user->remember_token == $token)
+            if($userObject->remember_token == $token)
             {
                 $checkResult = 1;
-                Log::debug(['$user_id'=>$user_id.'-socketLoginSuccess',]);
+                Log::debug(['$user_uid'=>$user_uid.'-socketLoginSuccess',]);
             }
         }
 
@@ -64,21 +64,21 @@ class PhoneSocketUserFacadeService
    /**
     * 保存socket用户
     *
-    * @param  [type] $user_id
+    * @param  [type] $user_uid
     * @param  [type] $frameId
     */
-   public function saveSocketUser($user_id,$frameFd)
+   public function saveSocketUser($user_uid,$frameFd)
    {
         $result = 0;
 
-        if(Redis::hget('socket:socket',$user_id))
+        if(Redis::hget('socket:socket',$user_uid))
         {
-            Redis::hdel('socket:socket',$user_id);
+            Redis::hdel('socket:socket',$user_uid);
         }
 
-        $result = Redis::hset('socket:socket',$user_id,$frameFd);
+        $result = Redis::hset('socket:socket',$user_uid,$frameFd);
 
-        //Log::debug(['$redisResult'=>$user_id.'-'.$result,]);
+        //Log::debug(['$redisResult'=>$user_uid.'-'.$result,]);
 
         return $result;
    }
@@ -86,10 +86,10 @@ class PhoneSocketUserFacadeService
    /**
     * 删除socket用户
     *
-    * @param  [type] $user_id
+    * @param  [type] $user_uid
     */
-   public function deleteSocketUser($user_id)
+   public function deleteSocketUser($user_uid)
    {
-        Redis::hdel('socket:socket',$user_id);
+        Redis::hdel('socket:socket',$user_uid);
    }
 }

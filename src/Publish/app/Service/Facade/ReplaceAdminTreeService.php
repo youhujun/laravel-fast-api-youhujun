@@ -89,10 +89,10 @@ class ReplaceAdminTreeService
      *  添加
      *
      * @param [type] $validated
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function addReplace($validated,$admin)
+    public function addReplace($validated,$adminObject)
     {
         $result = code(config('admin_code.AddReplaceError'));
 
@@ -129,7 +129,7 @@ class ReplaceAdminTreeService
             throw new CommonException('AddReplaceError');
         }
 
-        CommonEvent::dispatch($admin,$replace,'AddReplace');
+        CommonEvent::dispatch($adminObject,$replace,'AddReplace');
 
         $treeReplace = $this->getTreeData(['picture']);
 
@@ -142,10 +142,10 @@ class ReplaceAdminTreeService
      * 更新
      *
      * @param [type] $validated
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function updateReplace($validated,$admin)
+    public function updateReplace($validated,$adminObject)
     {
         $result = code(config('admin_code.UpdateReplaceError'));
 
@@ -203,7 +203,7 @@ class ReplaceAdminTreeService
            throw new CommonException('UpdateReplaceError');
         }
 
-        $eventResult = CommonEvent::dispatch($admin,$replace,'UpdateReplace');
+        $eventResult = CommonEvent::dispatch($adminObject,$replace,'UpdateReplace');
 
         // 预加载 关联查询表的字段名称
         $treeReplace = $this->getTreeData(['union']);
@@ -219,10 +219,10 @@ class ReplaceAdminTreeService
      * 移动
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function moveReplace($validated, $admin)
+    public function moveReplace($validated, $adminObject)
     {
         $result = code(config('admin_code.MoveReplaceError'));
 
@@ -291,7 +291,7 @@ class ReplaceAdminTreeService
             throw new CommonException('MoveReplaceError');
         }
 
-        CommonEvent::dispatch($admin, $validated, 'MoveReplace');
+        CommonEvent::dispatch($adminObject, $validated, 'MoveReplace');
 
         //修改子级deep
         $deepNumber = $parentDeep - $oldDeep;
@@ -310,10 +310,10 @@ class ReplaceAdminTreeService
      * 删除
      *
      * @param [type] $id
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function deleteReplace($validated,$user)
+    public function deleteReplace($validated,$userObject)
     {
         $result = code(config('admin_code.DeleteReplaceError'));
 
@@ -358,7 +358,7 @@ class ReplaceAdminTreeService
             throw new CommonException('DeleteReplaceError');
         }
 
-        DeleteReplace::dispatch($user,$validated['id'],'DeleteReplace');
+        DeleteReplace::dispatch($userObject,$validated['id'],'DeleteReplace');
 
         $result = code(['code'=>0,'msg'=>'成功!']);
 
@@ -369,10 +369,10 @@ class ReplaceAdminTreeService
      * 获取绑定关联地区
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function getReplaceUnionRegion($validated,$admin)
+    public function getReplaceUnionRegion($validated,$adminObject)
     {
           $result = code(config('admin_code.ReplaceUnionRegionError'));
 
@@ -392,10 +392,10 @@ class ReplaceAdminTreeService
      *更新绑定关联地区
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function updateReplaceUnionRegion($validated,$admin)
+    public function updateReplaceUnionRegion($validated,$adminObject)
     {
          $result = code(config('admin_code.UpdateReplaceUnionRegionError'));
 
@@ -428,7 +428,7 @@ class ReplaceAdminTreeService
                 throw new CommonException('UpdateReplaceUnionRegionError');
              }
 
-            CommonEvent::dispatch($admin,$validated,'UpdateReplaceUnionRegion');
+            CommonEvent::dispatch($adminObject,$validated,'UpdateReplaceUnionRegion');
 
             $result = code(['code'=>0,'msg'=>'成功!']);
 

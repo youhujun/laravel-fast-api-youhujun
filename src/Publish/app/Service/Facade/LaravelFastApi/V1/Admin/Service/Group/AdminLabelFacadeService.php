@@ -83,10 +83,10 @@ class AdminLabelFacadeService
      *  添加地区
      *
      * @param [type] $validated
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function addLabel($validated,$admin)
+    public function addLabel($validated,$adminObject)
     {
         $result = code(config('admin_code.AddLabelError'));
 
@@ -113,7 +113,7 @@ class AdminLabelFacadeService
             throw new CommonException('AddLabelError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'AddLabel');
+        CommonEvent::dispatch($adminObject,$validated,'AddLabel');
 
         //清除缓存
         Redis::hdel('system:config','treeLabel');
@@ -127,10 +127,10 @@ class AdminLabelFacadeService
      * 更新地区
      *
      * @param [type] $validated
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function updateLabel($validated,$admin)
+    public function updateLabel($validated,$adminObject)
     {
         $result = code(config('admin_code.UpdateLabelError'));
 
@@ -177,7 +177,7 @@ class AdminLabelFacadeService
             throw new CommonException('UpdateLabelError');
         }
 
-        $eventResult = CommonEvent::dispatch($admin,$validated,'UpdateLabel');
+        $eventResult = CommonEvent::dispatch($adminObject,$validated,'UpdateLabel');
 
         //清除缓存
         Redis::hdel('system:config','treeLabel');
@@ -191,10 +191,10 @@ class AdminLabelFacadeService
      * 更新
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function moveLabel($validated, $admin)
+    public function moveLabel($validated, $adminObject)
     {
         $result = code(config('admin_code.MoveLabelError'));
 
@@ -263,7 +263,7 @@ class AdminLabelFacadeService
             throw new CommonException('MoveLabelError');
         }
 
-        CommonEvent::dispatch($admin, $validated, 'MoveLabel');
+        CommonEvent::dispatch($adminObject, $validated, 'MoveLabel');
 
         //修改子级deep
 
@@ -286,10 +286,10 @@ class AdminLabelFacadeService
      * 删除地区
      *
      * @param [type] $id
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function deleteLabel($validated,$admin)
+    public function deleteLabel($validated,$adminObject)
     {
         $result = code(config('admin_code.DeleteLabelError'));
 
@@ -327,7 +327,7 @@ class AdminLabelFacadeService
             throw new CommonException('DeleteLabelError');
         }
 
-        $eventResult = new CommonEvent($admin,$validated,'DeleteLabel');
+        $eventResult = new CommonEvent($adminObject,$validated,'DeleteLabel');
 
         //清除缓存
         Redis::hdel('system:config','treeLabel');

@@ -39,15 +39,15 @@ class AddUserRoleListener
      */
     public function handle(object $event): void
     {
-        $user = $event->user;
+        $userObject = $event->user;
         $isTransation = $event->isTransation;
 
         $data = [];
         $date = date('Y-m-d H:i:s',time());
         $time = time();
-        $user_id = $user->id;
+        $user_uid = $userObject->id;
 
-        $data[0] = ['created_at' =>$date,'created_time'=>$time,'user_id'=>$user_id,'role_id'=>40];
+        $data[0] = ['created_at' =>$date,'created_time'=>$time,'user_id'=>$user_uid,'role_id'=>40];
 
         $userRoleUnionResult = UserRoleUnion::insert($data);
 

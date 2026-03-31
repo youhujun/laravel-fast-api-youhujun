@@ -28,8 +28,8 @@ class ReplaceJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $admin;
-    protected $user;
+    protected $adminObject;
+    protected $userObject;
     /**
      * 任务尝试次数
      *
@@ -60,7 +60,7 @@ class ReplaceJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(Admin $admin,User $user)
+    public function __construct(Admin $adminObject,User $userObject)
     {
         //
     }

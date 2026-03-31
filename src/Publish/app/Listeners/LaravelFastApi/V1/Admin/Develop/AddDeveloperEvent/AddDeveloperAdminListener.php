@@ -37,22 +37,22 @@ class AddDeveloperAdminListener
      */
     public function handle(object $event): void
     {
-        $admin = $event->admin;
-        $user = $event->user;
+        $adminObject = $event->admin;
+        $userObject = $event->user;
         $validated = $event->validated;
 
-        $admin = new Admin;
+        $adminObject = new Admin;
 
-        $admin->user_id = $user->id;
-        $admin->userId = $user->userId;
-        $admin->account_name = $user->account_name;
-        $admin->password = $user->password;
+        $adminObject->user_id = $userObject->id;
+        $adminObject->userId = $userObject->userId;
+        $adminObject->account_name = $userObject->account_name;
+        $adminObject->password = $userObject->password;
         //默认是可用的
-        $admin->switch = 1;
-        $admin->created_at = time();
-        $admin->created_time = time();
+        $adminObject->switch = 1;
+        $adminObject->created_at = time();
+        $adminObject->created_time = time();
 
-        $result = $admin->save();
+        $result = $adminObject->save();
 
         if(!$result)
         {

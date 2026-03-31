@@ -96,18 +96,18 @@ class ArticleResource extends JsonResource
 
                 if(!is_null($this->resource))
                 {
-                    $admin = $this->resource->admin;
+                    $adminObject = $this->resource->admin;
 
-                    if($admin->relationLoaded('user'))
+                    if($adminObject->relationLoaded('user'))
                     {
-                         $user = $this->resource->admin->user;
+                         $userObject = $this->resource->admin->user;
 
-                         if($user->relationLoaded('userInfo'))
+                         if($userObject->relationLoaded('userInfo'))
                          {
-                             $userInfo = $user->userInfo;
+                             $userInfo = $userObject->userInfo;
 
-                             $response['admin_account_name'] = $admin->account_name;
-                             $response['admin_phone'] = $admin->phone;
+                             $response['admin_account_name'] = $adminObject->account_name;
+                             $response['admin_phone'] = $adminObject->phone;
                              $response['admin_nick_name'] = $userInfo->nick_name;
                          }
                     }
@@ -118,16 +118,16 @@ class ArticleResource extends JsonResource
             {
                 if(!is_null($this->resource))
                 {
-                    $user = $this->resource->user;
+                    $userObject = $this->resource->user;
 
-                    if(!is_null($user))
+                    if(!is_null($userObject))
                     {
-                        if($user->relationLoaded('userInfo'))
+                        if($userObject->relationLoaded('userInfo'))
                          {
-                             $userInfo = $user->userInfo;
+                             $userInfo = $userObject->userInfo;
 
-                             $response['user_account_name'] = $user->account_name;
-                             $response['user_phone'] = $user->phone;
+                             $response['user_account_name'] = $userObject->account_name;
+                             $response['user_phone'] = $userObject->phone;
                              $response['user_nick_name'] = $userInfo->nick_name;
                          }
                     }

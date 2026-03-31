@@ -41,7 +41,7 @@ class CommonEventListener
      */
     public function handle(object $event): void
     {
-        $user = $event->user;
+        $userObject = $event->user;
 
         $logData = $event->logData;
 
@@ -51,7 +51,7 @@ class CommonEventListener
 
         $userEventLog = new UserEventLog;
 
-        $userEventLog->user_id =$user->id;
+        $userEventLog->user_id =$userObject->id;
         $userEventLog->event_route_action = Route::currentRouteAction();
 
         $userEventLog->event_name = \config("phone_event.{$eventCode}.info");;
@@ -66,7 +66,7 @@ class CommonEventListener
         }
         else
         {
-            $userEventLog->note = \json_encode($user);
+            $userEventLog->note = \json_encode($userObject);
         }
 
         $userEventLog->created_time = time();

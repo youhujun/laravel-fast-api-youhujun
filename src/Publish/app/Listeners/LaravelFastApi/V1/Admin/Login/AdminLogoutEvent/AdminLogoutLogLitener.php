@@ -42,12 +42,12 @@ class AdminLogoutLogLitener
      */
     public function handle(object $event): void
     {
-        $admin = $event->admin;
+        $adminObject = $event->admin;
         $ip = Request::getClientIp();
 
         $adminLoginLog = new AdminLoginLog;
 
-        $data = ['admin_id'=>$admin->id,'status'=>20,'instruction'=>'管理员退出','ip'=>$ip,'created_at'=>time(),'created_time'=>time()];
+        $data = ['admin_id'=>$adminObject->id,'status'=>20,'instruction'=>'管理员退出','ip'=>$ip,'created_at'=>time(),'created_time'=>time()];
 
         foreach($data as $key => $value)
         {

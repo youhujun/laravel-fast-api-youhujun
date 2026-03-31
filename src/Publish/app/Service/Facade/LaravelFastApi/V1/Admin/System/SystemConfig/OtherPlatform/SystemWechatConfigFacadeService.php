@@ -139,7 +139,7 @@ class SystemWechatConfigFacadeService
      * @param [type] $validated
      * @return void
      */
-    public function getSystemWechatConfig($validated,$admin)
+    public function getSystemWechatConfig($validated,$adminObject)
     {
 
        $result = code(config('admin_code.GetSystemWechatConfigError'));
@@ -241,10 +241,10 @@ class SystemWechatConfigFacadeService
      * 添加
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function addSystemWechatConfig($validated,$admin)
+    public function addSystemWechatConfig($validated,$adminObject)
     {
         $result = code(config('admin_code.AddSystemWechatConfigError'));
 
@@ -276,7 +276,7 @@ class SystemWechatConfigFacadeService
             throw new CommonException('AddSystemWechatConfigError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'AddSystemWechatConfig');
+        CommonEvent::dispatch($adminObject,$validated,'AddSystemWechatConfig');
 
         $result = code(['code'=>0,'msg'=>'添加系统微信配置成功']);
 
@@ -288,10 +288,10 @@ class SystemWechatConfigFacadeService
      * 更新
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function updateSystemWechatConfig($validated,$admin)
+    public function updateSystemWechatConfig($validated,$adminObject)
     {
         $result = code(config('admin_code.UpdateSystemWechatConfigError'));
 
@@ -340,7 +340,7 @@ class SystemWechatConfigFacadeService
            throw new CommonException('UpdateSystemWechatConfigError');
         }
 
-        CommonEvent::dispatch($admin,$systemWechatConfigObject,'UpdateSystemWechatConfig');
+        CommonEvent::dispatch($adminObject,$systemWechatConfigObject,'UpdateSystemWechatConfig');
 
         $result = code(['code'=>0,'msg'=>'更新系统微信配置成功']);
 
@@ -352,10 +352,10 @@ class SystemWechatConfigFacadeService
      * 删除
      *
      * @param [type] $id
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function deleteSystemWechatConfig($validated,$admin)
+    public function deleteSystemWechatConfig($validated,$adminObject)
     {
         //删除
         $result = code(config('admin_code.RestoreSystemWechatConfigError'));
@@ -405,7 +405,7 @@ class SystemWechatConfigFacadeService
 
         }
 
-        CommonEvent::dispatch($admin,$validated['id'],$eventName);
+        CommonEvent::dispatch($adminObject,$validated['id'],$eventName);
 
         $result = code(['code'=>0,'msg'=>'恢复系统微信配置成功']);
 
@@ -421,10 +421,10 @@ class SystemWechatConfigFacadeService
      * 批量删除用户
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function multipleDeleteSystemWechatConfig($validated,$admin)
+    public function multipleDeleteSystemWechatConfig($validated,$adminObject)
     {
 
         if(isset($validated['selectId']) && count($validated['selectId']))
@@ -460,7 +460,7 @@ class SystemWechatConfigFacadeService
                 throw new CommonException('MultipleRestoreSystemWechatConfigError');
             }
 
-            CommonEvent::dispatch($admin,$validated,$eventName);
+            CommonEvent::dispatch($adminObject,$validated,$eventName);
 
             $result = code(['code'=>0,'msg'=>'批量恢复系统微信配置成功']);
 

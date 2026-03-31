@@ -35,11 +35,11 @@ class UpdateUserInfoListener
      */
     public function handle(object $event): void
     {
-        $user = $event->user;
+        $userObject = $event->user;
         $validated = $event->validated;
         $isTransation = $event->isTransation;
 
-        $userInfo = UserInfo::where('user_id',$user->id)->first();
+        $userInfo = UserInfo::where('user_id',$userObject->id)->first();
 
 		if(!$userInfo)
 		{

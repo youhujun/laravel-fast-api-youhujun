@@ -49,11 +49,11 @@ class UserDetailsController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $id = $request->input('user_id');
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -76,7 +76,7 @@ class UserDetailsController extends Controller
 
             //p($validated); die;
 
-            $result =  AdminUserDetailsFacade::updateUserPhone(f($validated),$admin);
+            $result =  AdminUserDetailsFacade::updateUserPhone(f($validated),$adminObject);
         }
 
         return $result;
@@ -92,9 +92,9 @@ class UserDetailsController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -111,7 +111,7 @@ class UserDetailsController extends Controller
                 throw new RuleException('RuleRequiredError', 'user_id');
             }
 
-            $result =  AdminUserDetailsFacade::updateUserRealName(f($validated),$admin);
+            $result =  AdminUserDetailsFacade::updateUserRealName(f($validated),$adminObject);
         }
 
         return $result;
@@ -127,9 +127,9 @@ class UserDetailsController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -146,7 +146,7 @@ class UserDetailsController extends Controller
                 throw new RuleException('RuleRequiredError', 'user_id');
             }
 
-            $result =  AdminUserDetailsFacade::updateUserNickName(f($validated),$admin);
+            $result =  AdminUserDetailsFacade::updateUserNickName(f($validated),$adminObject);
         }
 
         return $result;
@@ -162,9 +162,9 @@ class UserDetailsController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -181,7 +181,7 @@ class UserDetailsController extends Controller
                 throw new RuleException('RuleRequiredError', 'user_id');
             }
 
-            $result =  AdminUserDetailsFacade::updateUserSex(f($validated),$admin);
+            $result =  AdminUserDetailsFacade::updateUserSex(f($validated),$adminObject);
         }
 
         return $result;
@@ -195,11 +195,11 @@ class UserDetailsController extends Controller
      */
     public function changeUserLevel(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -219,7 +219,7 @@ class UserDetailsController extends Controller
                 throw new RuleException('RuleRequiredError', 'level_id');
             }
 
-            $result = AdminUserDetailsFacade::changeUserLevel($validated, $admin);
+            $result = AdminUserDetailsFacade::changeUserLevel($validated, $adminObject);
         }
 
         return $result;
@@ -238,9 +238,9 @@ class UserDetailsController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -253,7 +253,7 @@ class UserDetailsController extends Controller
 
             $validated = $validator->validated();
 
-            $result =  AdminUserDetailsFacade::updateUserBirthdayTime(f($validated),$admin);
+            $result =  AdminUserDetailsFacade::updateUserBirthdayTime(f($validated),$adminObject);
         }
         return $result;
     }
@@ -267,9 +267,9 @@ class UserDetailsController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -284,7 +284,7 @@ class UserDetailsController extends Controller
 
             //p($validated);die;
 
-            $result =  AdminUserDetailsFacade::resetUserPassword(f($validated),$admin);
+            $result =  AdminUserDetailsFacade::resetUserPassword(f($validated),$adminObject);
         }
 
         return $result;
@@ -295,11 +295,11 @@ class UserDetailsController extends Controller
      */
     public function getUserQrcode(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -314,7 +314,7 @@ class UserDetailsController extends Controller
 				throw new RuleException('RuleRequiredError','user_id');
 			}
 
-            $result = AdminUserDetailsFacade::getUserQrcode($validated, $admin);
+            $result = AdminUserDetailsFacade::getUserQrcode($validated, $adminObject);
         }
 
         return $result;	
@@ -327,11 +327,11 @@ class UserDetailsController extends Controller
 	 */
 	public function makeUserQrcode(Request $request)
 	{
-		$admin = Auth::guard('admin_token')->user();
+		$adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('admin-role')) {
+        if (Gate::forUser($adminObject)->allows('admin-role')) {
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -348,7 +348,7 @@ class UserDetailsController extends Controller
 
 			//p($validated);die;
 
-            $result = AdminUserDetailsFacade::makeUserQrcode($validated, $admin);
+            $result = AdminUserDetailsFacade::makeUserQrcode($validated, $adminObject);
         }
 
         return $result;	

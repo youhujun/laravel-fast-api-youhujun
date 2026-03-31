@@ -29,14 +29,14 @@ class PhoneTokenMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $user = Auth::guard('phone_token')->user();
+        $userObject = Auth::guard('phone_token')->user();
 
-        if(empty($user))
+        if(empty($userObject))
         {
             return response()->json(code(\config('phone_code.PhoneTokenError')));
         }
 
-        $request->attributes->add(['user'=>$user]);
+        $request->attributes->add(['user'=>$userObject]);
 
         return $next($request);
     }

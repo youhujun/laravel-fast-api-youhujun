@@ -38,15 +38,15 @@ class PhoneUserFacadeService
     * 用户申请实名认证
     *
     * @param [type] $validated
-    * @param [type] $user
+    * @param [type] $userObject
     * @return void
     */
-   public function realAuthApply($validated,$user)
+   public function realAuthApply($validated,$userObject)
    {
 		$result = code(config('phone_code.UserRealAuthApplyError'));
 
         //先检测用户是否已经认证
-        if($user->real_auth_status == 20)
+        if($userObject->real_auth_status == 20)
         {
             throw new CommonException('UserHasRealAuthApplyError');
         }
@@ -55,7 +55,7 @@ class PhoneUserFacadeService
 
         $userApplayRealAuth = new UserRealAuthLog;
 
-		$userApplayRealAuth->user_id = $user->id;
+		$userApplayRealAuth->user_id = $userObject->id;
 		$userApplayRealAuth->sort = 100;
 		$userApplayRealAuth->created_at = time();
 		$userApplayRealAuth->created_time = time();
@@ -72,9 +72,9 @@ class PhoneUserFacadeService
 			throw new CommonException('UserRealAuthApplyError');
 		}
 
-        UserApplyRealAuthEvent::dispatch($user,$validated,1);
+        UserApplyRealAuthEvent::dispatch($userObject,$validated,1);
 
-        CommonEvent::dispatch($user,$validated,'UserRealAuthApply',1);
+        CommonEvent::dispatch($userObject,$validated,'UserRealAuthApply',1);
 
 		DB::commit();
 

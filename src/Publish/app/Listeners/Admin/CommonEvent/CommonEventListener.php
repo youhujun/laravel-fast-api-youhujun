@@ -38,7 +38,7 @@ class CommonEventListener
      */
     public function handle(object $event): void
     {
-        $admin = $event->admin;
+        $adminObject = $event->admin;
 
         $logData = $event->logData;
 
@@ -48,7 +48,7 @@ class CommonEventListener
 
         $adminEventLog = new AdminEventLog;
 
-        $adminEventLog->admin_id = $admin->id;
+        $adminEventLog->admin_id = $adminObject->id;
 		
         $adminEventLog->event_route_action = Route::currentRouteAction();
 
@@ -65,7 +65,7 @@ class CommonEventListener
         }
         else
         {
-            $adminEventLog->note = \json_encode($admin);
+            $adminEventLog->note = \json_encode($adminObject);
         }
 
         $adminEventLog->created_time = time();

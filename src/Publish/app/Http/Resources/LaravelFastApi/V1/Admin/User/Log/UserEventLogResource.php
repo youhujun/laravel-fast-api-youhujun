@@ -56,10 +56,10 @@ class UserEventLogResource extends JsonResource
 		{
 			if(!is_null($this->user))
 			{
-				$user = $this->user;
+				$userObject = $this->user;
 				$user_info = $this->user->userInfo;
-				$response['phone'] = $user->phone;
-				$response['account_name'] = $user->account_name;
+				$response['phone'] = $userObject->phone;
+				$response['account_name'] = $userObject->account_name;
 				$response['nick_name'] = $user_info->nick_name;
 			}
 		}

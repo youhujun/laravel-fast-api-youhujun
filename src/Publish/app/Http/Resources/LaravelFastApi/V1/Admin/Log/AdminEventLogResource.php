@@ -70,10 +70,10 @@ class AdminEventLogResource extends JsonResource
                 if(!is_null($this->admin))
                 {
                     $response['user_id'] = $this->admin->user_id;
-                    $user = $this->admin->user;
+                    $userObject = $this->admin->user;
                     $user_info = $this->admin->user->userInfo;
-                    $response['phone'] = $user->phone;
-                    $response['account_name'] = $user->account_name;
+                    $response['phone'] = $userObject->phone;
+                    $response['account_name'] = $userObject->account_name;
                     $response['nick_name'] = $user_info->nick_name;
                 }
             }

@@ -61,9 +61,9 @@ class AdminVoiceConfigFacadeService
     * 获取所有提示配置
     *
     * @param  [type] $validated
-    * @param  [type] $admin
+    * @param  [type] $adminObject
     */
-   public function getAllSystemVoiceConfig($validated,$admin)
+   public function getAllSystemVoiceConfig($validated,$adminObject)
    {
         $result = code(config('admin_cdoe.GetSystemVoiceConfigError'));
 
@@ -86,7 +86,7 @@ class AdminVoiceConfigFacadeService
      * @param [type] $validated
      * @return void
      */
-    public function getVoiceConfig($validated,$admin)
+    public function getVoiceConfig($validated,$adminObject)
     {
 
        $result = code(config('admin_cdoe.GetSystemVoiceConfigError'));
@@ -150,10 +150,10 @@ class AdminVoiceConfigFacadeService
      * 添加
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function addVoiceConfig($validated,$admin)
+    public function addVoiceConfig($validated,$adminObject)
     {
         $result = code(config('admin_cdoe.AddSystemVoiceConfigError'));
 
@@ -175,7 +175,7 @@ class AdminVoiceConfigFacadeService
 
         }
 
-        $systemVoiceConfig->admin_id = $admin->id;
+        $systemVoiceConfig->admin_id = $adminObject->id;
 
         $systemVoiceConfig->created_time = time();
         $systemVoiceConfig->created_at = time();
@@ -187,7 +187,7 @@ class AdminVoiceConfigFacadeService
             throw new CommonException('AddSystemVoiceConfigError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'AddSystemVoiceConfig');
+        CommonEvent::dispatch($adminObject,$validated,'AddSystemVoiceConfig');
 
         $result = code(['code'=>0,'msg'=>'添加提示音配置成功']);
 
@@ -199,10 +199,10 @@ class AdminVoiceConfigFacadeService
      * 更新
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function UpdateVoiceConfig($validated,$admin)
+    public function UpdateVoiceConfig($validated,$adminObject)
     {
         $result = code(config('admin_cdoe.UpdateSystemVoiceConfigError'));
 
@@ -238,7 +238,7 @@ class AdminVoiceConfigFacadeService
             }
         }
 
-        $updateData['admin_id'] = $admin->id;
+        $updateData['admin_id'] = $adminObject->id;
 
         $updateData['revision'] = $systemVoiceConfig ->revision + 1;
 
@@ -253,7 +253,7 @@ class AdminVoiceConfigFacadeService
            throw new CommonException('UpdateSystemVoiceConfigError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'UpdateSystemVoiceConfig');
+        CommonEvent::dispatch($adminObject,$validated,'UpdateSystemVoiceConfig');
 
         $result = code(['code'=>0,'msg'=>'修改提示配置成功']);
 
@@ -265,10 +265,10 @@ class AdminVoiceConfigFacadeService
      * 删除
      *
      * @param [type] $id
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function deleteVoiceConfig($validated,$admin)
+    public function deleteVoiceConfig($validated,$adminObject)
     {
         //删除
         $result = code(config('admin_cdoe.DeleteSystemVoiceConfigError'));
@@ -292,7 +292,7 @@ class AdminVoiceConfigFacadeService
             throw new CommonException('DeleteSystemVoiceConfigError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'DeleteSystemVoiceConfig');
+        CommonEvent::dispatch($adminObject,$validated,'DeleteSystemVoiceConfig');
 
         $result = code(['code'=>0,'msg'=>'删除提示配置成功']);
 
@@ -303,10 +303,10 @@ class AdminVoiceConfigFacadeService
      * 批量删除用户
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function multipleDeleteVoiceConfig($validated,$admin)
+    public function multipleDeleteVoiceConfig($validated,$adminObject)
     {
 
         if(count($validated) == 0 || !isset($validated['selectId']) || count($validated['selectId']) == 0)
@@ -324,7 +324,7 @@ class AdminVoiceConfigFacadeService
             throw new CommonException('MultipleDeleteSystemVoiceConfigError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'MultipleDeleteSystemVoiceConfig');
+        CommonEvent::dispatch($adminObject,$validated,'MultipleDeleteSystemVoiceConfig');
 
         $result = code(['code'=>0,'msg'=>'批量删除提示配置成功']);
 

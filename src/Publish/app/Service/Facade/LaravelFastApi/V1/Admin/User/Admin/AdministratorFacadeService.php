@@ -238,16 +238,16 @@ class AdministratorFacadeService
      * 添加用户
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function addAdmin($validated, $admin)
+    public function addAdmin($validated, $adminObject)
     {
         $result = code(config('admin_code.AddAdminError'));
 
-        $user = User::find($validated['user_id']);
+        $userObject = User::find($validated['user_id']);
 
-        if(!$user)
+        if(!$userObject)
         {
             throw new CommonException('AddAdminUserError');
         }
@@ -261,19 +261,19 @@ class AdministratorFacadeService
 
         $addAdmin->switch = 1;
 
-        $addAdmin->user_id = $user->id;
-        $addAdmin->userId = $user->userId;
+        $addAdmin->user_id = $userObject->id;
+        $addAdmin->userId = $userObject->userId;
 
 		if($validated['phone']){
 			$addAdmin->phone = $validated['phone'];
 		}
 		else{
-			$addAdmin->phone =$user->phone;
+			$addAdmin->phone =$userObject->phone;
 		}
 
-        $addAdmin->account_name = $user->account_name;
+        $addAdmin->account_name = $userObject->account_name;
 
-        $addAdmin->email = $user->email;
+        $addAdmin->email = $userObject->email;
 
 		$addAdmin->role_id = json_encode($validated['role']);
 
@@ -284,9 +284,9 @@ class AdministratorFacadeService
             throw new CommonException('AddAdminError');
         }
 
-        AddAdministratorEvent::dispatch($admin,$addAdmin,$validated);
+        AddAdministratorEvent::dispatch($adminObject,$addAdmin,$validated);
 
-        CommonEvent::dispatch($admin, $validated, 'AddAdmin');
+        CommonEvent::dispatch($adminObject, $validated, 'AddAdmin');
 
         $result = code(['code'=>0,'msg'=>'添加管理员成功!']);
 
@@ -298,10 +298,10 @@ class AdministratorFacadeService
      * 更新用户
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function updateAdmin($validated, $admin)
+    public function updateAdmin($validated, $adminObject)
     {
         $result = code(config('admin_code.UpdateAdminError'));
 
@@ -336,9 +336,9 @@ class AdministratorFacadeService
             throw new CommonException('UpdateAdminError');
         }
 
-        UpdateAdministratorEvent::dispatch($admin,$updateAdmin,$validated);
+        UpdateAdministratorEvent::dispatch($adminObject,$updateAdmin,$validated);
 
-        CommonEvent::dispatch($admin, $validated, 'UpdateAdmin');
+        CommonEvent::dispatch($adminObject, $validated, 'UpdateAdmin');
 
         $result = code(['code'=>0,'msg'=>'更新管理员成功!']);
 
@@ -349,10 +349,10 @@ class AdministratorFacadeService
      * 禁用用户
      *
      * @param [type] $id
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function disableAdmin($validated, $admin)
+    public function disableAdmin($validated, $adminObject)
     {
         $result = code(config('admin_code.DisableAdminError'));
 
@@ -375,7 +375,7 @@ class AdministratorFacadeService
             throw new CommonException('DisableAdminError');
         }
 
-        CommonEvent::dispatch($admin, $validated, 'DisableAdmin');
+        CommonEvent::dispatch($adminObject, $validated, 'DisableAdmin');
 
         $result = code(['code'=>0,'msg'=>'禁用管理员成功!']);
 
@@ -388,10 +388,10 @@ class AdministratorFacadeService
      * 批量禁用用户
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function multipleDisableAdmin($validated, $admin)
+    public function multipleDisableAdmin($validated, $adminObject)
     {
         $result = code(config('admin_code.MultipleDisableAdminError'));
 
@@ -416,7 +416,7 @@ class AdministratorFacadeService
             throw new CommonException('MultipleDisableAdminError');
         }
 
-        CommonEvent::dispatch($admin, $validated, 'MultipleDisableAdmin');
+        CommonEvent::dispatch($adminObject, $validated, 'MultipleDisableAdmin');
 
         $result = code(['code'=>0,'msg'=>'批量禁用管理员成功!']);
 
@@ -427,10 +427,10 @@ class AdministratorFacadeService
      * 删除管理员
      *
      * @param [type] $id
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function deleteAdmin($validated, $admin)
+    public function deleteAdmin($validated, $adminObject)
     {
         $result = code(config('admin_code.DeleteAdminError'));
 
@@ -441,7 +441,7 @@ class AdministratorFacadeService
            throw new CommonException('ThisDataNotExistsError');
         }
 
-        $user_id = $deleteAdmin->user_id;
+        $user_uid = $deleteAdmin->user_id;
 
         $deleteAdmin->deleted_time = time();
 
@@ -454,9 +454,9 @@ class AdministratorFacadeService
             throw new CommonException('DeleteAdminError');
         }
 
-        $user = User::find($user_id);
+        $userObject = User::find($user_uid);
 
-        $roleArray = $user->role;
+        $roleArray = $userObject->role;
 
         $roleIdArray = [];
 
@@ -471,7 +471,7 @@ class AdministratorFacadeService
 
         if(count($roleIdArray))
         {
-            $roleDeleteResult = UserRoleUnion::whereIn('role_id', $roleIdArray)->where('user_id', $user->id)->delete();
+            $roleDeleteResult = UserRoleUnion::whereIn('role_id', $roleIdArray)->where('user_id', $userObject->id)->delete();
 
             if (!$roleDeleteResult)
             {
@@ -479,7 +479,7 @@ class AdministratorFacadeService
             }
         }
 
-        CommonEvent::dispatch($admin, $validated, 'DeleteAdmin');
+        CommonEvent::dispatch($adminObject, $validated, 'DeleteAdmin');
 
         $result = code(['code'=>0,'msg'=>'删除管理员成功!']);
 
@@ -490,10 +490,10 @@ class AdministratorFacadeService
      * 批量删除用户
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function multipleDeleteAdmin($validated, $admin)
+    public function multipleDeleteAdmin($validated, $adminObject)
     {
         $result = code(config('admin_code.MultipleDeleteAdminError'));
 
@@ -551,7 +551,7 @@ class AdministratorFacadeService
             throw new CommonException('MultipleDeleteAdminRoleError');
         }
 
-        CommonEvent::dispatch($admin, $validated, 'MultipleDeleteUser');
+        CommonEvent::dispatch($adminObject, $validated, 'MultipleDeleteUser');
 
         $result = code(['code'=>0,'msg'=>'批量删除管理员成功!']);
 
@@ -590,10 +590,10 @@ class AdministratorFacadeService
      * 查找管理员
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function findAdmin($validated,$admin)
+    public function findAdmin($validated,$adminObject)
     {
         $result = code(config('admin_code.FindAdminerError'));
 

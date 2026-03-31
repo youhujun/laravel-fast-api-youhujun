@@ -43,7 +43,7 @@ class AddUserSourceListener
      */
     public function handle(object $event): void
     {
-        $user = $event->user;
+        $userObject = $event->user;
         $validated = $event->validated;
         $isTransation = $event->isTransation;
 
@@ -79,11 +79,11 @@ class AddUserSourceListener
 				throw new CommonException('InviteSourceUserNotExistsError');
 			}
 
-			$user->source_user_id = $sourceUser->id;
-			$user->source_userId = $sourceUser->userId;
+			$userObject->source_user_id = $sourceUser->id;
+			$userObject->source_userId = $sourceUser->userId;
 
 			//保存用户上级
-			$userResult = $user->save();
+			$userResult = $userObject->save();
 
 			if(!$userResult)
 			{
@@ -95,11 +95,11 @@ class AddUserSourceListener
 				throw new CommonException('SaveUserSourceError');
 			}
 
-			$userSourceUnionData = PhoneUserSourceFacade::getInsertUserSourceUnionData($user);
+			$userSourceUnionData = PhoneUserSourceFacade::getInsertUserSourceUnionData($userObject);
 
 			//p($userSourceUnionData);die;
 
-			$userSourceUnionData['user_id'] = $user->id;
+			$userSourceUnionData['user_id'] = $userObject->id;
 			$userSourceUnionData['created_at'] = date('Y-m-d H:i:s',time());
 			$userSourceUnionData['created_time'] = time();
 

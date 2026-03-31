@@ -24,8 +24,8 @@ class TestEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
-    public $admin;
+    public $userObject;
+    public $adminObject;
     public $validated;
     // 是否开启事务
     public $isTransation;
@@ -34,9 +34,9 @@ class TestEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($admin)
+    public function __construct($adminObject)
     {
-		$this->admin = $admin;
+		$this->admin = $adminObject;
     }
 
 	/**

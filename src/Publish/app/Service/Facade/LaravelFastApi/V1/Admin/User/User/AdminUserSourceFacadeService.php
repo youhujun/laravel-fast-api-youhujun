@@ -36,10 +36,10 @@ class AdminUserSourceFacadeService
 	/**
     * 获取需要添加用户的UserSourceUnion的id数组
     *
-    * @param  User    $user
+    * @param  User    $userObject
     * @param  integer $number
     */
-   public function getInsertUserSourceUnionId(User $user,$number = 2)
+   public function getInsertUserSourceUnionId(User $userObject,$number = 2)
    {
        $userSourceUnionIdArray = [];
 
@@ -51,7 +51,7 @@ class AdminUserSourceFacadeService
        {
             if($i === 0)
             {
-                $sourceUser = $user;
+                $sourceUser = $userObject;
             }
             else
             {
@@ -81,12 +81,12 @@ class AdminUserSourceFacadeService
    /**
     * 获取需要添加的关联数据
     *
-    * @param  User    $user
+    * @param  User    $userObject
     * @param  integer $number
     */
-   public function getInsertUserSourceUnionData(User $user,$number = 2)
+   public function getInsertUserSourceUnionData(User $userObject,$number = 2)
    {
-       $userSourceUnionIdArray =  $this-> getInsertUserSourceUnionId($user,$number);
+       $userSourceUnionIdArray =  $this-> getInsertUserSourceUnionId($userObject,$number);
 
        $UserSourceUnionData = [];
 

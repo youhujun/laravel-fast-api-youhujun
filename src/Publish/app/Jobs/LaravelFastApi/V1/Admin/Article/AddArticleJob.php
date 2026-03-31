@@ -28,7 +28,7 @@ class AddArticleJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $admin;
+    protected $adminObject;
     protected $article;
     /**
      * 任务尝试次数
@@ -60,9 +60,9 @@ class AddArticleJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(Admin $admin,Article $article)
+    public function __construct(Admin $adminObject,Article $article)
     {
-         $this->admin = $admin->withoutRelations();
+         $this->admin = $adminObject->withoutRelations();
          $this->article = $article->withoutRelations();
     }
 

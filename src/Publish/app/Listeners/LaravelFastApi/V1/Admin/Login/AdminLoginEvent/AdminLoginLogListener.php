@@ -39,12 +39,12 @@ class AdminLoginLogListener
      */
     public function handle(object $event): void
     {
-        $admin = $event->admin;
+        $adminObject = $event->admin;
         $adminLoginLog = new AdminLoginLog;
 
 		$ip = Request::getClientIp();
 
-        $data = ['admin_id'=>$admin->id,'status'=>10,'instruction'=>'管理员登录','ip'=>$ip,'created_at'=>time(),'created_time'=>time()];
+        $data = ['admin_id'=>$adminObject->id,'status'=>10,'instruction'=>'管理员登录','ip'=>$ip,'created_at'=>time(),'created_time'=>time()];
 
         foreach($data as $key => $value)
         {

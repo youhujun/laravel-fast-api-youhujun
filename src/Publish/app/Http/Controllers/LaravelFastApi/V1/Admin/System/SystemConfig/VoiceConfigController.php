@@ -44,9 +44,9 @@ class VoiceConfigController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
              $validator = Validator::make(
@@ -70,7 +70,7 @@ class VoiceConfigController extends Controller
 
             // p($validated);die;
 
-            $result = AdminVoiceConfigFacade::getVoiceConfig(f($validated),$admin);
+            $result = AdminVoiceConfigFacade::getVoiceConfig(f($validated),$adminObject);
         }
 
         return $result;
@@ -84,11 +84,11 @@ class VoiceConfigController extends Controller
      */
     public function addVoiceConfig(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -129,7 +129,7 @@ class VoiceConfigController extends Controller
 
             //p($validated);die;
 
-            $result = AdminVoiceConfigFacade::addVoiceConfig(f($validated),$admin);
+            $result = AdminVoiceConfigFacade::addVoiceConfig(f($validated),$adminObject);
         }
 
         return $result;
@@ -143,13 +143,13 @@ class VoiceConfigController extends Controller
      */
     public function updateVoiceConfig(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
         $id = check_id($request->input('id'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
            $validator = Validator::make(
                 $request->all(),
@@ -194,7 +194,7 @@ class VoiceConfigController extends Controller
 
            //p($validated);die;
 
-           $result = AdminVoiceConfigFacade::updateVoiceConfig(f($validated),$admin);
+           $result = AdminVoiceConfigFacade::updateVoiceConfig(f($validated),$adminObject);
         }
 
         return $result;
@@ -209,11 +209,11 @@ class VoiceConfigController extends Controller
      */
     public function deleteVoiceConfig(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -232,7 +232,7 @@ class VoiceConfigController extends Controller
 
             //p($validated);die;
 
-            $result = AdminVoiceConfigFacade::deleteVoiceConfig(f($validated),$admin);
+            $result = AdminVoiceConfigFacade::deleteVoiceConfig(f($validated),$adminObject);
         }
 
         return $result;
@@ -246,11 +246,11 @@ class VoiceConfigController extends Controller
      */
     public function multipleDeleteVoiceConfig(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
 
             $validator = Validator::make(
@@ -269,7 +269,7 @@ class VoiceConfigController extends Controller
 
             //p($validated);die;
 
-            $result = AdminVoiceConfigFacade::multipleDeleteVoiceConfig(f($validated),$admin);
+            $result = AdminVoiceConfigFacade::multipleDeleteVoiceConfig(f($validated),$adminObject);
         }
 
         return $result;

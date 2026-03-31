@@ -118,10 +118,10 @@ class AdminRegionFacadeService
      *  添加地区
      *
      * @param [type] $validated
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function addRegion($validated,$admin)
+    public function addRegion($validated,$adminObject)
     {
         $result = code(config('admin_code.AddRegionError'));
 
@@ -147,7 +147,7 @@ class AdminRegionFacadeService
             throw new CommonException('AddRegionError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'AddRegion');
+        CommonEvent::dispatch($adminObject,$validated,'AddRegion');
 
         //清除缓存
         Redis::hdel('system:config','allRegions');
@@ -162,10 +162,10 @@ class AdminRegionFacadeService
      * 更新地区
      *
      * @param [type] $validated
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function updateRegion($validated,$admin)
+    public function updateRegion($validated,$adminObject)
     {
         $result = code(config('admin_code.UpdateRegionError'));
 
@@ -209,7 +209,7 @@ class AdminRegionFacadeService
             throw new CommonException('UpdateRegionError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'UpdateRegion');
+        CommonEvent::dispatch($adminObject,$validated,'UpdateRegion');
 
 
         //清除缓存
@@ -225,10 +225,10 @@ class AdminRegionFacadeService
      * 更新
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function moveRegion($validated,$admin)
+    public function moveRegion($validated,$adminObject)
     {
         $result = code(config('admin_code.MoveRegionError'));
 
@@ -298,7 +298,7 @@ class AdminRegionFacadeService
             throw new CommonException('MoveRegionError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'MoveRegion');
+        CommonEvent::dispatch($adminObject,$validated,'MoveRegion');
 
         //修改子级deep
         $deepNumber = $parentDeep - $oldDeep;
@@ -320,10 +320,10 @@ class AdminRegionFacadeService
      * 删除地区
      *
      * @param [type] $id
-     * @param [type] $user
+     * @param [type] $userObject
      * @return void
      */
-    public function deleteRegion($validated,$admin)
+    public function deleteRegion($validated,$adminObject)
     {
         $result = code(config('admin_code.DeleteRegionError'));
 
@@ -370,7 +370,7 @@ class AdminRegionFacadeService
             throw new CommonException('DeleteRegionError');
         }
 
-        CommonEvent::dispatch($admin,$validated,'DeleteRegion');
+        CommonEvent::dispatch($adminObject,$validated,'DeleteRegion');
 
         //清除缓存
         Redis::hdel('system:config','allRegions');

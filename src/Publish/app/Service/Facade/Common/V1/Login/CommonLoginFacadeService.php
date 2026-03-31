@@ -35,66 +35,66 @@ class CommonLoginFacadeService
    /**
     *  单点登录 检测是否登录了,如果登录了,跟新token,让其他人重新登录
     *
-    * @param  $user
+    * @param  $userObject
     * @return void
     */
-   public function checkResetLogin($user,$provider = 'user',$location = 'phone')
+   public function checkResetLogin($userObject,$provider = 'user',$location = 'phone')
    {
         //注意登录时的user 是数据库user,所以即使token跟新了,但是redis的token还是原来的token
-        $token = $user->remember_token;
+        $token = $userObject->remember_token;
 
         //先清除redis中的缓存
-        $this->clearUserCache($user, $token,$provider,$location);
+        $this->clearUserCache($userObject, $token,$provider,$location);
 
         //再更新数据库token
         $newToken = Str::random(60);
 
-        $user->setRememberToken($newToken);
+        $userObject->setRememberToken($newToken);
 
-        $newTokenResult = $user->save();
+        $newTokenResult = $userObject->save();
 
         //重新将数据存入到 redis中
-        $this->loginCache($user,$provider,$location);
+        $this->loginCache($userObject,$provider,$location);
 
    }
 
        /**
     * 清楚用户相关缓存
     *
-    * @param User $user
+    * @param User $userObject
     * @param [type] $token
     * @return void
     */
-   public function clearUserCache($user,$token,$provider = 'user',$location = 'phone')
+   public function clearUserCache($userObject,$token,$provider = 'user',$location = 'phone')
    {
        Redis::del("{$location}_{$provider}_token:{$token}");
-       Redis::hdel("{$location}_{$provider}:{$provider}",$user->id);
-       Redis::hdel("{$location}_{$provider}_info:{$provider}_info",$user->id);
+       Redis::hdel("{$location}_{$provider}:{$provider}",$userObject->id);
+       Redis::hdel("{$location}_{$provider}_info:{$provider}_info",$userObject->id);
    }
 
        /**
     * 登录成功 redis 存储用户相关信息
     *
-    * @param $user
+    * @param $userObject
     * @return void
     */
-   protected function loginCache($user,$provider,$location)
+   protected function loginCache($userObject,$provider,$location)
    {
         //存储用户 特别是 remember_token
         //根据用户id 存储 用户token  24小时
-        $tokenResult = Redis::set("{$location}_{$provider}_token:{$user->remember_token}",$user->id);
+        $tokenResult = Redis::set("{$location}_{$provider}_token:{$userObject->remember_token}",$userObject->id);
 
         //检测是否有用户信息了
-        $hasResult = Redis::hget("{$location}_{$provider}:{$provider}",$user->id);
+        $hasResult = Redis::hget("{$location}_{$provider}:{$provider}",$userObject->id);
 
         //如果有就先删除
         if($hasResult)
         {
-            Redis::hdel("{$location}_{$provider}:{$provider}",$user->id);
+            Redis::hdel("{$location}_{$provider}:{$provider}",$userObject->id);
         }
 
         //存储用户信息 然后获取 该用户在redis 的id
-        $redisResult =  Redis::hset("{$location}_{$provider}:{$provider}",$user->id,convertToString($user));
+        $redisResult =  Redis::hset("{$location}_{$provider}:{$provider}",$userObject->id,convertToString($userObject));
 
         //存储成功以后 将remember_token 和 用户在 redis的id关系 存储 (因为上一个步骤需要用)
         if(!$tokenResult || !$redisResult )

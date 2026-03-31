@@ -45,9 +45,9 @@ class UserAccountController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($user)->allows('admin-role'))
+        if(Gate::forUser($userObject)->allows('admin-role'))
         {
 
              $validator = Validator::make(
@@ -82,7 +82,7 @@ class UserAccountController extends Controller
 
             //p($validated);die;
 
-            $result = AdminUserAccountFacade::setUserAccount(f($validated),$user);
+            $result = AdminUserAccountFacade::setUserAccount(f($validated),$userObject);
         }
 
         return $result;
@@ -99,9 +99,9 @@ class UserAccountController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($user)->allows('admin-role'))
+        if(Gate::forUser($userObject)->allows('admin-role'))
         {
 
              $validator = Validator::make(
@@ -122,7 +122,7 @@ class UserAccountController extends Controller
 
              //p($validated);die;
 
-            $result = AdminUserAccountFacade::getUserAccountLog(f($validated),$user);
+            $result = AdminUserAccountFacade::getUserAccountLog(f($validated),$userObject);
         }
 
         return $result;
@@ -137,9 +137,9 @@ class UserAccountController extends Controller
 	{
 		$result = code(\config('admin_code.AdminAuthError'));
 
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($user)->allows('admin-role'))
+        if(Gate::forUser($userObject)->allows('admin-role'))
         {
 
              $validator = Validator::make(
@@ -158,7 +158,7 @@ class UserAccountController extends Controller
 
              //p($validated);die;
 
-            $result = AdminUserAccountFacade::getUserAccountInfo(f($validated),$user);
+            $result = AdminUserAccountFacade::getUserAccountInfo(f($validated),$userObject);
         }
 
         return $result;

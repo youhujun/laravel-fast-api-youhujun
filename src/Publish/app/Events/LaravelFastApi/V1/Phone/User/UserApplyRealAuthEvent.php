@@ -32,7 +32,7 @@ class UserApplyRealAuthEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
+    public $userObject;
     public $validated;
     // 是否开启事务
     public $isTransation;
@@ -41,10 +41,10 @@ class UserApplyRealAuthEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($user,$validated,$isTransation = 0)
+    public function __construct($userObject,$validated,$isTransation = 0)
     {
         //
-        $this->user = $user;
+        $this->user = $userObject;
         $this->validated = $validated;
         $this->isTransation = $isTransation;
     }

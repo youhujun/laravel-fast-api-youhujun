@@ -32,16 +32,16 @@ class AdminLogoutEvent
     use InteractsWithSockets;
     use SerializesModels;
 
-    public $admin;
+    public $adminObject;
     public $token;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($admin, $token)
+    public function __construct($adminObject, $token)
     {
-        $this->admin = $admin;
+        $this->admin = $adminObject;
         $this->token = $token;
     }
 

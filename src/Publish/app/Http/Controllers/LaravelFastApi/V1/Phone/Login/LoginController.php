@@ -274,9 +274,9 @@ class LoginController extends Controller
     {
         $result = code(config('phone_code.SendPhoneCodeError'));
 
-		$user = Auth::guard('phone_token')->user();
+		$userObject = Auth::guard('phone_token')->user();
 
-		if(Gate::forUser($user)->allows('phone-user-role'))
+		if(Gate::forUser($userObject)->allows('phone-user-role'))
         {
 			$validator = Validator::make(
 				$request->all(),
@@ -305,11 +305,11 @@ class LoginController extends Controller
 	 */
 	public function bindPhone(Request $request)
 	{
-		$user = Auth::guard('phone_token')->user();
+		$userObject = Auth::guard('phone_token')->user();
 
 		$result = code(\config('phone_code.PhoneAuthError'));
 
-		if(Gate::forUser($user)->allows('phone-user-role'))
+		if(Gate::forUser($userObject)->allows('phone-user-role'))
         {
             $validated = $request->validate(
             [
@@ -332,7 +332,7 @@ class LoginController extends Controller
 			}
             //p($validated);die;
 
-            $result = PhoneLoginFacade::bindPhone(f($validated),$user);
+            $result = PhoneLoginFacade::bindPhone(f($validated),$userObject);
         }
 
 		return $result;
@@ -361,9 +361,9 @@ class LoginController extends Controller
     {
 		$result = code(\config('phone_code.PhoneAuthError'));
 
-        $user = Auth::guard('phone_token')->user();
+        $userObject = Auth::guard('phone_token')->user();
 
-        if(Gate::forUser($user)->allows('phone-user-role'))
+        if(Gate::forUser($userObject)->allows('phone-user-role'))
         {
 			$validator = Validator::make(
 				$request->all(),
@@ -377,7 +377,7 @@ class LoginController extends Controller
 
 			if(count($validated))
 			{
-				$result = PhoneLoginFacade::getUserInfo(f($validated),$user);
+				$result = PhoneLoginFacade::getUserInfo(f($validated),$userObject);
 			}
         }
 
@@ -392,15 +392,15 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        $user = Auth::guard('phone_token')->user();
+        $userObject = Auth::guard('phone_token')->user();
 
-		//p($user);die;
+		//p($userObject);die;
 
 		$result = code(\config('phone_code.PhoneAuthError'));
 
-		if(Gate::forUser($user)->allows('phone-user-role'))
+		if(Gate::forUser($userObject)->allows('phone-user-role'))
         {
-			$result = PhoneLoginFacade::logout($user);
+			$result = PhoneLoginFacade::logout($userObject);
 		}
 		
         return $result;

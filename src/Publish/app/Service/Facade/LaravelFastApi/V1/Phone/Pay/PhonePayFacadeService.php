@@ -43,7 +43,7 @@ class PhonePayFacadeService
     *
     * @param  [type] $valdited
     */
-   public function testPayOrder($validated,$user)
+   public function testPayOrder($validated,$userObject)
    {
         $result = code(config('phone_code.PayOrderError'));
 
@@ -62,7 +62,7 @@ class PhonePayFacadeService
         //微信的js支付
         if($pay_type == 10)
         {
-           $result =  WechatPayFacade::payOrderByJsExample($order_id,$order_real_pay_amount,$user);
+           $result =  WechatPayFacade::payOrderByJsExample($order_id,$order_real_pay_amount,$userObject);
         }
 
         return $result;
@@ -71,7 +71,7 @@ class PhonePayFacadeService
    /**
 	*微信h5支付
 	*/
-   public function payOrderByWechatJs(Order $order,User $user)
+   public function payOrderByWechatJs(Order $order,User $userObject)
    {
 		$result = code(config('phone_code.PayOrderError'));
 
@@ -79,7 +79,7 @@ class PhonePayFacadeService
         $openid = '';
 
         $where = [];
-        $where[] = ['user_id','=',$user->id];
+        $where[] = ['user_id','=',$userObject->id];
         //openid
         $userWechat = UserWechat::where($where)->first();
 
@@ -123,7 +123,7 @@ class PhonePayFacadeService
 		}
 
 		//用户id
-        $user_id = $user->id;
+        $user_uid = $userObject->id;
 
         //备注
         $bakData = [
@@ -134,7 +134,7 @@ class PhonePayFacadeService
             ],
             'goodsIdArray'=>$goodsIdArray,
 			'goodsSkuIdArray'=>$goodsSkuIdArray,
-            'user'=>$user_id
+            'user'=>$user_uid
         ];
 
 		$orderData = [];

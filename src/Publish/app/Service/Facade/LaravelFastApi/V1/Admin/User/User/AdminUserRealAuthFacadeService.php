@@ -56,10 +56,10 @@ class AdminUserRealAuthFacadeService
     * 获取用户实名认证申请
     *
     * @param [type] $validated
-    * @param [type] $admin
+    * @param [type] $adminObject
     * @return void
     */
-   public function getUserRealAuthApply($validated,$admin)
+   public function getUserRealAuthApply($validated,$adminObject)
    {
        $result = code(config('admin_code.GetUserRealAuthApplyError'));
 
@@ -93,21 +93,21 @@ class AdminUserRealAuthFacadeService
      * 实名认证技师
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function realAuthUser($validated,$admin)
+    public function realAuthUser($validated,$adminObject)
     {
         $result = code(config('admin_code.RealAuthUserError'));
 
-        $user = User::find($validated['user_id']);
+        $userObject = User::find($validated['user_id']);
 
-        if(!$user)
+        if(!$userObject)
         {
             throw new CommonException('ThisDataNotExistsError');
         }
 
-        $revision = $user->revision;
+        $revision = $userObject->revision;
 
         $updateData = ['updated_time'=>time(),'updated_at'=>\date('Y-m-d H:i:s',time()),'revision'=>$revision + 1];
 
@@ -127,9 +127,9 @@ class AdminUserRealAuthFacadeService
             throw new CommonException('RealAuthUserError');
         }
 
-        CheckUserRealAuthEvent::dispatch($admin,$validated);
+        CheckUserRealAuthEvent::dispatch($adminObject,$validated);
 
-        CommonEvent::dispatch($admin,$validated,'RealAuthUser');
+        CommonEvent::dispatch($adminObject,$validated,'RealAuthUser');
 
         $result = code(['code'=> 0,'msg'=>'审核实名认证用户成功!']);
 
@@ -140,21 +140,21 @@ class AdminUserRealAuthFacadeService
     * 修改用户身份证号
     *
     * @param [type] $validated
-    * @param [type] $admin
+    * @param [type] $adminObject
     * @return void
     */
-    public function updateUserIdNumber($validated,$admin)
+    public function updateUserIdNumber($validated,$adminObject)
     {
          $result = code(config('admin_code.UpdateUserIdNumberError'));
 
-         $user = UserInfo::find($validated['user_id']);
+         $userObject = UserInfo::find($validated['user_id']);
 
          $where = [];
          $updateData = [];
 
-         $revision = $user->revision;
+         $revision = $userObject->revision;
 
-         $where[] = ['id','=',$user->id];
+         $where[] = ['id','=',$userObject->id];
          $where[] = ['revision','=',$revision];
 
          $updateData = [
@@ -171,7 +171,7 @@ class AdminUserRealAuthFacadeService
             throw new CommonException('UpdateUserIdNumberError');
          }
 
-         CommonEvent::dispatch($admin,$validated,'UpdateUserIdNumber');
+         CommonEvent::dispatch($adminObject,$validated,'UpdateUserIdNumber');
 
          $result = code(['code'=> 0,'msg'=>'修改用户身份证号成功!']);
 
@@ -183,26 +183,26 @@ class AdminUserRealAuthFacadeService
      *
      * @return void
      */
-    public function getUserIdCard($validated,$admin)
+    public function getUserIdCard($validated,$adminObject)
     {
         $result = code(config('admin_code.getUserIdCardError'));
 
         $this->withWhere = ['userInfo','idCard','idCard.cardFront','idCard.cardBack'];
 
-        $user = User::with($this->withWhere)->find($validated['user_id']);
+        $userObject = User::with($this->withWhere)->find($validated['user_id']);
 
-        //p($user);die;
+        //p($userObject);die;
 
-        if(!$user)
+        if(!$userObject)
         {
             throw new CommonException('ThisDataNotExistsError');
         }
 
-        //p($user);die;
+        //p($userObject);die;
 
         $data = [];
 		
-        $data['data'] = new UserResource($user);
+        $data['data'] = new UserResource($userObject);
 
         $result = code(['code'=> 0,'msg'=>'获取用户身份证成功!'],$data);
 
@@ -213,10 +213,10 @@ class AdminUserRealAuthFacadeService
     * 设置用户身份证照片
     *
     * @param [type] $validated
-    * @param [type] $admin
+    * @param [type] $adminObject
     * @return void
     */
-    public function setUserIdCard($validated,$admin)
+    public function setUserIdCard($validated,$adminObject)
     {
          $result = code(config('admin_code.SetUserIdCardError'));
 
@@ -245,9 +245,9 @@ class AdminUserRealAuthFacadeService
             throw new CommonException('SetUserIdCardError');
         }
 
-        SetUserIdCardEvent::dispatch($admin,$validated);
+        SetUserIdCardEvent::dispatch($adminObject,$validated);
 
-        CommonEvent::dispatch($admin,$validated,'SetUserIdCard');
+        CommonEvent::dispatch($adminObject,$validated,'SetUserIdCard');
 
         $result =  code(['code'=> 0,'msg'=>'设置用户身份证成功!']);
 

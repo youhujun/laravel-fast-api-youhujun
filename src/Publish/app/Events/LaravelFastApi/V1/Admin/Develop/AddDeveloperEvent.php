@@ -37,18 +37,18 @@ class AddDeveloperEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $admin;
-    public $user;
+    public $adminObject;
+    public $userObject;
     public $validated;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Admin $admin,User $user,$validated)
+    public function __construct(Admin $adminObject,User $userObject,$validated)
     {
-        $this->admin = $admin;
-        $this->user = $user;
+        $this->admin = $adminObject;
+        $this->user = $userObject;
         $this->validated = $validated;
     }
 

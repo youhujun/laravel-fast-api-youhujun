@@ -51,11 +51,11 @@ class RoleController extends Controller
      */
     public function getTreeRole()
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
              $result =  AdminRoleFacade::getTreeRole();
         }
@@ -71,11 +71,11 @@ class RoleController extends Controller
      */
     public function addRole(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('super-role'))
+        if(Gate::forUser($adminObject)->allows('super-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -111,7 +111,7 @@ class RoleController extends Controller
                 throw new RuleException('RuleRequiredError', 'logic_name');
             }
 
-            $result = AdminRoleFacade::addRole(f($validated),$admin);
+            $result = AdminRoleFacade::addRole(f($validated),$adminObject);
 
         }
 
@@ -127,12 +127,12 @@ class RoleController extends Controller
      */
     public function updateRole(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
 
-        if(Gate::forUser($admin)->allows('super-role'))
+        if(Gate::forUser($adminObject)->allows('super-role'))
         {
 
             $validator = Validator::make(
@@ -164,7 +164,7 @@ class RoleController extends Controller
                 throw new RuleException('RuleRequiredError', 'logic_name');
             }
 
-            $result = AdminRoleFacade::updateRole(f($validated),$admin);
+            $result = AdminRoleFacade::updateRole(f($validated),$adminObject);
         }
 
         return $result;
@@ -178,11 +178,11 @@ class RoleController extends Controller
      */
     public function moveRole(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('super-role'))
+        if(Gate::forUser($adminObject)->allows('super-role'))
         {
 
             $validator = Validator::make(
@@ -214,7 +214,7 @@ class RoleController extends Controller
                 throw new RuleException('RuleRequiredError', 'sort');
             }
 
-            $result = AdminRoleFacade::moveRole($validated,$admin);
+            $result = AdminRoleFacade::moveRole($validated,$adminObject);
         }
 
        return $result;
@@ -227,11 +227,11 @@ class RoleController extends Controller
      */
     public function deleteRole(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('super-role'))
+        if(Gate::forUser($adminObject)->allows('super-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -252,7 +252,7 @@ class RoleController extends Controller
                 throw new RuleException('RuleRequiredError', 'is_delete');
             }
 
-            $result = AdminRoleFacade::deleteRole($validated,$admin);
+            $result = AdminRoleFacade::deleteRole($validated,$adminObject);
 
         }
 
@@ -267,11 +267,11 @@ class RoleController extends Controller
      */
     public function resetRolePermission(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('super-role'))
+        if(Gate::forUser($adminObject)->allows('super-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -287,7 +287,7 @@ class RoleController extends Controller
 
             //p($validated);die;
 
-            $result = AdminRoleFacade::resetRolePermission($validated ,$admin);
+            $result = AdminRoleFacade::resetRolePermission($validated ,$adminObject);
         }
 
         return $result;

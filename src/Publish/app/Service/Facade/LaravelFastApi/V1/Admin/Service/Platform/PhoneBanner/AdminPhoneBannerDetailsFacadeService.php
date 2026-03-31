@@ -45,10 +45,10 @@ class AdminPhoneBannerDetailsFacadeService
     * 公共的更新轮播图
     *
     * @param [type] $validated
-    * @param [type] $admin
+    * @param [type] $adminObject
     * @return void
     */
-   protected function updatePhoneBannerCommon($validated,$admin,$errorKeyName)
+   protected function updatePhoneBannerCommon($validated,$adminObject,$errorKeyName)
    {
         $result = code(config("code.UpdatePhoneBanner{$errorKeyName}Error"));
 
@@ -65,7 +65,7 @@ class AdminPhoneBannerDetailsFacadeService
 
         $where[] = ['revision','=',$phoneBanner ->revision];
 
-        $phoneBanner->admin_id = $admin->id;
+        $phoneBanner->admin_id = $adminObject->id;
 
         foreach ( $validated as $key => $value)
         {
@@ -91,7 +91,7 @@ class AdminPhoneBannerDetailsFacadeService
            throw new CommonException("updatePhoneBanner{$errorKeyName}Error");
         }
 
-        $eventResult = CommonEvent::dispatch($admin,$phoneBanner,"UpdatePhoneBanner{$errorKeyName}");
+        $eventResult = CommonEvent::dispatch($adminObject,$phoneBanner,"UpdatePhoneBanner{$errorKeyName}");
 
         $result = code(['code'=>0,'msg'=>$this->responseMessage[$errorKeyName]]);
 
@@ -102,12 +102,12 @@ class AdminPhoneBannerDetailsFacadeService
     * 更新图片相册
     *
     * @param [type] $validated
-    * @param [type] $admin
+    * @param [type] $adminObject
     * @return void
     */
-   public function updatePhoneBannerPicture($validated,$admin)
+   public function updatePhoneBannerPicture($validated,$adminObject)
    {
-        $result = $this->updatePhoneBannerCommon($validated,$admin,'Picture');
+        $result = $this->updatePhoneBannerCommon($validated,$adminObject,'Picture');
 
         return $result;
    }
@@ -116,12 +116,12 @@ class AdminPhoneBannerDetailsFacadeService
     * 修改轮播图跳转
     *
     * @param [type] $validated
-    * @param [type] $admin
+    * @param [type] $adminObject
     * @return void
     */
-   public function updatePhoneBannerUrl($validated,$admin)
+   public function updatePhoneBannerUrl($validated,$adminObject)
    {
-        $result = $this->updatePhoneBannerCommon($validated,$admin,'Url');
+        $result = $this->updatePhoneBannerCommon($validated,$adminObject,'Url');
 
         return $result;
    }
@@ -130,12 +130,12 @@ class AdminPhoneBannerDetailsFacadeService
     * 修改轮播图排序
     *
     * @param [type] $validated
-    * @param [type] $admin
+    * @param [type] $adminObject
     * @return void
     */
-   public function updatePhoneBannerSort($validated,$admin)
+   public function updatePhoneBannerSort($validated,$adminObject)
    {
-        $result = $this->updatePhoneBannerCommon($validated,$admin,'Sort');
+        $result = $this->updatePhoneBannerCommon($validated,$adminObject,'Sort');
 
         return $result;
    }
@@ -144,12 +144,12 @@ class AdminPhoneBannerDetailsFacadeService
     * 修改轮播图备注
     *
     * @param [type] $validated
-    * @param [type] $admin
+    * @param [type] $adminObject
     * @return void
     */
-   public function updatePhoneBannerBakInfo($validated,$admin)
+   public function updatePhoneBannerBakInfo($validated,$adminObject)
    {
-        $result = $this->updatePhoneBannerCommon($validated,$admin,'RemarkInfo');
+        $result = $this->updatePhoneBannerCommon($validated,$adminObject,'RemarkInfo');
 
         return $result;
    }

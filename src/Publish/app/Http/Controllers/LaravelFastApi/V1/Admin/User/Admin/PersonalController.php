@@ -46,9 +46,9 @@ class PersonalController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -60,7 +60,7 @@ class PersonalController extends Controller
 
             $validated = $validator->validated();
 
-            $result =  AdminPersonalFacade::updateAvatar(f($validated),$admin);
+            $result =  AdminPersonalFacade::updateAvatar(f($validated),$adminObject);
         }
 
         return $result;
@@ -73,9 +73,9 @@ class PersonalController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -93,7 +93,7 @@ class PersonalController extends Controller
 
 			//p($validated);die;
 
-            $result =  AdminPersonalFacade::updatePhone(f($validated),$admin);
+            $result =  AdminPersonalFacade::updatePhone(f($validated),$adminObject);
         }
 
         return $result;
@@ -106,9 +106,9 @@ class PersonalController extends Controller
     {
         $result = code(\config('admin_code.AdminAuthError'));
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -133,7 +133,7 @@ class PersonalController extends Controller
 
 			// p($validated);die;
 
-            $result =  AdminPersonalFacade::updatePassword(f($validated),$admin);
+            $result =  AdminPersonalFacade::updatePassword(f($validated),$adminObject);
         }
 
         return $result;

@@ -58,7 +58,7 @@ class AdminUserItemFacadeService
      *
      * @return void
      */
-    public function getDefaultUser($validated,$user)
+    public function getDefaultUser($validated,$userObject)
     {
 
         $result = code(config('admin_code.GetDefaultUserError'));
@@ -93,7 +93,7 @@ class AdminUserItemFacadeService
      * @param [type] $find
      * @return void
      */
-    public function findUser($validated,$user)
+    public function findUser($validated,$userObject)
     {
         $result = code(config('admin_code.FindUserError'));
 

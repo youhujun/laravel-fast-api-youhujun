@@ -31,14 +31,14 @@ class AdminTokenMiddleware
     public function handle(Request $request, Closure $next)
     {
 
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
-        if(empty($admin))
+        if(empty($adminObject))
         {
             return response()->json(code(\config('admin_code.AdminTokenError')));
         }
 
-        $request->attributes->add(['admin'=>$admin]);
+        $request->attributes->add(['admin'=>$adminObject]);
 
         return $next($request);
     }

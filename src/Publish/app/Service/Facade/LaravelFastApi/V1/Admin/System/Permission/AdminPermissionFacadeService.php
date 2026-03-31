@@ -57,13 +57,13 @@ class AdminPermissionFacadeService
      *
      * @return void
      */
-    public function getTreePermission(Admin $admin)
+    public function getTreePermission(Admin $adminObject)
     {
         $result = [];
 
         $checkResult = 0;
 
-        if (is_develop($admin)) {
+        if (is_develop($adminObject)) {
             $checkResult =  Redis::hexists('system:config', 'develop_permission');
         } else {
             $checkResult =  Redis::hexists('system:config', 'permission');
@@ -73,7 +73,7 @@ class AdminPermissionFacadeService
         $treePermission = [];
 
         if ($checkResult) {
-            if (is_develop($admin)) {
+            if (is_develop($adminObject)) {
                 $redisPermission = Redis::hget('system:config', 'develop_permission');
             } else {
                 $redisPermission = Redis::hget('system:config', 'permission');
@@ -85,7 +85,7 @@ class AdminPermissionFacadeService
 
             //p($treePermission);die;
 
-            if (is_develop($admin)) {
+            if (is_develop($adminObject)) {
                 Redis::hset('system:config', 'develop_permission', json_encode($treePermission));
             } else {
                 Redis::hset('system:config', 'permission', json_encode($treePermission));
@@ -107,9 +107,9 @@ class AdminPermissionFacadeService
     /**
      * 获取树形菜单
      *
-     * @param  Admin $admin
+     * @param  Admin $adminObject
      */
-    public function getTreeMenu(Admin $admin)
+    public function getTreeMenu(Admin $adminObject)
     {
         $treePermission = $this->getTreeData();
 
@@ -128,9 +128,9 @@ class AdminPermissionFacadeService
     /**
      * 获取子级选项
      *
-     * @param  Admin $admin
+     * @param  Admin $adminObject
      */
-    public function getChildrenOptions(Admin $admin, $validated)
+    public function getChildrenOptions(Admin $adminObject, $validated)
     {
         $treePermission = $this->getTreeData();
 
@@ -148,10 +148,10 @@ class AdminPermissionFacadeService
     /**
      * 获取单个菜单表单数据
      *
-     * @param  Admin  $admin
+     * @param  Admin  $adminObject
      * @param  [type] $validated
      */
-    public function getSingleMenuForm(Admin $admin, $validated)
+    public function getSingleMenuForm(Admin $adminObject, $validated)
     {
         $result = code(config('admin_code.GetReplaceError'));
 
@@ -181,7 +181,7 @@ class AdminPermissionFacadeService
      * @param [type] $data
      * @return void
      */
-    public function addMenu($validated, $admin)
+    public function addMenu($validated, $adminObject)
     {
         $result = code(config('admin_code.AddMenuError'));
 
@@ -211,7 +211,7 @@ class AdminPermissionFacadeService
             throw new CommonException('AddMenuError');
         }
 
-        CommonEvent::dispatch($admin, $validated, 'AddMenu');
+        CommonEvent::dispatch($adminObject, $validated, 'AddMenu');
 
         //清空redis的缓存数据
         Redis::hdel('system:config', 'permission');
@@ -228,7 +228,7 @@ class AdminPermissionFacadeService
      * @param [type] $validated
      * @return void
      */
-    public function updateMenu($validated, $admin)
+    public function updateMenu($validated, $adminObject)
     {
         $result = code(config('admin_code.UpdateMenuError'));
 
@@ -294,7 +294,7 @@ class AdminPermissionFacadeService
             throw new CommonException('UpdateMenuDeepError');
         }
 
-        $eventResult = CommonEvent::dispatch($admin, $validated, 'UpdateMenu');
+        $eventResult = CommonEvent::dispatch($adminObject, $validated, 'UpdateMenu');
 
         //清空redis的缓存数据
         Redis::hdel('system:config', 'permission');
@@ -309,10 +309,10 @@ class AdminPermissionFacadeService
      * 更新
      *
      * @param [type] $validated
-     * @param [type] $admin
+     * @param [type] $adminObject
      * @return void
      */
-    public function moveMenu($validated, $admin)
+    public function moveMenu($validated, $adminObject)
     {
         $result = code(config('admin_code.MoveMenuError'));
 
@@ -397,7 +397,7 @@ class AdminPermissionFacadeService
             throw new CommonException('MoveMenuDeepError');
         }
 
-        CommonEvent::dispatch($admin, $validated, 'MoveMenu');
+        CommonEvent::dispatch($adminObject, $validated, 'MoveMenu');
 
         //清空redis的缓存数据
         Redis::hdel('system:config', 'permission');
@@ -414,7 +414,7 @@ class AdminPermissionFacadeService
      * @param [type] $id
      * @return void
      */
-    public function deleteMenu($validated, $admin)
+    public function deleteMenu($validated, $adminObject)
     {
         $result = code(config('admin_code.DeleteMenuError'));
 
@@ -444,7 +444,7 @@ class AdminPermissionFacadeService
                 throw new CommonException('DeleteMenuError');
             }
 
-            CommonEvent::dispatch($admin, $validated, 'DeleteMenu');
+            CommonEvent::dispatch($adminObject, $validated, 'DeleteMenu');
 
             //清空redis的缓存数据
             Redis::hdel('system:config', 'permission');
@@ -462,7 +462,7 @@ class AdminPermissionFacadeService
      * @param [type] $id
      * @return void
      */
-    public function switchMenu($validated, $admin)
+    public function switchMenu($validated, $adminObject)
     {
         $result = code(config('admin_code.DisableMenuError'));
 
@@ -506,7 +506,7 @@ class AdminPermissionFacadeService
             throw new CommonException('DisableMenuError');
         }
 
-        CommonEvent::dispatch($admin, $validated, $eventName);
+        CommonEvent::dispatch($adminObject, $validated, $eventName);
 
         //清空redis的缓存数据
         Redis::hdel('system:config', 'permission');

@@ -42,11 +42,11 @@ class CategoryController extends Controller
      */
     public function getTreeCategory()
     {
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($user)->allows('admin-role'))
+        if(Gate::forUser($userObject)->allows('admin-role'))
         {
              $result = AdminCategoryFacade::getTreeCategory();
         }
@@ -62,11 +62,11 @@ class CategoryController extends Controller
      */
     public function addCategory(Request $request)
     {
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($user)->allows('admin-role'))
+        if(Gate::forUser($userObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -109,7 +109,7 @@ class CategoryController extends Controller
                 throw new RuleException('RuleRequiredError', 'category_code');
             }
 
-            $result =AdminCategoryFacade::addCategory(f($validated),$user);
+            $result =AdminCategoryFacade::addCategory(f($validated),$userObject);
         }
 
         return $result;
@@ -123,13 +123,13 @@ class CategoryController extends Controller
      */
     public function updateCategory(Request $request)
     {
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
         $id = check_id($request->input('id'));
 
-        if(Gate::forUser($user)->allows('admin-role'))
+        if(Gate::forUser($userObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -177,7 +177,7 @@ class CategoryController extends Controller
                 throw new RuleException('RuleRequiredError', 'category_code');
             }
 
-            $result = AdminCategoryFacade::updateCategory(f($validated),$user);
+            $result = AdminCategoryFacade::updateCategory(f($validated),$userObject);
         }
         return $result;
     }
@@ -190,11 +190,11 @@ class CategoryController extends Controller
      */
     public function moveCategory(Request $request)
     {
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($user)->allows('super-role')) {
+        if (Gate::forUser($userObject)->allows('super-role')) {
 
             $validator = Validator::make(
                 $request->all(),
@@ -225,7 +225,7 @@ class CategoryController extends Controller
                 throw new RuleException('RuleRequiredError', 'sort');
             }
 
-            $result = AdminCategoryFacade::moveCategory($validated, $user);
+            $result = AdminCategoryFacade::moveCategory($validated, $userObject);
         }
 
         return $result;
@@ -239,11 +239,11 @@ class CategoryController extends Controller
      */
     public function deleteCategory(Request $request)
     {
-        $user = Auth::guard('admin_token')->user();
+        $userObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($user)->allows('admin-role'))
+        if(Gate::forUser($userObject)->allows('admin-role'))
         {
              $validator = Validator::make(
                 $request->all(),
@@ -266,7 +266,7 @@ class CategoryController extends Controller
 
             //p($validated);die;
 
-            $result = AdminCategoryFacade::deleteCategory(f($validated),$user);
+            $result = AdminCategoryFacade::deleteCategory(f($validated),$userObject);
 
         }
 

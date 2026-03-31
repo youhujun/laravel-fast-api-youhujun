@@ -42,13 +42,13 @@ class GoodsClassController extends Controller
      */
     public function getTreeGoodsClass()
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
         //p('here');die;
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
              $result = AdminGoodsClassFacade::getTreeGoodsClass();
         }
@@ -64,11 +64,11 @@ class GoodsClassController extends Controller
      */
     public function addGoodsClass(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -103,7 +103,7 @@ class GoodsClassController extends Controller
 
             //p($validated);die;
 
-            $result = AdminGoodsClassFacade::addGoodsClass(f($validated),$admin);
+            $result = AdminGoodsClassFacade::addGoodsClass(f($validated),$adminObject);
         }
 
         return $result;
@@ -117,13 +117,13 @@ class GoodsClassController extends Controller
      */
     public function updateGoodsClass(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
         $id = check_id($request->input('id'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -161,7 +161,7 @@ class GoodsClassController extends Controller
                 throw new RuleException('RuleRequiredError', 'goods_class_name');
             }
 
-            $result = AdminGoodsClassFacade::updateGoodsClass(f($validated),$admin);
+            $result = AdminGoodsClassFacade::updateGoodsClass(f($validated),$adminObject);
         }
         return $result;
     }
@@ -174,11 +174,11 @@ class GoodsClassController extends Controller
      */
     public function moveGoodsClass(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if (Gate::forUser($admin)->allows('super-role')) {
+        if (Gate::forUser($adminObject)->allows('super-role')) {
 
             $validator = Validator::make(
                 $request->all(),
@@ -209,7 +209,7 @@ class GoodsClassController extends Controller
                 throw new RuleException('RuleRequiredError', 'sort');
             }
 
-            $result = AdminGoodsClassFacade::moveGoodsClass(f($validated), $admin);
+            $result = AdminGoodsClassFacade::moveGoodsClass(f($validated), $adminObject);
         }
 
         return $result;
@@ -223,11 +223,11 @@ class GoodsClassController extends Controller
      */
     public function deleteGoodsClass(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('super-role'))
+        if(Gate::forUser($adminObject)->allows('super-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -240,7 +240,7 @@ class GoodsClassController extends Controller
 
             $validated = $validator->validated();
 
-            $result = AdminGoodsClassFacade::deleteGoodsClass($validated,$admin);
+            $result = AdminGoodsClassFacade::deleteGoodsClass($validated,$adminObject);
         }
 
         return $result;
@@ -248,11 +248,11 @@ class GoodsClassController extends Controller
 
 	public function getSingleGoodsClass(Request $request)
 	{
-		 $admin = Auth::guard('admin_token')->user();
+		 $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('super-role'))
+        if(Gate::forUser($adminObject)->allows('super-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -264,7 +264,7 @@ class GoodsClassController extends Controller
 
             $validated = $validator->validated();
 
-            $result = AdminGoodsClassFacade::getSingleGoodsClass($validated,$admin);
+            $result = AdminGoodsClassFacade::getSingleGoodsClass($validated,$adminObject);
         }
 
         return $result;

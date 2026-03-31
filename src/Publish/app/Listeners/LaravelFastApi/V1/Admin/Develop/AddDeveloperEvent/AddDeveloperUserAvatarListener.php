@@ -40,14 +40,14 @@ class AddDeveloperUserAvatarListener
      */
     public function handle(object $event): void
     {
-        $user = $event->user;
-        $admin = $event->admin;
+        $userObject = $event->user;
+        $adminObject = $event->admin;
         $validated = $event->validated;
 
         //用户头像
         $userAvatar = new UserAvatar;
 
-        $userAvatar->user_id = $user->id;
+        $userAvatar->user_id = $userObject->id;
 
         $userAvatar->album_picture_id = 2;
 

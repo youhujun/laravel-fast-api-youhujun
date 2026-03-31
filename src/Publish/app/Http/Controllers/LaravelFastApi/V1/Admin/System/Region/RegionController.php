@@ -42,11 +42,11 @@ class RegionController extends Controller
      */
     public function getAllRegion()
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
              $result = AdminRegionFacade::getAllRegion();
         }
@@ -61,11 +61,11 @@ class RegionController extends Controller
      */
     public function getTreeRegion()
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('admin-role'))
+        if(Gate::forUser($adminObject)->allows('admin-role'))
         {
              $result = AdminRegionFacade::getTreeRegion();
         }
@@ -82,11 +82,11 @@ class RegionController extends Controller
      */
     public function addRegion(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('super-role'))
+        if(Gate::forUser($adminObject)->allows('super-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -115,7 +115,7 @@ class RegionController extends Controller
                 throw new RuleException('RuleRequiredError', 'region_name');
             }
 
-            $result = AdminRegionFacade::addRegion(f($validated),$admin);
+            $result = AdminRegionFacade::addRegion(f($validated),$adminObject);
         }
 
         return $result;
@@ -129,11 +129,11 @@ class RegionController extends Controller
      */
     public function updateRegion(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('super-role'))
+        if(Gate::forUser($adminObject)->allows('super-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -169,7 +169,7 @@ class RegionController extends Controller
                 throw new RuleException('RuleRequiredError', 'region_name');
             }
 
-            $result = AdminRegionFacade::updateRegion(f($validated),$admin);
+            $result = AdminRegionFacade::updateRegion(f($validated),$adminObject);
         }
         return $result;
     }
@@ -182,11 +182,11 @@ class RegionController extends Controller
      */
     public function moveRegion(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('super-role'))
+        if(Gate::forUser($adminObject)->allows('super-role'))
         {
 
             $validator = Validator::make(
@@ -218,7 +218,7 @@ class RegionController extends Controller
                 throw new RuleException('RuleRequiredError', 'sort');
             }
 
-            $result = AdminRegionFacade::moveRegion($validated,$admin);
+            $result = AdminRegionFacade::moveRegion($validated,$adminObject);
         }
 
        return $result;
@@ -232,11 +232,11 @@ class RegionController extends Controller
      */
     public function deleteRegion(Request $request)
     {
-        $admin = Auth::guard('admin_token')->user();
+        $adminObject = Auth::guard('admin_token')->user();
 
         $result = code(\config('admin_code.AdminAuthError'));
 
-        if(Gate::forUser($admin)->allows('super-role'))
+        if(Gate::forUser($adminObject)->allows('super-role'))
         {
             $validator = Validator::make(
                 $request->all(),
@@ -252,7 +252,7 @@ class RegionController extends Controller
                 throw new RuleException('RuleRequiredError', 'id');
             }
 
-            $result = AdminRegionFacade::deleteRegion(f($validated),$admin);
+            $result = AdminRegionFacade::deleteRegion(f($validated),$adminObject);
 
         }
 

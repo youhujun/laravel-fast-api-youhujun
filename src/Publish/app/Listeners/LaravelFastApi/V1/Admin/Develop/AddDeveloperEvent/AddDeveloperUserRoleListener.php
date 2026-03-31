@@ -41,20 +41,20 @@ class AddDeveloperUserRoleListener
      */
     public function handle(object $event): void
     {
-        $user = $event->user;
-        $admin = $event->admin;
+        $userObject = $event->user;
+        $adminObject = $event->admin;
         $validated = $event->validated;
 
         $data = [];
         $date = date('Y-m-d H:i:s',time());
         $time = time();
-        $user_id = $user->id;
+        $user_uid = $userObject->id;
 
         //默认给开发者基础角色的所有身份
-        $data[] = ['created_at' =>$date,'created_time'=>$time,'user_id'=>$user->id,'role_id'=>1];
-        $data[] = ['created_at' =>$date,'created_time'=>$time,'user_id'=>$user->id,'role_id'=>2];
-        $data[] = ['created_at' =>$date,'created_time'=>$time,'user_id'=>$user->id,'role_id'=>3];
-        $data[] = ['created_at' =>$date,'created_time'=>$time,'user_id'=>$user->id,'role_id'=>4];
+        $data[] = ['created_at' =>$date,'created_time'=>$time,'user_id'=>$userObject->id,'role_id'=>1];
+        $data[] = ['created_at' =>$date,'created_time'=>$time,'user_id'=>$userObject->id,'role_id'=>2];
+        $data[] = ['created_at' =>$date,'created_time'=>$time,'user_id'=>$userObject->id,'role_id'=>3];
+        $data[] = ['created_at' =>$date,'created_time'=>$time,'user_id'=>$userObject->id,'role_id'=>4];
 
         $result = UserRoleUnion::insert($data);
 

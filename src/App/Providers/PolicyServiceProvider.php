@@ -116,23 +116,23 @@ class PolicyServiceProvider extends ServiceProvider
      */
     protected function registerAdminGatePublishByRole()
     {
-        Gate::define('develop-role', function (Admin $admin) {
-            return is_develop($admin);
+        Gate::define('develop-role', function (Admin $adminObject) {
+            return is_develop($adminObject);
         });
 
         //是否是开发者或者超级管理员
-        Gate::define('super-role', function (Admin $admin) {
-            return is_super($admin);
+        Gate::define('super-role', function (Admin $adminObject) {
+            return is_super($adminObject);
         });
 
         //是否是后台管理员
-        Gate::define('admin-role', function (Admin $admin) {
-            return is_admin($admin);
+        Gate::define('admin-role', function (Admin $adminObject) {
+            return is_admin($adminObject);
         });
 
         //是否是用户
-        Gate::define('user-role', function (Admin $admin) {
-            return is_user($admin);
+        Gate::define('user-role', function (Admin $adminObject) {
+            return is_user($adminObject);
         });
     }
 
@@ -141,9 +141,9 @@ class PolicyServiceProvider extends ServiceProvider
      */
     protected function registerUserGatePublishByRole()
     {
-        Gate::define('phone-user-role', function (User $user) {
-            //p(is_phone_user($user));die;
-            return is_phone_user($user);
+        Gate::define('phone-user-role', function (User $userObject) {
+            //p(is_phone_user($userObject));die;
+            return is_phone_user($userObject);
         });
     }
 
