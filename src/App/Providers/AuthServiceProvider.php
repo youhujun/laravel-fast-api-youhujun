@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-26 16:56:10
+ * @LastEditTime: 2026-04-04 01:18:27
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -128,7 +128,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $adminObject = null;
 
-        $indexName = config('common_es.indices.admins');
+        $indexName = config('common_es.indices.user.admins');
 
         $queryArray = [
             'match' => ['remember_token' => $remember_token]
@@ -242,7 +242,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $userObject = null;
 
-        $indexName = config('common_es.indices.users');
+        $indexName = config('common_es.indices.user.users');
 
         $queryArray = [
             'match' => ['remember_token' => $remember_token]
