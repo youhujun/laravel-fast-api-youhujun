@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2022-08-23 17:48:14
- * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2026-01-23 21:05:57
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-02 15:42:19
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -44,6 +44,7 @@ return new class () extends Migration {
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 
                     $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
+                    $table->unsignedTinyInteger('login_type')->default(0)->comment('登录类型 10-pc 20-phone 30-app 40-wechat');
                     $table->unsignedTinyInteger('status')->default(0)->comment('状态 0未知 10登录 20退出');
                     $table->string('instruction', 64)->default('')->comment('说明');
                     $table->string('ip', 64)->default('')->comment('ip地址');

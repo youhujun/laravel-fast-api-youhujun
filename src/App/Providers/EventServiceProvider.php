@@ -261,14 +261,6 @@ class EventServiceProvider extends ServiceProvider
                 \App\Listeners\LaravelFastApi\V1\Admin\Develop\AddDeveloperEvent\AddDeveloperAdminListener::class,
                 //用户相册
                 \App\Listeners\LaravelFastApi\V1\Admin\Develop\AddDeveloperEvent\AddDeveloperAdminAlbumListener::class,
-                //用户地址
-                \App\Listeners\LaravelFastApi\V1\Admin\Develop\AddDeveloperEvent\AddDeveloperUserAddressListener::class,
-                //用户头像
-                \App\Listeners\LaravelFastApi\V1\Admin\Develop\AddDeveloperEvent\AddDeveloperUserAvatarListener::class,
-                //用户详情
-                \App\Listeners\LaravelFastApi\V1\Admin\Develop\AddDeveloperEvent\AddDeveloperUserinfoListener::class,
-                //用户二维码
-                \App\Listeners\LaravelFastApi\V1\Admin\Develop\AddDeveloperEvent\AddDeveloperUserQrcodeListener::class,
                 //用户角色
                 \App\Listeners\LaravelFastApi\V1\Admin\Develop\AddDeveloperEvent\AddDeveloperUserRoleListener::class,
             ],

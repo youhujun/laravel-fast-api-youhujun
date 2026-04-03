@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2021-09-09 13:42:58
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-23 21:25:00
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-02 15:44:13
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -43,11 +43,10 @@ return new class () extends Migration {
 
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                     $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
+                    $table->unsignedTinyInteger('login_type')->default(0)->comment('登录类型 10-pc 20-phone 30-app 40-wechat');
                     $table->unsignedTinyInteger('status')->default(0)->comment('状态 0未知 10登录 20退出');
                     $table->string('instruction', 128)->default('')->comment('说明');
                     $table->string('ip', 32)->default('')->comment('ip地址');
-                    $table->unsignedTinyInteger('source_type')->default(0)->comment('登录来源类型 10phone 20pc');
-
                     $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
                     $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
                     $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');

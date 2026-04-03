@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-31 23:44:45
+ * @LastEditTime: 2026-04-03 13:59:40
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -181,14 +181,8 @@ class FacadeServiceProvider extends ServiceProvider
     {
         //Es索引门面
         $this->publishEsIndexFacade();
-        //Admin门面
-        $this->app->bind('EsSyncAdminFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Sync\EsSyncAdminFacadeService::class);
-        //User门面
-        $this->app->bind('EsSyncUserFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Sync\EsSyncUserFacadeService::class);
-        //SystemConfig门面
-        $this->app->bind('EsSyncSystemConfigFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Sync\EsSyncSystemConfigFacadeService::class);
-        //YouhuAuthService门面
-        $this->app->bind('EsSyncYouhuAuthServiceFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Sync\EsSyncYouhuAuthServiceFacadeService::class);
+        //es同步门面
+        $this->publishEsSyncFacade();
     }
 
 
@@ -197,22 +191,43 @@ class FacadeServiceProvider extends ServiceProvider
      */
     protected function publishEsIndexFacade()
     {
-        //管理员索引
-        $this->app->bind('EsCreateAdminIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\EsCreateAdminIndexFacadeService::class);
+        //系统索引
         //用户索引
-        $this->app->bind('EsCreateUserIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\EsCreateUserIndexFacadeService::class);
-        //系统配置索引
-        $this->app->bind('EsCreateSystemConfigIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\EsCreateSystemConfigIndexFacadeService::class);
-        //youhuauthservice索引
-        $this->app->bind('EsCreateYouhuAuthServiceIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\EsCreateYouhuAuthServiceIndexFacadeService::class);
-        //日志索引
-        $this->app->bind('EsCreateApiEventLogIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\EsCreateApiEventLogIndexFacadeService::class);
+        $this->app->bind('EsCreateSystemIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\System\EsCreateSystemIndexFacadeService::class);
+        //用户
+        //用户认证
+        $this->app->bind('EsCreateYouhuAuthServiceIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\User\EsCreateYouhuAuthServiceIndexFacadeService::class);
+        //管理员索引
+        $this->app->bind('EsCreateAdminIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\User\EsCreateAdminIndexFacadeService::class);
+        //用户索引
+        $this->app->bind('EsCreateUserIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\User\EsCreateUserIndexFacadeService::class);
 
         //|--日志索引
+        //api日志索引
+        $this->app->bind('EsCreateApiLogIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\Log\EsCreateApiLogIndexFacadeService::class);
         //|--|--管理员日志
         $this->app->bind('EsCreateAdminLogIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\Log\EsCreateAdminLogIndexFacadeService::class);
         //|--|--用户日志
         $this->app->bind('EsCreateUserLogIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\Log\EsCreateUserLogIndexFacadeService::class);
+
+        //|--相册
+        $this->app->bind('EsCreateAlbumIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\Album\EsCreateAlbumIndexFacadeService::class);
+    }
+
+    //es同步
+    protected function publishEsSyncFacade()
+    {
+        //--|系统同步
+        //--|--|SystemConfig门面
+        $this->app->bind('EsSyncSystemFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Sync\System\EsSyncSystemFacadeService::class);
+
+        //--|用户同步
+        //--|--|Admin门面
+        $this->app->bind('EsSyncAdminFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Sync\User\EsSyncAdminFacadeService::class);
+        //--|--|User门面
+        $this->app->bind('EsSyncUserFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Sync\User\EsSyncUserFacadeService::class);
+        //Y--|--|ouhuAuthService门面
+        $this->app->bind('EsSyncYouhuAuthServiceFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Sync\User\EsSyncYouhuAuthServiceFacadeService::class);
     }
 
 
