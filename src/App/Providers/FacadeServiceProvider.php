@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-04-03 13:59:40
+ * @LastEditTime: 2026-04-03 16:47:38
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -63,8 +63,11 @@ class FacadeServiceProvider extends ServiceProvider
         $this->app->bind('SystemConfigTestFacade', \App\Services\Facade\Test\V1\System\SystemConfigTestFacadeService::class);
         //测试用户
         $this->app->bind('UserTestFacade', \App\Services\Facade\Test\V1\User\UserTestFacadeService::class);
+        //测试相册
+        $this->app->bind('AlbumTestFacade', \App\Services\Facade\Test\V1\Album\AlbumTestFacadeService::class);
         //测试es门面
         $this->app->bind('EsTestFacade', \App\Services\Facade\Test\V1\Es\EsTestFacadeService::class);
+
         //测试微服务
         $this->app->bind('MsTestFacade', \App\Services\Facade\Test\V1\Ms\MsTestFacadeService::class);
         //雪鹄城堡测试
@@ -228,6 +231,9 @@ class FacadeServiceProvider extends ServiceProvider
         $this->app->bind('EsSyncUserFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Sync\User\EsSyncUserFacadeService::class);
         //Y--|--|ouhuAuthService门面
         $this->app->bind('EsSyncYouhuAuthServiceFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Sync\User\EsSyncYouhuAuthServiceFacadeService::class);
+
+        //--|相册
+        $this->app->bind('EsSyncAlbumFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Sync\Album\EsSyncAlbumFacadeService::class);
     }
 
 
