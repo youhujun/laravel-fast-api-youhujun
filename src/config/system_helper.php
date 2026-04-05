@@ -30,6 +30,7 @@ if (!function_exists('make_system_config')) {
         $is_cache_system_config = config('common.is_cache_system_config');
 
         if ($is_cache_system_config) {
+           
             $systemConfigRedis = Redis::hget('system:config', 'listSystemConfig');
             if ($systemConfigRedis) {
                 $systemConfigCollection = unserialize($systemConfigRedis);
