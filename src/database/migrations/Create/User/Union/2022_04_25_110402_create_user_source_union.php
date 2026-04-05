@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2022-04-25 11:04:02
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-28 16:02:18
+ * @LastEditTime: 2026-04-05 13:22:36
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -43,7 +43,7 @@ return new class () extends Migration {
 
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('first_uid')->default(0)->comment('一级uid');
-                    $table->unsignedBigInteger('second_Uid')->default(0)->comment('二级uid');
+                    $table->unsignedBigInteger('second_uid')->default(0)->comment('二级uid');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                     $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
@@ -56,8 +56,8 @@ return new class () extends Migration {
                     // 索引
                     $table->unique('user_source_union_uid', 'uni_source_unions_us_uid_' . $i);
                     $table->index('user_uid', 'idx_source_unions_user_uid_' . $i);
-                    $table->index('first_id', 'idx_source_unions_first_id_' . $i);
-                    $table->index('second_id', 'idx_source_unions_sec_id_' . $i);
+                    $table->index('first_uid', 'idx_source_unions_first_uid_' . $i);
+                    $table->index('second_uid', 'idx_source_unions_second_uid_' . $i);
                     $table->index('created_time', 'idx_source_unions_cre_time_' . $i);
                     $table->index('sort', 'idx_source_unions_sort_' . $i);
                     $table->index('updated_time', 'idx_source_unions_upd_time_' . $i);

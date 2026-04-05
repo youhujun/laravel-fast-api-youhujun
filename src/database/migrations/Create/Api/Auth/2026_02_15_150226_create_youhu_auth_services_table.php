@@ -55,7 +55,7 @@ return new class () extends Migration {
                     $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
                     $table->string('secret_key', 128)->default('')->comment('各微服务独立生成的秘钥（加密存储）');
                     $table->string('service_flag', 32)->default('youhu-base')->comment('微服务标识（youhu-base/youhu-main/youhu-shop）');
-                    $table->cahr('auth_token', 128)->nullable()->comment('前端使用唯一标识');
+                    $table->char('auth_token', 128)->nullable()->comment('前端使用唯一标识');
                     // 状态字段
                     $table->unsignedTinyInteger('status')->default(1)->comment('账户状态 0禁用 1启用');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');

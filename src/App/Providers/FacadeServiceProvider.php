@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-04-03 16:47:38
+ * @LastEditTime: 2026-04-05 13:39:05
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -42,6 +42,8 @@ class FacadeServiceProvider extends ServiceProvider
             //模版
             $this->publishFacade();
         } else {
+            //系统初始化需要用
+            $this->app->bind('ShardHelperFacade', \App\Services\Facade\Common\V1\Shard\ShardHelperFacadeService::class);
         }
     }
 
@@ -153,8 +155,7 @@ class FacadeServiceProvider extends ServiceProvider
         $this->app->bind('EsSyncDataFacade', \App\Services\Facade\Common\V1\Es\Console\EsSyncDataFacadeService::class);
         //分库分表工具门面
         $this->app->bind('ShardHelperFacade', \App\Services\Facade\Common\V1\Shard\ShardHelperFacadeService::class);
-        $this->app->bind('ShardMapHelperFacade', \App\Services\Facade\Common\V1\Shard\Map\ShardMapHelperFacadeService::class);
-        $this->app->bind('ModelMapRouterFacade', \App\Services\Facade\Common\V1\Shard\ModelMapRouterFacadeService::class);
+
         // API验签鉴权
         $this->app->bind('ApiAuthFacade', \App\Services\Facade\Common\V1\Api\Auth\ApiAuthFacadeService::class);
         //API请求处理

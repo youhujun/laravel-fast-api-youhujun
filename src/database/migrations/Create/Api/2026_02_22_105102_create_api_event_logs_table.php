@@ -6,7 +6,7 @@
  * @Author: youhujun youhu8888@163.com & xueer
  * @Date: 2026-02-22 10:51:02
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-30 16:50:59
+ * @LastEditTime: 2026-04-05 13:28:50
  * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\database\migrations\Create\Api\2026_02_22_105102_create_api_event_logs_table.php
  * Copyright (C) 2026 youhujun & xueer. All rights reserved.
  */
@@ -89,7 +89,7 @@ return new class () extends Migration {
 
                     $table->index('service_code', 'idx_api_event_logs_service_code_' . $i);
                     $table->index('request_id', 'idx_api_event_logs_request_id_' . $i);
-                    $table->index('status', 'idx_api_event_logs_status_' . $i);
+                    $table->index('evnet_status', 'idx_api_event_logs_evnet_status_' . $i);
                     $table->index(['operator_type', 'operator_uid'], 'idx_api_event_logs_operator_' . $i);
                 });
 
