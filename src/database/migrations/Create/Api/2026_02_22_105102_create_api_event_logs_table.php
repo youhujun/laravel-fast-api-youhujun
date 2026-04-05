@@ -52,7 +52,7 @@ return new class () extends Migration {
                     $table->unsignedBigInteger('api_event_log_uid')->comment('日志uid,雪花ID');
 
                     $table->unsignedBigInteger('user_uid')->comment('用户ID,雪花ID,业务核心ID');
-                    // 分片键：user_id%100/ID%100，未来分库分表用
+                    // 分片键：user_uid%100/ID%100，未来分库分表用
                     $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
                     // 状态字段
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');

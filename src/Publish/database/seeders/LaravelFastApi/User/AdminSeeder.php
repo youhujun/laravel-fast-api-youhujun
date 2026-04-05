@@ -34,9 +34,9 @@ class AdminSeeder extends Seeder
 		$adminId = DB::table('users')->where('account_name', 'admin')->value('userId');
 
         $adminData = [
-            ['account_name'=>'develop','user_id'=>1,'userId'=>$developId,'created_at'=>date('Y-m-d H:i:s',time()),'password'=>Hash::make('abc321'),'created_time'=>time(),'switch'=>1],
-            ['account_name'=>'super','user_id'=>2,'userId'=>$superId,'created_at'=>date('Y-m-d H:i:s',time()),'password'=>Hash::make('abc321'),'created_time'=>time(),'switch'=>1],
-            ['account_name'=>'admin','user_id'=>3,'userId'=>$adminId,'created_at'=>date('Y-m-d H:i:s',time()),'password'=>Hash::make('abc321'),'created_time'=>time(),'switch'=>1],
+            ['account_name'=>'develop','user_uid'=>1,'userId'=>$developId,'created_at'=>date('Y-m-d H:i:s',time()),'password'=>Hash::make('abc321'),'created_time'=>time(),'switch'=>1],
+            ['account_name'=>'super','user_uid'=>2,'userId'=>$superId,'created_at'=>date('Y-m-d H:i:s',time()),'password'=>Hash::make('abc321'),'created_time'=>time(),'switch'=>1],
+            ['account_name'=>'admin','user_uid'=>3,'userId'=>$adminId,'created_at'=>date('Y-m-d H:i:s',time()),'password'=>Hash::make('abc321'),'created_time'=>time(),'switch'=>1],
         ];
 		
         DB::table('admin')->insert($adminData);

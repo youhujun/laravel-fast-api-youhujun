@@ -51,7 +51,7 @@ return new class () extends Migration {
                     $table->id()->comment('物理主键（自增）');
                     // 雪花ID核心字段（非空+唯一+索引，适配分库分表）
                     $table->unsignedBigInteger('user_uid')->comment('核心 AppId，与用户表 user_uid 一致	身份唯一锚点，微服务间认身份的核心');
-                    // 分片键：user_id%100/ID%100，未来分库分表用
+                    // 分片键：user_uid%100/ID%100，未来分库分表用
                     $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
                     $table->string('secret_key', 128)->default('')->comment('各微服务独立生成的秘钥（加密存储）');
                     $table->string('service_flag', 32)->default('youhu-base')->comment('微服务标识（youhu-base/youhu-main/youhu-shop）');

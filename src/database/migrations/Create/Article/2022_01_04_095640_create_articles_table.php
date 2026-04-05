@@ -41,7 +41,7 @@ return new class () extends Migration {
                     $table->id()->comment('物理主键（自增）');
                     // 雪花ID核心字段（非空+唯一+索引，适配分库分表）
                     $table->unsignedBigInteger('article_uid')->default(0)->comment('文章全局唯一ID,雪花ID,业务核心ID');
-                    // 分片键：user_id%100/ID%100，未来分库分表用
+                    // 分片键：user_uid%100/ID%100，未来分库分表用
                     $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
                     // 关联字段同步改为 uid 后缀，保持命名一致
                     $table->unsignedBigInteger('admin_uid')->default(0)->comment('管理员uid,雪花ID');

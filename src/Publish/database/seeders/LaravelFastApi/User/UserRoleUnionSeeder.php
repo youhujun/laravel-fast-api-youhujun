@@ -43,23 +43,23 @@ class UserRoleUnionSeeder extends Seeder
            $developRoleUninData[] = [
                 'created_time' => time(),
                 'created_at' => date('Y-m-d H:i:s',\time()),
-                'user_id' => 1,
+                'user_uid' => 1,
                 'role_id'=>$value->id
            ];
 
            $superRoleUninData[] =  [
                 'created_time' => time(),
                 'created_at' => date('Y-m-d H:i:s',\time()),
-                'user_id' => 2,
+                'user_uid' => 2,
                 'role_id'=>$value->id
            ];
 
         }
 
         $userRoleUnionData = [
-            ['user_id'=>3,'role_id'=>30,'created_time'=>time()],
-            ['user_id'=>3,'role_id'=>40,'created_time'=>time()],
-            ['user_id'=>4,'role_id'=>40,'created_time'=>time()],
+            ['user_uid'=>3,'role_id'=>30,'created_time'=>time()],
+            ['user_uid'=>3,'role_id'=>40,'created_time'=>time()],
+            ['user_uid'=>4,'role_id'=>40,'created_time'=>time()],
 
         ];
 

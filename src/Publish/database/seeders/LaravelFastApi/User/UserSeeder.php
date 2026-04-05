@@ -33,10 +33,10 @@ class UserSeeder extends Seeder
 		$foureUserId = Str::uuid()->toString();
 
         $userData = [
-            ['userId'=>$oneUserId,'account_name'=>'develop','password'=>Hash::make('abc321'),'created_time'=>time(),'switch'=>1,'auth_token'=>Str::random(20),'source_user_id'=>0,'source_userId'=>'','real_auth_status'=>10,'invite_code'=>'0001'],
-            ['userId'=>$towUserId,'account_name'=>'super','password'=>Hash::make('abc321'),'created_time'=>time(),'switch'=>1,'auth_token'=>Str::random(20),'source_user_id'=>1,'source_userId'=>$oneUserId,'real_auth_status'=>10,'invite_code'=>'0002'],
-            ['userId'=>$threeUserId,'account_name'=>'admin','password'=>Hash::make('abc321'),'created_time'=>time(),'switch'=>1,'auth_token'=>Str::random(20),'source_user_id'=>2,'source_userId'=>$towUserId,'real_auth_status'=>10,'invite_code'=>'0003'],
-            ['userId'=>$foureUserId,'account_name'=>'user','password'=>Hash::make('abc321'),'created_time'=>time(),'switch'=>1,'auth_token'=>Str::random(20),'source_user_id'=>3,'source_userId'=>$threeUserId,'real_auth_status'=>10,'invite_code'=>'0004'],
+            ['userId'=>$oneUserId,'account_name'=>'develop','password'=>Hash::make('abc321'),'created_time'=>time(),'switch'=>1,'auth_token'=>Str::random(20),'source_user_uid'=>0,'source_userId'=>'','real_auth_status'=>10,'invite_code'=>'0001'],
+            ['userId'=>$towUserId,'account_name'=>'super','password'=>Hash::make('abc321'),'created_time'=>time(),'switch'=>1,'auth_token'=>Str::random(20),'source_user_uid'=>1,'source_userId'=>$oneUserId,'real_auth_status'=>10,'invite_code'=>'0002'],
+            ['userId'=>$threeUserId,'account_name'=>'admin','password'=>Hash::make('abc321'),'created_time'=>time(),'switch'=>1,'auth_token'=>Str::random(20),'source_user_uid'=>2,'source_userId'=>$towUserId,'real_auth_status'=>10,'invite_code'=>'0003'],
+            ['userId'=>$foureUserId,'account_name'=>'user','password'=>Hash::make('abc321'),'created_time'=>time(),'switch'=>1,'auth_token'=>Str::random(20),'source_user_uid'=>3,'source_userId'=>$threeUserId,'real_auth_status'=>10,'invite_code'=>'0004'],
         ];
 
         DB::table('users')->insert($userData);

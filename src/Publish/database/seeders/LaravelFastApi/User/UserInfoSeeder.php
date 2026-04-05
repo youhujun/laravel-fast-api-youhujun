@@ -28,19 +28,19 @@ class UserInfoSeeder extends Seeder
     {
         //添加用户头像信息
         $userAvatarData = [
-            ['user_id'=>1,'album_picture_id'=>2,'is_default'=>1,'created_time'=>time()],
-            ['user_id'=>2,'album_picture_id'=>2,'is_default'=>1,'created_time'=>time()],
-            ['user_id'=>3,'album_picture_id'=>2,'is_default'=>1,'created_time'=>time()],
-            ['user_id'=>4,'album_picture_id'=>2,'is_default'=>1,'created_time'=>time()]
+            ['user_uid'=>1,'album_picture_id'=>2,'is_default'=>1,'created_time'=>time()],
+            ['user_uid'=>2,'album_picture_id'=>2,'is_default'=>1,'created_time'=>time()],
+            ['user_uid'=>3,'album_picture_id'=>2,'is_default'=>1,'created_time'=>time()],
+            ['user_uid'=>4,'album_picture_id'=>2,'is_default'=>1,'created_time'=>time()]
         ];
         DB::table('user_avatar')->insert( $userAvatarData);
 
         //添加用户详情信息
         $userInfoData = [
-            ['created_time'=>time(),'user_id'=>1,'nick_name'=>'developer','sex'=>0,'introduction'=>'I am a super developer'],
-            ['created_time'=>time(),'user_id'=>2,'nick_name'=>'superAdmin','sex'=>10,'introduction'=>'I am a super administrator'],
-            ['created_time'=>time(),'user_id'=>3,'nick_name'=>'admin','sex'=>10,'introduction'=>'I am an administrator'],
-            ['created_time'=>time(),'user_id'=>4,'nick_name'=>'user','sex'=>10,'introduction'=>'I am an user'],
+            ['created_time'=>time(),'user_uid'=>1,'nick_name'=>'developer','sex'=>0,'introduction'=>'I am a super developer'],
+            ['created_time'=>time(),'user_uid'=>2,'nick_name'=>'superAdmin','sex'=>10,'introduction'=>'I am a super administrator'],
+            ['created_time'=>time(),'user_uid'=>3,'nick_name'=>'admin','sex'=>10,'introduction'=>'I am an administrator'],
+            ['created_time'=>time(),'user_uid'=>4,'nick_name'=>'user','sex'=>10,'introduction'=>'I am an user'],
         ];
 
         DB::table('user_info')->insert($userInfoData);

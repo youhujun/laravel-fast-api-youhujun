@@ -27,7 +27,7 @@ class AlbumPictureSeeder extends Seeder
         $albumPictureData = [
             [
 				'admin_id'=>1,
-				'user_id'=>1,
+				'user_uid'=>1,
 				'album_uid'=>1,
 				'picture_name'=>'album',
 				'picture_path'=>DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'album'.DIRECTORY_SEPARATOR,
@@ -42,7 +42,7 @@ class AlbumPictureSeeder extends Seeder
 
             [
 				'admin_id'=>1,
-				'user_id'=>1,
+				'user_uid'=>1,
 				'album_uid'=>1,
 				'picture_name'=>'avatar',
 				'picture_path'=>DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'avatar'.DIRECTORY_SEPARATOR,
@@ -57,7 +57,7 @@ class AlbumPictureSeeder extends Seeder
 
 			 [
 				'admin_id'=>1,
-				'user_id'=>1,
+				'user_uid'=>1,
 				'album_uid'=>1,
 				'picture_name'=>'logo',
 				'picture_path'=>DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'file'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR,

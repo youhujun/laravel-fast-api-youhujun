@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 
 return new class () extends Migration {
-    protected $baseTable = 'user_id_cards';
+    protected $baseTable = 'user_uid_cards';
     protected $hasSnowflake = true;
     // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
     protected $shardKeyAnchor = 'user_uid';
@@ -37,7 +37,7 @@ return new class () extends Migration {
             if (!Schema::connection($dbConnection)->hasTable($tableName)) {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->id()->comment('主键');
-                    $table->unsignedBigInteger('user_id_card_uid')->comment('用户身份证雪花ID');
+                    $table->unsignedBigInteger('user_uid_card_uid')->comment('用户身份证雪花ID');
 
                     $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
 
@@ -54,12 +54,12 @@ return new class () extends Migration {
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
                     // 索引
-                    $table->unique('user_id_card_uid', 'uni_user_id_cards_uid_' . $i);
-                    $table->index('user_uid', 'idx_user_id_cards_user_uid_' . $i);
-                    $table->index('created_time', 'idx_user_id_cards_created_time_' . $i);
-                    $table->index('id_card_front_uid', 'idx_user_id_cards_front_uid_' . $i);
-                    $table->index('id_card_back_uid', 'idx_user_id_cards_back_uid_' . $i);
-                    $table->index('sort', 'idx_user_id_cards_sort_' . $i);
+                    $table->unique('user_uid_card_uid', 'uni_user_uid_cards_uid_' . $i);
+                    $table->index('user_uid', 'idx_user_uid_cards_user_uid_' . $i);
+                    $table->index('created_time', 'idx_user_uid_cards_created_time_' . $i);
+                    $table->index('id_card_front_uid', 'idx_user_uid_cards_front_uid_' . $i);
+                    $table->index('id_card_back_uid', 'idx_user_uid_cards_back_uid_' . $i);
+                    $table->index('sort', 'idx_user_uid_cards_sort_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');
