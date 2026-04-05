@@ -26,22 +26,22 @@ if (!function_exists('make_system_config')) {
      */
     function make_system_config()
     {
-        $systemConfigRedis = Redis::hget('system:config', 'listSystemConfig');
+        //是否缓存系统配置
+        $is_cache_system_config = config('common.is_cache_system_config');
 
-        if ($systemConfigRedis) {
-            $systemConfigCollection = unserialize($systemConfigRedis);
-        } else {
-            $systemConfigCollection = CommonEsFacade::getEsSystemConfig();
+        if ($is_cache_system_config) {
+            $systemConfigRedis = Redis::hget('system:config', 'listSystemConfig');
+            if ($systemConfigRedis) {
+                $systemConfigCollection = unserialize($systemConfigRedis);
+            } else {
+                $systemConfigCollection = CommonEsFacade::getEsSystemConfig();
 
-            //p($systemConfigList);die;
+                //p($systemConfigList);die;
 
-            Redis::hset('system:config', 'listSystemConfig', serialize($systemConfigCollection));
-        }
+                Redis::hset('system:config', 'listSystemConfig', serialize($systemConfigCollection));
+            }
 
-        if ($systemConfigCollection->count()) {
-            $isSetSystemConfig = Redis::hget('system:config', 'isSetSystemConfig');
-
-            if (!$isSetSystemConfig) {
+            if ($systemConfigCollection->count()) {
                 foreach ($systemConfigCollection as $key => $item) {
                     $value = [10 => $item->item_label,20 => $item->item_value,30 => $item->item_price,40 => $item->item_path,50 => $item->item_path];
 
@@ -49,8 +49,6 @@ if (!function_exists('make_system_config')) {
                         $result = Cache::put($item->item_label, $value[$item->item_type]);
                     }
                 }
-
-                Redis::hset('system:config', 'isSetSystemConfig', 1);
             }
         }
     }
@@ -67,7 +65,6 @@ if (!function_exists('clean_system_config')) {
      */
     function clean_system_config()
     {
-        Redis::hset('system:config', 'isSetSystemConfig', 0);
         Redis::hset('system:config', 'listSystemConfig', null);
     }
 }

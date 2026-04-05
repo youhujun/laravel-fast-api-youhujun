@@ -6,7 +6,7 @@
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2024-02-13 16:10:12
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-23 17:53:17
+ * @LastEditTime: 2026-04-05 14:18:51
  * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\App\Providers\LaravelFastApiServiceProvider.php
  */
 
@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
 use YouHuJun\Tool\App\Facades\V1\Utils\Shard\ShardFacade;
+use YouHuJun\Tool\App\Facades\V1\Es\EsFacade;
 
 class LaravelFastApiServiceProvider extends ServiceProvider
 {
@@ -61,6 +62,13 @@ class LaravelFastApiServiceProvider extends ServiceProvider
             'db_prefix' => Config::get('youhujun.shard.db_prefix', 'ds_'),
             'default_db' => Config::get('youhujun.shard.default_db', 'ds_0'),
         ]);
+
+        // 全局初始化 es
+        EsFacade::init(
+            config('common_es.host'),
+            config('common_es.user'),
+            config('common_es.password')
+        );
 
         if (config('youhujun.publish')) {
             //执行运行数据库迁移文件
