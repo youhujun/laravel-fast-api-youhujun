@@ -5,7 +5,6 @@ use App\Models\LaravelFastApi\V1\Admin\Admin;
 use App\Models\LaravelFastApi\V1\User\User;
 use App\Models\LaravelFastApi\V1\User\Union\UserRoleUnion;
 use App\Models\LaravelFastApi\V1\System\Role\Role;
-use App\Facades\Common\V1\Shard\ShardHelperFacade;
 
 if (!function_exists('get_admin_roles')) {
     /**
@@ -38,7 +37,7 @@ if (!function_exists('get_admin_roles')) {
         } else {
             // 查询管理员与角色的关联关系
 
-            $adminRoleUnionCollection = ShardHelperFacade::queryByShardWithCache(UserRoleUnion::class, $adminObject->user_uid);
+            $adminRoleUnionCollection = UserRoleUnion::queryByShard($adminObject->user_uid)->where('user_uid', $adminObject->user_uid)->get();
 
             $roleIdArray = [];
             // 5. 移除不必要的引用传递，避免变量污染
@@ -106,7 +105,7 @@ if (!function_exists('get_user_roles')) {
             }
         } else {
             // 查询管理员的用户角色关联
-            $userRoleUnionCollection = ShardHelperFacade::queryByShardWithCache(UserRoleUnion::class, $userObject->biz_id);
+            $userRoleUnionCollection = UserRoleUnion::queryByShard($adminObject->user_uid)->where('user_uid', $adminObject->user_uid)->get();
 
             $roleIdArray = [];
             foreach ($userRoleUnionCollection as $key => $userRoleUnionObject) {
