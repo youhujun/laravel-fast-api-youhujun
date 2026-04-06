@@ -40,7 +40,7 @@ return new class () extends Migration {
                     $table->id()->comment('主键');
                     $table->unsignedBigInteger('user_wechat_unionid_uid')->default(0)->comment('用户微信unionid雪花ID');
 
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
 
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->string('unionid', 64)->nullable()->comment('微信的unionid 唯一');
@@ -53,11 +53,9 @@ return new class () extends Migration {
                     $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
-                    $table->unique('user_wechat_unionid_uid', 'uni_wechat_uids_uw_uid_' . $i);
-                    $table->unique('unionid', 'uni_wechat_uids_unionid_' . $i);
-                    $table->index('user_uid', 'idx_wechat_uids_user_uid_' . $i);
-                    $table->index('created_time', 'idx_wechat_uids_cre_time_' . $i);
-                    $table->index('sort', 'idx_wechat_uids_sort_' . $i);
+                    $table->unique('user_wechat_unionid_uid', 'uni_primary_key_' . $i);
+                    $table->index('user_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

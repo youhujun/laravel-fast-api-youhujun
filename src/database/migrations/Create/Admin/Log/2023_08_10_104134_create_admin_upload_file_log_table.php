@@ -40,7 +40,7 @@ return new class () extends Migration {
             if (!Schema::connection($dbConnection)->hasTable($tableName)) {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->unsignedBigInteger('admin_upload_file_log_uid')->default(0)->comment('日志uid,雪花ID');
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:admin_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:admin_uid%(db_count * table_count)(工具包自动计算)');
                     $table->unsignedBigInteger('admin_uid')->default(0)->comment('管理员uid,雪花ID');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                     $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
@@ -62,9 +62,9 @@ return new class () extends Migration {
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
                     // 索引
-                    $table->unique('admin_upload_file_log_uid', 'uni_admin_upload_file_logs_log_uid_' . $i);
-                    $table->index('admin_uid', 'idx_admin_upload_file_logs_admin_uid_' . $i);
-                    $table->index('data_type', 'idx_admin_upload_file_logs_data_type_' . $i);
+                    $table->unique('admin_upload_file_log_uid', 'uni_primary_key_' . $i);
+                    $table->index('admin_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

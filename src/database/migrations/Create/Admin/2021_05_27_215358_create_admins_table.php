@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2021-05-27 21:53:58
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-22 11:32:35
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-07 01:35:27
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -44,8 +44,8 @@ return new class () extends Migration {
                     $table->id()->comment('物理主键（自增）');
                     // 雪花ID核心字段（非空+唯一+索引，适配分库分表）
                     $table->unsignedBigInteger('admin_uid')->default(0)->comment('管理员全局唯一ID,雪花ID,业务核心ID');
-                    // 分片键：user_uid%100/ID%100，未来分库分表用
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    // 分片键：user_uid%(db_count * table_count)(工具包自动计算)
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
                     // 关联字段同步改为 uid 后缀，保持命名一致
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户全局唯一ID');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
@@ -69,14 +69,9 @@ return new class () extends Migration {
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
                     // 索引 - 关键修复：加$i区分分表索引名，避免重复
-                    $table->unique('admin_uid', 'uni_admins_admin_uid_' . $i);
-                    // 适配软删除
-                    $table->unique(['account_name', 'deleted_at'], 'uni_admins_account_name_deleted_' . $i);
-                    $table->unique(['phone', 'deleted_at'], 'uni_admins_phone_deleted_' . $i);
-                    $table->unique(['email', 'deleted_at'], 'uni_admins_email_deleted_' . $i);
-                    $table->index('user_uid', 'idx_admins_user_uid_' . $i);
-                    $table->index('account_status', 'idx_admins_account_status_' . $i);
-                    $table->index('created_time', 'idx_admins_created_time_' . $i);
+                    $table->unique('admin_uid', 'uni_primary_key_' . $i);
+                    $table->index('user_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

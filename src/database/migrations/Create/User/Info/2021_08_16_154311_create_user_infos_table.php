@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2021-08-16 19:00:53
- * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2024-02-25 21:44:10
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-06 16:08:11
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -19,7 +19,7 @@ return new class () extends Migration {
     protected $baseTable = 'user_infos';
     protected $hasSnowflake = true;
     // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
-	protected $shardKeyAnchor = 'user_uid';
+    protected $shardKeyAnchor = 'user_uid';
     protected $tableComment = '用户信息表';
 
     /**
@@ -39,7 +39,7 @@ return new class () extends Migration {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->id()->comment('主键');
                     $table->unsignedBigInteger('user_info_uid')->comment('用户信息雪花ID');
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                     $table->string('nick_name', 64)->default('')->comment('昵称');
@@ -61,13 +61,9 @@ return new class () extends Migration {
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
                     // 索引
-                    $table->unique('user_info_uid', 'uni_user_infos_uid_' . $i);
-                    $table->unique('id_number', 'uni_user_infos_id_number_' . $i);
-                    $table->index('user_uid', 'idx_user_infos_user_uid_' . $i);
-                    $table->index('created_time', 'idx_user_infos_created_time_' . $i);
-                    $table->index('sex', 'idx_user_infos_sex_' . $i);
-                    $table->index('solar_birthday_time', 'idx_user_infos_solar_birthday_' . $i);
-                    $table->index('chinese_birthday_time', 'idx_user_infos_chinese_birthday_' . $i);
+                    $table->unique('user_info_uid', 'uni_primary_key' . $i);
+                    $table->index('user_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

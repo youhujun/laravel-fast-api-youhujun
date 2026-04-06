@@ -39,7 +39,7 @@ return new class () extends Migration {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->id()->comment('主键');
                     $table->unsignedBigInteger('user_role_union_uid')->default(0)->comment('用户角色关联雪花ID');
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedInteger('role_id')->default(0)->comment('角色id');
 
@@ -50,11 +50,9 @@ return new class () extends Migration {
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
                     // 索引
-                    $table->unique('user_role_union_uid', 'uni_role_unions_ur_uid_' . $i);
-                    $table->index('user_uid', 'idx_role_unions_user_uid_' . $i);
-                    $table->index('role_id', 'idx_role_unions_role_id_' . $i);
-                    $table->index('created_time', 'idx_role_unions_cre_time_' . $i);
-                    $table->index('updated_time', 'idx_role_unions_upd_time_' . $i);
+                    $table->unique('user_role_union_uid', 'uni_primary_key_' . $i);
+                    $table->index('user_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

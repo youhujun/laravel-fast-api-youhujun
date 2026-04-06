@@ -39,7 +39,7 @@ return new class () extends Migration {
                     $table->id()->comment('主键');
                     $table->unsignedBigInteger('user_system_douyin_config_union_uid')->default(0)->comment('用户抖音配置关联雪花ID');
 
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
 
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
@@ -56,13 +56,9 @@ return new class () extends Migration {
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
                     // 索引
-                    $table->unique('user_system_douyin_config_union_uid', 'uni_sys_douyin_usd_uid_' . $i);
-                    $table->unique('openid', 'uni_sys_douyin_openid_' . $i);
-                    $table->index('user_uid', 'idx_sys_douyin_user_uid_' . $i);
-                    $table->index('created_time', 'idx_sys_douyin_cre_time_' . $i);
-                    $table->index('verified_time', 'idx_sys_douyin_ver_time_' . $i);
-                    $table->index('system_douyin_config_id', 'idx_sys_douyin_sys_did_' . $i);
-                    $table->index('updated_time', 'idx_sys_douyin_upd_time_' . $i);
+                    $table->unique('user_system_douyin_config_union_uid', 'uni_primary_key_' . $i);
+                    $table->index('user_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

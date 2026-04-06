@@ -41,8 +41,8 @@ return new class () extends Migration {
                     $table->id()->comment('物理主键（自增）');
                     // 雪花ID核心字段（非空+唯一+索引，适配分库分表）
                     $table->unsignedBigInteger('article_uid')->default(0)->comment('文章全局唯一ID,雪花ID,业务核心ID');
-                    // 分片键：user_uid%100/ID%100，未来分库分表用
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    // 分片键：user_uid%(db_count * table_count)(工具包自动计算)
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
                     // 关联字段同步改为 uid 后缀，保持命名一致
                     $table->unsignedBigInteger('admin_uid')->default(0)->comment('管理员uid,雪花ID');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('发布人uid,雪花ID');
@@ -71,14 +71,9 @@ return new class () extends Migration {
                     $table->unsignedTinyInteger('sort')->default(100)->comment('排序 默认100');
 
                     // 索引 - 关键修复：加$i区分分表索引名，避免重复
-                    $table->unique('article_uid', 'uni_articles_article_uid_' . $i);
-                    $table->index('admin_uid', 'idx_articles_admin_uid_' . $i);
-                    $table->index('user_uid', 'idx_articles_user_uid_' . $i);
-                    $table->index('type', 'idx_articles_type_' . $i);
-                    $table->index('is_top', 'idx_articles_is_top_' . $i);
-                    $table->index('check_status', 'idx_articles_chk_status_' . $i);
-                    $table->index('sort', 'idx_articles_sort_' . $i);
-                    $table->index('created_time', 'idx_articles_created_time_' . $i);
+                    $table->unique('article_uid', 'uni_primary_key_' . $i);
+                    $table->index('user_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 // 关键修复：补全单引号，修正SQL语法

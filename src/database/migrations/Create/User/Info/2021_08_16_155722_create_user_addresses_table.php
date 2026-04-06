@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'user_addresses';
     protected $hasSnowflake = true;
-		// 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
-	protected $shardKeyAnchor = 'user_uid';
+    // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+    protected $shardKeyAnchor = 'user_uid';
     protected $tableComment = '用户地址表';
 
     /**
@@ -39,7 +39,7 @@ return new class () extends Migration {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->id()->comment('主键');
                     $table->unsignedBigInteger('user_address_uid')->comment('用户地址雪花ID');
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                     $table->unsignedTinyInteger('address_type')->default(0)->comment('地址类型 默认0家庭10工作20 学校30 其他40');
@@ -63,18 +63,9 @@ return new class () extends Migration {
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
                     // 索引
-                    $table->unique('user_address_uid', 'uni_user_addresses_uid_' . $i);
-                    $table->index('user_uid', 'idx_user_addresses_user_uid_' . $i);
-                    $table->index('created_time', 'idx_user_addresses_created_time_' . $i);
-                    $table->index('address_type', 'idx_user_addresses_address_type_' . $i);
-                    $table->index('is_default', 'idx_user_addresses_is_default_' . $i);
-                    $table->index('is_top', 'idx_user_addresses_is_top_' . $i);
-                    $table->index('country_id', 'idx_user_addresses_country_id_' . $i);
-                    $table->index('towns_id', 'idx_user_addresses_towns_id_' . $i);
-                    $table->index('village_id', 'idx_user_addresses_village_id_' . $i);
-                    $table->index('province_id', 'idx_user_addresses_province_id_' . $i);
-                    $table->index('region_id', 'idx_user_addresses_region_id_' . $i);
-                    $table->index('city_id', 'idx_user_addresses_city_id_' . $i);
+                    $table->unique('user_address_uid', 'uni_primary_key' . $i);
+                    $table->index('user_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

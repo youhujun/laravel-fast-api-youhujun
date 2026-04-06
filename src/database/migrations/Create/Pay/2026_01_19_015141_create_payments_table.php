@@ -43,7 +43,7 @@ return new class () extends Migration {
                     $table->unsignedBigInteger('payment_uid')->default(0)->comment('支付全局唯一ID,雪花ID,业务核心ID');
 
                     // 3. 关联字段（统一用uid后缀，和系统其他表对齐）
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:payer_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:payer_uid%(db_count * table_count)(工具包自动计算)');
                     $table->unsignedBigInteger('payer_uid')->default(0)->comment('支付主体UID（用户/商户/机构，关联对应表的*_uid）');
                     $table->unsignedBigInteger('order_uid')->nullable()->comment('主订单UID（单支付对应单主订单时用）');
                     $table->unsignedBigInteger('refund_uid')->nullable()->default(0)->comment('关联退款UID（退款场景用）');
@@ -79,16 +79,9 @@ return new class () extends Migration {
                     $table->text('extend_params')->nullable()->comment('扩展参数（JSON格式，存储渠道特殊参数）');
 
                     // 8. 索引设计（核心优化：复合唯一+业务索引，适配软删除）
-                    $table->unique('payment_uid', 'uni_payments_payment_uid_' . $i);
-                    $table->unique(['payment_no', 'deleted_at'], 'uni_payments_payno_del_' . $i); // 支付单号+软删除 复合唯一
-                    $table->unique(['out_trade_no', 'pay_channel', 'deleted_at'], 'uni_payments_outno_ch_del_' . $i); // 第三方流水+渠道 复合唯一（避免重复回调）
-                    $table->index('payer_uid', 'idx_payments_payer_uid_' . $i);
-                    $table->index('order_uid', 'idx_payments_order_uid_' . $i);
-                    $table->index('refund_uid', 'idx_payments_refund_uid_' . $i);
-                    $table->index('status', 'idx_payments_status_' . $i);
-                    $table->index('pay_channel', 'idx_payments_pay_channel_' . $i);
-                    $table->index('paid_at', 'idx_payments_paid_at_' . $i);
-                    $table->index('created_time', 'idx_payments_cre_time_' . $i); // 时间戳索引（高效范围查询）
+                    $table->unique('payment_uid', 'uni_primary_key_' . $i);
+                    $table->index('payer_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

@@ -39,7 +39,7 @@ return new class () extends Migration {
                     $table->id()->comment('主键 用户银行信息表');
                     $table->unsignedBigInteger('user_bank_uid')->comment('用户银行卡雪花ID');
 
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
 
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedInteger('bank_id')->default(0)->comment('银行id');
@@ -57,16 +57,10 @@ return new class () extends Migration {
                     $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
                     $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间');
-
                     // 索引
-                    $table->unique('user_bank_uid', 'uni_user_banks_uid_' . $i);
-                    $table->index('user_uid', 'idx_user_banks_user_uid_' . $i);
-                    $table->index('bank_id', 'idx_user_banks_bank_id_' . $i);
-                    $table->index('created_time', 'idx_user_banks_created_time_' . $i);
-                    $table->index('bank_front_uid', 'idx_user_banks_bank_front_uid_' . $i);
-                    $table->index('bank_back_uid', 'idx_user_banks_bank_back_uid_' . $i);
-                    $table->index('is_default', 'idx_user_banks_is_default_' . $i);
-                    $table->index('sort', 'idx_user_banks_sort_' . $i);
+                    $table->unique('user_bank_uid', 'uni_primary_key' . $i);
+                    $table->index('user_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

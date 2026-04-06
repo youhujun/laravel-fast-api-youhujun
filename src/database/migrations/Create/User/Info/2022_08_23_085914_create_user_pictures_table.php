@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2022-08-23 16:59:14
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-02-11 04:18:30
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-06 15:59:28
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -39,7 +39,7 @@ return new class () extends Migration {
                     $table->id()->comment('主键');
                     $table->unsignedBigInteger('user_picture_uid')->comment('用户图片雪花ID');
 
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
 
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('album_picture_uid')->default(0)->comment('相册图片uid,雪花ID');
@@ -56,13 +56,9 @@ return new class () extends Migration {
                     $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
 
                     // 索引
-                    $table->unique('user_picture_uid', 'uni_user_pictures_uid_' . $i);
-                    $table->index('user_uid', 'idx_user_pictures_user_uid_' . $i);
-                    $table->index('album_picture_uid', 'idx_user_pictures_picture_uid_' . $i);
-                    $table->index('created_time', 'idx_user_pictures_created_time_' . $i);
-                    $table->index('is_default', 'idx_user_pictures_is_default_' . $i);
-                    $table->index('sort', 'idx_user_pictures_sort_' . $i);
-                    $table->index('data_type', 'idx_user_pictures_data_type_' . $i);
+                    $table->unique('user_picture_uid', 'uni_primary_key' . $i);
+                    $table->index('user_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

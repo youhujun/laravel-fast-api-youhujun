@@ -39,7 +39,7 @@ return new class () extends Migration {
                     $table->unsignedBigInteger('user_login_log_uid')->comment('日志uid,雪花ID');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
 
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
 
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                     $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
@@ -53,11 +53,9 @@ return new class () extends Migration {
                     $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
-                    $table->unique('user_login_log_uid', 'uni_user_login_logs_uid_' . $i);
-                    $table->index('user_uid', 'idx_user_login_logs_user_uid_' . $i);
-                    $table->index('created_time', 'idx_user_login_logs_created_time_' . $i);
-                    $table->index('status', 'idx_user_login_logs_status_' . $i);
-                    $table->index('data_type', 'idx_user_login_logs_data_type_' . $i);
+                    $table->unique('user_login_log_uid', 'uni_primary_key_' . $i);
+                    $table->index('user_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

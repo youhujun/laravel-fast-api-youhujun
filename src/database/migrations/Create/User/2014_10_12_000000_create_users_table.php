@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-23 15:35:15
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-28 10:15:14
+ * @LastEditTime: 2026-04-06 16:06:50
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -44,8 +44,8 @@ return new class () extends Migration {
                     $table->id()->comment('物理主键（自增）');
                     // 雪花ID核心字段（非空+唯一+索引，适配分库分表）
                     $table->unsignedBigInteger('user_uid')->comment('用户全局唯一ID,雪花ID,业务核心ID');
-                    // 分片键：user_uid%100/ID%100，未来分库分表用
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    // 分片键
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
                     // 关联字段同步改为 uid 后缀，保持命名一致
                     $table->unsignedBigInteger('source_user_uid')->default(0)->comment('推荐人全局唯一ID');
                     $table->unsignedBigInteger('parent_user_uid')->default(0)->comment('父级全局唯一ID');
@@ -74,21 +74,9 @@ return new class () extends Migration {
                     $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
-                    // 索引 - 关键修复：加$i区分分表索引名，避免重复
-                    $table->unique('user_uid', 'uni_users_user_uid_' . $i);
-                    $table->unique('remember_token', 'uni_users_remember_token_' . $i);
-                    $table->unique('auth_token', 'uni_users_auth_token_' . $i);
-                    // 适配软删除
-                    $table->unique(['account_name', 'deleted_at'], 'uni_users_account_name_deleted_' . $i);
-
-                    $table->unique(['auth_token', 'deleted_at'], 'uni_users_auth_token_deleted_' . $i);
-
-                    $table->unique(['invite_code', 'deleted_at'], 'uni_users_invite_code_deleted_' . $i);
-                    $table->unique(['phone', 'deleted_at'], 'uni_users_phone_deleted_' . $i);
-                    $table->unique(['email', 'deleted_at'], 'uni_users_email_deleted_' . $i);
-                    $table->index('source_user_uid', 'idx_users_source_user_uid_' . $i);
-                    $table->index('parent_user_uid', 'idx_users_parent_user_uid_' . $i);
-                    $table->index('created_time', 'idx_users_created_time_' . $i);
+                    // 索引
+                    $table->unique('user_uid', 'uni_primary_key' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 // 关键修复：补全单引号，修正SQL语法

@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2021-08-16 10:12:23
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-02-11 11:47:48
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-06 15:24:10
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -40,7 +40,7 @@ return new class () extends Migration {
                     $table->unsignedBigInteger('user_avatar_uid')->comment('用户头像雪花ID');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
 
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
 
                     $table->unsignedBigInteger('album_picture_uid')->default(0)->comment('相册图片uid,雪花ID');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
@@ -56,10 +56,9 @@ return new class () extends Migration {
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
                     // 索引
-                    $table->unique('user_avatar_uid', 'uni_user_avatars_uid_' . $i);
-                    $table->index('user_uid', 'idx_user_avatars_user_uid_' . $i);
-                    $table->index('album_picture_uid', 'idx_user_avatars_picture_uid_' . $i);
-                    $table->index('created_time', 'idx_user_avatars_created_time_' . $i);
+                    $table->unique('user_avatar_uid', 'uni_primary_key' . $i);
+                    $table->index('user_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

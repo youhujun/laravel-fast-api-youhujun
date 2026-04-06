@@ -39,7 +39,7 @@ return new class () extends Migration {
                     $table->id()->comment('主键--用户父关联表');
                     $table->unsignedBigInteger('user_source_union_uid')->default(0)->comment('用户来源关联雪花ID');
 
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
 
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('first_uid')->default(0)->comment('一级uid');
@@ -54,13 +54,9 @@ return new class () extends Migration {
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
                     // 索引
-                    $table->unique('user_source_union_uid', 'uni_source_unions_us_uid_' . $i);
-                    $table->index('user_uid', 'idx_source_unions_user_uid_' . $i);
-                    $table->index('first_uid', 'idx_source_unions_first_uid_' . $i);
-                    $table->index('second_uid', 'idx_source_unions_second_uid_' . $i);
-                    $table->index('created_time', 'idx_source_unions_cre_time_' . $i);
-                    $table->index('sort', 'idx_source_unions_sort_' . $i);
-                    $table->index('updated_time', 'idx_source_unions_upd_time_' . $i);
+                    $table->unique('user_source_union_uid', 'uni_primary_key_' . $i);
+                    $table->index('user_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

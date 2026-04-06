@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2022-08-23 16:53:30
- * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2026-01-23 21:20:00
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-06 16:08:50
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -39,7 +39,7 @@ return new class () extends Migration {
                     $table->id()->comment('主键');
                     $table->unsignedBigInteger('user_phone_uid')->comment('用户电话雪花ID');
 
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
 
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
@@ -55,12 +55,9 @@ return new class () extends Migration {
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
                     // 索引
-                    $table->unique('user_phone_uid', 'uni_user_phones_uid_' . $i);
-                    $table->index('user_uid', 'idx_user_phones_user_uid_' . $i);
-                    $table->index('created_time', 'idx_user_phones_created_time_' . $i);
-                    $table->index('type', 'idx_user_phones_type_' . $i);
-                    $table->index('is_default', 'idx_user_phones_is_default_' . $i);
-                    $table->index('sort', 'idx_user_phones_sort_' . $i);
+                    $table->unique('user_phone_uid', 'uni_primary_key' . $i);
+                    $table->index('user_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

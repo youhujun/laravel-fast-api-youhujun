@@ -40,7 +40,7 @@ return new class () extends Migration {
 
                     $table->unsignedBigInteger('user_qrcode_uid')->comment('用户二维码雪花ID');
 
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
 
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('album_picture_uid')->default(0)->comment('相册图片uid,雪花ID');
@@ -56,11 +56,9 @@ return new class () extends Migration {
                     $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
 
                     // 索引
-                    $table->unique('user_qrcode_uid', 'uni_user_qrcodes_uid_' . $i);
-                    $table->index('user_uid', 'idx_user_qrcodes_user_uid_' . $i);
-                    $table->index('album_picture_uid', 'idx_user_qrcodes_picture_uid_' . $i);
-                    $table->index('created_time', 'idx_user_qrcodes_created_time_' . $i);
-                    $table->index('data_type', 'idx_user_qrcodes_data_type_' . $i);
+                    $table->unique('user_qrcode_uid', 'uni_primary_key' . $i);
+                    $table->index('user_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

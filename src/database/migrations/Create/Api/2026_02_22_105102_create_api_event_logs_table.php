@@ -6,7 +6,7 @@
  * @Author: youhujun youhu8888@163.com & xueer
  * @Date: 2026-02-22 10:51:02
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-04-05 13:28:50
+ * @LastEditTime: 2026-04-07 01:37:58
  * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\database\migrations\Create\Api\2026_02_22_105102_create_api_event_logs_table.php
  * Copyright (C) 2026 youhujun & xueer. All rights reserved.
  */
@@ -52,8 +52,8 @@ return new class () extends Migration {
                     $table->unsignedBigInteger('api_event_log_uid')->comment('日志uid,雪花ID');
 
                     $table->unsignedBigInteger('user_uid')->comment('用户ID,雪花ID,业务核心ID');
-                    // 分片键：user_uid%100/ID%100，未来分库分表用
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    // 分片键：user_uid%(db_count * table_count)(工具包自动计算)
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
                     // 状态字段
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 
@@ -81,16 +81,9 @@ return new class () extends Migration {
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
 
-                    $table->unique('api_event_log_uid', 'uni_api_event_logs_uid_' . $i);
-                    $table->index('user_uid', 'idx_api_event_logs_user_uid_' . $i);
-                    $table->index('event_type', 'idx_api_event_logs_event_type_' . $i);
-                    $table->index('created_time', 'idx_api_event_logs_created_time_' . $i);
-                    $table->index('data_type', 'idx_api_event_logs_data_type_' . $i);
-
-                    $table->index('service_code', 'idx_api_event_logs_service_code_' . $i);
-                    $table->index('request_id', 'idx_api_event_logs_request_id_' . $i);
-                    $table->index('evnet_status', 'idx_api_event_logs_evnet_status_' . $i);
-                    $table->index(['operator_type', 'operator_uid'], 'idx_api_event_logs_operator_' . $i);
+                    $table->unique('api_event_log_uid', 'uni_primary_key_' . $i);
+                    $table->index('user_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 // 关键修复：补全单引号，修正SQL语法

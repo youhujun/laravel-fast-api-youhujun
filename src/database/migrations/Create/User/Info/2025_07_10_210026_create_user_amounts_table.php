@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2025-07-10 21:00:26
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-02-11 11:26:44
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-06 16:09:46
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -39,7 +39,7 @@ return new class () extends Migration {
                     $table->id()->comment('主键');
                     // 分片键：user_uid%100，未来分库分表用
                     $table->unsignedBigInteger('user_amount_uid')->comment('用户余额雪花ID');
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->decimal('amount', 32, 8)->default(0)->comment('余额');
@@ -58,10 +58,9 @@ return new class () extends Migration {
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
                     // 索引
-                    $table->unique('user_amount_uid', 'uni_user_amounts_uid_' . $i);
-                    $table->index('user_uid', 'idx_user_amounts_user_uid_' . $i);
-                    $table->index('created_time', 'idx_user_amounts_created_time_' . $i);
-                    $table->index('sort', 'idx_user_amounts_sort_' . $i);
+                    $table->unique('user_amount_uid', 'uni_primary_key' . $i);
+                    $table->index('user_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 //注意是否需要修改mysql连接名

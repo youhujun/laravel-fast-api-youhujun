@@ -37,9 +37,9 @@ return new class () extends Migration {
             if (!Schema::connection($dbConnection)->hasTable($tableName)) {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->id()->comment('主键');
-                    $table->unsignedBigInteger('user_uid_card_uid')->comment('用户身份证雪花ID');
+                    $table->unsignedBigInteger('user_card_uid')->comment('用户身份证雪花ID');
 
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
 
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('id_card_front_uid')->default(0)->comment('身份证正面(相册图片雪花ID)');
@@ -54,12 +54,9 @@ return new class () extends Migration {
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
                     // 索引
-                    $table->unique('user_uid_card_uid', 'uni_user_uid_cards_uid_' . $i);
-                    $table->index('user_uid', 'idx_user_uid_cards_user_uid_' . $i);
-                    $table->index('created_time', 'idx_user_uid_cards_created_time_' . $i);
-                    $table->index('id_card_front_uid', 'idx_user_uid_cards_front_uid_' . $i);
-                    $table->index('id_card_back_uid', 'idx_user_uid_cards_back_uid_' . $i);
-                    $table->index('sort', 'idx_user_uid_cards_sort_' . $i);
+                    $table->unique('user_card_uid', 'uni_primary_key' . $i);
+                    $table->index('user_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

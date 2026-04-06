@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2021-08-17 09:25:11
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-02-11 11:20:48
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-07 01:44:02
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -41,7 +41,7 @@ return new class () extends Migration {
                     // 雪花ID核心字段（非空+唯一+索引，适配分库分表）
                     $table->unsignedBigInteger('album_picture_uid')->default(0)->comment('相册图片全局唯一ID,雪花ID,业务核心ID');
 
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:album_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:album_uid%(db_count * table_count)(工具包自动计算)');
                     $table->unsignedBigInteger('admin_uid')->default(0)->comment('管理员uid,雪花ID');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid,雪花ID');
                     $table->unsignedBigInteger('album_uid')->default(0)->comment('相册uid,雪花ID');
@@ -65,10 +65,9 @@ return new class () extends Migration {
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
                     // 索引
-                    $table->unique('album_picture_uid', 'uni_album_pictures_ap_uid_' . $i);
-                    $table->index('admin_uid', 'idx_album_pictures_admin_uid_' . $i);
-                    $table->index('user_uid', 'idx_album_pictures_user_uid_' . $i);
-                    $table->index('album_uid', 'idx_album_pictures_album_uid_' . $i);
+                    $table->unique('album_picture_uid', 'uni_primary_key_' . $i);
+                    $table->index('album_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

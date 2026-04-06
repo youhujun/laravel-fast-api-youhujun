@@ -40,7 +40,7 @@ return new class () extends Migration {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->id()->comment('主键');
                     $table->unsignedBigInteger('article_category_union_uid')->default(0)->comment('文章分类关联雪花ID');
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:article_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:article_uid%(db_count * table_count)(工具包自动计算)');
                     $table->unsignedBigInteger('article_uid')->default(0)->comment('文章uid,雪花ID');
                     $table->unsignedInteger('category_id')->default(0)->comment('文章分类id');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
@@ -53,8 +53,9 @@ return new class () extends Migration {
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
                     // 索引
-                    $table->unique('article_category_union_uid', 'uni_article_cat_uns_union_uid_' . $i);
-                    $table->index('article_uid', 'idx_article_cat_uns_article_uid_' . $i);
+                    $table->unique('article_category_union_uid', 'uni_primary_key_' . $i);
+                    $table->index('article_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

@@ -41,7 +41,7 @@ return new class () extends Migration {
                     // 雪花ID核心字段（非空+唯一+索引，适配分库分表）
                     $table->unsignedBigInteger('album_uid')->default(0)->comment('相册全局唯一ID,雪花ID,业务核心ID');
 
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
                     $table->unsignedBigInteger('admin_uid')->default(0)->comment('管理员uid,雪花ID');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid,雪花ID');
                     $table->unsignedBigInteger('cover_album_picture_uid')->default(0)->comment('封面相册图片uid,雪花ID');
@@ -61,10 +61,9 @@ return new class () extends Migration {
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
                     // 索引
-                    $table->unique('album_uid', 'uni_albums_album_uid_' . $i);
-                    $table->index('admin_uid', 'idx_albums_admin_uid_' . $i);
-                    $table->index('user_uid', 'idx_albums_user_uid_' . $i);
-                    $table->index('cover_album_picture_uid', 'idx_albums_cov_pic_uid_' . $i);
+                    $table->unique('album_uid', 'uni_primary_key_' . $i);
+                    $table->index('user_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

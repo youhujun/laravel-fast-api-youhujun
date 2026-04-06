@@ -51,8 +51,8 @@ return new class () extends Migration {
                     $table->id()->comment('物理主键（自增）');
                     // 雪花ID核心字段（非空+唯一+索引，适配分库分表）
                     $table->unsignedBigInteger('user_uid')->comment('核心 AppId，与用户表 user_uid 一致	身份唯一锚点，微服务间认身份的核心');
-                    // 分片键：user_uid%100/ID%100，未来分库分表用
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    // 分片键：user_uid%(db_count * table_count)(工具包自动计算)
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
                     $table->string('secret_key', 128)->default('')->comment('各微服务独立生成的秘钥（加密存储）');
                     $table->string('service_flag', 32)->default('youhu-base')->comment('微服务标识（youhu-base/youhu-main/youhu-shop）');
                     $table->char('auth_token', 128)->nullable()->comment('前端使用唯一标识');
@@ -68,10 +68,8 @@ return new class () extends Migration {
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
                     // 索引 - 关键修复：加$i区分分表索引名，避免重复
-                    $table->unique('user_uid', 'uni_' . $this->baseTable . '_user_uid_' . $i);
-                    $table->unique('auth_token', 'uni_' . $this->baseTable . '_auth_token_' . $i);
-                    // 适配软删除
-                    $table->index('created_time', 'idx_' . $this->baseTable . '_created_time_' . $i);
+                    $table->unique('user_uid', 'uni_primary_key_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 // 关键修复：补全单引号，修正SQL语法

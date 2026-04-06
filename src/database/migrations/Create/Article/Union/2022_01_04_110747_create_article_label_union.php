@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2022-01-04 11:07:47
- * @LastEditors: YouHuJun
- * @LastEditTime: 2026-01-23 21:05:57
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-07 01:43:30
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -40,7 +40,7 @@ return new class () extends Migration {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->id()->comment('主键');
                     $table->unsignedBigInteger('article_label_union_uid')->default(0)->comment('文章标签关联雪花ID');
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:article_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:article_uid%(db_count * table_count)(工具包自动计算)');
                     $table->unsignedBigInteger('article_uid')->default(0)->comment('文章uid,雪花ID');
                     $table->unsignedInteger('label_id')->default(0)->comment('标签id');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
@@ -53,8 +53,9 @@ return new class () extends Migration {
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
                     // 索引
-                    $table->unique('article_label_union_uid', 'uni_article_lbl_uns_union_uid_' . $i);
-                    $table->index('article_uid', 'idx_article_lbl_uns_article_uid_' . $i);
+                    $table->unique('article_label_union_uid', 'uni_primary_key_' . $i);
+                    $table->index('article_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

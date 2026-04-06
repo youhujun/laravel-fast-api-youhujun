@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2022-08-23 17:48:14
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-04-02 15:42:19
+ * @LastEditTime: 2026-04-07 01:37:05
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -39,7 +39,7 @@ return new class () extends Migration {
             if (!Schema::connection($dbConnection)->hasTable($tableName)) {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
                     $table->unsignedBigInteger('admin_login_log_uid')->default(0)->comment('日志uid,雪花ID');
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:admin_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:admin_uid%(db_count * table_count)(工具包自动计算)');
                     $table->unsignedBigInteger('admin_uid')->default(0)->comment('管理员uid,雪花ID');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 
@@ -57,9 +57,9 @@ return new class () extends Migration {
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
                     // 索引
-                    $table->unique('admin_login_log_uid', 'uni_admin_login_logs_log_uid_' . $i);
-                    $table->index('admin_uid', 'idx_admin_login_logs_admin_uid_' . $i);
-                    $table->index('data_type', 'idx_admin_login_logs_data_type_' . $i);
+                    $table->unique('admin_login_log_uid', 'uni_primary_key_' . $i);
+                    $table->index('admin_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');

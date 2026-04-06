@@ -5,8 +5,8 @@
  * @version: v1
  * @Author: youhujun youhu8888@163.com
  * @Date: 2026-01-15 12:08:13
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-02-11 11:38:37
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-06 16:07:15
  * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\database\migrations\Create\User\2026_01_15_120813_create_user_certifications_table.php
  * Copyright (C) 2026 youhujun. All rights reserved.
  */
@@ -40,7 +40,7 @@ return new class () extends Migration {
                     $table->unsignedBigInteger('user_certification_uid')->default(0)->comment('用户认证UID');
 
 
-                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%table_count(工具包自动计算)');
+                    $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
 
                     // 核心关联字段（和用户表一致的雪花ID）
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('关联用户表user_uid');
@@ -63,13 +63,9 @@ return new class () extends Migration {
                     $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
 
                     // 索引
-                    $table->unique('user_certification_uid', 'uni_user_certifications_uid_' . $i);
-                    $table->unique(['user_uid', 'cert_type'], 'uni_user_certifications_uid_type_' . $i);
-                    $table->index('user_uid', 'idx_user_certifications_user_uid_' . $i);
-                    $table->index('cert_type', 'idx_user_certifications_cert_type_' . $i);
-                    $table->index('cert_status', 'idx_user_certifications_cert_status_' . $i);
-                    $table->index('certified_time', 'idx_user_certifications_certified_' . $i);
-                    $table->index('created_time', 'idx_user_certifications_created_' . $i);
+                    $table->unique('user_certification_uid', 'uni_primary_key' . $i);
+                    $table->index('user_uid', 'idx_bussiness_calc_' . $i);
+                    $table->index('shard_key', 'idx_shard_key_' . $i);
                 });
 
                 $prefix = config('database.connections.'.$dbConnection.'.prefix');
