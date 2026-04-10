@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2023-03-24 10:44:35
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-02-11 11:21:59
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-11 02:13:04
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -35,12 +35,12 @@ return new class () extends Migration {
         if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
             Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
                 $table->id()->comment('主键');
-                $table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
+                $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 
-                $table->unsignedTinyInteger('type')->notNull()->default(0)->comment('配置项类型 10数值 20百分比 30时间');
+                $table->unsignedTinyInteger('type')->default(0)->comment('配置项类型 10数值 20百分比 30时间');
                 $table->string('item_name', 32)->unique()->nullable()->comment('配置项名称 唯一');
                 $table->string('item_code', 32)->unique()->nullable()->comment('配置项代码 唯一');
-                $table->string('description', 64)->notNull()->default('')->comment('描述');
+                $table->string('description', 64)->default('')->comment('描述');
 
                 // 时间字段（自动填充+索引，关键优化）
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
@@ -49,7 +49,7 @@ return new class () extends Migration {
                 $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
-                $table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
+                $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
                 // 索引
                 $table->unique(['item_name','deleted_at'], 'uni_level_items_name_del');

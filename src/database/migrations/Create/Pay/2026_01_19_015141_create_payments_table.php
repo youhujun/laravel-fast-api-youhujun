@@ -5,8 +5,8 @@
  * @version: 1.0
  * @Author: YouHuJun
  * @Date: 2026-01-19 10:00:00
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-02-10 23:13:31
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-11 02:10:35
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -46,15 +46,15 @@ return new class () extends Migration {
                     $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:payer_uid%(db_count * table_count)(工具包自动计算)');
                     $table->unsignedBigInteger('payer_uid')->default(0)->comment('支付主体UID（用户/商户/机构，关联对应表的*_uid）');
                     $table->unsignedBigInteger('order_uid')->nullable()->comment('主订单UID（单支付对应单主订单时用）');
-                    $table->unsignedBigInteger('refund_uid')->nullable()->default(0)->comment('关联退款UID（退款场景用）');
-                    $table->unsignedBigInteger('operator_uid')->nullable()->default(0)->comment('操作人UID（后台人工干预时记录）');
+                    $table->unsignedBigInteger('refund_uid')->default(0)->comment('关联退款UID（退款场景用）');
+                    $table->unsignedBigInteger('operator_uid')->default(0)->comment('操作人UID（后台人工干预时记录）');
 
                     // 4. 支付核心业务字段
                     $table->string('payment_no', 64)->comment('系统内部支付单号（唯一，用于对账/展示）');
                     $table->string('out_trade_no', 64)->nullable()->comment('第三方支付流水号（微信/支付宝/银行等）');
-                    $table->decimal('total_amount', 16, 2)->comment('支付总金额（单位：元，精确到分）');
-                    $table->decimal('actual_paid_amount', 16, 2)->nullable()->comment('实际支付金额（可能有优惠/减免）');
-                    $table->decimal('fee_amount', 16, 2)->nullable()->default(0.00)->comment('支付手续费金额');
+                    $table->unsignedBigInteger('total_amount')->default(0)->comment('支付总金额（单位：元，精确到分）');
+                    $table->unsignedBigInteger('actual_paid_amount')->default(0)->comment('实际支付金额（可能有优惠/减免）');
+                    $table->unsignedBigInteger('fee_amount')->default(0)->comment('支付手续费金额');
                     $table->string('pay_channel', 32)->comment('支付渠道：wechat/ali_pay/bank_card/digital_cny等');
                     $table->string('pay_sub_channel', 64)->nullable()->comment('支付子渠道：wechat_app/wechat_h5/ali_pay_wap等');
 

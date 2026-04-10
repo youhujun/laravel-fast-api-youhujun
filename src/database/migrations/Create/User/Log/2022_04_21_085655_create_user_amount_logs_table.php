@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2022-04-21 08:56:55
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-23 21:25:00
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-11 02:41:49
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -42,10 +42,10 @@ return new class () extends Migration {
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                     $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
-                    $table->decimal('before_amount', 32, 8)->default(0)->comment('实际金额');
-                    $table->decimal('change_value', 32, 8)->default(0)->comment('变动数值');
+                    $table->unsignedBigInteger('before_amount')->default(0)->comment('实际金额');
+                    $table->unsignedBigInteger('change_value')->default(0)->comment('变动数值');
                     $table->unsignedTinyInteger('change_type')->default(0)->comment('变动类型 0未知 10增加 20减少');
-                    $table->decimal('amount', 32, 8)->default(0)->comment('余额');
+                    $table->unsignedBigInteger('amount')->default(0)->comment('余额');
                     $table->string('note', 32)->nullable()->comment('备注');
                     $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 

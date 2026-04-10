@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2025-07-10 21:00:26
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-04-06 16:09:46
+ * @LastEditTime: 2026-04-11 02:38:09
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -42,12 +42,11 @@ return new class () extends Migration {
                     $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
-                    $table->decimal('amount', 32, 8)->default(0)->comment('余额');
-                    $table->decimal('bonus', 32, 8)->default(0)->comment('奖金');
-                    $table->decimal('prepare_bonus', 32, 8)->default(0)->comment('预计增加奖金');
-                    $table->decimal('coin', 32, 8)->default(0)->comment('系统币');
-                    $table->decimal('score', 32, 8)->default(0)->comment('积分');
-
+                    $table->unsignedBigInteger('amount')->default(0)->comment('余额');
+                    $table->unsignedBigInteger('bonus')->default(0)->comment('奖金');
+                    $table->unsignedBigInteger('prepare_bonus')->default(0)->comment('预计增加奖金');
+                    $table->unsignedBigInteger('coin')->default(0)->comment('系统币');
+                    $table->unsignedBigInteger('score')->default(0)->comment('积分');
                     $table->string('note', 128)->default('')->comment('备注');
                     $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 

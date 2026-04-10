@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2021-10-18 09:01:47
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-02-11 11:47:08
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-11 02:35:20
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -39,7 +39,7 @@ return new class () extends Migration {
                 $table->unsignedTinyInteger('deep')->default(0)->comment('级别');
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                 $table->unsignedTinyInteger('switch')->default(0)->comment('是否可用 0否1是');
-                $table->decimal('rate', 4, 2)->default(0)->comment('分润比例%');
+                $table->unsignedBigInteger('rate')->default(0)->comment('分润比例%');
                 $table->string('category_name', 64)->nullable()->comment('分类名称');
                 $table->string('category_code', 64)->nullable()->comment('分类逻辑名称');
                 $table->char('category_picture_uid', 20)->default('')->comment('分类图片雪花ID(相册图片id)');

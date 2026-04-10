@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Redis;
 
 class DummyClass
 {
-   public function handle($param)
+   public function handle(array $paramArray)
    {
        
    }

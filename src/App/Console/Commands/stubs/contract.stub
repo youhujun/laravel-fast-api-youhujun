@@ -6,8 +6,8 @@ interface  DummyClass
 {
 	 /**
      * 
-     * @param $param
+     * @param $handleParamArray
      */
 
-   public function handle($param);
+   public function handle($handleParamArray);
 }

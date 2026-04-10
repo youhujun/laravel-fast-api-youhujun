@@ -166,6 +166,11 @@ class LaravelFastApiServiceProvider extends ServiceProvider
             'common'
         );
 
+		$this->mergeConfigFrom(
+            config_path('custom/common/contract/common_contract.php'),
+            'common_contract'
+        );
+
         //es
         $this->mergeConfigFrom(
             config_path('custom/common/es/common_es.php'),

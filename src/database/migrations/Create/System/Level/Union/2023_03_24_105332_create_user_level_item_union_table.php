@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2023-03-24 10:53:32
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-23 21:20:00
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-11 02:15:18
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'user_level_item_unions';
     protected $hasSnowflake = false;
-		// 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
-	protected $shardKeyAnchor = '';
+    // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+    protected $shardKeyAnchor = '';
     protected $tableComment = '用户级别和配置项关联表';
 
     /**
@@ -34,11 +34,11 @@ return new class () extends Migration {
         if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
             Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
                 $table->id()->comment('主键');
-                $table->unsignedInteger('user_level_id')->notNull()->default(0)->comment('用户级别id');
-                $table->unsignedInteger('level_item_id')->notNull()->default(0)->comment('级别配置项id');
-                $table->unsignedBigInteger('revision')->notNull()->default(0)->comment('乐观锁');
-                $table->unsignedTinyInteger('value_type')->notNull()->default(0)->comment('与参数值的关系 10等于 20大于 30小于 40大于等于 50小于等于');
-                $table->unsignedInteger('value')->notNull()->default(0)->comment('参数值');
+                $table->unsignedInteger('user_level_id')->default(0)->comment('用户级别id');
+                $table->unsignedInteger('level_item_id')->default(0)->comment('级别配置项id');
+                $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
+                $table->unsignedTinyInteger('value_type')->default(0)->comment('与参数值的关系 10等于 20大于 30小于 40大于等于 50小于等于');
+                $table->unsignedInteger('value')->default(0)->comment('参数值');
 
                 // 时间字段（自动填充+索引，关键优化）
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
@@ -47,7 +47,7 @@ return new class () extends Migration {
                 $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
 
-                $table->unsignedTinyInteger('sort')->notNull()->default(100)->comment('排序');
+                $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
                 // 索引
                 $table->index('user_level_id', 'idx_user_lvl_itm_uns_user_lvl_id');

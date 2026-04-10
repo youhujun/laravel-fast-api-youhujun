@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'system_configs';
     protected $hasSnowflake = false;
-	// 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
-	protected $shardKeyAnchor = '';
+    // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+    protected $shardKeyAnchor = '';
     protected $tableComment = '系统配置表';
     /**
      * Run the migrations.
@@ -42,7 +42,7 @@ return new class () extends Migration {
 
                 $table->string('item_label', 128)->default('')->comment('配置项标签');
                 $table->string('item_value', 128)->default('')->comment('配置项值');
-                $table->decimal('item_price', 32, 8, true)->default(0)->comment('配置项数值,一般为金额或积分');
+                $table->unsignedTinyInteger('item_price')->default(0)->comment('配置项数值,一般为金额或积分');
                 $table->string('item_path', 255)->default('')->comment('文件路径');
                 $table->string('item_introduction', 255)->default('')->comment('配置项说明');
                 $table->unsignedTinyInteger('sort')->default(100)->comment('排序');

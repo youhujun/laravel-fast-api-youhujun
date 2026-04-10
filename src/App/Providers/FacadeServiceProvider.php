@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-04-05 13:39:05
+ * @LastEditTime: 2026-04-10 23:42:03
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -216,6 +216,12 @@ class FacadeServiceProvider extends ServiceProvider
 
         //|--相册
         $this->app->bind('EsCreateAlbumIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\Album\EsCreateAlbumIndexFacadeService::class);
+
+        //|--文章
+        $this->app->bind('EsCreateArticleIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\Article\EsCreateArticleIndexFacadeService::class);
+        //|--关联
+        //|--|--分类关联
+        $this->app->bind('EsCreateGroupUnionIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\Union\Group\EsCreateGroupUnionIndexFacadeService::class);
     }
 
     //es同步
@@ -235,6 +241,9 @@ class FacadeServiceProvider extends ServiceProvider
 
         //--|相册
         $this->app->bind('EsSyncAlbumFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Sync\Album\EsSyncAlbumFacadeService::class);
+
+        //--|unions同步
+        $this->app->bind('EsSyncUnionFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Sync\Union\EsSyncUnionFacadeService::class);
     }
 
 

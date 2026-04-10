@@ -42,10 +42,10 @@ return new class () extends Migration {
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                     $table->unsignedTinyInteger('data_type')->default(1)->comment('冷热数据分离 1热 0冷');
-                    $table->decimal('before_amount', 32, 8)->default(0)->comment('金额');
-                    $table->decimal('change_value', 32, 8)->default(0)->comment('变动数值');
-                    $table->unsignedTinyInteger('change_type')->default(0)->comment('0未知 10充值 20 支出 30退款');
-                    $table->decimal('amount', 32, 8)->default(0)->comment('系统币');
+                    $table->unsignedBigInteger('before_amount')->default(0)->comment('金额');
+                    $table->unsignedBigInteger('change_value')->default(0)->comment('变动数值');
+                    $table->unsignedBigInteger('change_type')->default(0)->comment('0未知 10充值 20 支出 30退款');
+                    $table->unsignedBigInteger('amount')->default(0)->comment('系统币');
                     $table->string('note', 32)->nullable()->comment('备注');
                     $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 

@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2021-08-16 17:53:01
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-02-11 11:46:58
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-11 02:11:44
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -39,7 +39,7 @@ return new class () extends Migration {
 
                 $table->string('level_name', 32)->unique()->nullable()->comment('级别名称');
                 $table->string('level_code', 32)->unique()->nullable()->comment('级别代码');
-                $table->decimal('amount', 32, 8, true)->default(0)->comment('金额');
+                $table->unsignedBigInteger('amount')->default(0)->comment('金额');
                 $table->unsignedBigInteger('background_picture_uid')->default(0)->comment('背景图标雪花id');
                 $table->string('note', 128)->default('')->comment('备注信息');
                 $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
