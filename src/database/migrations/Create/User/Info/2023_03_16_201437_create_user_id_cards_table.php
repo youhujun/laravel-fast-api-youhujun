@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2023-03-16 20:14:37
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-02-11 04:18:42
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-11 21:52:26
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 
 return new class () extends Migration {
-    protected $baseTable = 'user_uid_cards';
+    protected $baseTable = 'user_id_cards';
     protected $hasSnowflake = true;
     // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
     protected $shardKeyAnchor = 'user_uid';

@@ -55,6 +55,7 @@ return new class () extends Migration {
                     $table->unsignedInteger('city_id')->default(0)->comment('城市id');
                     $table->unsignedBigInteger('towns_id')->default(0)->comment('城镇id');
                     $table->unsignedBigInteger('village_id')->default(0)->comment('小区或村id');
+                    $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
                     $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
                     $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
