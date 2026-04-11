@@ -300,11 +300,6 @@ class EventServiceProvider extends ServiceProvider
                 \App\Listeners\LaravelFastApi\V1\Admin\User\User\CheckUserRealAuthEvent\UpdateUserRealAuthApplyListener::class
             ],
 
-            //后台设置用户账户
-            \App\Events\LaravelFastApi\V1\Admin\User\User\SetUserAccountEvent::class => [
-                \App\Listeners\LaravelFastApi\V1\Admin\User\User\SetUserAccountEvent\AddUserAccountLogListener::class
-            ],
-
             //后台生成用户二维码
             \App\Events\LaravelFastApi\V1\Admin\User\User\MakeUserQrcodeEvent::class => [
                 \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserQrcodeListener::class

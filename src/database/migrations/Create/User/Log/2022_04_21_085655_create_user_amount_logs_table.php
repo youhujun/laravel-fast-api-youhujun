@@ -36,6 +36,7 @@ return new class () extends Migration {
             $tableName = $this->baseTable . '_' . $i;
             if (!Schema::connection($dbConnection)->hasTable($tableName)) {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
+					$table->id()->comment('物理主键（自增）');
                     $table->unsignedBigInteger('user_amount_log_uid')->comment('日志uid,雪花ID');
                     // 分片键：user_uid%100，未来分库分表用
                     $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');

@@ -36,6 +36,7 @@ return new class () extends Migration {
             $tableName = $this->baseTable . '_' . $i;
             if (!Schema::connection($dbConnection)->hasTable($tableName)) {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
+					$table->id()->comment('物理主键（自增）');
                     $table->unsignedBigInteger('user_real_auth_log_uid')->comment('日志uid,雪花ID');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
 
