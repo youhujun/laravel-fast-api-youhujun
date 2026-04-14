@@ -1,11 +1,12 @@
 <?php
+
 /*
  * @Descripttion:
  * @version:
  * @Author: YouHuJun
  * @Date: 2021-08-13 14:58:33
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-23 21:05:57
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-15 02:14:02
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -17,8 +18,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'role_permission_unions';
     protected $hasSnowflake = false;
-		// 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
-	protected $shardKeyAnchor = '';
+    // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+    protected $shardKeyAnchor = '';
     protected $tableComment = '角色和权限菜单关联表';
 
     /**
@@ -31,8 +32,7 @@ return new class () extends Migration {
         $shardConfig = Config::get('youhujun.shard');
         $dbConnection = $shardConfig['default_db'];
 
-        if (!Schema::connection($dbConnection)->hasTable($this->baseTable))
-        {
+        if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
             Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
                 $table->id()->comment('主键');
                 $table->unsignedBigInteger('permission_id')->default(0)->comment('权限id');
@@ -45,16 +45,15 @@ return new class () extends Migration {
                 // 时间字段（自动填充+索引，关键优化）
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
                 $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
+                $table->dateTime('updated_at')->nullable()->useCurrent()->comment('更新时间');
+                $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
-
             });
 
             $prefix = config('database.connections.'.$dbConnection.'.prefix');
 
             DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable}` comment '{$this->tableComment}'");
         }
-
-
     }
 
 
@@ -68,10 +67,8 @@ return new class () extends Migration {
         $shardConfig = Config::get('youhujun.shard');
         $dbConnection = $shardConfig['default_db'];
 
-        if (Schema::connection($dbConnection)->hasTable($this->baseTable))
-        {
+        if (Schema::connection($dbConnection)->hasTable($this->baseTable)) {
             Schema::connection($dbConnection)->dropIfExists($this->baseTable);
         }
-
     }
 };
