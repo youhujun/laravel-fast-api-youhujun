@@ -48,16 +48,12 @@ return new class () extends Migration {
                 $table->string('note', 255)->nullable()->comment('备注说明');
                 $table->unsignedTinyInteger('sort')->default(0)->comment('排序');
 
-
-
                 // 时间字段（自动填充+索引，关键优化）
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
                 $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
                 $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
                 $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
-
-
                 // 索引
                 $table->unique(['goods_class_name','deleted_at'], 'uni_goods_classes_name_del');
                 $table->unique(['goods_class_code','deleted_at'], 'uni_goods_classes_code_del');

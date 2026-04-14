@@ -36,7 +36,6 @@ return new class () extends Migration {
         if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
             Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
                 $table->id()->comment('主键');
-                $table->char('admin_uid', 20)->default('')->comment('管理员uid,雪花ID');
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
 
                 $table->string('voice_title', 32)->default('')->comment('提示音标题');

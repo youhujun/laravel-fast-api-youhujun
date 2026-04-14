@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'regions';
     protected $hasSnowflake = false;
-		// 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
-	protected $shardKeyAnchor = '';
+    // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+    protected $shardKeyAnchor = '';
     protected $tableComment = '系统地区表';
 
     /**
@@ -40,9 +40,9 @@ return new class () extends Migration {
                 $table->unsignedTinyInteger('deep')->default(0)->comment('深度');
                 $table->string('region_name', 64)->default('')->comment('地区名称');
                 $table->string('region_area', 32)->default('')->comment('大区名称');
+                $table->string('latitude', 30)->default('')->comment('维度');
+                $table->string('longitude', 30)->default('')->comment('经度');
                 $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
-
-
 
                 // 时间字段（自动填充+索引，关键优化）
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
@@ -50,7 +50,6 @@ return new class () extends Migration {
                 $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');
                 $table->unsignedInteger('updated_time')->default(0)->comment('更新时间戳');
                 $table->dateTime('deleted_at')->nullable()->comment('删除时间（软删除）');
-
 
                 // 索引
                 $table->index('parent_id', 'idx_regions_parent_id');

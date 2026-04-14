@@ -196,8 +196,9 @@ class FacadeServiceProvider extends ServiceProvider
     protected function publishEsIndexFacade()
     {
         //系统索引
-        //用户索引
         $this->app->bind('EsCreateSystemIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\System\EsCreateSystemIndexFacadeService::class);
+        //业务索引
+        $this->app->bind('EsCreateBusiessIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\Business\EsCreateBusiessIndexFacadeService::class);
         //用户
         //用户认证
         $this->app->bind('EsCreateYouhuAuthServiceIndexFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Index\User\EsCreateYouhuAuthServiceIndexFacadeService::class);

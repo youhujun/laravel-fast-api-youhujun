@@ -40,7 +40,7 @@ return new class () extends Migration {
             {
                 $table->id()->comment('主键');
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
-                $table->char('admin_uid', 20)->default('')->comment('管理员uid,雪花ID');
+            
                 $table->string('item_name',32)->unique()->nullable()->comment('字段名称 唯一');
                 $table->string('item_value',32)->default('')->comment('字段值');
                 $table->unsignedTinyInteger('value_type')->default(10)->comment('值得类型 10整数 20小数');

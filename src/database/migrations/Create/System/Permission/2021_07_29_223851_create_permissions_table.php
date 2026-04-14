@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2021-08-02 09:29:26
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-17 11:48:46
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-14 23:35:24
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -55,8 +55,6 @@ return new class () extends Migration {
                 $table->unsignedTinyInteger('switch')->default(0)->comment('是否启用,默认0禁用,1启用');
                 $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
-
-
                 // 时间字段（自动填充+索引，关键优化）
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
                 $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
@@ -69,7 +67,6 @@ return new class () extends Migration {
                 $table->index('parent_id', 'idx_permissions_parent_id');
                 $table->index('deep', 'idx_permissions_deep');
                 $table->index('type', 'idx_permissions_type');
-                $table->index('switch', 'idx_permissions_switch');
                 $table->index('sort', 'idx_permissions_sort');
                 $table->index('route_name', 'idx_permissions_route_name');
                 $table->index('route_path', 'idx_permissions_route_path');

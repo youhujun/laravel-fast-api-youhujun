@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2022-11-16 15:32:33
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-23 21:05:57
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-15 00:38:10
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -42,7 +42,7 @@ return new class () extends Migration {
 
                 $table->string('item_label', 128)->default('')->comment('配置项标签');
                 $table->string('item_value', 128)->default('')->comment('配置项值');
-                $table->unsignedTinyInteger('item_price')->default(0)->comment('配置项数值,一般为金额或积分');
+                $table->unsignedBigInteger('item_price')->default(0)->comment('配置项数值,一般为金额或积分');
                 $table->string('item_path', 255)->default('')->comment('文件路径');
                 $table->string('item_introduction', 255)->default('')->comment('配置项说明');
                 $table->unsignedTinyInteger('sort')->default(100)->comment('排序');

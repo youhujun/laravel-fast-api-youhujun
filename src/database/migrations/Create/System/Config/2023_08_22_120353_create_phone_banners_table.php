@@ -5,9 +5,9 @@
  * @version: v1
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2023-08-22 12:03:53
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-17 11:30:04
- * @FilePath: \src\database\migrations\Create\System\Config\2023_08_22_120353_create_phone_banners_table.php
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-15 01:32:09
+ * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\database\migrations\Create\System\Config\2023_08_22_120353_create_phone_banners_table.php
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -36,7 +36,6 @@ return new class () extends Migration {
         if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
             Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
                 $table->id()->comment('主键-手机轮播图');
-                $table->unsignedBigInteger('admin_uid')->default(0)->comment('管理员uid,雪花ID');
                 $table->unsignedBigInteger('album_picture_uid')->default(0)->comment('相册图片uid,雪花ID');
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                 $table->string('redirect_url', 128)->nullable()->comment('跳转路径');

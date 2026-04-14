@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2021-08-13 14:58:33
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-02-11 11:24:01
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-15 00:07:53
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -42,9 +42,6 @@ return new class () extends Migration {
                 $table->string('role_name', 32)->default('')->comment('角色名称');
                 $table->string('logic_name', 64)->default('')->comment('逻辑名称');
                 $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
-
-
-
                 // 时间字段（自动填充+索引，关键优化）
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
                 $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
