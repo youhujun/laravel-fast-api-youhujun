@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-30 09:02:48
+ * @LastEditTime: 2026-04-13 14:14:12
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -285,13 +285,6 @@ class EventServiceProvider extends ServiceProvider
             //更新管理员
             \App\Events\LaravelFastApi\V1\Admin\User\Admin\UpdateAdministratorEvent::class => [
                 \App\Listeners\LaravelFastApi\V1\Admin\User\Admin\UpdateAdministratorEvent\UpdateAdministratorRoleListener::class
-            ],
-
-
-            //后台设置用户身份证
-            \App\Events\LaravelFastApi\V1\Admin\User\User\SetUserIdCardEvent::class => [
-                //添加用户实名认证申请
-                \App\Listeners\LaravelFastApi\V1\Admin\User\User\SetUserIdCardEvent\AddUserRealAuthApplyListener::class
             ],
 
             //后台审核实名认证用户
