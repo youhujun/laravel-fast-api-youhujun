@@ -6,8 +6,8 @@
  * @Author: youhujun youhu8888@163.com & xueer
  * @Date: 2026-01-19 11:48:09
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-03-23 02:58:34
- * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\config\helper.php
+ * @LastEditTime: 2026-04-14 18:56:32
+ * @FilePath: \youhu-laravel-api-12\vendor\youhujun\laravel-fast-api-youhujun\src\config\helper.php
  * Copyright (C) 2026 youhujun & xueer. All rights reserved.
  */
 
@@ -70,10 +70,13 @@ if (!function_exists('f')) {
      *
      * @param mixed $param 输入的字符串或数组
      * @param int $type 过滤类型：0=转义实体（默认），1=去除标签
-     * @return mixed 过滤后的字符串/数组
+     * @return
      */
     function f($param, $type = 0)
     {
+        if (is_numeric($param)) {
+            return $param;
+        }
         // 数组递归处理（修复：原代码未赋值回数组）
         if (is_array($param)) {
             foreach ($param as $key => $value) {
@@ -82,12 +85,14 @@ if (!function_exists('f')) {
             return $param;
         }
 
-        // 非数组处理（简化逻辑）
-        if ($type === 1) {
-            return strip_tags((string)$param);
-        }
+        if (is_string($param)) {
+            // 非数组处理（简化逻辑）
+            if ($type === 1) {
+                return strip_tags((string)$param);
+            }
 
-        return htmlspecialchars((string)$param, ENT_QUOTES, 'UTF-8');
+            return htmlspecialchars((string)$param, ENT_QUOTES, 'UTF-8');
+        }
     }
 }
 
