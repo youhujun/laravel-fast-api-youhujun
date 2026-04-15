@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2023-03-16 20:14:37
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-04-11 21:52:26
+ * @LastEditTime: 2026-04-15 15:28:12
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -54,7 +54,7 @@ return new class () extends Migration {
                     $table->dateTime('deleted_at')->nullable()->comment('删除时间');
 
                     // 索引
-                    $table->unique('user_card_uid', 'uni_primary_key' . $i);
+                    $table->unique('user_id_card_uid', 'uni_primary_key' . $i);
                     $table->index('user_uid', 'idx_bussiness_calc_' . $i);
                     $table->index('shard_key', 'idx_shard_key_' . $i);
                 });

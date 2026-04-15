@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @Descripttion:
  * @version: v1
@@ -19,8 +20,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'system_withdraw_configs';
     protected $hasSnowflake = false;
-	// 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
-	protected $shardKeyAnchor = '';
+    // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+    protected $shardKeyAnchor = '';
     protected $tableComment = '系统提现配置表';
 
     /**
@@ -34,17 +35,15 @@ return new class () extends Migration {
         $dbConnection = $shardConfig['default_db'];
 
         //注意是否需要修改mysql连接名和表名
-        if (!Schema::connection($dbConnection)->hasTable($this->baseTable))
-        {
-            Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table)
-            {
+        if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
+            Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
                 $table->id()->comment('主键');
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
-            
-                $table->string('item_name',32)->unique()->nullable()->comment('字段名称 唯一');
-                $table->string('item_value',32)->default('')->comment('字段值');
+
+                $table->string('item_name', 32)->unique()->nullable()->comment('字段名称 唯一');
+                $table->string('item_value', 128)->default('')->comment('字段值');
                 $table->unsignedTinyInteger('value_type')->default(10)->comment('值得类型 10整数 20小数');
-                $table->string('note',128)->default('')->comment('备注');
+                $table->string('note', 128)->default('')->comment('备注');
                 $table->unsignedTinyInteger('sort')->default(100)->comment('排序');
 
                 // 时间字段（自动填充+索引，关键优化）
@@ -63,8 +62,6 @@ return new class () extends Migration {
 
             DB::connection($dbConnection)->statement("ALTER TABLE `{$prefix}{$this->baseTable}` comment '{$this->tableComment}'");
         }
-
-
     }
 
     /**
@@ -77,11 +74,8 @@ return new class () extends Migration {
         $shardConfig = Config::get('youhujun.shard');
         $dbConnection = $shardConfig['default_db'];
 
-        if (Schema::connection($dbConnection)->hasTable($this->baseTable))
-        {
+        if (Schema::connection($dbConnection)->hasTable($this->baseTable)) {
             Schema::connection($dbConnection)->dropIfExists($this->baseTable);
         }
-
-
     }
 };

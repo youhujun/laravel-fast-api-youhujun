@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-04-10 23:42:03
+ * @LastEditTime: 2026-04-15 13:16:14
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -231,6 +231,8 @@ class FacadeServiceProvider extends ServiceProvider
         //--|系统同步
         //--|--|SystemConfig门面
         $this->app->bind('EsSyncSystemFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Sync\System\EsSyncSystemFacadeService::class);
+        //--|业务同步
+        $this->app->bind('EsSyncBusinessFacade', \App\Services\Facade\LaravelFastApi\V1\Es\Sync\Business\EsSyncBusinessFacadeService::class);
 
         //--|用户同步
         //--|--|Admin门面
