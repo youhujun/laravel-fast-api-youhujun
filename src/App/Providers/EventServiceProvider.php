@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-04-16 11:59:06
+ * @LastEditTime: 2026-04-16 13:18:56
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -276,20 +276,20 @@ class EventServiceProvider extends ServiceProvider
                 \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\AddMenuEvent\AddMenuListener::class
             ],
             //修改菜单
-            \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\UpdateMenuEvent::class => [
+            \App\Events\LaravelFastApi\V1\Admin\System\Permission\UpdateMenuEvent::class => [
                 \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\UpdateMenuEvent\UpdateMenuListener::class
             ],
             //移动菜单
-            \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\MoveMenuEvent::class => [
+            \App\Events\LaravelFastApi\V1\Admin\System\Permission\MoveMenuEvent::class => [
                 \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\MoveMenuEvent\MoveMenuListener::class
             ],
             //删除菜单
-            \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\DeleteMenuEvent::class => [
+            \App\Events\LaravelFastApi\V1\Admin\System\Permission\DeleteMenuEvent::class => [
                 \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\DeleteMenuEvent\DeleteMenuListener::class
             ],
             //控制菜单
-            \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\SwitchMenuEvent::class => [
-                \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\SwitchMenuEvent\SwitchMenuListener
+            \App\Events\LaravelFastApi\V1\Admin\System\Permission\SwitchMenuEvent::class => [
+                \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\SwitchMenuEvent\SwitchMenuListener::class
 
             ]
 
@@ -350,7 +350,6 @@ class EventServiceProvider extends ServiceProvider
                 \App\Listeners\LaravelFastApi\V1\Admin\Article\UpdateArticleEvent\UpdateArticleLabelUnionListener::class
             ],
         ];
-
 
 
         $this->publishAdminListener = array_merge($publishAdminListener, $publishAdminSystemListener, $publishAdminBusinessListener, $publishAdminUserListener, $publisAdminArticleListener);
