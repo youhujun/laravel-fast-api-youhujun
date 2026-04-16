@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-04-14 11:15:36
+ * @LastEditTime: 2026-04-16 11:59:06
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -240,10 +240,7 @@ class EventServiceProvider extends ServiceProvider
             \App\Events\Admin\CommonEvent::class => [
                 \App\Listeners\Admin\CommonEvent\CommonEventListener::class
             ],
-        ];
 
-        //后台事件监听
-        $publishAdminSystemListener = [
             //管理员登录
             \App\Events\LaravelFastApi\V1\Admin\Login\AdminLoginEvent::class => [
                 \App\Listeners\LaravelFastApi\V1\Admin\Login\AdminLoginEvent\AdminLoginLogListener::class,
@@ -271,6 +268,34 @@ class EventServiceProvider extends ServiceProvider
                 \App\Listeners\LaravelFastApi\V1\Admin\File\UploadFileEvent\UploadFileImportListener::class
             ],
         ];
+
+        //后台系统设置事件监听
+        $publishAdminSystemListener = [
+            //添加菜单
+            \App\Events\LaravelFastApi\V1\Admin\System\Permission\AddMenuEvent::class => [
+                \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\AddMenuEvent\AddMenuListener::class
+            ],
+            //修改菜单
+            \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\UpdateMenuEvent::class => [
+                \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\UpdateMenuEvent\UpdateMenuListener::class
+            ],
+            //移动菜单
+            \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\MoveMenuEvent::class => [
+                \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\MoveMenuEvent\MoveMenuListener::class
+            ],
+            //删除菜单
+            \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\DeleteMenuEvent::class => [
+                \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\DeleteMenuEvent\DeleteMenuListener::class
+            ],
+
+        ];
+
+        //后台管理-业务设置
+        $publishAdminBusinessListener = [
+
+        ];
+
+
 
         //后台管理-用户事件
         $publishAdminUserListener = [
@@ -324,7 +349,7 @@ class EventServiceProvider extends ServiceProvider
 
 
 
-        $this->publishAdminListener = array_merge($publishAdminListener, $publishAdminSystemListener, $publishAdminUserListener, $publisAdminArticleListener);
+        $this->publishAdminListener = array_merge($publishAdminListener, $publishAdminSystemListener, $publishAdminBusinessListener, $publishAdminUserListener, $publisAdminArticleListener);
     }
 
     /**

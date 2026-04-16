@@ -505,6 +505,7 @@ class LaravelFastApiServiceProvider extends ServiceProvider
                 \YouHuJun\LaravelFastApi\App\Console\Commands\BuildFacadeCommand::class,
                 \YouHuJun\LaravelFastApi\App\Console\Commands\BuildFacadeServiceCommand::class,
                 \YouHuJun\LaravelFastApi\App\Console\Commands\CallFacadeServiceCommand::class,
+                \YouHuJun\LaravelFastApi\App\Console\Commands\CallEventServiceCommand::class,
                 \YouHuJun\LaravelFastApi\App\Console\Commands\BuildContractCommand::class,
                 \YouHuJun\LaravelFastApi\App\Console\Commands\BuildContractServiceCommand::class,
                 \YouHuJun\LaravelFastApi\App\Console\Commands\BuildDTOCommand::class
