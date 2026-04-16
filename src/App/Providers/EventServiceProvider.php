@@ -287,6 +287,11 @@ class EventServiceProvider extends ServiceProvider
             \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\DeleteMenuEvent::class => [
                 \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\DeleteMenuEvent\DeleteMenuListener::class
             ],
+            //控制菜单
+            \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\SwitchMenuEvent::class => [
+                \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\SwitchMenuEvent\SwitchMenuListener
+
+            ]
 
         ];
 
@@ -323,11 +328,10 @@ class EventServiceProvider extends ServiceProvider
                 //更新用户实名认证申请状态
                 \App\Listeners\LaravelFastApi\V1\Admin\User\User\CheckUserRealAuthEvent\UpdateUserRealAuthApplyListener::class
             ],
-
             //后台生成用户二维码
             \App\Events\LaravelFastApi\V1\Admin\User\User\MakeUserQrcodeEvent::class => [
                 \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserQrcodeListener::class
-            ]
+            ],
         ];
 
         //后台管理-文航管理
