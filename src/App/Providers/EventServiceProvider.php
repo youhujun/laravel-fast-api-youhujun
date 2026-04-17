@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-04-16 13:18:56
+ * @LastEditTime: 2026-04-17 17:57:53
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -271,6 +271,8 @@ class EventServiceProvider extends ServiceProvider
 
         //后台系统设置事件监听
         $publishAdminSystemListener = [
+            //|--系统设置
+            //|--|--菜单管理
             //添加菜单
             \App\Events\LaravelFastApi\V1\Admin\System\Permission\AddMenuEvent::class => [
                 \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\AddMenuEvent\AddMenuListener::class
@@ -291,7 +293,22 @@ class EventServiceProvider extends ServiceProvider
             \App\Events\LaravelFastApi\V1\Admin\System\Permission\SwitchMenuEvent::class => [
                 \App\Listeners\LaravelFastApi\V1\Admin\System\Permission\SwitchMenuEvent\SwitchMenuListener::class
 
-            ]
+            ],
+            //|--|--系统配置
+            //|--|--|--配置参数
+            \App\Events\LaravelFastApi\V1\Admin\System\SystemConfig\AddSystemConfigEvent::class => [
+                \App\Listeners\LaravelFastApi\V1\Admin\System\SystemConfig\AddSystemConfigEvent\AddSystemConfigListener::class
+            ],
+            \App\Events\LaravelFastApi\V1\Admin\System\SystemConfig\UpdateSystemConfigEvent::class => [
+                \App\Listeners\LaravelFastApi\V1\Admin\System\SystemConfig\UpdateSystemConfigEvent\UpdateSystemConfigListener::class
+            ],
+            \App\Events\LaravelFastApi\V1\Admin\System\SystemConfig\DeleteSystemConfigEvent::class => [
+                \App\Listeners\LaravelFastApi\V1\Admin\System\SystemConfig\DeleteSystemConfigEvent\DeleteSystemConfigListener::class
+            ],
+            \App\Events\LaravelFastApi\V1\Admin\System\SystemConfig\MultipleDeleteSystemConfigEvent::class => [
+                \App\Listeners\LaravelFastApi\V1\Admin\System\SystemConfig\MultipleDeleteSystemConfigEvent\MultipleDeleteSystemConfigListener::class
+            ],
+
 
         ];
 

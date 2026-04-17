@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Redis;
+use App\Facades\Common\V1\Es\EsQueryFacade;
 use App\Models\LaravelFastApi\V1\Admin\Admin;
 use App\Models\LaravelFastApi\V1\User\User;
 use App\Models\LaravelFastApi\V1\User\Union\UserRoleUnion;
@@ -37,8 +38,15 @@ if (!function_exists('get_admin_roles')) {
         } else {
             // 查询管理员与角色的关联关系
 
-            $adminRoleUnionCollection = UserRoleUnion::queryByShard($adminObject->user_uid)->where('user_uid', $adminObject->user_uid)->get();
+            $userRoleUnionIndexName = config('common_es.indices.union.user_role_unions');
 
+            $esQuery = EsQueryFacade::index($userRoleUnionIndexName);
+
+            $esQuery->whereNull('deleted_at');
+
+            $max_size = config('common_es.max_result_window');
+
+            $adminRoleUnionCollection = $esQuery->where('user_uid', $adminObject->user_uid)->limit($max_size)->get();
             $roleIdArray = [];
             // 5. 移除不必要的引用传递，避免变量污染
             foreach ($adminRoleUnionCollection as $key => $adminRoleUnionObject) {
@@ -50,8 +58,13 @@ if (!function_exists('get_admin_roles')) {
 
             // 7. 空值判断，避免生成无效SQL（where in ()）
             if (!empty($roleIdArray)) {
+                $roleIndexName = config('common_es.indices.system.roles');
+
+                $roleEsQuery = EsQueryFacade::index($roleIndexName);
+
+                $roleEsQuery->whereNull('deleted_at');
                 // 获取角色集合
-                $roleCollection = Role::whereIn('id', $roleIdArray)->get();
+                $roleCollection = $roleEsQuery->whereIn('id', $roleIdArray)->limit($max_size)->get();
 
                 $roleLogicNameArray = [];
                 foreach ($roleCollection as $key => $roleObject) {
@@ -104,8 +117,15 @@ if (!function_exists('get_user_roles')) {
                 $rolesArray = [];
             }
         } else {
+            $userRoleUnionIndexName = config('common_es.indices.union.user_role_unions');
+
+            $esQuery = EsQueryFacade::index($userRoleUnionIndexName);
+
+            $esQuery->whereNull('deleted_at');
+
+            $max_size = config('common_es.max_result_window');
             // 查询管理员的用户角色关联
-            $userRoleUnionCollection = UserRoleUnion::queryByShard($adminObject->user_uid)->where('user_uid', $adminObject->user_uid)->get();
+            $userRoleUnionCollection = $esQuery->where('user_uid', $adminObject->user_uid)->limit($max_size)->get();
 
             $roleIdArray = [];
             foreach ($userRoleUnionCollection as $key => $userRoleUnionObject) {
@@ -117,8 +137,13 @@ if (!function_exists('get_user_roles')) {
             $roleIdArray = array_unique($roleIdArray);
             // 空值判断：避免生成无效SQL
             if (!empty($roleIdArray)) {
+                $roleIndexName = config('common_es.indices.system.roles');
+
+                $roleEsQuery = EsQueryFacade::index($roleIndexName);
+
+                $roleEsQuery->whereNull('deleted_at');
                 // 获取角色集合
-                $roleCollection = Role::whereIn('id', $roleIdArray)->get();
+                $roleCollection = $roleEsQuery->whereIn('id', $roleIdArray)->limit($max_size)->get();
 
                 $roleLogicNameArray = [];
                 foreach ($roleCollection as $key => $roleObject) {
