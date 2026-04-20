@@ -47,6 +47,9 @@ if (!function_exists('get_admin_roles')) {
             $max_size = config('common_es.max_result_window');
 
             $adminRoleUnionCollection = $esQuery->where('user_uid', $adminObject->user_uid)->limit($max_size)->get();
+
+            // p($adminRoleUnionCollection);
+            // die;
             $roleIdArray = [];
             // 5. 移除不必要的引用传递，避免变量污染
             foreach ($adminRoleUnionCollection as $key => $adminRoleUnionObject) {

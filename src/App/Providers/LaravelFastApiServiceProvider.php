@@ -6,7 +6,7 @@
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2024-02-13 16:10:12
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-04-05 14:18:51
+ * @LastEditTime: 2026-04-20 21:25:52
  * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\App\Providers\LaravelFastApiServiceProvider.php
  */
 
@@ -166,7 +166,7 @@ class LaravelFastApiServiceProvider extends ServiceProvider
             'common'
         );
 
-		$this->mergeConfigFrom(
+        $this->mergeConfigFrom(
             config_path('custom/common/contract/common_contract.php'),
             'common_contract'
         );
