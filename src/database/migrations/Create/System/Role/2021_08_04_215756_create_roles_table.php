@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-08-13 14:58:33
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-04-15 00:07:53
+ * @LastEditTime: 2026-04-21 22:10:20
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Config;
 return new class () extends Migration {
     protected $baseTable = 'roles';
     protected $hasSnowflake = false;
-		// 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
-	protected $shardKeyAnchor = '';
+    // 分片键锚定字段 仅做识别用,不参与代码逻辑（格式：*_uid，无分片则为''）
+    protected $shardKeyAnchor = '';
     protected $tableComment = '角色表';
 
     /**
@@ -38,6 +38,8 @@ return new class () extends Migration {
                 $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                 $table->unsignedBigInteger('parent_id')->default(0)->comment('父级id');
                 $table->unsignedTinyInteger('deep')->default(0)->comment('深度级别');
+                $table->unsignedTinyInteger('type')->default(0)->comment('角色类型 10管理员 20普通用户 30商户 40代理');
+                $table->unsignedTinyInteger('is_system')->default(0)->comment('是否是系统角色 0否 1是');
                 $table->unsignedTinyInteger('switch')->default(0)->comment('是否|开关 0关否1是开');
                 $table->string('role_name', 32)->default('')->comment('角色名称');
                 $table->string('logic_name', 64)->default('')->comment('逻辑名称');

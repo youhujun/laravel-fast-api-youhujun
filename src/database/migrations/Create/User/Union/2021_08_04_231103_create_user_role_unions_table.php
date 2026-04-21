@@ -42,7 +42,7 @@ return new class () extends Migration {
                     $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('用户uid');
                     $table->unsignedInteger('role_id')->default(0)->comment('角色id');
-
+                    $table->unsignedTinyInteger('type')->default(0)->comment('角色类型 10管理员 20普通用户 30商户 40代理');
                     $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
                     $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
                     $table->dateTime('updated_at')->nullable()->useCurrentOnUpdate()->comment('更新时间');

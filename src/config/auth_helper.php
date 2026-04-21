@@ -46,7 +46,7 @@ if (!function_exists('get_admin_roles')) {
 
             $max_size = config('common_es.max_result_window');
 
-            $adminRoleUnionCollection = $esQuery->where('user_uid', $adminObject->user_uid)->limit($max_size)->get();
+            $adminRoleUnionCollection = $esQuery->where('user_uid', $adminObject->user_uid)->where('type', 10)->limit($max_size)->get();
 
             // p($adminRoleUnionCollection);
             // die;
@@ -128,7 +128,7 @@ if (!function_exists('get_user_roles')) {
 
             $max_size = config('common_es.max_result_window');
             // 查询管理员的用户角色关联
-            $userRoleUnionCollection = $esQuery->where('user_uid', $adminObject->user_uid)->limit($max_size)->get();
+            $userRoleUnionCollection = $esQuery->where('user_uid', $adminObject->user_uid)->where('type', 20)->limit($max_size)->get();
 
             $roleIdArray = [];
             foreach ($userRoleUnionCollection as $key => $userRoleUnionObject) {
