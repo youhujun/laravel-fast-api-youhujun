@@ -38,6 +38,7 @@ return new class () extends Migration {
             $tableName = $this->baseTable . '_' . $i;
             if (!Schema::connection($dbConnection)->hasTable($tableName)) {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
+					$table->id()->comment('物理主键（自增）');
                     $table->unsignedBigInteger('admin_login_log_uid')->default(0)->comment('日志uid,雪花ID');
                     $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:admin_uid%(db_count * table_count)(工具包自动计算)');
                     $table->unsignedBigInteger('admin_uid')->default(0)->comment('管理员uid,雪花ID');
