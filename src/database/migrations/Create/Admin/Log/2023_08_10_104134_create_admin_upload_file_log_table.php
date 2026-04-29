@@ -5,8 +5,8 @@
  * @version: v1
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2024-02-02 15:08:08
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-02-11 11:18:49
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-29 13:02:39
  * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\database\migrations\Create\Admin\Log\2023_08_10_104134_create_admin_upload_file_log_table.php
  */
 
@@ -39,6 +39,7 @@ return new class () extends Migration {
             $tableName = $this->baseTable . '_' . $i;
             if (!Schema::connection($dbConnection)->hasTable($tableName)) {
                 Schema::connection($dbConnection)->create($tableName, function (Blueprint $table) use ($i) {
+                    $table->id()->comment('物理主键（自增）');
                     $table->unsignedBigInteger('admin_upload_file_log_uid')->default(0)->comment('日志uid,雪花ID');
                     $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:admin_uid%(db_count * table_count)(工具包自动计算)');
                     $table->unsignedBigInteger('admin_uid')->default(0)->comment('管理员uid,雪花ID');

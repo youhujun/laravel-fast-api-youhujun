@@ -5,9 +5,9 @@
  * @version: v1
  * @Author: youhujun youhu8888@163.com
  * @Date: 2026-01-16 00:38:15
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-23 21:05:57
- * @FilePath: \src\database\migrations\Create\System\Config\2026_01_16_003815_create_invite_code_sequences_table.php
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-29 13:06:58
+ * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\database\migrations\Create\System\Config\2026_01_16_003815_create_invite_code_sequences_table.php
  * Copyright (C) 2026 youhujun. All rights reserved.
  */
 
@@ -36,7 +36,7 @@ return new class () extends Migration {
 
         if (!Schema::connection($dbConnection)->hasTable($this->baseTable)) {
             Schema::connection($dbConnection)->create($this->baseTable, function (Blueprint $table) {
-                $table->unsignedBigInteger('user_uid')->comment('用户uid,雪花ID');
+                $table->id()->comment('主键ID');
                 $table->string('invite_code', 7)->unique()->comment('唯一邀请码');
                 $table->dateTime('created_at')->nullable()->useCurrent()->comment('创建时间');
                 $table->unsignedInteger('created_time')->default(0)->comment('创建时间戳');
