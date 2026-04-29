@@ -41,7 +41,8 @@ return new class () extends Migration {
 
 
                     $table->unsignedTinyInteger('shard_key')->default(0)->comment('分片键:user_uid%(db_count * table_count)(工具包自动计算)');
-
+					// 状态字段
+                    $table->unsignedBigInteger('revision')->default(0)->comment('乐观锁');
                     // 核心关联字段（和用户表一致的雪花ID）
                     $table->unsignedBigInteger('user_uid')->default(0)->comment('关联用户表user_uid');
                     // 认证类型（扩展关键：新增类型只需加枚举值，无需改表）

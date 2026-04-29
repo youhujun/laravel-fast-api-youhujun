@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-04-17 17:57:53
+ * @LastEditTime: 2026-04-29 16:20:50
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -211,7 +211,8 @@ class EventServiceProvider extends ServiceProvider
     protected function setCommonPublish()
     {
         // 基础监听器数组
-        $appListener = [
+        //注册监听
+        $registerListener = [
             \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserInfoListener::class,
             \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserAlbumListener::class,
             \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserAvatarListener::class,
@@ -221,10 +222,16 @@ class EventServiceProvider extends ServiceProvider
             \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddUserSourceListener::class,
             \App\Listeners\Common\V1\User\User\CommonUserRegisterEvent\AddApiUserAuthListener::class
         ];
+        //认证监听监听
+        $certificateListener = [
+            \App\Listeners\Common\V1\User\User\CommonUserCertificateEvent\CommonUserCertificateListener::class
+        ];
 
         $publishCommonListener = [
             //通用的用户注册(添加用户)
-            \App\Events\Common\V1\User\User\CommonUserRegisterEvent::class => $appListener
+            \App\Events\Common\V1\User\User\CommonUserRegisterEvent::class => $registerListener,
+            //用户认证事件
+            \App\Events\Common\V1\User\User\CommonUserCertificateEvent::class => $certificateListener
         ];
 
         $this->publishCommonListener = $publishCommonListener;
