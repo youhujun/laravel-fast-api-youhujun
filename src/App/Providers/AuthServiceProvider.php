@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-04-04 01:18:27
+ * @LastEditTime: 2026-04-29 12:19:22
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -18,7 +18,7 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use App\Models\LaravelFastApi\V1\Admin\Admin;
 use App\Models\LaravelFastApi\V1\User\User;
 use App\Facades\Common\V1\Shard\ShardHelperFacade;
-use YouHuJun\Tool\App\Facades\V1\Es\EsFacade;
+use App\Facades\Common\V1\Es\EsQueryFacade;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -42,26 +42,13 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(Request $request): void
     {
-        //初始化ES
-        $this->initEs();
-
         //注册管理员守卫
         $this->registerAdminTokenGuard();
         //注册用户守卫
         $this->registerPhoneTokenGuard();
     }
 
-    /**
-     * 初始化ES
-     */
-    protected function initEs(): void
-    {
-        EsFacade::init(
-            config('common_es.host'),
-            config('common_es.user'),
-            config('common_es.password')
-        );
-    }
+
 
     /**
      * 注册管理员守卫
@@ -130,22 +117,24 @@ class AuthServiceProvider extends ServiceProvider
 
         $indexName = config('common_es.indices.user.admins');
 
-        $queryArray = [
-            'match' => ['remember_token' => $remember_token]
-        ];
+        $esAdminObject = EsQueryFacade::index($indexName)->whereNull('deleted_at')->where('remember_token', $remember_token)->get()->first();
 
-        $result = EsFacade::searchDoc($indexName, $queryArray);
-
-        if (isset($result) && $result['code'] == 0 &&  isset($result['data']['hits']['total']['value']) && $result['data']['hits']['total']['value'] > 0) {
-            $adminArray = $result['data']['hits']['hits'][0]['_source'];
+        if (isset($esAdminObject) && !empty($esAdminObject)) {
             //p($adminArray);
             $adminModelArray = [
-                'admin_uid' => $adminArray['admin_uid'],
-                'user_uid' => $adminArray['user_uid'],
-                'remember_token' => $adminArray['remember_token'],
-                'account_name' => $adminArray['account_name'],
-                'phone' => $adminArray['phone'],
-                'account_status' => $adminArray['account_status'],
+                'admin_uid' => $esAdminObject->admin_uid,
+                'user_uid' => $esAdminObject->user_uid,
+                'remember_token' => $esAdminObject->remember_token,
+                'account_status' => $esAdminObject->account_status,
+                'phone_area_code' => $esAdminObject->phone_area_code,
+                'phone' => $esAdminObject->phone,
+                'password' => $esAdminObject->password,
+                'account_name' => $esAdminObject->account_name,
+                'created_time' => $esAdminObject->created_time,
+                'updated_time' => $esAdminObject->updated_time,
+                'created_at' => $esAdminObject->created_at,
+                'updated_at' => $esAdminObject->updated_at,
+                'deleted_at' => $esAdminObject->deleted_at,
             ];
 
             $adminObject = new Admin();
@@ -244,23 +233,32 @@ class AuthServiceProvider extends ServiceProvider
 
         $indexName = config('common_es.indices.user.users');
 
-        $queryArray = [
-            'match' => ['remember_token' => $remember_token]
-        ];
-
-        $result = EsFacade::searchDoc($indexName, $queryArray);
+        $esUserObject = EsQueryFacade::index($indexName)->whereNull('deleted_at')->where('remember_token', $remember_token)->get()->first();
 
         //p($result);
 
-        if (isset($result) && $result['code'] == 0 &&  isset($result['data']['hits']['total']['value']) && $result['data']['hits']['total']['value'] > 0) {
-            $userArray = $result['data']['hits']['hits'][0]['_source'];
-            //p($adminArray);
+        if (isset($esUserObject) && !empty($esUserObject)) {
             $userModelArray = [
-                'user_uid' => $userArray['user_uid'],
-                'remember_token' => $userArray['remember_token'],
-                'account_name' => $userArray['account_name'],
-                'phone' => $userArray['phone'],
-                'account_status' => $userArray['account_status'],
+                'user_uid' => $esUserObject->user_uid,
+                'source_user_uid' => $esUserObject->source_user_uid,
+                'parent_user_uid' => $esUserObject->parent_user_uid,
+                'account_status' => $esUserObject->account_status,
+                'real_auth_status' => $esUserObject->real_auth_status,
+                'level_id' => $esUserObject->level_id,
+                'source' => $esUserObject->source,
+                'remember_token' => $esUserObject->remember_token,
+                'auth_token' => $esUserObject->auth_token,
+                'account_name' => $esUserObject->account_name,
+                'invite_code' => $esUserObject->invite_code,
+                'phone_area_code' => $esUserObject->phone_area_code,
+                'phone' => $esUserObject->phone,
+                'password' => $esUserObject->password,
+                'email' => $esUserObject->email,
+                'created_time' => $esUserObject->created_time,
+                'updated_time' => $esUserObject->updated_time,
+                'created_at' => $esUserObject->created_at,
+                'updated_at' => $esUserObject->updated_at,
+                'deleted_at' => $esUserObject->deleted_at,
             ];
 
             $userObject = new User();
