@@ -30,26 +30,24 @@ if (!function_exists('make_system_config')) {
         $is_cache_system_config = config('common.is_cache_system_config');
 
         if ($is_cache_system_config) {
-           
-            $systemConfigRedis = Redis::hget('system:config', 'listSystemConfig');
-            if ($systemConfigRedis) {
-                $systemConfigCollection = unserialize($systemConfigRedis);
-            } else {
+            $systen_config_init_done = Redis::hget('system:config', 'systen_config_init_done');
+
+            if (!$systen_config_init_done) {
                 $systemConfigCollection = CommonEsFacade::getEsSystemConfig();
 
-                //p($systemConfigList);die;
+                if ($systemConfigCollection->count()) {
+                    foreach ($systemConfigCollection as $key => $systemConfigObject) {
+                        $valueMapArray = [10 => $systemConfigObject->item_label,20 => $systemConfigObject->item_value,30 => $systemConfigObject->item_price,40 => $systemConfigObject->item_path,50 => $systemConfigObject->item_path];
 
-                Redis::hset('system:config', 'listSystemConfig', serialize($systemConfigCollection));
-            }
+                        if ($valueMapArray[$systemConfigObject->item_type]) {
+                            $result = Cache::put($systemConfigObject->item_label, $valueMapArray[$systemConfigObject->item_type]);
 
-            if ($systemConfigCollection->count()) {
-                foreach ($systemConfigCollection as $key => $item) {
-                    $value = [10 => $item->item_label,20 => $item->item_value,30 => $item->item_price,40 => $item->item_path,50 => $item->item_path];
-
-                    if ($value[$item->item_type]) {
-                        $result = Cache::put($item->item_label, $value[$item->item_type]);
+                            plog(['info' => '系统配置初始化缓存','result' => $result,'label' => $systemConfigObject->item_label,'value' => $valueMapArray[$systemConfigObject->item_type]], 'system_helper', 'make_system_config');
+                        }
                     }
                 }
+
+                Redis::hset('system:config', 'systen_config_init_done', 1);
             }
         }
     }
@@ -66,7 +64,7 @@ if (!function_exists('clean_system_config')) {
      */
     function clean_system_config()
     {
-        Redis::hset('system:config', 'listSystemConfig', null);
+        Redis::hset('system:config', 'systen_config_init_done', 0);
     }
 }
 
