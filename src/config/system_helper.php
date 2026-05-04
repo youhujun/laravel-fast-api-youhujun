@@ -29,8 +29,11 @@ if (!function_exists('make_system_config')) {
         //是否缓存系统配置
         $is_cache_system_config = config('common.is_cache_system_config');
 
+		$redisKey = config('common_redis.system_config.key');
+        $redisField = config('common_redis.system_config.field');
+
         if ($is_cache_system_config) {
-            $systen_config_init_done = Redis::hget('system:config', 'systen_config_init_done');
+            $systen_config_init_done = Redis::hget($redisKey, $redisField);
 
             if (!$systen_config_init_done) {
                 $systemConfigCollection = CommonEsFacade::getEsSystemConfig();
@@ -47,7 +50,7 @@ if (!function_exists('make_system_config')) {
                     }
                 }
 
-                Redis::hset('system:config', 'systen_config_init_done', 1);
+                Redis::hset($redisKey, $redisField, 1);
             }
         }
     }
@@ -64,7 +67,10 @@ if (!function_exists('clean_system_config')) {
      */
     function clean_system_config()
     {
-        Redis::hset('system:config', 'systen_config_init_done', 0);
+		$redisKey = config('common_redis.system_config.key');
+        $redisField = config('common_redis.system_config.field');
+
+        Redis::hset($redisKey, $redisField, 0);
     }
 }
 
