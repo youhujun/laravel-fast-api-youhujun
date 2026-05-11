@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-04-29 16:20:50
+ * @LastEditTime: 2026-05-11 14:16:53
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -231,7 +231,11 @@ class EventServiceProvider extends ServiceProvider
             //通用的用户注册(添加用户)
             \App\Events\Common\V1\User\User\CommonUserRegisterEvent::class => $registerListener,
             //用户认证事件
-            \App\Events\Common\V1\User\User\CommonUserCertificateEvent::class => $certificateListener
+            \App\Events\Common\V1\User\User\CommonUserCertificateEvent::class => $certificateListener,
+			//es添加用户
+			\App\Events\Common\V1\User\User\EsAddUserEvent::class => [
+				\App\Listeners\Common\V1\User\User\EsAddUserEvent\EsAddUserListener::class
+			]
         ];
 
         $this->publishCommonListener = $publishCommonListener;
@@ -328,6 +332,7 @@ class EventServiceProvider extends ServiceProvider
 
         //后台管理-用户事件
         $publishAdminUserListener = [
+
             //|--|--管理员管理
             //添加管理员
             \App\Events\LaravelFastApi\V1\Admin\User\Admin\AddAdministratorEvent::class => [
@@ -341,6 +346,11 @@ class EventServiceProvider extends ServiceProvider
                 \App\Listeners\LaravelFastApi\V1\Admin\User\Admin\UpdateAdministratorEvent\UpdateAdministratorRoleListener::class
             ],
 
+            //|--|--用户管理
+			//设置用户账户
+			\App\Events\LaravelFastApi\V1\Admin\User\User\Account\SetUserAccountEvent::class=>[
+				\App\Listeners\LaravelFastApi\V1\Admin\User\User\Account\SetUserAccountEvent\SetUserAccountListener::class
+			],
 
             //设置用户银行卡
             \App\Events\LaravelFastApi\V1\Admin\User\User\SetUserIdCardEvent::class => [

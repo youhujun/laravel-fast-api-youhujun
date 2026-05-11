@@ -6,8 +6,8 @@
  * @Author: youhujun youhu8888@163.com & xueer
  * @Date: 2026-01-19 11:48:09
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-04-14 18:56:32
- * @FilePath: \youhu-laravel-api-12\vendor\youhujun\laravel-fast-api-youhujun\src\config\helper.php
+ * @LastEditTime: 2026-05-10 22:49:50
+ * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\config\helper.php
  * Copyright (C) 2026 youhujun & xueer. All rights reserved.
  */
 
@@ -30,7 +30,7 @@ if (!function_exists('p')) {
      * @param mixed $param 要打印的参数，可以是任意类型。
      * @return void 无返回值。
      */
-    function p($param): void
+    function p(mixed $param): void
     {
         echo "<pre>";
         print_r($param);
@@ -50,7 +50,7 @@ if (!function_exists('plog')) {
      * @param string $logFileName 日志文件名(不含扩展名)，默认为'common'
      * @return int|false 返回写入的字节数，失败时返回false
      */
-    function plog($data, $typeDir = 'common', $logFileName = 'common')
+    function plog(mixed $data, string $typeDir = 'common', string $logFileName = 'common')
     {
         $dir = storage_path('logs/custom'.DIRECTORY_SEPARATOR.$typeDir. DIRECTORY_SEPARATOR.date("Y-m-d")) . DIRECTORY_SEPARATOR;
         if (!is_dir($dir)) {
@@ -72,7 +72,7 @@ if (!function_exists('f')) {
      * @param int $type 过滤类型：0=转义实体（默认），1=去除标签
      * @return
      */
-    function f($param, $type = 0)
+    function f(mixed $param, int $type = 0)
     {
         if (is_numeric($param)) {
             return $param;
@@ -107,7 +107,7 @@ if (!function_exists('code')) {
      * @param array|null $add 附加数据数组
      * @return array 合并后的结果
      */
-    function code($code = [], $add = [])
+    function code(array $code = [], array $add = [])
     {
         // 简化逻辑（原逻辑冗余）
         $code = $code ?? [];
@@ -130,7 +130,7 @@ if (!function_exists('convert_to_string')) {
      * @return string 转换后的字符串表示。
      */
 
-    function convert_to_string($data)
+    function convert_to_string(mixed $data)
     {
         if ($data instanceof Model || $data instanceof Collection) {
             $data = \serialize($data);
@@ -153,7 +153,7 @@ if (!function_exists('is_serialized')) {
      * @param mixed $data 待检测数据
      * @return bool
      */
-    function is_serialized($data)
+    function is_serialized(mixed $data)
     {
         // 非字符串直接返回false
         if (!is_string($data)) {
