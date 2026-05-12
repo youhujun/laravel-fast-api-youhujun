@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-05-11 14:16:53
+ * @LastEditTime: 2026-05-12 17:57:40
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -350,6 +350,12 @@ class EventServiceProvider extends ServiceProvider
 			//设置用户账户
 			\App\Events\LaravelFastApi\V1\Admin\User\User\Account\SetUserAccountEvent::class=>[
 				\App\Listeners\LaravelFastApi\V1\Admin\User\User\Account\SetUserAccountEvent\SetUserAccountListener::class
+			],
+
+			//es添加用户银行卡
+			\App\Events\LaravelFastApi\V1\Admin\User\User\UserBank\EsAddUserBankEvent::class=>[
+				\App\Listeners\LaravelFastApi\V1\Admin\User\User\UserBank\EsAddUserBankEvent\EsAddUserBankListener::class
+
 			],
 
             //设置用户银行卡

@@ -6,7 +6,7 @@
  * @Author: youhujun youhu8888@163.com & xueer
  * @Date: 2026-01-19 11:48:09
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-05-10 22:49:50
+ * @LastEditTime: 2026-05-13 00:34:32
  * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\config\helper.php
  * Copyright (C) 2026 youhujun & xueer. All rights reserved.
  */
@@ -107,7 +107,7 @@ if (!function_exists('code')) {
      * @param array|null $add 附加数据数组
      * @return array 合并后的结果
      */
-    function code(array $code = [], array $add = [])
+    function code(?array $code = null, ?array $add = null)
     {
         // 简化逻辑（原逻辑冗余）
         $code = $code ?? [];
