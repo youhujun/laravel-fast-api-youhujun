@@ -6,7 +6,7 @@
  * @Author: youhujun youhu8888@163.com & xueer
  * @Date: 2026-01-19 11:48:09
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-05-13 00:34:32
+ * @LastEditTime: 2026-05-18 15:14:07
  * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\config\helper.php
  * Copyright (C) 2026 youhujun & xueer. All rights reserved.
  */
@@ -117,7 +117,21 @@ if (!function_exists('code')) {
     }
 }
 
+//抓换cascader数组为一维数组
+if (!function_exists('get_cascader_array')) {
+   
+    function get_cascader_array(array $cascader_id_array = []):array
+    {
+        $id_array = array_reduce($cascader_id_array,function ($carry, $item) {
+           foreach ($item as $value) {
+                $carry[] = $value;
+            }
+            return $carry;
+        },[]);
 
+		return array_unique($id_array);
+    }
+}
 
 if (!function_exists('convert_to_string')) {
     /**
@@ -251,10 +265,6 @@ if (!function_exists('to_array')) {
         return $array;
     }
 }
-
-
-
-
 
 
 // ID合法性检查

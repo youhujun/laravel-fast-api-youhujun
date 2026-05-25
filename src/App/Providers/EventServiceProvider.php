@@ -6,7 +6,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-05-12 17:57:40
+ * @LastEditTime: 2026-05-24 03:37:29
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -235,7 +235,28 @@ class EventServiceProvider extends ServiceProvider
 			//es添加用户
 			\App\Events\Common\V1\User\User\EsAddUserEvent::class => [
 				\App\Listeners\Common\V1\User\User\EsAddUserEvent\EsAddUserListener::class
-			]
+			],
+			//es更新用户
+			\App\Events\Es\V1\User\User\EsUserUpdateEvent::class => [
+				App\Listeners\Es\V1\User\User\EsUserUpdateEvent\EsUserUpdateListener::class
+			],
+			//es该添加单张用户相册图片
+			\App\Events\Es\V1\Picture\Album\EsAddSingleAlbumPictureEvent::class =>[
+				\App\Listeners\Es\V1\Picture\Album\EsAddSingleAlbumPictureEvent\EsAddSingleAlbumPictureListener::class
+			],
+			//es更新用户头像
+			\App\Events\Es\V1\User\User\EsUpdateUserAvatarEvent::class => [
+				\App\Listeners\Es\V1\User\User\EsUpdateUserAvatarEvent\EsUpdateUserAvatarListener::class
+			],
+			//es更新用户昵称
+			\App\Events\Es\V1\User\User\EsUpdateUserNickNameEvent::class => [
+				\App\Listeners\Es\V1\User\User\EsUpdateUserNickNameEvent\EsUpdateUserNickNameListener::class
+			],
+			//es更新用户手机号
+			\App\Events\Es\V1\User\User\EsUpdateUserPhoneEvent::class => [
+				\App\Listeners\Es\V1\User\User\EsUpdateUserPhoneEvent\EsUpdateUserPhoneListener::class
+			],
+			
         ];
 
         $this->publishCommonListener = $publishCommonListener;

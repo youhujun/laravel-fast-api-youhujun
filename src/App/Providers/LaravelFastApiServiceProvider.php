@@ -6,7 +6,7 @@
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2024-02-13 16:10:12
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-04-20 21:25:52
+ * @LastEditTime: 2026-05-17 20:49:44
  * @FilePath: \youhu-laravel-api-12d:\wwwroot\PHP\Components\Laravel\youhujun\laravel-fast-api-youhujun\src\App\Providers\LaravelFastApiServiceProvider.php
  */
 
@@ -415,6 +415,7 @@ class LaravelFastApiServiceProvider extends ServiceProvider
         //用户管理--管理员管理
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Admin');
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Admin/Log');
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Admin/Info');
 
         //文章管理
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations/Create/Article');

@@ -5,8 +5,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2022-01-04 09:56:40
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-02-11 11:19:58
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-05-21 18:35:24
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -54,8 +54,8 @@ return new class () extends Migration {
                     $table->unsignedTinyInteger('is_top')->default(0)->comment('是否置顶 默认0 0不置顶 1置顶');
                     $table->unsignedTinyInteger('check_status')->default(0)->comment('审核状态 默认0 0 待审核 10 审核中 20审核通过 30审核不通过');
 
-                    $table->string('category_id', 255)->nullable()->comment('文章分类json');
-                    $table->string('label_id', 255)->nullable()->comment('标签分类json');
+                    $table->string('category_cascader_json', 255)->nullable()->comment('文章分类json');
+                    $table->string('label_cascader_json', 255)->nullable()->comment('标签分类json');
                     $table->dateTime('published_at')->nullable()->comment('发布时间');
                     $table->unsignedInteger('published_time')->default(0)->comment('发布时间戳');
                     $table->dateTime('checked_at')->nullable()->comment('审核时间');

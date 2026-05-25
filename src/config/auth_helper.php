@@ -363,11 +363,9 @@ if (!function_exists('is_phone_user')) {
      *
      * @return boolean
      */
-    function is_phone_user(User $adminObject): bool
+    function is_phone_user(User $userObject): bool
     {
-        $rolesArray = get_user_roles($adminObject);
-
-        //p($rolesArray);
+        $rolesArray = get_user_roles($userObject);
 
         $result = 0;
 

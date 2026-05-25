@@ -1,28 +1,136 @@
-# laravel-fast-api-youhujun
+# laravel\-fast\-api\-youhujun
 
-| 项目名称                  | 托管平台 | 项目地址                                                                                                         |
-| ------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------- |
-| laravel-fast-api-youhujun | GitCode  | [https://gitcode.com/youhujun/laravel-fast-api-youhujun](https://gitcode.com/youhujun/laravel-fast-api-youhujun) |
-| laravel-fast-api-youhujun | Gitee    | [https://gitee.com/youhujun/laravel-fast-api-youhujun](https://gitee.com/youhujun/laravel-fast-api-youhujun)     |
-| laravel-fast-api-youhujun | GitHub   | [https://github.com/youhujun/laravel-fast-api-youhujun](https://github.com/youhujun/laravel-fast-api-youhujun)   |
+
+
+|项目名称|托管平台|项目地址|
+|---|---|---|
+|laravel\-fast\-api\-youhujun|GitCode|[https://gitcode\.com/youhujun/laravel\-fast\-api\-youhujun](https://gitcode.com/youhujun/laravel-fast-api-youhujun)|
+|laravel\-fast\-api\-youhujun|Gitee|[https://gitee\.com/youhujun/laravel\-fast\-api\-youhujun](https://gitee.com/youhujun/laravel-fast-api-youhujun)|
+|laravel\-fast\-api\-youhujun|GitHub|[https://github\.com/youhujun/laravel\-fast\-api\-youhujun](https://github.com/youhujun/laravel-fast-api-youhujun)|
 
 ## 项目简介
 
-[laravel-fast-api-youhujun](https://gitcode.com/youhujun/laravel-fast-api-youhujun) >基于php语言的Laravel框架开发的API,结合vue3-element-admin-youhujun以及uniappx-youhujun，用于快速开发项目(API developed by Laravel framework based on php language, combined with vue3-element-admin-youhujun and uniappx-youhujun, for rapid development projects)
+**laravel\-fast\-api\-youhujun** 是基于 Laravel12 构建的**企业级全栈快速开发底座**，配套 **vue3\-element\-admin\-youhujun** 后台管理端、**uniappx\-youhujun** 移动端，形成一套完整、规范、可商用的全栈解决方案。
 
-## 初衷
+项目旨在解决市面多数开源项目架构混乱、耦合严重、无法长期迭代、承载量弱的通病。主打**渐进式架构、高安全、高解耦、强类型规范、亿级扩容能力**，彻底打破 PHP 仅适用于小型项目的刻板印象，可平稳支撑**初创项目至亿级流量商业系统**。
 
-国内存在众多开源项目,可以用来快速实现业务.然而系统架构设计,数据库表设计都不理想,代码耦合性强,后续难以为继.为了让自己以及同业爱好者能够快速上手开发,把精力聚焦在业务实现上.开发此项目,并配备完整的开发手册.
+
+## 项目核心特点
+
+### 1\. 渐进式分布式架构，平滑支撑 0～亿级业务
+
+摒弃传统单体架构必须重构的迭代弊端，采用**组件化可插拔**设计，支持单体快速开发、后期无缝拆分微服务，业务迭代全程无需大规模改码重构。
+
+- 自研**分库分表方案**，支持无限横向扩容，从容应对海量数据、高并发流量场景
+
+- 自研**契约标准化规范**，业务模块彻底解耦，支持自由插拔、复用、替换、拓展
+
+### 2\. MySQL \+ ES 双写架构，高性能读写分离
+
+MySQL 专注事务、写入、数据一致性；Elasticsearch 全权承接复杂检索、多条件筛选、列表分页、聚合统计。大幅降低数据库压力，系统吞吐、查询性能大幅提升，完美适配大数据、高并发、检索密集型业务。
+
+### 3\. 全链路强类型约束，极低长期维护成本
+
+统一企业级编码范式，严格区分**数组、对象、集合**语义，变量命名规范统一、语义清晰。全程采用**DTO 全链路强类型校验**，杜绝隐式传参、参数错乱、类型不匹配等高频问题，代码整洁度、可读性、可维护性拉满，彻底解决项目“越迭代越乱”的行业痛点。
+
+### 4\. 门面 \+ 事件驱动，极致解耦架构
+
+业务逻辑大量依托 **Facade 门面** \+ **Event 事件机制**解耦拆分，避免传统 Controller、Service 臃肿堆积问题。模块职责单一、互不侵入，迭代灵活、拓展性极强。
+
+### 5\. 多层企业级安全防护体系
+
+- 自研加密扩展，防护核心源码非法传播、篡改、盗用
+
+- DTO \+ 自定义验证规则 \+ 工具函数多层拦截，严格过滤非法入参
+
+- 自定义守卫、Gate、Policy 权限体系，实现单点登录 \+ 精细化角色权限管控
+
+- 微服务通信秘钥加密校验，保障跨服务数据交互安全可信
 
 ## 项目功能
 
-结合vue3-element-admin-youhujun 和 uniappx-youhujun查看
+配套前后端完整项目，可联动部署使用：
 
-[vue3-element-admin-youhujun](https://www.youhu.club/document/vue3-element-admin-youhujun/)
+[vue3\-element\-admin\-youhujun 后台管理端](https://www.youhu.club/document/vue3-element-admin-youhujun/)
 
-<br/>
+[uniappx\-youhujun 移动端](https://www.youhu.club/document/uniappx-youhujun/)
 
-[uniaapx-youhujun](https://www.youhu.club/document/uniappx-youhujun/)
+```
+|--系统设置
+|--个人中心
+|--|--菜单管理(树形)
+|--|--平台配置
+|--|--|--缓存配置
+|--|--系统配置
+|--|--|--参数配置
+|--|--|--提示配置
+|--|--|--三方平台配置
+|--|--角色管理(权限分配)
+|--|--地区管理(树形)
+|--|--银行管理
+
+|--业务设置
+|--|--通用设置
+|--|--|--结合设置
+|--|--分类管理
+|--|--|--产品分类(树形)
+|--|--|--文章分类(树形)
+|--|--|--标签管理(树形)
+|--|--级别管理
+|--|--|--级别条件
+|--|--|--用户级别
+|--|--业务平台
+|--|--|--首页轮播
+
+|--用户管理
+|--|--管理员管理
+|--|--用户管理
+|--|--|--用户列表
+|--|--|--等待认证
+
+|--文章管理
+|--|--公告管理
+|--|--系统文章
+
+|--图片空间
+|--|--我的相册
+
+|--日志管理
+|--|--登录日志
+|--|--|--手机登录
+|--|--|--后台登录
+|--|--事件日志
+|--|--|--手机事件
+|--|--|--后台事件
+
+```
+
+
+## 项目文档
+
+详细开发手册、部署教程、架构解析、常见问题，统一查阅官方文档：[点击此处查看完整文档](https://www.youhu.club/)
+
+## 项目截图
+
+⚡**接口文档**
+
+![](https://visit.youhujun.com/vue3-element-admin-youhujun/02-api.png)
+
+
+## 部署前提
+
+安装加密扩展,在`php.ini`配置文件中添加如下配置
+
+### windows环境
+
+```bash
+extenson=php_fricc2load.dll
+```
+### Linux环境
+
+```bash
+extension=fricc2load.so
+```
 
 ## 安装
 
@@ -30,23 +138,68 @@
 composer require youhujun/laravel-fast-api-youhujun
 ```
 
-> 目前已经适配laravel12
+:::tip
+当前laravel版本为laravel12
+php版本8.3
+:::
 
 ### 环境要求
 
-- PHP >= 8.2
-- 扩展: 除了laravel框架需要安装的扩展以外,还需要安装 imagick,swoole,安装nodejs
+- PHP >= 8.3
+- 扩展: openssl, json, gd,imagick,swoole,redis,memcached,mb-string,path-info
 
-以上扩展安装和配置在博客中都有详细介绍不需要担心可以查看博客文章所有配置所需都有
+全部环境配置、环境搭建教程，可查阅官方博客详细文档。
 
-<br/>
 
-[游鹄君博客](https://www.youhujun.com/)
 
-**更多文档请查看[文档地址](https://www.youhu.club/)**
+## 报错处理
 
-### 如果有其他问题可以与作者联系交流
+因为本项目使用了七牛云sdk,因为PHP版本的缘故会出现兼容性问题
 
-微信号:youhujun88
+1.打开报错文件：项目目录\vendor\qiniu\php-sdk\src\Qiniu\Config.php
+2.定位到44 行（Config 类的__construct构造方法）
+源代码
+```php
+ public function __construct(Region $z = null)
+```
+修改后 加一个?
+```php
+public function __construct(?Region $z = null)
+```
+**修复原理：**PHP8\.1\+ 废弃隐式可空参数写法，必须显式声明 `?` 可空类型，修复后不影响任何 SDK 功能，完全兼容上传业务。
 
-**备注请说明来意**
+
+## 开源协议与使用声明
+
+本项目基于 **Apache 2\.0** 开源协议，附加作者自定义商业约束条款，开源免费但**并非无底线商用**，使用前请认真阅读：
+
+### 1\. 授权范围（免费）
+
+个人学习、源码研读、技术提升、非盈利演示项目，可自由使用、修改、调试，无需任何授权。
+
+### 2\. 版权约束
+
+所有二次修改、衍生、分发版本，必须保留原项目版权与开源声明，禁止抹除原创标识。
+
+### 3\. 商业约束（核心）
+
+凡涉及**企业部署、商业项目、付费交付、商用二次分发、盈利业务**，必须提前联系作者获取正式商业授权，未经授权严禁商用。
+
+### 4\. 责任与风险
+
+使用者自行承担项目部署、运行、业务落地的全部风险，作者不承担任何直接、间接损失责任，项目不附带任何商用担保。
+
+### 5\. 第三方依赖
+
+项目集成各类第三方开源组件，使用时需同步遵守对应组件开源协议。
+
+### 6\. 合规底线
+
+严禁用于违法、侵权、违规业务场景，违规使用作者有权终止使用授权。
+
+### 7\. 协议修订
+
+作者保留协议最终修订权，更新后将在官方站点、代码仓库公示生效。
+
+
+**游鹄生态 — 理想乡的拓荒者，深耕企业级开源架构**
