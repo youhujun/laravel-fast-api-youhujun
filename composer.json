@@ -1,8 +1,8 @@
 {
     "name": "youhujun/laravel-fast-api-youhujun",
     "description": "Laravel based on the development of API and vue basic functional projects, can be used for rapid development of the system",
-	"version": "1.0.3",
-    "license": "SEE LICENSE IN LICENSE",
+	"version": "2.0.0",
+    "license": "Apache-2.0",
     "authors": [
         {
             "name": "youhujun",
