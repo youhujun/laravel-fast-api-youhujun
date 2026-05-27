@@ -1,0 +1,103 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Builder;
+use App\Models\Traits\WithTimeStampFields;
+use App\Models\Traits\WithSnowflakeId;
+use App\Models\Traits\WithCustomConnection;
+use App\Models\Traits\WithShardRouting;
+
+class {{ class }} extends Model
+{
+    use HasFactory, SoftDeletes, WithTimeStampFields, WithSnowflakeId, WithCustomConnection, WithShardRouting;
+
+	/**
+     * 分片路由基础表名（如需分片请实现此方法）
+     */
+    protected function getBaseTable(): string
+    {
+        return '{{table}}';
+    }
+
+    /**
+     * 分片业务键（如需分片请实现此方法）
+     */
+    protected function getShardBusinessKey(): string
+    {
+        return '{{business_key}}';
+    }
+
+    /**
+     * 批量赋值字段（明确可赋值字段，杜绝安全风险）
+	 示例：'user_uid', 'name', 'mobile', 'status'
+     */
+    protected $fillable = [
+        // 'field_name',
+    ];
+
+    /**
+     * 隐藏敏感/无用字段
+     */
+    protected $hidden = ['id', 'revision'];
+
+    /**
+     * 表名
+     */
+    protected $table = '{{table}}';
+
+	/**
+	*主键
+	*/
+    protected $primaryKey = '{{primary_key}}';
+
+    /**
+     * 主键类型 建议默认值：'string'（适配雪花ID）
+     */
+    protected $keyType = '{{ key_type }}';
+
+    /**
+     * 是否自增 建议默认值：false（雪花ID非自增,规避PHP处理雪花ID大数值溢出/截断风险）
+     */
+    public $incrementing = {{ incrementing }};
+
+    /**
+     * 开启自动时间戳（Laravel自动维护created_at/updated_at）
+     */
+    public $timestamps = true;
+
+    /**
+     * 时间戳格式
+     */
+    protected $dateFormat = 'Y-m-d H:i:s';
+
+    /**
+     * 类型转换
+     */
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'deleted_at' => 'datetime',
+			'created_time' => 'integer', 
+			'updated_time' => 'integer', 
+			'revision' => 'integer', 
+        ];
+    }
+
+    /**
+     * 自定义属性访问器和修改器（如需要请在此添加）
+     */
+    // protected function someField(): Attribute
+    // {
+    //     return new Attribute(
+    //         get: fn($value) => $value,
+    //         set: fn($value) => $value,
+    //     );
+    // }
+}

@@ -1,0 +1,86 @@
+<?php
+
+/*
+ * @Description:
+ * @version: v1
+ * @Author: youhujun youhu8888@163.com & xueer
+ * @Date: 2026-04-08 07:28:26
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-08 13:29:49
+ * @FilePath: \youhu-laravel-api-12\app\DTOs\LaravelFastApi\V1\Admin\System\SystemConfig\OtherPlatform\DouyinConfig\UpdateSystemDouyinConfigDTO.php
+ * Copyright (C) 2026 youhujun & xueer . All rights reserved.
+ */
+
+namespace App\DTOs\LaravelFastApi\V1\Admin\System\SystemConfig\OtherPlatform\DouyinConfig;
+
+use App\DTOs\Traits\BaseDTOTrait;
+use Illuminate\Support\Facades\Validator;
+use App\Exceptions\Common\RuleException;
+use App\Rules\Pub\Required;
+use App\Rules\Pub\Numeric;
+use App\Rules\Pub\CheckDbUnique;
+use App\Rules\Pub\CheckString;
+
+/**
+ * @see \App\Http\Controllers\LaravelFastApi\V1\Admin\System\SystemConfig\OtherPlatform\SystemDouyinConfigController
+ */
+class UpdateSystemDouyinConfigDTO
+{
+    use BaseDTOTrait;
+
+    public int $id = 0;
+    public ?string $name = null;
+    public int $type = 0;
+    public ?int $sort = null;
+    public string $appid = '';
+    public string $appsecret = '';
+    public ?string $note = null;
+
+    public function getFieldMap(): array
+    {
+        return ['id', 'name', 'type', 'sort', 'appid', 'appsecret', 'note'];
+    }
+
+    public function rules(): array
+    {
+        $id = check_id(request()->input('id'));
+
+        return [
+            'id' => ['bail', new Required(), new Numeric()],
+            'name' => ['bail', 'nullable', new CheckString()],
+            'type' => ['bail', new Required(), new Numeric()],
+            'sort' => ['bail', 'nullable', new Numeric()],
+            'appid' => ['bail', new Required(), new CheckString(), new CheckDbUnique('system_douyin_configs', 'appid', $id)],
+            'appsecret' => ['bail', new Required(), new CheckString()],
+            'note' => ['bail', 'nullable', new CheckString()],
+        ];
+    }
+
+    public function validate(array $data): self
+    {
+        $validator = Validator::make($data, $this->rules(), []);
+        $validated = $validator->validated();
+
+        $requiredFields = ['id', 'type', 'appid', 'appsecret'];
+        foreach ($requiredFields as $field) {
+            if (!isset($validated[$field])) {
+                throw new RuleException('RuleRequiredError', $field);
+            }
+        }
+
+        $this->fill($validated);
+        $this->formatFields();
+
+        return $this;
+    }
+
+    public function formatFields(): self
+    {
+        foreach ($this->getFieldMap() as $field) {
+            if ($this->$field !== null && is_string($this->$field)) {
+                $this->$field = f($this->$field);
+            }
+        }
+        return $this;
+    }
+}

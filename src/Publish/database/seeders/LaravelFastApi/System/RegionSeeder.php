@@ -4,15 +4,18 @@
  * @version: v1
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2023-07-24 14:49:06
- * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2023-09-06 21:24:29
- * @FilePath: \api.laravel.com_LV9\database\seeders\System\RegionSeeder.php
+ * @LastEditors: youhujun youhu8888@163.com
+ * @LastEditTime: 2026-02-10 04:25:21
+ * @FilePath: \youhu-laravel-api-12\database\seeders\LaravelFastApi\System\RegionSeeder.php
  */
 namespace Database\Seeders\LaravelFastApi\System;
 
 use Illuminate\Database\Seeder;
 
 use Illuminate\Support\Facades\DB;
+
+use Illuminate\Support\Facades\Config;
+
 
 class RegionSeeder extends Seeder
 {
@@ -23,6 +26,18 @@ class RegionSeeder extends Seeder
      */
     public function run()
     {
+			
+			$shardConfig = Config::get('youhujun.shard');
+			$dbConnection = $shardConfig['default_db'];
+
+
+			DB::connection($dbConnection)->table('regions')->truncate();
+
+
+
+			$this->command->info('开始填充地区');
+
+
 
             $regionData = [
                ['created_time'=>time(),'id'=>1,'region_name'=>'北京','parent_id'=>0,'sort'=>100,'deep'=>1,'region_area'=>'华北'],
@@ -3357,8 +3372,18 @@ class RegionSeeder extends Seeder
                ['created_time'=>time(),'id'=>45055,'region_name'=>'海外','parent_id'=>35,'sort'=>100,'deep'=>2,'region_area'=>''],
             ];
 
-           DB::table('region')->insert($regionData);
+			
+
+            DB::connection($dbConnection)->table('regions')->insert($regionData);
+
+			
+			$this->command->info('✅填充地区完成');
+
         }
+
+		
+		
+
 }
 
 

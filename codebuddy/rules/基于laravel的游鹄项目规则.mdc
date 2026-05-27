@@ -1,0 +1,13 @@
+---
+description: 
+alwaysApply: true
+enabled: true
+updatedAt: 2026-02-10T04:57:38.896Z
+provider: youhujun
+---
+
+1. 严禁使用脚本执行批量替换任务,除非获得允许
+2.  所有模型的主键必须是 `xxx_uid` 格式（如 `user_uid`, `user_info_uid`），禁止写成 `xxx_ud`。
+3.  操作分片表前，必须调用 `bindShardBusinessId($businessId)` 方法绑定分片。
+4.  禁止直接操作数据库，所有查询必须通过模型或 Repository 层。
+5.  禁止操作指令以外的文件,任务都是单项小任务不要自己脑补,除非解决bug问题.否则其余用户自己完善

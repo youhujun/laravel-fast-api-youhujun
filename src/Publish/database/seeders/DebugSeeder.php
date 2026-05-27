@@ -1,12 +1,13 @@
 <?php
+
 /*
  * @Descripttion:
  * @version: v1
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2023-08-12 10:48:07
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2025-12-19 14:18:22
- * @FilePath: \database\seeders\DebugSeeder.php
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-10 22:45:35
+ * @FilePath: \youhu-laravel-api-12\database\seeders\DebugSeeder.php
  */
 
 namespace Database\Seeders;
@@ -14,7 +15,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-
 
 /**
  * 配置 truncate 清空数据库命令调试
@@ -28,14 +28,7 @@ class DebugSeeder extends Seeder
      */
     public function run()
     {
-	    $this->call([
-			
-		]);
+        $this->call([
+        ]);
     }
-
-
-
-
-
-	
 }

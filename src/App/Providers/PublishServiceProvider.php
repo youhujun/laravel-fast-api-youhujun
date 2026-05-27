@@ -21,7 +21,6 @@ class PublishServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
     }
 
     /**
@@ -31,7 +30,7 @@ class PublishServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-       $this->registerPublish();
+        $this->registerPublish();
     }
 
     /**
@@ -41,87 +40,88 @@ class PublishServiceProvider extends ServiceProvider
      */
     protected function registerPublish()
     {
-       if ($this->app->runningInConsole())
-       {
-		   //发布开发模版
-		   //前提是执行了 php artisan 
-		   $this->publishStub();
-		   
-		   //开发初始化发布
-		   $this->publishInit();
+        if ($this->app->runningInConsole()) {
+            //发布开发模版
+            //前提是执行了 php artisan
+            $this->publishStub();
 
-		   //发布配置文件
-		   $this->publishConfig();
+            //开发初始化发布
+            $this->publishInit();
 
-		   //发布数据填充
-		   $this->publishDBSeeders();
+            //发布配置文件
+            $this->publishConfig();
 
-		   //发布中间件
-		   $this->publishMiddleware();
-		  
-		   //发布路由
-		   $this->publishRoute();
+            //发布数据填充
+            $this->publishDBSeeders();
 
-		   //发布自定义验证规则
-           $this->publishRules();
-		   
-		   //发布控制器
-           $this->publishController();
+            //发布中间件
+            $this->publishMiddleware();
 
-		   //发布响应资源
-		   $this->publishResource();
+            //发布路由
+            $this->publishRoute();
 
-		   //发布模型
-           $this->publishModels();
+            //发布自定义验证规则
+            $this->publishRules();
+			//发布DTO
+            $this->publishDTO();
 
-		   //发布门面代理
-           $this->publishFacade();
+            //发布控制器
+            $this->publishController();
 
-		   //发布契约
-		   $this->publishContract();
+            //发布响应资源
+            $this->publishResource();
 
-		   //发布门面服务
-           $this->publishService();
+            //发布模型
+            $this->publishModels();
 
-		   //发布事件
-           $this->publishEvent();
+            //发布门面代理
+            $this->publishFacade();
 
-		   //发布事件监听
-           $this->publishListen();
+            //发布契约
+            $this->publishContract();
 
-		   //发布授权策略
-           $this->publishPolicy();
+            //发布门面服务
+            $this->publishService();
 
-		   //发布异常
-           $this->publishException();
+            //发布事件
+            $this->publishEvent();
 
-		   //发布消息通知
-           $this->publishNotification();
+            //发布事件监听
+            $this->publishListen();
 
-		   //发布队列任务
-           $this->publishJob();
-   
-		   //发布命令
-           $this->publishCommand(); 
-       }
+            //发布授权策略
+            $this->publishPolicy();
+
+            //发布异常
+            $this->publishException();
+
+            //发布消息通知
+            $this->publishNotification();
+
+            //发布队列任务
+            $this->publishJob();
+
+            //发布命令
+            $this->publishCommand();
+        }
     }
 
-	/**
-	 * 发布替换模版
-	 */
-	protected function publishStub()
-	{
-		$this->publishes([
+    /**
+     * 发布替换模版
+     */
+    protected function publishStub()
+    {
+        $this->publishes([
             //发布任务
-             __DIR__.'/../../stubs' => base_path('stubs'),
-            ],'init');
-		
-		//二次安装单独发布
-		$this->publishes([
+            __DIR__.'/../../Publish/stubs' => base_path('stubs'),
+        ], 'init');
+
+        //二次安装单独发布
+        $this->publishes([
             //发布任务
-             __DIR__.'/../../stubs' => base_path('stubs'),
-            ],'stub');
-	}
+            __DIR__.'/../../Publish/stubs' => base_path('stubs'),
+        ], 'stub');
+    }
 
     /**
      * 发布初始文件
@@ -130,105 +130,108 @@ class PublishServiceProvider extends ServiceProvider
      */
     protected function publishInit()
     {
-		//初始化
-		$this->publishes([
-			//发布门面,契约和与之对应的服务层
-            __DIR__.'/../../Publish/laravel-echo-server'=>base_path('laravel-echo-server'),
-            __DIR__.'/../../Publish/laravel-echo-server.json.example'=>base_path('laravel-echo-server.json.example')
-		],'init');
+        //初始化
+        $this->publishes([
+            //发布门面,契约和与之对应的服务层
+            __DIR__.'/../../Publish/laravel-echo-server' => base_path('laravel-echo-server'),
+            __DIR__.'/../../Publish/laravel-echo-server.json.example' => base_path('laravel-echo-server.json.example')
+        ], 'init');
 
-		//发布计划任务
-		$this->publishes([
-            __DIR__.'/../../Publish/cron/'=>base_path('cron'),
-		],'init');
+        //发布计划任务
+        $this->publishes([
+            __DIR__.'/../../Publish/cron/' => base_path('cron'),
+        ], 'init');
 
-		$this->publishes([
+        $this->publishes([
             //发布基础使用文档
-            __DIR__.'/../../Publish/Documents/'=>base_path('Documents'),
-		],'init');
+            __DIR__.'/../../Publish/Documents/' => base_path('Documents'),
+        ], 'init');
 
-		//初始开发项目需要发布的
 		$this->publishes([
+            //发布加密扩展
+            __DIR__.'/../../Publish/extensions/' => base_path('extensions'),
+        ], 'init');
+
+        //初始开发项目需要发布的
+        $this->publishes([
             //发布基础使用文档
-            __DIR__.'/../../Publish/.gitignore'=>base_path('.gitignore'),
-		],'init');
+            __DIR__.'/../../Publish/.gitignore' => base_path('.gitignore'),
+        ], 'init');
 
-		$this->publishes([
-			 //发布环境变量模板文件
-            __DIR__.'/../../Publish/.env.example'=>base_path('.env.example'),
+        $this->publishes([
+            //发布环境变量模板文件
+            __DIR__.'/../../Publish/.env.example' => base_path('.env.example'),
 
-		],'init');
+        ], 'init');
 
-		$this->publishes([
+        $this->publishes([
             //发布基础资源 项目默认图片
-            __DIR__.'/../../Publish/public/config'=>storage_path('app/public/config'),
+            __DIR__.'/../../Publish/public/config' => storage_path('app/public/config'),
             //发布默认的excel模板
-            __DIR__.'/../../Publish/public/excel'=>storage_path('app/public/excel'),
-        ],'init');
+            __DIR__.'/../../Publish/public/excel' => storage_path('app/public/excel'),
+        ], 'init');
 
-		//覆盖发布
-		//二次开发使用用来
-		$this->publishes([
+        //覆盖发布
+        //二次开发使用用来
+        $this->publishes([
             //发布基础资源 项目默认图片
-            __DIR__.'/../..//Publish/public/config'=>storage_path('app/public/config'),
+            __DIR__.'/../..//Publish/public/config' => storage_path('app/public/config'),
             //发布默认的excel模板
-            __DIR__.'/../..//Publish/public/excel'=>storage_path('app/public/excel'),
-        ],'static');
+            __DIR__.'/../..//Publish/public/excel' => storage_path('app/public/excel'),
+        ], 'static');
     }
 
 
-	/**
-	 * 发布配置文件到应用的配置目录。
-	 *
-	 * 此方法将指定的配置文件发布到 Laravel 应用的配置目录中，
-	 * 以便在应用中使用自定义配置。
-	 *
-	 * @return void
-	 */
-	protected function publishConfig()
-	{
-		//初始化
-		$this->publishes([
-			 //发布配置文件
-			 __DIR__.'/../../Publish/config/help.php'=>config_path('help.php'),
-             __DIR__.'/../../Publish/config/custom'=>config_path('custom'),
-		],'init');
+    /**
+     * 发布配置文件到应用的配置目录。
+     *
+     * 此方法将指定的配置文件发布到 Laravel 应用的配置目录中，
+     * 以便在应用中使用自定义配置。
+     *
+     * @return void
+     */
+    protected function publishConfig()
+    {
+        //初始化
+        $this->publishes([
+            //发布配置文件
+            __DIR__.'/../../Publish/config/help.php' => config_path('help.php'),
+            __DIR__.'/../../Publish/config/custom' => config_path('custom'),
+        ], 'init');
 
-		//覆盖
-		$this->publishes([
-			 //发布配置文件
-			 __DIR__.'/../../Publish/config/help.php'=>config_path('help.php'),
-            __DIR__.'/../../Publish/config/custom'=>config_path('custom'),
-		],'config');
-	}
+        //覆盖
+        $this->publishes([
+            //发布配置文件
+            __DIR__.'/../../Publish/config/help.php' => config_path('help.php'),
+            __DIR__.'/../../Publish/config/custom' => config_path('custom'),
+        ], 'config');
+    }
 
-	/**
+    /**
      * 发布数据填充
      *
      * @return void
      */
     protected function publishDBSeeders()
     {
-		//单独发布 数据填充
+        //单独发布 数据填充
         $this->publishes([
-            __DIR__.'/../../Publish/database/seeders'=>database_path('seeders'),
-        ],'init');
-
+            __DIR__.'/../../Publish/database/seeders' => database_path('seeders'),
+        ], 'init');
     }
 
 
-	/**
-	 * 发布中间件
-	 */
-	public function publishMiddleware()
-	{
-		$this->publishes([
-        //发布中间件
-         __DIR__.'/../../Publish/app/Http/Middleware'=>app_path('Http/Middleware'), 
-        ],'init'); 
+    /**
+     * 发布中间件
+     */
+    public function publishMiddleware()
+    {
+        $this->publishes([
+            //发布中间件
+            __DIR__.'/../../Publish/app/Http/Middleware' => app_path('Http/Middleware'),
+        ], 'init');
+    }
 
-	}
-    
 
     /**
      * 发布路由
@@ -239,11 +242,10 @@ class PublishServiceProvider extends ServiceProvider
     {
         //php artisan vendor:publish --tag=youhujun
         $this->publishes([
-        //发布路由文件
-        __DIR__.'/../../Publish/routes/api'=>base_path('routes/api'),
-        
-        ],'init'); 
+            //发布路由文件
+            __DIR__.'/../../Publish/routes/api' => base_path('routes/api'),
 
+        ], 'init');
     }
 
     /**
@@ -255,8 +257,8 @@ class PublishServiceProvider extends ServiceProvider
     {
         $this->publishes([
             //发布控制器需要的自定义验证规则
-            __DIR__.'/../../Publish/app/Rules'=>app_path('Rules'),
-        ],'init');
+            __DIR__.'/../../Publish/app/Rules' => app_path('Rules'),
+        ], 'init');
     }
 
     /**
@@ -269,26 +271,35 @@ class PublishServiceProvider extends ServiceProvider
         $this->publishes([
             //发布控制器
             //测试用
-            __DIR__.'/../../Publish/app/Http/Controllers'=>app_path('Http/Controllers'),
+            __DIR__.'/../../Publish/app/Http/Controllers' => app_path('Http/Controllers'),
 
-        ],'init');
-
+        ], 'init');
     }
 
-	/**
-	 * 发布响应资源api控制
-	 *
-	 * @return void
-	 */
-	protected function publishResource()
-	{
-		  $this->publishes([
+    //发布DTO
+    protected function publishDTO()
+    {
+        $this->publishes([
+            //发布DTO
+            __DIR__.'/../../Publish/app/DTOs' => app_path('DTOs'),
 
-			//发布模版
-            __DIR__.'/../../Publish/app/Http/Resources'=>app_path('Http/Resources'),
-         
-		  ],'init');
-	}
+        ], 'init');
+    }
+
+    /**
+     * 发布响应资源api控制
+     *
+     * @return void
+     */
+    protected function publishResource()
+    {
+        $this->publishes([
+
+            //发布模版
+            __DIR__.'/../../Publish/app/Http/Resources' => app_path('Http/Resources'),
+
+        ], 'init');
+    }
 
     /**
      * 发布数据库
@@ -299,12 +310,11 @@ class PublishServiceProvider extends ServiceProvider
     {
         $this->publishes([
             //模板开发用
-             __DIR__.'/../../Publish/app/Models'=>app_path('Models'),
-        ],'init');
-
+            __DIR__.'/../../Publish/app/Models' => app_path('Models'),
+        ], 'init');
     }
 
-        /**
+    /**
      * 发布门面代理
      *
      * @return void
@@ -313,25 +323,24 @@ class PublishServiceProvider extends ServiceProvider
     {
         //发布门面代理
         $this->publishes([
-        //开发模板
-         __DIR__.'/../../Publish/app/Facade'=>app_path('Facade'),
+            //开发模板
+            __DIR__.'/../../Publish/app/Facades' => app_path('Facades'),
 
-        ],'init');
+        ], 'init');
     }
 
-	/**
-	 * 发布契约
-	 */
-	protected function publishContract()
-	{
-		//发布契约
+    /**
+     * 发布契约
+     */
+    protected function publishContract()
+    {
+        //发布契约
         $this->publishes([
-        //开发模板
-         __DIR__.'/../../Publish/app/Contract'=>app_path('Contract'),
+            //开发模板
+            __DIR__.'/../../Publish/app/Contracts' => app_path('Contracts'),
 
-        ],'init');
-
-	}
+        ], 'init');
+    }
 
     /**
      * 发布服务层
@@ -341,9 +350,8 @@ class PublishServiceProvider extends ServiceProvider
     protected function publishService()
     {
         $this->publishes([
-            __DIR__.'/../../Publish/app/Service' => app_path('Service'),
-        ],'init');
-
+            __DIR__.'/../../Publish/app/Services' => app_path('Services'),
+        ], 'init');
     }
 
     /**
@@ -355,7 +363,7 @@ class PublishServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/../../Publish/app/Events' => app_path('Events'),
-        ],'init');
+        ], 'init');
     }
 
     /**
@@ -367,7 +375,7 @@ class PublishServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/../../Publish/app/Listeners' => app_path('Listeners'),
-        ],'init');
+        ], 'init');
     }
 
     /**
@@ -378,8 +386,8 @@ class PublishServiceProvider extends ServiceProvider
     protected function publishPolicy()
     {
         $this->publishes([
-             __DIR__.'/../../Publish/app/Policies' => app_path('Policies'),
-        ],'init');
+            __DIR__.'/../../Publish/app/Policies' => app_path('Policies'),
+        ], 'init');
     }
 
     /**
@@ -390,9 +398,8 @@ class PublishServiceProvider extends ServiceProvider
     protected function publishException()
     {
         $this->publishes([
-             __DIR__.'/../../Publish/app/Exceptions' => app_path('Exceptions'),
-        ],'init');
-
+            __DIR__.'/../../Publish/app/Exceptions' => app_path('Exceptions'),
+        ], 'init');
     }
 
     /**
@@ -403,8 +410,8 @@ class PublishServiceProvider extends ServiceProvider
     protected function publishNotification()
     {
         $this->publishes([
-             __DIR__.'/../../Publish/app/Notifications' => app_path('Notifications'),
-        ],'init');
+            __DIR__.'/../../Publish/app/Notifications' => app_path('Notifications'),
+        ], 'init');
     }
 
     /**
@@ -416,20 +423,18 @@ class PublishServiceProvider extends ServiceProvider
     {
         $this->publishes([
             //发布任务
-             __DIR__.'/../../Publish/app/Jobs' => app_path('Jobs'),
-            ],'init');
-
+            __DIR__.'/../../Publish/app/Jobs' => app_path('Jobs'),
+        ], 'init');
     }
 
-	/**
-	 * 发布命令
-	 */
-	protected function publishCommand()
-	{
-		$this->publishes([
+    /**
+     * 发布命令
+     */
+    protected function publishCommand()
+    {
+        $this->publishes([
             //发布任务
-             __DIR__.'/../../Publish/app/Console' => app_path('Console'),
-            ],'init');
-	}
-
+            __DIR__.'/../../Publish/app/Console' => app_path('Console'),
+        ], 'init');
+    }
 }

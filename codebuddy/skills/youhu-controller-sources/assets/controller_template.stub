@@ -1,0 +1,26 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ rootNamespace }}Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use App\DTOs\Api\V1\ReplaceDTO;
+use App\Facades\ReplaceFacade;
+
+class {{ class }} extends Controller
+{
+    public function replce(Request $request)
+    {
+        $result = code(\config('common_code.AuthTokenError'));
+
+
+        $requestDTO = (new ReplaceDTO())->validate($request->all());
+
+        $result = ReplaceFacade::replce($requestDTO);
+
+        return $result;
+    }
+}

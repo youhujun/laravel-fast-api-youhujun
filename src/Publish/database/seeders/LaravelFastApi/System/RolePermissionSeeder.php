@@ -1,19 +1,20 @@
 <?php
+
 /*
  * @Descripttion:
  * @version: v1
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2023-01-06 12:36:10
- * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2023-09-06 20:11:25
- * @FilePath: \api.laravel.com_LV9\database\seeders\System\RolePermissionSeeder.php
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-04-05 11:52:01
+ * @FilePath: \youhu-laravel-api-12\database\seeders\LaravelFastApi\System\RolePermissionSeeder.php
  */
-
 
 namespace Database\Seeders\LaravelFastApi\System;
 
+use App\Models\LaravelFastApi\V1\System\Permission\Permission;
+use App\Models\LaravelFastApi\V1\System\Union\RolePermissionUnion;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class RolePermissionSeeder extends Seeder
 {
@@ -24,43 +25,35 @@ class RolePermissionSeeder extends Seeder
      */
     public function run()
     {
-        //先查询 所有的菜单路由
-         $permissionCollection = DB::table('permission')->select(['id'])->orderBy('id','asc')->get();
+        RolePermissionUnion::truncate();
 
-         //选线容器
-         $permissionIdArray = [];
+        $this->command->info('开始绑定开发者和超管的权限');
 
-         //角色和菜单权限数据容器
-         //开发者
-         $developPermissionUnionData = [];
-         //超级管理员
-         $superPermissionUnionData = [];
+        // 查询所有的菜单路由
+        $permissionCollection = Permission::select(['id'])->orderBy('id', 'asc')->get();
 
-        foreach ($permissionCollection as $key => $value)
-        {
-            $permissionIdArray[] = $value->id;
+        // 开发者和超级管理员的role_id
+        $developerRoleId = 10;
+        $superAdminRoleId = 20;
 
-            $developPermissionUnionData[] = [
-                'permission_id' => $value->id,
-                //开发者
-                'role_id' => 10,
-                'created_at' => date('Y-m-d H:i:s',time()),
-                'created_time' => time()
-            ];
+        // 批量创建角色权限关联
+        foreach ($permissionCollection as $permission) {
+            // 开发者权限
+            RolePermissionUnion::create([
+                'permission_id' => $permission->id,
+                'role_id' => $developerRoleId,
+                'created_time' => time(),
+            ]);
 
-            $superPermissionUnionData[] = [
-                'permission_id' => $value->id,
-                //超级管理员
-                'role_id' => 20,
-                'created_at' => date('Y-m-d H:i:s',time()),
-                'created_time' => time()
-            ];
+            // 超级管理员权限
+            RolePermissionUnion::create([
+                'permission_id' => $permission->id,
+                'role_id' => $superAdminRoleId,
+                'created_time' => time(),
+            ]);
         }
 
-        //开发者
-        DB::table('role_permission_union')->insert($developPermissionUnionData);
 
-        //超级管理员
-        DB::table('role_permission_union')->insert($superPermissionUnionData);
+        $this->command->info('✅绑定绑定开发者和超管的权限完成');
     }
 }

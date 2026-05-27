@@ -1,19 +1,19 @@
 <?php
+
 /*
  * @Descripttion:
  * @version: v1
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2023-02-14 18:18:11
- * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2023-09-06 21:27:46
- * @FilePath: \api.laravel.com_LV9\database\seeders\System\BankSeeder.php
+ * @LastEditors: youhujun youhu8888@163.com
+ * @LastEditTime: 2026-02-06 18:29:57
+ * @FilePath: \youhu-laravel-api-12\database\seeders\LaravelFastApi\System\BankSeeder.php
  */
-
 
 namespace Database\Seeders\LaravelFastApi\System;
 
+use App\Models\LaravelFastApi\V1\System\Module\Bank;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class BankSeeder extends Seeder
 {
@@ -24,20 +24,38 @@ class BankSeeder extends Seeder
      */
     public function run()
     {
-         $bankData = [
-            ['bank_name'=>'中国银行','is_default'=>1,'sort'=>100,'created_time'=>time(),'created_at'=>date('Y-m-d H:i:s',time())],
-            ['bank_name'=>'农业银行','is_default'=>1,'sort'=>100,'created_time'=>time(),'created_at'=>date('Y-m-d H:i:s',time())],
-            ['bank_name'=>'工商银行','is_default'=>1,'sort'=>100,'created_time'=>time(),'created_at'=>date('Y-m-d H:i:s',time())],
-            ['bank_name'=>'建设银行','is_default'=>1,'sort'=>100,'created_time'=>time(),'created_at'=>date('Y-m-d H:i:s',time())],
+        Bank::truncate();
+        $this->command->info('开始填充银行');
+        
 
-           /*  ['bank_name'=>'招商银行','is_default'=>1,'sort'=>100,'created_time'=>time(),'created_at'=>date('Y-m-d H:i:s',time())],
-            ['bank_name'=>'浦发银行','is_default'=>1,'sort'=>100,'created_time'=>time(),'created_at'=>date('Y-m-d H:i:s',time())],
-            ['bank_name'=>'广发银行','is_default'=>1,'sort'=>100,'created_time'=>time(),'created_at'=>date('Y-m-d H:i:s',time())],
-            ['bank_name'=>'华夏银行','is_default'=>1,'sort'=>100,'created_time'=>time(),'created_at'=>date('Y-m-d H:i:s',time())],
-            ['bank_name'=>'民生银行','is_default'=>1,'sort'=>100,'created_time'=>time(),'created_at'=>date('Y-m-d H:i:s',time())],
-            ['bank_name'=>'交通银行','is_default'=>1,'sort'=>100,'created_time'=>time(),'created_at'=>date('Y-m-d H:i:s',time())] */
+        Bank::create([
+            'bank_name' => '中国银行',
+            'is_default' => 1,
+            'sort' => 100,
+            'created_time' => time(),
+        ]);
 
-        ];
-        DB::table('bank')->insert($bankData);
+        Bank::create([
+            'bank_name' => '农业银行',
+            'is_default' => 1,
+            'sort' => 100,
+            'created_time' => time(),
+        ]);
+
+        Bank::create([
+            'bank_name' => '工商银行',
+            'is_default' => 1,
+            'sort' => 100,
+            'created_time' => time(),
+        ]);
+
+        Bank::create([
+            'bank_name' => '建设银行',
+            'is_default' => 1,
+            'sort' => 100,
+            'created_time' => time(),
+        ]);
+
+		$this->command->info('✅填充银行完成');
     }
 }

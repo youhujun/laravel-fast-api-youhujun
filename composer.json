@@ -1,8 +1,8 @@
 {
     "name": "youhujun/laravel-fast-api-youhujun",
     "description": "Laravel based on the development of API and vue basic functional projects, can be used for rapid development of the system",
-	"version": "1.0.2",
-    "license": "MIT",
+	"version": "1.0.3",
+    "license": "SEE LICENSE IN LICENSE",
     "authors": [
         {
             "name": "youhujun",
@@ -20,7 +20,8 @@
 		"predis/predis": "*",
 		"intervention/image": "*",
 		"doctrine/dbal": "*",
-		"guzzlehttp/guzzle": "*"
+		"guzzlehttp/guzzle": "*",
+		"youhujun/php-tool-youhujun":"*"
     },
      "require-dev": {
         "barryvdh/laravel-ide-helper": "*"
@@ -28,7 +29,6 @@
     "autoload": {
         "files": [
             "src/config/helper.php",
-            "src/config/curl_helper.php",
             "src/config/auth_helper.php",
             "src/config/system_helper.php",
             "src/config/container_helper.php"

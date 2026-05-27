@@ -1,20 +1,21 @@
 <?php
+
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @version: v1
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2024-12-19 16:08:51
- * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2025-01-17 15:16:01
- * @FilePath: \database\seeders\LaravelFastApi\Service\Level\LevelItemSeeder.php
+ * @LastEditors: youhujun youhu8888@163.com
+ * @LastEditTime: 2026-02-10 04:23:03
+ * @FilePath: \youhu-laravel-api-12\database\seeders\LaravelFastApi\Service\Level\LevelItemSeeder.php
  * Copyright (C) 2025 youhujun. All rights reserved.
  */
 
 namespace Database\Seeders\LaravelFastApi\Service\Level;
 
+use App\Models\LaravelFastApi\V1\System\Level\LevelItem;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class LevelItemSeeder extends Seeder
 {
@@ -25,11 +26,21 @@ class LevelItemSeeder extends Seeder
      */
     public function run()
     {
-        $levelItemData = [
-            //1
-            ['created_at'=>\date('Y-m-d H:i:s',time()),'created_time'=>time(),'sort'=>100,'type'=>10,'item_name'=>'用户积分','item_code'=>'user_score','description'=>'用户积分项']
-        ];
+        LevelItem::truncate();
+		
+        $this->command->info('开始填充系统级别配置项');
 
-        DB::table('level_item')->insert($levelItemData);
+        LevelItem::create([
+            'id' => 10,
+            'type' => 10,
+            'item_name' => '用户积分',
+            'item_code' => 'user_score',
+            'description' => '用户积分项',
+            'sort' => 100,
+            'created_time' => time(),
+        ]);
+
+
+        $this->command->info('✅填充系统级别配置项完成');
     }
 }
