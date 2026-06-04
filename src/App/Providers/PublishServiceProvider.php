@@ -4,8 +4,8 @@
  * @version:
  * @Author: YouHuJun
  * @Date: 2022-02-12 10:43:36
- * @LastEditors: youhujun youhu8888@163.com
- * @LastEditTime: 2026-01-11 16:09:38
+ * @LastEditors: youhujun youhu8888@163.com & xueer
+ * @LastEditTime: 2026-06-04 15:18:08
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -53,6 +53,9 @@ class PublishServiceProvider extends ServiceProvider
 
             //发布数据填充
             $this->publishDBSeeders();
+
+			//发布注解
+			$this->publishAttribute();
 
             //发布中间件
             $this->publishMiddleware();
@@ -196,6 +199,7 @@ class PublishServiceProvider extends ServiceProvider
         $this->publishes([
             //发布配置文件
             __DIR__.'/../../Publish/config/help.php' => config_path('help.php'),
+		    __DIR__.'/../../Publish/config/image.php' => config_path('image.php'),
             __DIR__.'/../../Publish/config/custom' => config_path('custom'),
         ], 'init');
 
@@ -203,6 +207,7 @@ class PublishServiceProvider extends ServiceProvider
         $this->publishes([
             //发布配置文件
             __DIR__.'/../../Publish/config/help.php' => config_path('help.php'),
+			__DIR__.'/../../Publish/config/image.php' => config_path('image.php'),
             __DIR__.'/../../Publish/config/custom' => config_path('custom'),
         ], 'config');
     }
@@ -219,6 +224,16 @@ class PublishServiceProvider extends ServiceProvider
             __DIR__.'/../../Publish/database/seeders' => database_path('seeders'),
         ], 'init');
     }
+
+	//发布注解
+	protected function publishAttribute()
+	{
+		 //单独发布 数据填充
+        $this->publishes([
+            __DIR__.'/../../Publish/app/Attributes' => app_path('Attributes'),
+        ], 'init');
+	}
+
 
 
     /**

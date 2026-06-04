@@ -74,6 +74,8 @@ class FacadeServiceProvider extends ServiceProvider
         $this->app->bind('MsTestFacade', \App\Services\Facade\Test\V1\Ms\MsTestFacadeService::class);
         //雪鹄城堡测试
         $this->app->bind('XueHuTestFacade', \App\Services\Facade\Test\V1\XueHu\XueHuTestFacadeService::class);
+				//注解测试门面
+        $this->app->bind('AttributeTestFacade', \App\Services\Facade\Test\V1\Attributes\AttributeTestFacadeService::class);
     }
 
     /**
