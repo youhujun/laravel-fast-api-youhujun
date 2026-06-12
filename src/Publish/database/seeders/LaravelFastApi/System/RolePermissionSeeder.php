@@ -6,13 +6,14 @@
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2023-01-06 12:36:10
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-04-05 11:52:01
- * @FilePath: \youhu-laravel-api-12\database\seeders\LaravelFastApi\System\RolePermissionSeeder.php
+ * @LastEditTime: 2026-06-12 00:53:15
+ * @FilePath: \youhu-laravel-api-13\database\seeders\LaravelFastApi\System\RolePermissionSeeder.php
  */
 
 namespace Database\Seeders\LaravelFastApi\System;
 
 use App\Models\LaravelFastApi\V1\System\Permission\Permission;
+use App\Models\LaravelFastApi\V1\System\Role\Role;
 use App\Models\LaravelFastApi\V1\System\Union\RolePermissionUnion;
 use Illuminate\Database\Seeder;
 
@@ -33,9 +34,12 @@ class RolePermissionSeeder extends Seeder
         $permissionCollection = Permission::select(['id'])->orderBy('id', 'asc')->get();
 
         // 开发者和超级管理员的role_id
-        $developerRoleId = 10;
-        $superAdminRoleId = 20;
+		$developerRoleObject = Role::where('logic_name', 'develop')->first();
+		$superAdminRoleObject = Role::where('logic_name', 'super')->first();
 
+        $developerRoleId = $developerRoleObject->id;
+        $superAdminRoleId = $superAdminRoleObject->id;
+		
         // 批量创建角色权限关联
         foreach ($permissionCollection as $permission) {
             // 开发者权限
