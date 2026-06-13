@@ -6,8 +6,8 @@
  * @Author: youhujun youhu8888@163.com & xueer
  * @Date: 2026-03-20 14:49:20
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-05-17 02:39:55
- * @FilePath: \youhu-laravel-api-12\app\Services\Facade\LaravelFastApi\V1\Es\Sync\System\EsSyncSystemFacadeService.php
+ * @LastEditTime: 2026-06-14 04:50:39
+ * @FilePath: \youhu-laravel-api-13\app\Services\Facade\LaravelFastApi\V1\Es\Sync\System\EsSyncSystemFacadeService.php
  * Copyright (C) 2026 youhujun & xueer. All rights reserved.
  */
 
@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Services\Facade\Common\V1\Es\Console\Traits\EsFacadeServiceBaseTrait;
 use YouHuJun\Tool\App\Facades\V1\Es\EsFacade;
+use App\Attributes\Common\DocNote;
 use App\Models\LaravelFastApi\V1\System\SystemConfig;
 use App\Models\LaravelFastApi\V1\System\Permission\Permission;
 use App\Models\LaravelFastApi\V1\System\SystemConfig\SystemVoiceConfig;
@@ -31,6 +32,7 @@ use App\Models\LaravelFastApi\V1\System\Role\Role;
 use App\Models\LaravelFastApi\V1\System\Region\Region;
 use App\Models\LaravelFastApi\V1\System\Module\Bank;
 use App\Models\LaravelFastApi\V1\System\Platform\SystemWechatConfig;
+use App\Models\LaravelFastApi\V1\User\Union\UserRoleUnion;
 
 /**
  * @see \App\Facades\LaravelFastApi\V1\Es\Sync\System\EsSyncSystemFacade
@@ -59,6 +61,9 @@ class EsSyncSystemFacadeService
         $startTime = microtime(true);
         $total = 0;
         $indexName = config('common_es.indices.system.system_configs');
+
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
 
         SystemConfig::select(['*'])
         ->cursor()
@@ -118,6 +123,9 @@ class EsSyncSystemFacadeService
         $startTime = microtime(true);
         $total = 0;
         $indexName = config('common_es.indices.system.permissions');
+
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
 
         Permission::select(['*'])
         ->cursor()
@@ -187,6 +195,9 @@ class EsSyncSystemFacadeService
         $total = 0;
         $indexName = config('common_es.indices.system.system_voice_configs');
 
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
+
         SystemVoiceConfig::select(['*'])
         ->cursor()
         ->chunk(config('common.chunk_size.es_sync'))
@@ -246,6 +257,9 @@ class EsSyncSystemFacadeService
         $total = 0;
         $indexName = config('common_es.indices.system.roles');
 
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
+
         Role::select(['*'])
         ->cursor()
         ->chunk(config('common.chunk_size.es_sync'))
@@ -304,6 +318,9 @@ class EsSyncSystemFacadeService
         $total = 0;
         $indexName = config('common_es.indices.system.regions');
 
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
+
         Region::select(['*'])
         ->cursor()
         ->chunk(config('common.chunk_size.es_sync'))
@@ -361,6 +378,9 @@ class EsSyncSystemFacadeService
         $total = 0;
         $indexName = config('common_es.indices.system.banks');
 
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
+
         Bank::select(['*'])
         ->cursor()
         ->chunk(config('common.chunk_size.es_sync'))
@@ -415,6 +435,9 @@ class EsSyncSystemFacadeService
         $total = 0;
         $indexName = config('common_es.indices.system.system_wechat_configs');
 
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
+
         SystemWechatConfig::select(['*'])
         ->cursor()
         ->chunk(config('common.chunk_size.es_sync'))
@@ -457,4 +480,5 @@ class EsSyncSystemFacadeService
             $this->consoleOutput('批量执行所有banks数据同步ES结束--2', 'info');
         }
     }
+
 }

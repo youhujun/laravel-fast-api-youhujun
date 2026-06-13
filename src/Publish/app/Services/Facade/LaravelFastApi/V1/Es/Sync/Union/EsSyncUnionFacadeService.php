@@ -25,6 +25,7 @@ use Illuminate\Support\Str;
 use App\Services\Facade\Common\V1\Es\Console\Traits\EsFacadeServiceBaseTrait;
 use YouHuJun\Tool\App\Facades\V1\Utils\Shard\ShardFacade;
 use YouHuJun\Tool\App\Facades\V1\Es\EsFacade;
+use App\Attributes\Common\DocNote;
 use App\Models\LaravelFastApi\V1\User\Union\UserSourceUnion;
 use App\Models\LaravelFastApi\V1\System\Union\RolePermissionUnion;
 use App\Models\LaravelFastApi\V1\System\Level\Union\UserLevelItemUnion;
@@ -54,6 +55,9 @@ class EsSyncUnionFacadeService
         $startTime = microtime(true);
         $total = 0;
         $indexName = config('common_es.indices.union.role_permission_unions');
+
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
 
         RolePermissionUnion::select(['*'])
         ->cursor()
@@ -109,6 +113,9 @@ class EsSyncUnionFacadeService
         $startTime = microtime(true);
         $total = 0;
         $indexName = config('common_es.indices.union.user_level_item_unions');
+
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
 
         UserLevelItemUnion::select(['*'])
         ->cursor()
@@ -167,6 +174,9 @@ class EsSyncUnionFacadeService
         $startTime = microtime(true);
         $total = 0;
         $indexName = config('common_es.indices.union.user_role_unions');
+
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
 
         UserRoleUnion::queryByAllShard()
         ->select(['*'])
@@ -229,6 +239,9 @@ class EsSyncUnionFacadeService
         $startTime = microtime(true);
         $total = 0;
         $indexName = config('common_es.indices.union.user_source_unions');
+
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
 
         UserSourceUnion::queryByAllShard()
         ->select(['*'])

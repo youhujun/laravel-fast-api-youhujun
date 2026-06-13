@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Services\Facade\Common\V1\Es\Console\Traits\EsFacadeServiceBaseTrait;
 use YouHuJun\Tool\App\Facades\V1\Es\EsFacade;
+use App\Attributes\Common\DocNote;
 use App\Models\LaravelFastApi\V1\System\Module\Article\Category;
 use App\Models\LaravelFastApi\V1\System\Module\Goods\GoodsClass;
 use App\Models\LaravelFastApi\V1\System\Module\Label;
@@ -54,6 +55,9 @@ class EsSyncBusinessFacadeService
         $startTime = microtime(true);
         $total = 0;
         $indexName = config('common_es.indices.business.goods_classes');
+
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
 
         GoodsClass::select(['*'])
         ->cursor()
@@ -116,6 +120,9 @@ class EsSyncBusinessFacadeService
         $total = 0;
         $indexName = config('common_es.indices.business.article_categories');
 
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
+
         Category::select(['*'])
         ->cursor()
         ->chunk(config('common.chunk_size.es_sync'))
@@ -175,6 +182,9 @@ class EsSyncBusinessFacadeService
         $total = 0;
         $indexName = config('common_es.indices.business.labels');
 
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
+
         Label::select(['*'])
         ->cursor()
         ->chunk(config('common.chunk_size.es_sync'))
@@ -233,6 +243,9 @@ class EsSyncBusinessFacadeService
         $total = 0;
         $indexName = config('common_es.indices.business.level_items');
 
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
+
         LevelItem::select(['*'])
         ->cursor()
         ->chunk(config('common.chunk_size.es_sync'))
@@ -286,6 +299,9 @@ class EsSyncBusinessFacadeService
         $startTime = microtime(true);
         $total = 0;
         $indexName = config('common_es.indices.business.user_levels');
+
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
 
         UserLevel::select(['*'])
         ->cursor()
@@ -342,6 +358,9 @@ class EsSyncBusinessFacadeService
         $startTime = microtime(true);
         $total = 0;
         $indexName = config('common_es.indices.business.system_withdraw_configs');
+
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
 
         WithdrawConfig::select(['*'])
         ->cursor()

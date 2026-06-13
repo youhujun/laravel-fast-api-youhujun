@@ -6,8 +6,8 @@
  * @Author: youhujun youhu8888@163.com & xueer
  * @Date: 2026-03-20 14:49:43
  * @LastEditors: youhujun youhu8888@163.com & xueer
- * @LastEditTime: 2026-04-03 01:26:41
- * @FilePath: \youhu-laravel-api-12\app\Services\Facade\LaravelFastApi\V1\Es\Sync\User\EsSyncYouhuAuthServiceFacadeService.php
+ * @LastEditTime: 2026-06-14 04:59:36
+ * @FilePath: \youhu-laravel-api-13\app\Services\Facade\LaravelFastApi\V1\Es\Sync\User\EsSyncYouhuAuthServiceFacadeService.php
  * Copyright (C) 2026 youhujun & xueer. All rights reserved.
  */
 
@@ -26,6 +26,7 @@ use Illuminate\Support\Str;
 use App\Services\Facade\Common\V1\Es\Console\Traits\EsFacadeServiceBaseTrait;
 use YouHuJun\Tool\App\Facades\V1\Utils\Shard\ShardFacade;
 use YouHuJun\Tool\App\Facades\V1\Es\EsFacade;
+use App\Attributes\Common\DocNote;
 use App\Models\LaravelFastApi\V1\Api\Auth\YouHuAuthService;
 
 /**
@@ -55,6 +56,9 @@ class EsSyncYouhuAuthServiceFacadeService
         $startTime = microtime(true);
         $total = 0;
         $indexName = config('common_es.indices.user.youhu_auth_services');
+
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
 
         YouHuAuthService::queryByAllShard()
         ->select(['user_uid','shard_key','secret_key','auth_token','service_flag','status','created_at', 'updated_at','deleted_at'])

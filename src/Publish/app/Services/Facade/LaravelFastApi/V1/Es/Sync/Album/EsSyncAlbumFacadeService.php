@@ -25,6 +25,7 @@ use Illuminate\Support\Str;
 use App\Services\Facade\Common\V1\Es\Console\Traits\EsFacadeServiceBaseTrait;
 use YouHuJun\Tool\App\Facades\V1\Utils\Shard\ShardFacade;
 use YouHuJun\Tool\App\Facades\V1\Es\EsFacade;
+use App\Attributes\Common\DocNote;
 use App\Models\LaravelFastApi\V1\Picture\Album;
 use App\Models\LaravelFastApi\V1\Picture\AlbumPicture;
 
@@ -51,6 +52,9 @@ class EsSyncAlbumFacadeService
         $startTime = microtime(true);
         $total = 0;
         $indexName = config('common_es.indices.album.albums');
+
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
 
         Album::queryByAllShard()
         ->select(['album_uid','shard_key','admin_uid','user_uid','cover_album_picture_uid','is_default','is_system','album_type','album_name','album_description','sort','created_at', 'updated_at','deleted_at'])
@@ -115,6 +119,9 @@ class EsSyncAlbumFacadeService
         $startTime = microtime(true);
         $total = 0;
         $indexName = config('common_es.indices.album.album_pictures');
+
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
 
         AlbumPicture::queryByAllShard()
         ->select(['album_picture_uid','admin_uid','user_uid','album_uid','picture_name','picture_tag','picture_path','picture_file','picture_size','picture_spec','picture_type','picture_url','created_at', 'updated_at','deleted_at'])

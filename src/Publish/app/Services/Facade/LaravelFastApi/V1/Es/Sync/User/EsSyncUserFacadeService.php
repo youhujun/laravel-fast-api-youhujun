@@ -25,6 +25,7 @@ use Illuminate\Support\Str;
 use App\Services\Facade\Common\V1\Es\Console\Traits\EsFacadeServiceBaseTrait;
 use YouHuJun\Tool\App\Facades\V1\Utils\Shard\ShardFacade;
 use YouHuJun\Tool\App\Facades\V1\Es\EsFacade;
+use App\Attributes\Common\DocNote;
 use App\Models\LaravelFastApi\V1\User\User;
 use App\Models\LaravelFastApi\V1\User\Info\UserAmount;
 use App\Models\LaravelFastApi\V1\User\Info\UserInfo;
@@ -60,6 +61,9 @@ class EsSyncUserFacadeService
         $startTime = microtime(true);
         $total = 0;
         $indexName = config('common_es.indices.user.users');
+
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
 
         User::queryByAllShard()
         ->select(['user_uid','shard_key','source_user_uid','parent_user_uid', 'account_status', 'invite_code','email','real_auth_status', 'level_id','account_name','phone','password','created_at', 'updated_at','deleted_at'])
@@ -222,6 +226,9 @@ class EsSyncUserFacadeService
         $startTime = microtime(true);
         $total = 0;
         $indexName = config('common_es.indices.user.user_amounts');
+
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
 
         UserAmount::queryByAllShard()
         ->select(['user_amount_uid','shard_key','user_uid','amount', 'bonus', 'prepare_bonus','coin','score', 'note','sort','created_at', 'updated_at','deleted_at'])

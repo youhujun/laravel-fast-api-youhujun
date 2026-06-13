@@ -25,6 +25,7 @@ use Illuminate\Support\Str;
 use App\Services\Facade\Common\V1\Es\Console\Traits\EsFacadeServiceBaseTrait;
 use YouHuJun\Tool\App\Facades\V1\Utils\Shard\ShardFacade;
 use YouHuJun\Tool\App\Facades\V1\Es\EsFacade;
+use App\Attributes\Common\DocNote;
 use App\Models\LaravelFastApi\V1\Admin\Admin;
 use App\Models\LaravelFastApi\V1\User\User;
 use App\Models\LaravelFastApi\V1\User\Info\UserInfo;
@@ -60,6 +61,9 @@ class EsSyncAdminFacadeService
         $startTime = microtime(true);
         $total = 0;
         $indexName = config('common_es.indices.user.admins');
+
+		//先清空索引数据
+		EsFacade::clearAllDoc($indexName);
 
         Admin::queryByAllShard()
         ->select(['admin_uid','shard_key','user_uid', 'account_status','account_name','email','phone','created_at', 'updated_at','deleted_at'])
